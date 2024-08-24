@@ -1,5 +1,6 @@
 <?php
 include '../include/db_conn.php';
+include '../func/user_func.php';
 session_start();
 
 session_regenerate_id();
@@ -10,6 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
+
+$tour = getAllTours($conn);
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +24,83 @@ $pp = $_SESSION['profile-pic'];
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../assets/css/admin.css">
+    <!-- Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <title>BaGoTours. Tours</title>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        #mapboxModal .modal-content {
+            width: 90%;
+            height: 90%;
+            max-width: 800px;
+            max-height: 600px;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,12 +113,10 @@ $pp = $_SESSION['profile-pic'];
                     <h1>Tours</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
-                <a href="#" class="btn-download" id="btn-download">
-                    <i class='bx bx-plus'></i>
-                    <span class="text">Add tours</span>
-                </a>
+                <button class="btn-download" id="btn-download">
+                    <i class='bx bx-plus'></i>Add tours
+                </button>
             </div>
-
             <div class="table-data">
                 <div class="order">
                     <div class="head">
@@ -48,9 +125,9 @@ $pp = $_SESSION['profile-pic'];
                         <i class='bx bx-filter'></i>
                     </div>
                     <?php
-                    if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $images = explode(',', $row['images']);
+                    if (!empty($tour)) {
+                        foreach ($tour as $row) {
+                            $images = explode(',', $row['img']);
                             echo '<div class="data">';
                             foreach ($images as $image) {
                                 echo '<img src="../upload/Tour Images/' . $image . '" alt="Tour Image">';
@@ -74,9 +151,113 @@ $pp = $_SESSION['profile-pic'];
             </div>
         </main>
     </section>
+    <div id="addTourModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Tour</h2>
+            <form action="../php/add_tour.php" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="tour-title">Title:</label>
+                    <input type="text" id="tour-title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="tour-address">Address:</label>
+                    <input type="text" id="tour-address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="tour-type">Type:</label>
+                    <select id="tour-type" name="type" required>
+                        <option value="Resort">Resort</option>
+                        <option value="Beach">Beach</option>
+                        <option value="Historical">Historical</option>
+                        <option value="Park">Park</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tour-description">Description:</label>
+                    <textarea id="tour-description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tour-images">Image:</label>
+                    <input type="file" id="tour-images" name="img" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="tour-longitude">Longitude:</label>
+                    <input type="text" id="tour-longitude" name="longitude" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="tour-latitude">Latitude:</label>
+                    <input type="text" id="tour-latitude" name="latitude" readonly required>
+                </div>
+                <button type="button" id="set-location">Set Location on Map</button>
+                <button type="submit" class="btn-submit">Add Tour</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="mapboxModal" class="modal">
+        <div class="modal-content">
+            <span class="close-map">&times;</span>
+            <div id="map" style="height: 400px;"></div>
+        </div>
+    </div>
+
 
     <script src="../assets/js/script.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById("addTourModal");
+            var mapboxModal = document.getElementById("mapboxModal");
+            var btn = document.getElementById("btn-download");
+            var btnSetLocation = document.getElementById("set-location");
+            var closeBtn = document.querySelector(".close");
+            var closeMapBtn = document.querySelector(".close-map");
+
+            // Initialize Mapbox
+            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [122.834, 10.693],
+                zoom: 12
+            });
+
+            var marker;
+
+            map.on('click', function(e) {
+                var lngLat = e.lngLat;
+                if (marker) {
+                    marker.setLngLat(lngLat);
+                } else {
+                    marker = new mapboxgl.Marker()
+                        .setLngLat(lngLat)
+                        .addTo(map);
+                }
+                document.getElementById('tour-longitude').value = lngLat.lng;
+                document.getElementById('tour-latitude').value = lngLat.lat;
+                mapboxModal.style.display = "none";
+            });
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            btnSetLocation.onclick = function() {
+                mapboxModal.style.display = "block";
+            }
+
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            closeMapBtn.onclick = function() {
+                mapboxModal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == mapboxModal) {
+                    mapboxModal.style.display = "none";
+                }
+            }
+        });
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
