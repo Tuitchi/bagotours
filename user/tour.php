@@ -35,31 +35,22 @@ if (!$tour) {
 		}
     .modal {
       display: none;
-      /* Hidden by default */
       position: fixed;
-      /* Stay in place */
       z-index: 1;
-      /* Sit on top */
       left: 0;
       top: 0;
       width: 100%;
-      /* Full width */
       height: 100%;
-      /* Full height */
       overflow: auto;
-      /* Enable scroll if needed */
       background-color: rgba(0, 0, 0, 0.4);
-      /* Black w/ opacity */
     }
 
     .modal-content {
       background-color: #fefefe;
       margin: 15% auto;
-      /* 15% from the top and centered */
       padding: 20px;
       border: 1px solid #888;
       width: 80%;
-      /* Could be more or less, depending on screen size */
     }
 
     .close {
@@ -134,7 +125,7 @@ if (!$tour) {
 
       const markerElement = document.createElement('div');
       markerElement.className = 'marker';
-      markerElement.style.backgroundImage = 'url(../assets/icons/<?php echo htmlspecialchars($tour['type']); ?>.png)';
+      markerElement.style.backgroundImage = 'url(../assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " ")); ?>.png)';
 
       const marker = new mapboxgl.Marker(markerElement)
         .setLngLat([<?php echo htmlspecialchars($tour['longitude']); ?>, <?php echo htmlspecialchars($tour['latitude']); ?>])

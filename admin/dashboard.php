@@ -2,8 +2,6 @@
 include '../include/db_conn.php';
 session_start();
 
-session_regenerate_id();
-
 if (!isset($_SESSION['user_id'])) {
 	header("Location: ../login.php?action=Invalid");
 	exit();

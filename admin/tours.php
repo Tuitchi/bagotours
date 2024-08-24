@@ -95,10 +95,10 @@ $tour = getAllTours($conn);
         }
 
         #mapboxModal .modal-content {
-            width: 90%;
-            height: 90%;
-            max-width: 800px;
-            max-height: 600px;
+            width: 50%;
+            height: 80%;
+            max-width: 80%;
+            max-height: 100%;
         }
     </style>
 </head>
@@ -195,10 +195,11 @@ $tour = getAllTours($conn);
         </div>
     </div>
 
+
     <div id="mapboxModal" class="modal">
         <div class="modal-content">
             <span class="close-map">&times;</span>
-            <div id="map" style="height: 400px;"></div>
+            <div id="map" style="height: 94%; width:100%"></div>
         </div>
     </div>
 
@@ -218,12 +219,15 @@ $tour = getAllTours($conn);
             var map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v11',
-                center: [122.834, 10.693],
-                zoom: 12
+                center: [122.9413, 10.4998],
+                zoom: 10.2
             });
 
             var marker;
 
+            function resizeMap() {
+                map.resize();
+            }
             map.on('click', function(e) {
                 var lngLat = e.lngLat;
                 if (marker) {
@@ -242,6 +246,7 @@ $tour = getAllTours($conn);
             }
             btnSetLocation.onclick = function() {
                 mapboxModal.style.display = "block";
+                resizeMap();
             }
 
             closeBtn.onclick = function() {

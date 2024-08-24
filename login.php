@@ -57,7 +57,7 @@
             <div class="panel left-panel">
                 <div class="content">
                     <h3>New here?</h3>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis, ex ratione. Aliquid!</p>
+                    <p>Create account just click the button below</p>
                     <button class="btn transparent" id="sign-up-btn">Sign up</button>
                 </div>
                 <img src="img/log.svg" class="image" alt="">
