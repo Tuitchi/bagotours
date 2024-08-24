@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2024 at 05:15 AM
+-- Generation Time: Aug 23, 2024 at 07:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,17 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `booking_table`
+-- Table structure for table `booking`
 --
 
-CREATE TABLE `booking_table` (
-  `book_id` int(50) NOT NULL,
-  `tourist_id` int(50) NOT NULL,
-  `spot_id` int(50) NOT NULL,
-  `booking_created` timestamp(6) NULL DEFAULT current_timestamp(6),
-  `booking_sched` timestamp(6) NULL DEFAULT NULL,
-  `status` varchar(10) NOT NULL COMMENT '0 = pending, 1 = accepted and 2 = cancelled\r\n'
+CREATE TABLE `booking` (
+  `id` int(50) NOT NULL,
+  `user_id` int(50) NOT NULL,
+  `tours_id` int(50) NOT NULL,
+  `phone_number` varchar(150) NOT NULL,
+  `people` int(50) NOT NULL,
+  `date_sched` datetime NOT NULL,
+  `date_created` date NOT NULL DEFAULT current_timestamp(),
+  `status` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`id`, `user_id`, `tours_id`, `phone_number`, `people`, `date_sched`, `date_created`, `status`) VALUES
+(1, 9, 1, '9054604916', 10, '2024-08-29 06:00:00', '0000-00-00', 0),
+(3, 9, 1, '9054604916', 10, '2024-08-29 06:00:00', '2024-08-24', 0),
+(4, 9, 1, '9054604916', 10, '2024-08-29 06:00:00', '2024-08-24', 0),
+(6, 9, 1, 'asd123123', 123, '2024-09-03 00:33:00', '2024-08-24', 0),
+(7, 9, 1, '9054604916', 123, '2024-08-28 00:57:00', '2024-08-24', 0);
 
 -- --------------------------------------------------------
 
@@ -52,16 +65,16 @@ CREATE TABLE `cost` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `feedback_table`
+-- Table structure for table `inquiry`
 --
 
-CREATE TABLE `feedback_table` (
-  `feedback_id` int(50) NOT NULL,
-  `tourist_id` int(50) NOT NULL,
-  `spot_id` int(50) NOT NULL,
-  `feedback` varchar(200) DEFAULT NULL,
-  `stars_rating` int(50) DEFAULT NULL,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `inquiry` (
+  `id` int(50) NOT NULL,
+  `user_id` int(50) NOT NULL,
+  `subject` varchar(100) NOT NULL,
+  `message` varchar(500) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -83,14 +96,32 @@ CREATE TABLE `recommendation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `review_rating`
+--
+
+CREATE TABLE `review_rating` (
+  `id` int(50) NOT NULL,
+  `tour_id` int(50) NOT NULL,
+  `user_id` int(50) NOT NULL,
+  `rating` int(50) NOT NULL,
+  `review` varchar(500) NOT NULL,
+  `date_created` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tours`
 --
 
 CREATE TABLE `tours` (
   `id` int(50) NOT NULL,
   `user_id` int(50) NOT NULL,
+  `img` varchar(50) NOT NULL,
   `title` varchar(200) NOT NULL,
   `address` varchar(200) NOT NULL,
+  `latitude` varchar(50) NOT NULL,
+  `longitude` varchar(50) NOT NULL,
   `type` varchar(50) NOT NULL,
   `description` varchar(200) NOT NULL,
   `status` varchar(50) NOT NULL,
@@ -101,8 +132,8 @@ CREATE TABLE `tours` (
 -- Dumping data for table `tours`
 --
 
-INSERT INTO `tours` (`id`, `user_id`, `title`, `address`, `type`, `description`, `status`, `date_created`) VALUES
-(1, 9, 'Buenos Aires Mountain Resort', 'Barangay Ilijan, Bago City, Negros Occidental Philippines', '', 'Buenos Aires Mountain Resort is a nature-rich site that is located at the foot of Mount Kanlaon. It boasts an Olympic-size swimming pool, two kiddie pools and a standard-size pool. The resort’s cool c', '1', '2024-08-11 22:51:15');
+INSERT INTO `tours` (`id`, `user_id`, `img`, `title`, `address`, `latitude`, `longitude`, `type`, `description`, `status`, `date_created`) VALUES
+(1, 9, 'buenos.jpg', 'Buenos Aires Mountain Resort', 'Barangay Ilijan, Bago City, Negros Occidental Philippines', ' 10.45456', '123.04783', 'resort', 'Buenos Aires Mountain Resort is a nature-rich site that is located at the foot of Mount Kanlaon. It boasts an Olympic-size swimming pool, two kiddie pools and a standard-size pool. The resort’s cool c', '1', '2024-08-11 22:51:15');
 
 -- --------------------------------------------------------
 
@@ -124,9 +155,8 @@ CREATE TABLE `tours_image` (
 
 CREATE TABLE `users` (
   `id` int(50) NOT NULL,
-  `firstname` varchar(200) DEFAULT NULL,
-  `lastname` varchar(200) DEFAULT NULL,
   `profile_picture` varchar(200) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
   `username` varchar(200) DEFAULT NULL,
   `password` varchar(200) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
@@ -139,21 +169,22 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `profile_picture`, `username`, `password`, `email`, `phone_number`, `role`, `date_created`) VALUES
-(9, 'demo', 'demo', 'default.jpg', 'demo123', '$2y$10$uYNw6ScQPDMUlWQpZuFmwuXkW6ZSnXrXD5y1wtmMxPE1G8wdbLjqm', 'demo@gmail.com', NULL, 'user', '2024-08-12 12:40:06'),
-(10, 'crez', 'mustre', 'default.jpg', 'crez', '$2y$10$nKj6EyzaG/a7Vsl09IXOmuxt/nfJdf21c4e7pTgvSPhhFRliNmWTm', 'crez@gmail.com', NULL, 'admin', '2024-08-12 12:40:06'),
-(11, NULL, NULL, 'default.jpg', 'admin', '$2y$10$caZecj.nFNj0ZBuDLBxtUeL2Zqc2U/7Sp/.NefXxJalI9JMMa3s5y', 'admin@gmail.com', NULL, 'admin', '2024-08-12 12:40:06');
+INSERT INTO `users` (`id`, `profile_picture`, `name`, `username`, `password`, `email`, `phone_number`, `role`, `date_created`) VALUES
+(9, 'default.png', '', 'demo123', '$2y$10$uYNw6ScQPDMUlWQpZuFmwuXkW6ZSnXrXD5y1wtmMxPE1G8wdbLjqm', 'demo@gmail.com', NULL, 'user', '2024-08-12 12:40:06'),
+(10, 'default.png', '', 'crez', '$2y$10$nKj6EyzaG/a7Vsl09IXOmuxt/nfJdf21c4e7pTgvSPhhFRliNmWTm', 'crez@gmail.com', NULL, 'admin', '2024-08-12 12:40:06'),
+(11, 'default.png', '', 'admin', '$2y$10$caZecj.nFNj0ZBuDLBxtUeL2Zqc2U/7Sp/.NefXxJalI9JMMa3s5y', 'admin@gmail.com', NULL, 'admin', '2024-08-12 12:40:06');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `booking_table`
+-- Indexes for table `booking`
 --
-ALTER TABLE `booking_table`
-  ADD PRIMARY KEY (`book_id`),
-  ADD UNIQUE KEY `tourist_id` (`tourist_id`,`spot_id`);
+ALTER TABLE `booking`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `User Book` (`user_id`),
+  ADD KEY `Tours Book` (`tours_id`);
 
 --
 -- Indexes for table `cost`
@@ -163,17 +194,24 @@ ALTER TABLE `cost`
   ADD UNIQUE KEY `tourist_id` (`tourist_id`);
 
 --
--- Indexes for table `feedback_table`
+-- Indexes for table `inquiry`
 --
-ALTER TABLE `feedback_table`
-  ADD PRIMARY KEY (`feedback_id`),
-  ADD UNIQUE KEY `tourist_id` (`tourist_id`,`spot_id`);
+ALTER TABLE `inquiry`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `User Inquiry` (`user_id`);
 
 --
 -- Indexes for table `recommendation`
 --
 ALTER TABLE `recommendation`
   ADD PRIMARY KEY (`recom_id`);
+
+--
+-- Indexes for table `review_rating`
+--
+ALTER TABLE `review_rating`
+  ADD KEY `Tours Review` (`tour_id`),
+  ADD KEY `User Review` (`user_id`);
 
 --
 -- Indexes for table `tours`
@@ -187,7 +225,7 @@ ALTER TABLE `tours`
 --
 ALTER TABLE `tours_image`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `tours_id` (`tours_id`);
+  ADD KEY `Tours Image` (`tours_id`);
 
 --
 -- Indexes for table `users`
@@ -200,10 +238,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `booking_table`
+-- AUTO_INCREMENT for table `booking`
 --
-ALTER TABLE `booking_table`
-  MODIFY `book_id` int(50) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `booking`
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `cost`
@@ -212,10 +250,10 @@ ALTER TABLE `cost`
   MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `feedback_table`
+-- AUTO_INCREMENT for table `inquiry`
 --
-ALTER TABLE `feedback_table`
-  MODIFY `feedback_id` int(50) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `inquiry`
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `recommendation`
@@ -240,6 +278,36 @@ ALTER TABLE `tours_image`
 --
 ALTER TABLE `users`
   MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `booking`
+--
+ALTER TABLE `booking`
+  ADD CONSTRAINT `Tours Book` FOREIGN KEY (`tours_id`) REFERENCES `tours` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `User Book` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inquiry`
+--
+ALTER TABLE `inquiry`
+  ADD CONSTRAINT `User Inquiry` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `review_rating`
+--
+ALTER TABLE `review_rating`
+  ADD CONSTRAINT `Tours Review` FOREIGN KEY (`tour_id`) REFERENCES `tours` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `User Review` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tours_image`
+--
+ALTER TABLE `tours_image`
+  ADD CONSTRAINT `Tours Image` FOREIGN KEY (`tours_id`) REFERENCES `tours` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
