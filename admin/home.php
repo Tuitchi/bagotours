@@ -1,5 +1,5 @@
 <?php
-include '../include/db_conn.php';
+require_once '../include/db_conn.php';
 session_start();
 
 session_regenerate_id();
@@ -100,18 +100,9 @@ $touristSpotsJson = json_encode($touristSpots);
 </head>
 
 <body>
-
-	<!-- SIDEBAR -->
 	<?php include 'includes/sidebar.php'; ?>
-	<!-- SIDEBAR -->
-
-	<!-- CONTENT -->
 	<section id="content">
-		<!-- NAVBAR -->
 		<?php include 'includes/navbar.php'; ?>
-		<!-- NAVBAR -->
-
-		<!-- MAIN -->
 		<main>
 			<div class="head-title">
 				<div class="left">
@@ -130,9 +121,7 @@ $touristSpotsJson = json_encode($touristSpots);
 				</div>
 			</div>
 		</main>
-		<!-- MAIN -->
 	</section>
-	<!-- CONTENT -->
 
 	<script src="../assets/js/script.js"></script>
 	<script>
@@ -142,25 +131,16 @@ $touristSpotsJson = json_encode($touristSpots);
 			const map = new mapboxgl.Map({
 				container: 'map',
 				style: 'mapbox://styles/mapbox/streets-v12',
-				center: [122.8313, 10.5338],
-				zoom: 8,
-				maxBounds: [
-					[122.8200, 10.4400],
-					[123, 10.5800]
-				]
+				center: [122.9413, 10.4998],
+				zoom: 10.6
 			});
 
 			const touristSpots = <?php echo $touristSpotsJson; ?>;
 
 			touristSpots.forEach(spot => {
-				let iconUrl = '../assets/icons/default-icon.png';
-				if (spot.type === 'resort') iconUrl = '../assets/icons/resort.png';
-				else if (spot.type === 'beach') iconUrl = '../assets/icons/beach.png';
-				else if (spot.type === 'historical') iconUrl = '../assets/icons/historical.png';
-
 				const el = document.createElement('div');
 				el.className = 'marker';
-				el.style.backgroundImage = `url(${iconUrl})`;
+				el.style.backgroundImage = `url(../assets/icons/${spot.type.split(' ')[0]}.png)`;
 
 				const marker = new mapboxgl.Marker(el)
 					.setLngLat([spot.longitude, spot.latitude])

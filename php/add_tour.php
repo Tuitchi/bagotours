@@ -10,6 +10,8 @@ try {
         $address = mysqli_real_escape_string($conn, $_POST['address']);
         $type = mysqli_real_escape_string($conn, $_POST['type']);
         $description = mysqli_real_escape_string($conn, $_POST['description']);
+        $longitude = mysqli_real_escape_string($conn, $_POST['longitude']);
+        $latitude = mysqli_real_escape_string($conn, $_POST['latitude']);
         $status = '1';
 
         if (!isset($_SESSION['user_id'])) {
@@ -35,8 +37,8 @@ try {
                 throw new Exception('Failed to upload the image.');
             }
 
-            $sql = "INSERT INTO tours (user_id, title, address, type, description, img, status) 
-                    VALUES ('$user_id', '$title', '$address', '$type', '$description', '$image_name', '$status')";
+            $sql = "INSERT INTO tours (user_id, title, address, type, description, img, status, longitude, latitude) 
+                    VALUES ('$user_id', '$title', '$address', '$type', '$description', '$image_name', '$status','$longitude', '$latitude')";
 
             if (!mysqli_query($conn, $sql)) {
                 throw new Exception('Failed to add tour: ' . mysqli_error($conn));

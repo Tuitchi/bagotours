@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2024 at 07:33 PM
+-- Generation Time: Aug 24, 2024 at 04:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -133,7 +133,9 @@ CREATE TABLE `tours` (
 --
 
 INSERT INTO `tours` (`id`, `user_id`, `img`, `title`, `address`, `latitude`, `longitude`, `type`, `description`, `status`, `date_created`) VALUES
-(1, 9, 'buenos.jpg', 'Buenos Aires Mountain Resort', 'Barangay Ilijan, Bago City, Negros Occidental Philippines', ' 10.45456', '123.04783', 'resort', 'Buenos Aires Mountain Resort is a nature-rich site that is located at the foot of Mount Kanlaon. It boasts an Olympic-size swimming pool, two kiddie pools and a standard-size pool. The resort’s cool c', '1', '2024-08-11 22:51:15');
+(1, 9, 'buenos.jpg', 'Buenos Aires Mountain Resort', 'Barangay Ilijan, Bago City, Negros Occidental Philippines', ' 10.45456', '123.04783', 'Mountain Resort', 'Buenos Aires Mountain Resort is a nature-rich site that is located at the foot of Mount Kanlaon. It boasts an Olympic-size swimming pool, two kiddie pools and a standard-size pool. The resort’s cool c', '1', '2024-08-11 22:51:15'),
+(7, 9, '1724504783_bantayanpark.jpg', 'Bantayan Park', 'Bantayan Park, Rizal Street, Bago City, Negros Occidental', '10.536883439109104', '122.83162734662949', 'Park', 'A place where you can chill, walk, run, bike, eat, and even make your tikt0k videos! The views in this park is good in any time of the day. In the morning, its a place for people to exercise or run. I', '1', '2024-08-24 21:06:23'),
+(8, 9, '1724510289_balaynitanjuan.jpg', 'Balay ni Tan Juan', 'Rizal Street Barangay Poblacion, Bago City, Negros Occidental', '10.534373503857907', '122.83485882945081', 'Historical Landmark', 'If there is any structure that mirrors the resilient spirit of the people of Bago City in Negros Occidental, then it would be Balay ni Tan Juan, the ancestral home of the Negrense revolutionary hero G', '1', '2024-08-24 22:38:09');
 
 -- --------------------------------------------------------
 
@@ -218,7 +220,7 @@ ALTER TABLE `review_rating`
 --
 ALTER TABLE `tours`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`);
+  ADD KEY `Tour Added` (`user_id`);
 
 --
 -- Indexes for table `tours_image`
@@ -265,7 +267,7 @@ ALTER TABLE `recommendation`
 -- AUTO_INCREMENT for table `tours`
 --
 ALTER TABLE `tours`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tours_image`
@@ -302,6 +304,12 @@ ALTER TABLE `inquiry`
 ALTER TABLE `review_rating`
   ADD CONSTRAINT `Tours Review` FOREIGN KEY (`tour_id`) REFERENCES `tours` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `User Review` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tours`
+--
+ALTER TABLE `tours`
+  ADD CONSTRAINT `Tour Added` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tours_image`

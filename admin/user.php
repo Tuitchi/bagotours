@@ -2,8 +2,6 @@
 include '../include/db_conn.php';
 session_start();
 
-session_regenerate_id();
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php?action=Invalid");
     exit();
@@ -11,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
-// Using prepared statements for security
 $query = "SELECT * FROM users WHERE id <> ?";
 if ($stmt = $conn->prepare($query)) {
     $stmt->bind_param("i", $user_id);
@@ -20,37 +17,53 @@ if ($stmt = $conn->prepare($query)) {
 } else {
     die('Error preparing statement');
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- My CSS -->
     <link rel="stylesheet" href="../assets/css/admin.css">
-
     <title>BaGoTours. Users</title>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- SIDEBAR -->
     <?php include 'includes/sidebar.php'; ?>
-    <!-- SIDEBAR -->
-
-    <!-- CONTENT -->
     <section id="content">
-        <!-- NAVBAR -->
         <?php include 'includes/navbar.php'; ?>
-        <!-- NAVBAR -->
-
-        <!-- MAIN -->
         <main>
             <div class="head-title">
                 <div class="left">
@@ -105,28 +118,18 @@ if ($stmt = $conn->prepare($query)) {
         </main>
     </section>
 
-    <div class="modal fade" id="userInfoModal" tabindex="-1" aria-labelledby="userInfoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userInfoModalLabel">User Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="userInfoContent">
-                    <!-- Dynamic content goes here -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
+    <div id="viewUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>User Information</h2>
+            <div id="userInfoContent"></div>
         </div>
     </div>
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
     <script src="../assets/js/script.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.btn-view').forEach(button => {
@@ -136,43 +139,49 @@ if ($stmt = $conn->prepare($query)) {
                     fetchUserInfo(userId);
                 });
             });
+
+            const modal = document.getElementById('viewUserModal');
+            const closeModalButton = modal.querySelector('.close');
+
+            function fetchUserInfo(userId) {
+                fetch(`../php/get_user_info.php?id=${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const user = data.user;
+                            const userInfoContent = document.getElementById('userInfoContent');
+                            userInfoContent.innerHTML = `
+                                <p style="text-align: center;">
+                                    <img src="../upload/Profile Pictures/${user.profile_picture}" alt="Profile Picture" width="100">
+                                </p>
+                                <p><strong>Name:</strong> ${user.name ? user.name : 'N/A'}</p>
+                                <p><strong>Username:</strong> ${user.username ? user.username : 'N/A'}</p>
+                                <p><strong>Email:</strong> ${user.email ? user.email : 'N/A'}</p>
+                                <p><strong>Phone Number:</strong> ${user.phone_number ? user.phone_number : 'N/A'}</p>
+                                <p><strong>Role:</strong> ${user.role ? user.role : 'N/A'}</p>
+                                <p><strong>Date Created:</strong> ${user.date_created ? user.date_created : 'N/A'}</p>
+                            `;
+                            modal.style.display = 'block';
+                        } else {
+                            alert('Unable to fetch user information.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        alert('There was an error fetching the user information.');
+                    });
+            }
+
+            closeModalButton.onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
         });
-
-        function fetchUserInfo(userId) {
-            fetch(`../php/get_user_info.php?id=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); // Add this line to inspect the response
-
-                    if (data.success) {
-                        const user = data.user;
-                        // Update modal content
-                        const userInfoContent = document.getElementById('userInfoContent');
-
-                        userInfoContent.innerHTML = `
-                    <p><strong>Name:</strong> ${user.name ? user.name : 'N/A'}</p>
-                    <p><strong>Username:</strong> ${user.username ? user.username : 'N/A'}</p>
-                    <p><strong>Email:</strong> ${user.email ? user.email : 'N/A'}</p>
-                    <p><strong>Phone Number:</strong> ${user.phone_number ? user.phone_number : 'N/A'}</p>
-                    <p><strong>Role:</strong> ${user.role ? user.role : 'N/A'}</p>
-                    <p><strong>Date Created:</strong> ${user.date_created ? user.date_created : 'N/A'}</p>
-                    <p><strong>Profile Picture:</strong> 
-                        <img src="../uploads/${user.profile_picture}" alt="Profile Picture" width="100">
-                    </p>
-                `;
-
-                        // Show the modal
-                        const userInfoModal = new bootstrap.Modal(document.getElementById('userInfoModal'));
-                        userInfoModal.show();
-                    } else {
-                        Swal.fire('Error!', 'Unable to fetch user information.', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                    Swal.fire('Error!', 'There was an error fetching the user information.', 'error');
-                });
-        }
     </script>
 </body>
 
