@@ -1,10 +1,9 @@
 <?php
 include '../include/db_conn.php';
 include '../func/user_func.php';
+
 session_start();
-
-session_regenerate_id();
-
+$status = isset($_GET["status"]) ? $_GET["status"] : '';
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php?action=Invalid");
     exit();
@@ -24,6 +23,7 @@ $tour = getAllTours($conn);
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../assets/css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
@@ -213,10 +213,10 @@ $tour = getAllTours($conn);
                     <?php
                     if (!empty($tour)) {
                         foreach ($tour as $row) {
-                            if ($row['status'] == 1){
-                                $status = 'Active';
-                            }elseif ($row['status'] == 2){
-                                $status = 'Inactive';
+                            if ($row['status'] == 1) {
+                                $stats = 'Active';
+                            } elseif ($row['status'] == 2) {
+                                $stats = 'Inactive';
                             }
                             $images = explode(',', $row['img']);
                             echo '<div class="data">';
@@ -230,7 +230,7 @@ $tour = getAllTours($conn);
                             echo '<p>Address: ' . htmlspecialchars($row['address'], ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<p>Type: ' . htmlspecialchars($row['type'], ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<p>Description: ' . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . '</p>';
-                            echo '<p>Status: ' . htmlspecialchars($status, ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<p>Status: ' . htmlspecialchars($stats, ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<div class="action-buttons">';
                             echo '<a href="view_tour?id=' . urlencode($row['id']) . '" class="btn-edit">View</a>';
                             echo '</div>';
@@ -309,7 +309,6 @@ $tour = getAllTours($conn);
             var closeBtn = document.querySelector(".close");
             var closeMapBtn = document.querySelector(".close-map");
 
-            // Initialize Mapbox
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
             var map = new mapboxgl.Map({
                 container: 'map',
@@ -358,48 +357,28 @@ $tour = getAllTours($conn);
                 }
             }
         });
-        document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const tourId = this.getAttribute('data-tour-id');
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'This action cannot be undone.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch('../php/delete_tour.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded'
-                                },
-                                body: new URLSearchParams({
-                                    'tour_id': tourId
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data);
-                                if (data.success) {
-                                    Swal.fire('Deleted!', data.message, 'success').then(() => {
-                                        location.reload();
-                                    });
-                                } else {
-                                    Swal.fire('Error!', data.message, 'error');
-                                }
-                            })
-                            .catch(error => {
-                                Swal.fire('Error!', 'An error occurred while deleting the tour.', 'error');
-                            });
-                    }
-                });
-            });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
         });
+        <?php if ($status === 'success'): ?>
+            Toast.fire({
+                icon: "success",
+                title: "Tour successfully added!"
+            });
+        <?php elseif ($status === 'error'): ?>
+            Toast.fire({
+                icon: "error",
+                title: "Error occured while adding tour."
+            });
+        <?php endif; ?>
     </script>
 </body>
 

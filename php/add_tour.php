@@ -1,9 +1,6 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
-$response = [];
-
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $title = mysqli_real_escape_string($conn, $_POST['title']);
@@ -29,7 +26,8 @@ try {
 
             if (!is_dir($upload_dir)) {
                 if (!mkdir($upload_dir, 0777, true)) {
-                    throw new Exception('Failed to create upload directory.');
+                    header("Location: ../admin/tours?status=error");
+                    exit();
                 }
             }
 
@@ -43,9 +41,8 @@ try {
             if (!mysqli_query($conn, $sql)) {
                 throw new Exception('Failed to add tour: ' . mysqli_error($conn));
             }
-
-            $response['success'] = true;
-            $response['message'] = 'Tour added successfully!';
+            header("Location: ../admin/tours?status=success");
+            exit();
         } else {
             throw new Exception('Image upload failed or no image selected.');
         }
@@ -53,9 +50,6 @@ try {
         throw new Exception('Invalid request method.');
     }
 } catch (Exception $e) {
-    $response['success'] = false;
-    $response['message'] = $e->getMessage();
+    header("Location: ../admin/tours?status=error");
+    exit();
 }
-
-echo json_encode($response);
-?>
