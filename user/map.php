@@ -74,7 +74,6 @@ $touristSpotsJson = json_encode($touristSpots);
   <div id='map'></div>
 
   <script>
-    console.log(<?php echo $touristSpotsJson; ?>);
     document.addEventListener('DOMContentLoaded', () => {
       mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
 
