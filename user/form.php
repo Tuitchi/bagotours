@@ -1,6 +1,6 @@
 <?php 
 include '../include/db_conn.php';
-session_start();
+include '../include/session_start.php';
 
 session_regenerate_id();
 

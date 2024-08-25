@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../include/session_start.php';
 include("../func/user_func.php");
 
 $id = isset($_GET["tours"]) ? intval($_GET["tours"]) : 0;

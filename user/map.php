@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../include/session_start.php';
 include("../include/db_conn.php");
 
 $query = "SELECT id, title, latitude, longitude, type, img, address FROM tours";
@@ -21,7 +21,6 @@ if ($result->num_rows > 0) {
   }
 }
 $touristSpotsJson = json_encode($touristSpots);
- 
 ?>
 
 <!DOCTYPE html>
@@ -79,55 +78,66 @@ $touristSpotsJson = json_encode($touristSpots);
     document.addEventListener('DOMContentLoaded', () => {
       mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
 
-      const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [122.8313, 10.5338],
-        zoom: 11
+      navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
       });
 
-      const touristSpots = <?php echo $touristSpotsJson; ?>;
+      function successLocation(position) {
+        setupMap([position.coords.longitude, position.coords.latitude]);
+      }
 
-      touristSpots.forEach(spot => {
-        let iconUrl = '../assets/icons/falls.png';
-        if (spot.type === 'resort') iconUrl = '../assets/icons/resort.png';
-        else if (spot.type === 'beach') iconUrl = '../assets/icons/beach.png';
-        else if (spot.type === 'historical') iconUrl = '../assets/icons/historical.png';
+      function errorLocation() {
+        setupMap([122.8313, 10.5338]);
+      }
 
-        const el = document.createElement('div');
-        el.className = 'marker';
-        el.style.backgroundImage = `url(${iconUrl})`;
-
-        const marker = new mapboxgl.Marker(el)
-          .setLngLat([spot.longitude, spot.latitude])
-          .addTo(map);
-
-        const popupContent = `
-          <div class="popup-content">
-            <img src="../upload/Tour Images/${spot.image}" alt="${spot.title}">
-            <h3>${spot.title}</h3>
-            <p>${spot.address}</p>
-          </div>
-        `;
-
-        const popup = new mapboxgl.Popup({
-          closeOnClick: false,
-          offset: 25
-        }).setHTML(popupContent);
-
-        marker.getElement().addEventListener('mouseenter', () => {
-          popup.addTo(map);
-          popup.setLngLat([spot.longitude, spot.latitude]);
+      function setupMap(center) {
+        const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v12',
+          center: center,
+          zoom: 11
         });
 
-        marker.getElement().addEventListener('mouseleave', () => {
-          popup.remove();
-        });
+        const touristSpots = <?php echo $touristSpotsJson; ?>;
 
-        marker.getElement().addEventListener('click', () => {
-          window.location.href = `tour?tours=${spot.id}`;
+        touristSpots.forEach(spot => {
+          const el = document.createElement('div');
+          el.className = 'marker';
+          el.style.backgroundImage = `url(../assets/icons/${spot.type.split(' ')[0]}.png)`;
+
+          const marker = new mapboxgl.Marker(el)
+            .setLngLat([spot.longitude, spot.latitude])
+            .addTo(map);
+
+          const popupContent = `
+            <div class="popup-content">
+              <img src="../upload/Tour Images/${spot.image}" alt="${spot.title}">
+              <h3>${spot.title}</h3>
+              <p>${spot.address}</p>
+            </div>
+          `;
+
+          const popup = new mapboxgl.Popup({
+            closeOnClick: false,
+            offset: 25
+          }).setHTML(popupContent);
+
+          marker.getElement().addEventListener('mouseenter', () => {
+            popup.addTo(map);
+            popup.setLngLat([spot.longitude, spot.latitude]);
+          });
+
+          marker.getElement().addEventListener('mouseleave', () => {
+            popup.remove();
+          });
+
+          marker.getElement().addEventListener('click', () => {
+            window.location.href = `tour?tours=${spot.id}`;
+          });
         });
-      });
+      }
     });
 
     function myFunction() {
