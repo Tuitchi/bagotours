@@ -1,5 +1,5 @@
 <div class="topnav" id="myTopnav">
-  <div class="nav__logo"><a href="#">BagoTours.</a></div>
+  <div class="nav__logo"><a href="../user/home">BagoTours.</a></div>
   <a href="home">Home</a>
   <a href="map">destination</a>
   <input type="text" id="search" class="search-input" placeholder="Search...">

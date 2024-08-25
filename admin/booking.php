@@ -68,27 +68,34 @@ if (!$result) {
 							</tr>
 						</thead>
 						<tbody>
-							<?php while ($row = mysqli_fetch_assoc($result)): ?>
+							<?php if (mysqli_num_rows($result) > 0): ?>
+								<?php while ($row = mysqli_fetch_assoc($result)): ?>
+									<tr>
+										<td><?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></td>
+										<td><?php echo htmlspecialchars($row['tour_title'], ENT_QUOTES, 'UTF-8'); ?></td>
+										<td><?php echo htmlspecialchars($row['date_sched'], ENT_QUOTES, 'UTF-8'); ?></td>
+										<td><?php echo htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?></td>
+										<td><?php echo htmlspecialchars($row['phone_number'], ENT_QUOTES, 'UTF-8'); ?></td>
+										<td>
+											<select class="status-select" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">
+												<option value="0" <?php if ($row['status'] == '0') echo 'selected'; ?>>Pending</option>
+												<option value="1" <?php if ($row['status'] == '1') echo 'selected'; ?>>Confirmed</option>
+												<option value="2" <?php if ($row['status'] == '2') echo 'selected'; ?>>Cancelled</option>
+											</select>
+										</td>
+										<td>
+											<button class="btn-delete" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">Delete</button>
+											<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">View</button>
+										</td>
+									</tr>
+								<?php endwhile; ?>
+							<?php else: ?>
 								<tr>
-									<td><?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></td>
-									<td><?php echo htmlspecialchars($row['tour_title'], ENT_QUOTES, 'UTF-8'); ?></td>
-									<td><?php echo htmlspecialchars($row['date_sched'], ENT_QUOTES, 'UTF-8'); ?></td>
-									<td><?php echo htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?></td>
-									<td><?php echo htmlspecialchars($row['phone_number'], ENT_QUOTES, 'UTF-8'); ?></td>
-									<td>
-										<select class="status-select" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">
-											<option value="0" <?php if ($row['status'] == '0') echo 'selected'; ?>>Pending</option>
-											<option value="1" <?php if ($row['status'] == '1') echo 'selected'; ?>>Confirmed</option>
-											<option value="2" <?php if ($row['status'] == '2') echo 'selected'; ?>>Cancelled</option>
-										</select>
-									</td>
-									<td>
-										<button class="btn-delete" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">Delete</button>
-										<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">View</button>
-									</td>
+									<td colspan="7" style="text-align: center;">No bookings found.</td>
 								</tr>
-							<?php endwhile; ?>
+							<?php endif; ?>
 						</tbody>
+
 					</table>
 				</div>
 			</div>

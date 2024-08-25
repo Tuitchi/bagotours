@@ -30,21 +30,9 @@ include 'includes/dashboard_query.php';
 
 <body>
 
-
-	<!-- SIDEBAR -->
 	<?php include 'includes/sidebar.php'; ?>
-	<!-- SIDEBAR -->
-
-
-
-	<!-- CONTENT -->
 	<section id="content">
-		<!-- NAVBAR -->
-
 		<?php include 'includes/navbar.php'; ?>
-		<!-- NAVBAR -->
-
-		<!-- MAIN -->
 		<main>
 			<div class="head-title">
 				<div class="left">
@@ -116,9 +104,7 @@ include 'includes/dashboard_query.php';
 				</div>
 			</div>
 		</main>
-		<!-- MAIN -->
 	</section>
-	<!-- CONTENT -->
 
 
 	<script src="../assets/js/script.js"></script>
@@ -130,15 +116,8 @@ include 'includes/dashboard_query.php';
 
 		function drawChart() {
 			fetch('assets/chart.php')
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok: ' + response.statusText);
-					}
-					return response.json();
-				})
+				.then(response => response.json())
 				.then(tourData => {
-					console.log('Tour Data:', tourData);
-
 					if (Array.isArray(tourData) && tourData.length > 0) {
 						const data = google.visualization.arrayToDataTable([
 							['Tour Type', 'Count'],
@@ -154,9 +133,13 @@ include 'includes/dashboard_query.php';
 						chart.draw(data, options);
 					} else {
 						console.error('No data or invalid data format:', tourData);
+						document.getElementById('myChart').innerHTML = '<p>No data available to display.</p>';
 					}
 				})
-				.catch(error => console.error('Error fetching data:', error));
+				.catch(error => {
+					console.error('Error fetching data:', error);
+					document.getElementById('myChart').innerHTML = '<p>Failed to load chart data.</p>';
+				});
 		}
 	</script>
 </body>

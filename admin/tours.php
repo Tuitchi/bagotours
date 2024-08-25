@@ -100,6 +100,92 @@ $tour = getAllTours($conn);
             max-width: 80%;
             max-height: 100%;
         }
+
+        .data {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 15px;
+            align-items: flex-start;
+            justify-content: flex-start;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .data .img {
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 15%;
+        }
+
+        .data .img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .data .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .data .content h4 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+        }
+
+        .data .content p {
+            margin: 0 0 5px;
+        }
+
+        .data .content .btn-edit,
+        .data .content .btn-delete {
+            margin-top: 10px;
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .data .content .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .content {
+            position: relative;
+            flex-grow: 1;
+            padding-right: 60px;
+        }
+
+        .action-buttons {
+            font-size: 12px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
     </style>
 </head>
 
@@ -127,19 +213,28 @@ $tour = getAllTours($conn);
                     <?php
                     if (!empty($tour)) {
                         foreach ($tour as $row) {
+                            if ($row['status'] == 1){
+                                $status = 'Active';
+                            }elseif ($row['status'] == 2){
+                                $status = 'Inactive';
+                            }
                             $images = explode(',', $row['img']);
                             echo '<div class="data">';
                             foreach ($images as $image) {
+                                echo '<div class="img">';
                                 echo '<img src="../upload/Tour Images/' . $image . '" alt="Tour Image">';
+                                echo '</div>';
                             }
                             echo '<div class="content">';
                             echo '<h4>' . htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8') . '</h4>';
                             echo '<p>Address: ' . htmlspecialchars($row['address'], ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<p>Type: ' . htmlspecialchars($row['type'], ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<p>Description: ' . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . '</p>';
-                            echo '<p>Status: ' . htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<p>Status: ' . htmlspecialchars($status, ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<div class="action-buttons">';
                             echo '<a href="edit-tour?id=' . urlencode($row['id']) . '" class="btn-edit">Edit</a>';
                             echo '<a href="#" class="btn-delete" data-tour-id="' . urlencode($row['id']) . '">Delete</a>';
+                            echo '</div>';
                             echo '</div>';
                             echo '</div>';
                         }
@@ -147,6 +242,7 @@ $tour = getAllTours($conn);
                         echo '<p>No tours found.</p>';
                     }
                     ?>
+
                 </div>
             </div>
         </main>
@@ -167,9 +263,9 @@ $tour = getAllTours($conn);
                 <div class="form-group">
                     <label for="tour-type">Type:</label>
                     <select id="tour-type" name="type" required>
-                        <option value="Resort">Resort</option>
-                        <option value="Beach">Beach</option>
-                        <option value="Historical">Historical</option>
+                        <option value="Mountain Resort">Mountain Resort</option>
+                        <option value="Beach Resort">Beach Resort</option>
+                        <option value="Historical Landmark">Historical Landmark</option>
                         <option value="Park">Park</option>
                     </select>
                 </div>

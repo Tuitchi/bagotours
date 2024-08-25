@@ -1,5 +1,5 @@
 <?php
-include '../include/db_conn.php';
+require_once '../../include/db_conn.php';
 header('Content-Type: application/json');
 
 $query = "SELECT `type`, COUNT(*) as count FROM `tours` GROUP BY `type`";
