@@ -5,7 +5,7 @@ body {
 
 .topnav {
   overflow: hidden;
-  background-color: #333;
+  background-color: #333333b0;
   height: 50px;
 }
 
@@ -211,6 +211,21 @@ white-space: normal;
 text-overflow: ellipsis;
 height: 80px;
 overflow: hidden;
+}
+.btn button{
+  background-color: #2980b9;
+  color: white;
+
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+.btn button:hover{
+  background-color: #3498db;
+  transition: background-color 0.3s;
+  color: #1f1f1f;
 }
 
 .topdestination{

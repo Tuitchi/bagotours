@@ -71,7 +71,7 @@ $tours = getAllTours($conn);
     </div>
     <div class="topdestination">
       <h1>Popular</h1>
-      <div>
+      <div class="btn">
         <button>Weekly</button>
         <button>Monthly</button>
       </div>
