@@ -21,6 +21,7 @@ if (!$tour) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/tours.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
@@ -64,7 +65,7 @@ if (!$tour) {
     .close:focus {
       color: black;
       text-decoration: none;
-      cursor: pointer;
+      curs200px;inter;
     }
   </style>
 </head>
@@ -72,19 +73,58 @@ if (!$tour) {
 <body>
 
   <?php include('inc/topnav.php'); ?>
+  <div class="title">
+    <h2>BaGoTours</h2>
+    <p> => </p>
+    <h2><?php echo htmlspecialchars($tour['title']);?></h2>
+    <button class="split" id="myBtn">Book Now!</button>
+  </div>
+  <head>
+<div class="slideshow-container">
 
+<div class="mySlides fade">
+  <div class="numbertext">1 / 3</div>
+  <img src="../assets/gallery-1.jpg" style="width:100%">
+  <div class="text">Buenos Aires Mountain Resort</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">2 / 3</div>
+  <img src="../assets/gallery-2.jpg" style="width:100%">
+  <div class="text">Buenos Aires Mountain Resort</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">3 / 3</div>
+  <img src="../assets/gallery-3.jpg" style="width:100%">
+  <div class="text">Buenos Aires Mountain Resort</div>
+</div>
+
+<a class="prev" onclick="plusSlides(-1)">❮</a>
+<a class="next" onclick="plusSlides(1)">❯</a>
+
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span> 
+  <span class="dot" onclick="currentSlide(2)"></span> 
+  <span class="dot" onclick="currentSlide(3)"></span> 
+</div>
+  </head>
+  
   <main>
-    <div id='map' style='width: 400px; height: 300px;'></div>
-    <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
-    <h2><?php echo htmlspecialchars($tour['title']); ?></h2>
-    <p>⭐<?php echo number_format($average_rating, 1)?></p>
-    <p><?php echo htmlspecialchars($tour['description']); ?></p>
-    <div class="tour-images">
-      <?php foreach ($images as $image): ?>
-        <img src="../upload/Tour Images/<?php echo htmlspecialchars($image['img']); ?>" alt="Tour Image" style="width: 100px; height: 100px;">
-      <?php endforeach; ?>
-    </div>
-    <button id="myBtn">Book now</button>
+      <div id='map' style='width: 400px; height: 300px;'></div>
+      <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
+      <h2><?php echo htmlspecialchars($tour['title']); ?></h2>
+      <p>⭐<?php echo number_format($average_rating, 1)?></p>
+      <p><?php echo htmlspecialchars($tour['description']); ?></p>
+      <div class="tour-images">
+        <?php foreach ($images as $image): ?>
+          <img src="../upload/Tour Images/<?php echo htmlspecialchars($image['img']); ?>" alt="Tour Image" style="width: 100px; height: 100px;">
+        <?php endforeach; ?>
+      </div>
+      <button id="myBtn">Book now</button>
   </main>
 
   <div id="myModal" class="modal">
@@ -176,7 +216,37 @@ if (!$tour) {
         modal.style.display = "none";
       }
     }
+
+
   </script>
+  <script>
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+}
+</script>
 
 </body>
 
