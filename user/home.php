@@ -11,33 +11,7 @@ $tours = getAllTours($conn);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .cardmain a {
-      display: block;
-      color: black;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      border: none;
-      outline: none;
-      font-size: 17px;
-      transition: 0.3s;
-    }
-
-    .rating {
-      position: absolute;
-      right: 50px;
-    }
-
-    .card p {
-      text-align: justify;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  </style>
+ 
 </head>
 
 <body>
