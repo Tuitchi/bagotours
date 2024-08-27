@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,131 +9,157 @@
     <script src="https://unpkg.com/scrollreveal"></script>
     <title>BagoTours | kapitanbato.</title>
     <style>
-        /* Existing styles... */
-        .modal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
-        }
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+}
 
-        .modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-        .modal-content {
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            width: 400px;
-            position: relative;
-            transform: scale(0.8);
-            transition: transform 0.3s ease-in-out;
-            backdrop-filter: blur(10px); /* Glass blur effect */
-            -webkit-backdrop-filter: blur(10px); /* For Safari */
-            color: white; /* White text color to ensure readability */
-        }
+.modal-content {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out;
+    color: white;
+    padding: 20px;
+}
 
-        .modal-content.show {
-            transform: scale(1);
-        }
+.modal-content.show {
+    transform: scale(1);
+}
 
-        .modal-content .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 18px;
-            color: #fff;
-        }
+.modal-content .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: #fff;
+}
 
-        .modal-content .close-btn:hover {
-            background: rgba(255, 255, 255, 0.8);
-        }
+.modal-content .close-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
 
-        .form-container {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+}
 
-        .form-container input {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .form-container #forgot-password{
-          margin-top: 10px;
-          text-decoration: underline;
-        }
-        .form-container a{
-          text-decoration: none;
-          color: skyblue;
-        }
-        .form-container a:hover{
-          color: whitesmoke;
-          text-decoration: underline;
-        }
-        .form-container p{
-          margin-top: 10px;
-          font-size: 16px;
-          color: white;
-          text-align: center;
-        }
+.form-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+}
 
-        .form-container button {
-            padding: 10px;
-            background-color: #007BFF;
-            margin-top: 3px;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.form-container label {
+    align-self: flex-start;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: white;
+}
 
-        .form-container button:hover {
-            background-color: #0056b3;
-        }
+.form-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
+    width: 100%;
+}
 
-        .hidden {
-            display: none;
-        }
+.form-container #forgot-password {
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: underline;
+    color: skyblue;
+}
 
-        .form-container.slide-in {
-            animation: slideIn 0.3s ease-out;
-        }
+.form-container p {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+}
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(50%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+.form-container a {
+    text-decoration: none;
+    color: skyblue;
+}
+
+.form-container a:hover {
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
+.form-container button {
+    padding: 10px;
+    background-color: #007BFF;
+    margin-top: 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-container.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
     </style>
 </head>
+
 <body>
     <header id="home">
         <nav>
@@ -278,69 +305,73 @@
     </section>
 
     <section class="footer">
-      <div class="section__container footer__container">
-        <h4>BagoTours.</h4>
-        <div class="footer__socials">
-          <span>
-            <a href="#"><i class="ri-facebook-fill"></i></a>
-          </span>
-          <span>
-            <a href="#"><i class="ri-instagram-fill"></i></a>
-          </span>
-          <span>
-            <a href="#"><i class="ri-twitter-fill"></i></a>
-          </span>
-          <span>
-            <a href="#"><i class="ri-linkedin-fill"></i></a>
-          </span>
-        </div>
-        <p>
-          Cheap Romantic Vacations. Many people feel that there is a limited
-          amount of abundance, wealth, or chance to succeed in life.
-        </p>
-        <ul class="footer__nav">
-          <li class="footer__link"><a href="#home">Home</a></li>
-          <li class="footer__link"><a href="#about">About</a></li>
-          <li class="footer__link"><a href="#discover">Discover</a></li>
-          <!-- <li class="footer__link"><a href="#blog">Blog</a></li>
+        <div class="section__container footer__container">
+            <h4>BagoTours.</h4>
+            <div class="footer__socials">
+                <span>
+                    <a href="#"><i class="ri-facebook-fill"></i></a>
+                </span>
+                <span>
+                    <a href="#"><i class="ri-instagram-fill"></i></a>
+                </span>
+                <span>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                </span>
+                <span>
+                    <a href="#"><i class="ri-linkedin-fill"></i></a>
+                </span>
+            </div>
+            <p>
+                Cheap Romantic Vacations. Many people feel that there is a limited
+                amount of abundance, wealth, or chance to succeed in life.
+            </p>
+            <ul class="footer__nav">
+                <li class="footer__link"><a href="#home">Home</a></li>
+                <li class="footer__link"><a href="#about">About</a></li>
+                <li class="footer__link"><a href="#discover">Discover</a></li>
+                <!-- <li class="footer__link"><a href="#blog">Blog</a></li>
           <li class="footer__link"><a href="#journals">Journals</a></li>
           <li class="footer__link"><a href="#gallery">Gallery</a></li>
           <li class="footer__link"><a href="#contact">Contact</a></li> -->
-        </ul>
-      </div>
-      <div class="footer__bar">
-        Copyright © 2024 kapitanbato. All rights reserved.
-      </div>  
+            </ul>
+        </div>
+        <div class="footer__bar">
+            Copyright © 2024 kapitanbato. All rights reserved.
+        </div>
     </section>
 
     <!-- Modal Structure -->
     <div id="modal" class="modal">
-        <form class="modal-content">
+        <div class="modal-content">
             <button type="button" class="close-btn" id="close-modal">&times;</button>
             <div id="sign-in-form" class="form-container">
-                <h2>Sign In</h2>
-                <label for="Uname">Username or E-mail</label>
-                <input name="Uname" type="email" placeholder="Email" required />
-                <label for="pwd">Password</label>
-                <input name="pwd" type="password" placeholder="Password" required />
-                <button type="submit" class="btn">Sign in</button>
+                <form action="php/login.php" method="post">
+                    <h2>Sign In</h2>
+                    <label for="Uname">Username or E-mail</label>
+                    <input name="username" type="text" placeholder="Email" required />
+                    <label for="pwd">Password</label>
+                    <input name="password" type="password" placeholder="Password" required />
+                    <button type="submit" class="btn">Sign in</button>
+                </form>
                 <a href="#" id="forgot-password">Forgot Password?</a>
                 <p>Need an Account? <a href="#" id="to-sign-up">Sign Up</a></p>
             </div>
             <div id="sign-up-form" class="form-container hidden">
                 <h2>Sign Up</h2>
-                <label for="Uname">Username</label>
-                <input name="Uname" type="text" placeholder="Username" required />
-                <label for="email">Email</label>
-                <input name="email" type="email" placeholder="Email" required />
-                <label for="pwd">Password</label>
-                <input name="pwd" type="password" placeholder="Password" required />
-                <label for="con-pwd">Confirm Password</label>
-                <input name="con-pwd  " type="password" placeholder="Confirm-Password" required />
-                <button type="button">Sign Up</button>
+                <form action="php/register.php" method="POST">
+                    <label for="Uname">Username</label>
+                    <input name="username" type="text" placeholder="Username" required />
+                    <label for="email">Email</label>
+                    <input name="email" type="email" placeholder="Email" required />
+                    <label for="pwd">Password</label>
+                    <input name="password" type="password" placeholder="Password" required />
+                    <label for="con-pwd">Confirm Password</label>
+                    <input name="confirm-password" type="password" placeholder="Confirm-Password" required />
+                    <button type="submit">Sign Up</button>
+                </form>
                 <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
             </div>
-        </form>
+        </div>
     </div>
 
     <script>
@@ -389,4 +420,5 @@
         });
     </script>
 </body>
+
 </html>
