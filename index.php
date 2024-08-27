@@ -277,21 +277,40 @@
         </div>
     </section>
 
-    <section class="contact" id="contact">
-        <div class="section__container contact__container">
-            <h2 class="section__header">Contact us</h2>
-            <p class="section__subheader">
-                We're here to help you with any inquiries or concerns.
-            </p>
-            <form class="contact__form">
-                <input type="text" placeholder="Name" required />
-                <input type="email" placeholder="Email" required />
-                <textarea placeholder="Message" required></textarea>
-                <button type="submit" class="btn">
-                    Send Message <i class="ri-arrow-right-line"></i>
-                </button>
-            </form>
+    <section class="footer">
+      <div class="section__container footer__container">
+        <h4>BagoTours.</h4>
+        <div class="footer__socials">
+          <span>
+            <a href="#"><i class="ri-facebook-fill"></i></a>
+          </span>
+          <span>
+            <a href="#"><i class="ri-instagram-fill"></i></a>
+          </span>
+          <span>
+            <a href="#"><i class="ri-twitter-fill"></i></a>
+          </span>
+          <span>
+            <a href="#"><i class="ri-linkedin-fill"></i></a>
+          </span>
         </div>
+        <p>
+          Cheap Romantic Vacations. Many people feel that there is a limited
+          amount of abundance, wealth, or chance to succeed in life.
+        </p>
+        <ul class="footer__nav">
+          <li class="footer__link"><a href="#home">Home</a></li>
+          <li class="footer__link"><a href="#about">About</a></li>
+          <li class="footer__link"><a href="#discover">Discover</a></li>
+          <!-- <li class="footer__link"><a href="#blog">Blog</a></li>
+          <li class="footer__link"><a href="#journals">Journals</a></li>
+          <li class="footer__link"><a href="#gallery">Gallery</a></li>
+          <li class="footer__link"><a href="#contact">Contact</a></li> -->
+        </ul>
+      </div>
+      <div class="footer__bar">
+        Copyright © 2024 kapitanbato. All rights reserved.
+      </div>  
     </section>
 
     <!-- Modal Structure -->
