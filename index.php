@@ -317,7 +317,7 @@
                 <label for="pwd">Password</label>
                 <input name="pwd" type="password" placeholder="Password" required />
                 <label for="con-pwd">Confirm Password</label>
-                <input name="con-pwd" type="password" placeholder="Confirm-Password" required />
+                <input name="con-pwd  " type="password" placeholder="Confirm-Password" required />
                 <button type="button">Sign Up</button>
                 <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
             </div>
