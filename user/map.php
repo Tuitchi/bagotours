@@ -1,5 +1,5 @@
 <?php
-include '../include/session_start.php';
+session_start();
 include("../include/db_conn.php");
 
 $query = "SELECT id, title, latitude, longitude, type, img, address FROM tours";

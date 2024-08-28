@@ -1,5 +1,5 @@
 <?php
-include '../include/session_start.php';
+session_start();
 include("../func/user_func.php");
 
 $tours = getAllTours($conn);

@@ -1,6 +1,6 @@
 <?php 
 include '../include/db_conn.php';
-include '../include/session_start.php';
+session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login?action=Invalid");

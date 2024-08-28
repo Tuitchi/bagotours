@@ -1,6 +1,6 @@
 <?php
-include '../include/session_start.php';
 include("../func/user_func.php");
+session_start();
 
 $id = isset($_GET["tours"]) ? intval($_GET["tours"]) : 0;
 $status = isset($_GET["status"]) ? $_GET["status"] : '';
@@ -53,6 +53,11 @@ if (!$tour) {
       border: 1px solid #888;
       width: 80%;
     }
+    main img {
+      width: 50%;
+      max-width: 1000px;
+      scale: .5;
+    }
 
     .close {
       color: #aaa;
@@ -65,7 +70,6 @@ if (!$tour) {
     .close:focus {
       color: black;
       text-decoration: none;
-      curs200px;inter;
     }
   </style>
 </head>
