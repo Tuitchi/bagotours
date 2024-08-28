@@ -193,9 +193,7 @@
                     <div class="discover__card__content">
                         <h4>Tan Juan Statue</h4>
                         <p>
-                            Discover the untamed beauty of Norway, a land where rugged
-                            mountains, and enchanting northern lights paint a surreal
-                            backdrop.
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -209,9 +207,7 @@
                     <div class="discover__card__content">
                         <h4>Kipot Twin Falls</h4>
                         <p>
-                            From urban rock climbing to twilight cycling through royal
-                            parks, London beckons adventure enthusiasts to embrace
-                            opportunities.
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -225,9 +221,7 @@
                     <div class="discover__card__content">
                         <h4>Rafael Salas Drive</h4>
                         <p>
-                            From scaling the iconic peaks of Mount Fuji to immersing in the
-                            serenity, Japan offers adventurers a captivating cultural
-                            treasures.
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -271,6 +265,13 @@
                     <div class="gallery__content">
                         <h4>Grand Canyon</h4>
                         <p>USA</p>
+                    </div>
+                </div>
+                <div class="gallery__card">
+                    <img src="assets/gallery-5.jpg" alt="gallery" />
+                    <div class="gallery__content">
+                        <h4>taj mahal</h4>
+                        <p>India</p>
                     </div>
                 </div>
             </div>
