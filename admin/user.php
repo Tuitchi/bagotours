@@ -21,11 +21,13 @@ if ($stmt = $conn->prepare($query)) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <title>BaGoTours. Users</title>
     <style>
         .modal {
@@ -75,11 +77,14 @@ if ($stmt = $conn->prepare($query)) {
                     <span class="text">Add user</span>
                 </a>
             </div>
-            <div class="table-data">
+            <div class="table-data" id="userTableContainer">
                 <div class="order">
                     <div class="head">
                         <h3>User List</h3>
-                        <i class='bx bx-search'></i>
+                        <div class="search-container">
+                            <i class='bx bx-search' id="search-icon"></i>
+                            <input type="text" id="search-input" placeholder="Search...">
+                        </div>
                         <i class='bx bx-filter'></i>
                     </div>
                     <table>
@@ -118,6 +123,7 @@ if ($stmt = $conn->prepare($query)) {
         </main>
     </section>
 
+    <!-- Modal for viewing user information -->
     <div id="viewUserModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -126,11 +132,60 @@ if ($stmt = $conn->prepare($query)) {
         </div>
     </div>
 
+    <!-- Modal for adding new user -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add User</h2>
+            <form id="addUserForm">
+                <div id="userInfoContent">
+                    <div class="form-group">
+                        <label for="userName">Name:</label>
+                        <input type="text" name="userName" id="userName" >
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email:</label>
+                        <input type="email" name="userEmail" id="userEmail" >
+                    </div>
+                    <div class="form-group">
+                        <label for="userPassword">Password:</label>
+                        <input type="password" name="userPassword" id="userPassword" >
+                    </div>
+                    <div class="form-group">
+                        <label for="userRole">Role:</label>
+                        <select name="userRole" id="userRole" >
+                            <option value="">Select Role</option>
+                            <option value="admin">Admin</option>
+                            <option value="owner">Owner</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-submit">Add User</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
     <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.btn-view').forEach(button => {
                 button.addEventListener('click', function(event) {
@@ -181,6 +236,51 @@ if ($stmt = $conn->prepare($query)) {
                     modal.style.display = 'none';
                 }
             };
+        });
+
+        $(document).ready(function() {
+            $('#addUserForm').submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '../php/admin/usercode.php',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#addUserModal').hide();
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                            $('#userTableContainer').load(location.href + ' #userTableContainer > *');
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'There was an error processing the request.'
+                        });
+                    }
+                });
+            });
+
+            $('.close').click(function() {
+                $(this).closest('.modal').hide();
+            });
+
+            $(window).click(function(event) {
+                if ($(event.target).hasClass('modal')) {
+                    $(event.target).hide();
+                }
+            });
         });
     </script>
 </body>
