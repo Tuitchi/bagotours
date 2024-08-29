@@ -6,157 +6,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/index.css" />
-    <script src="https://unpkg.com/scrollreveal"></script>
     <title>BagoTours | kapitanbato.</title>
     <style>
-.modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 1000;
-}
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000;
+        }
 
-.modal.active {
-    opacity: 1;
-    pointer-events: auto;
-}
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-.modal-content {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-    transform: scale(0.8);
-    transition: transform 0.3s ease-in-out;
-    color: white;
-    padding: 20px;
-}
+        .modal-content {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease-in-out;
+            color: white;
+            padding: 20px;
+        }
 
-.modal-content.show {
-    transform: scale(1);
-}
+        .modal-content.show {
+            transform: scale(1);
+        }
 
-.modal-content .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.6);
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 18px;
-    color: #fff;
-}
+        .modal-content .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: #fff;
+        }
 
-.modal-content .close-btn:hover {
-    background: rgba(255, 255, 255, 0.8);
-}
+        .modal-content .close-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
 
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
-}
+        .error-message {
+            height: 30px;
+            color: red;
+            font-size: 15px;
+            margin-top: -10px;
+        }
 
-.form-container h2 {
-    margin-bottom: 20px;
-    text-align: center;
-    color: white;
-}
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+        }
 
-.form-container label {
-    align-self: flex-start;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: white;
-}
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+        }
 
-.form-container input {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.8);
-    color: #333;
-    width: 100%;
-}
+        .form-container label {
+            align-self: flex-start;
+            margin-bottom: 3px;
+            font-size: 14px;
+            color: white;
+        }
 
-.form-container #forgot-password {
-    margin-top: 10px;
-    text-align: center;
-    text-decoration: underline;
-    color: skyblue;
-}
+        .form-container input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            width: 100%;
+        }
 
-.form-container p {
-    margin-top: 10px;
-    font-size: 14px;
-    text-align: center;
-    color: white;
-}
+        .form-container #forgot-password {
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: underline;
+            color: skyblue;
+        }
 
-.form-container a {
-    text-decoration: none;
-    color: skyblue;
-}
+        .form-container p {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            color: white;
+        }
 
-.form-container a:hover {
-    color: whitesmoke;
-    text-decoration: underline;
-}
+        .form-container a {
+            text-decoration: none;
+            color: skyblue;
+        }
 
-.form-container button {
-    padding: 10px;
-    background-color: #007BFF;
-    margin-top: 10px;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-}
+        .form-container a:hover {
+            color: whitesmoke;
+            text-decoration: underline;
+        }
 
-.form-container button:hover {
-    background-color: #0056b3;
-}
+        .form-container button {
+            padding: 10px;
+            background-color: #007BFF;
+            margin-top: 10px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
 
-.hidden {
-    display: none;
-}
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
 
-.form-container.slide-in {
-    animation: slideIn 0.3s ease-out;
-}
+        .hidden {
+            display: none;
+        }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(50%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
+        .form-container.slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
 
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 
@@ -220,7 +226,7 @@
                     <div class="discover__card__content">
                         <h4>Tan Juan Statue</h4>
                         <p>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -234,7 +240,7 @@
                     <div class="discover__card__content">
                         <h4>Kipot Twin Falls</h4>
                         <p>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -248,7 +254,7 @@
                     <div class="discover__card__content">
                         <h4>Rafael Salas Drive</h4>
                         <p>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -343,15 +349,18 @@
 
     <!-- Modal Structure -->
     <div id="modal" class="modal">
+        <div class="backdrop"></div>
         <div class="modal-content">
             <button type="button" class="close-btn" id="close-modal">&times;</button>
             <div id="sign-in-form" class="form-container">
-                <form action="php/login.php" method="post">
+                <form id="loginForm">
                     <h2>Sign In</h2>
                     <label for="Uname">Username or E-mail</label>
-                    <input name="username" type="text" placeholder="Email" required />
+                    <input name="username" type="text" placeholder="Email" />
+                    <div id="username-error" class="error-message"></div>
                     <label for="pwd">Password</label>
-                    <input name="password" type="password" placeholder="Password" required />
+                    <input name="password" type="password" placeholder="Password" />
+                    <div id="password-error" class="error-message"></div>
                     <button type="submit" class="btn">Sign in</button>
                 </form>
                 <a href="#" id="forgot-password">Forgot Password?</a>
@@ -359,22 +368,31 @@
             </div>
             <div id="sign-up-form" class="form-container hidden">
                 <h2>Sign Up</h2>
-                <form action="php/register.php" method="POST">
+                <form id="signupForm">
                     <label for="Uname">Username</label>
-                    <input name="username" type="text" placeholder="Username" required />
+                    <input name="username" type="text" placeholder="Username" />
+                    <div id="regUsername-error" class="error-message"></div>
+
                     <label for="email">Email</label>
-                    <input name="email" type="email" placeholder="Email" required />
+                    <input name="email" type="email" placeholder="Email" />
+                    <div id="regEmail-error" class="error-message"></div>
+
                     <label for="pwd">Password</label>
-                    <input name="password" type="password" placeholder="Password" required />
+                    <input name="password" type="password" placeholder="Password" />
+                    <div id="regPassword-error" class="error-message"></div>
+
                     <label for="con-pwd">Confirm Password</label>
-                    <input name="confirm-password" type="password" placeholder="Confirm-Password" required />
+                    <input name="confirm-password" id="conPass" type="password" placeholder="Confirm-Password" />
+                    <div id="regconPass-error" class="error-message"></div>
+
                     <button type="submit">Sign Up</button>
                 </form>
                 <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
             </div>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('modal');
@@ -385,6 +403,87 @@
             const toSignInButton = document.getElementById('to-sign-in');
             const closeModalButton = document.getElementById('close-modal');
 
+            function clearFormInputs(form) {
+                form.reset();
+            }
+
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(loginForm);
+
+                $.ajax({
+                    url: 'php/login.php',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        const data = JSON.parse(response);
+
+                        document.getElementById('username-error').textContent = '';
+                        document.getElementById('password-error').textContent = '';
+
+                        if (data.success) {
+                            window.location.href = data.redirect;
+                        } else {
+                            if (data.errors.username) {
+                                document.getElementById('username-error').textContent = data.errors.username;
+                            }
+                            if (data.errors.password) {
+                                document.getElementById('password-error').textContent = data.errors.password;
+                            }
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            });
+            const signupForm = document.getElementById('signupForm');
+            signupForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(signupForm);
+
+                $.ajax({
+                    url: 'php/register.php',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        const data = JSON.parse(response);
+                        document.getElementById('regUsername-error').textContent = '';
+                        document.getElementById('regEmail-error').textContent = '';
+                        document.getElementById('regPassword-error').textContent = '';
+                        document.getElementById('regconPass-error').textContent = '';
+
+                        if (data.success) {
+                            window.location.href = data.redirect;
+                        } else {
+                            if (data.errors.username) {
+                                document.getElementById('regUsername-error').textContent = data.errors.username;
+                            }
+                            if (data.errors.email) {
+                                document.getElementById('regEmail-error').textContent = data.errors.email;
+                            }
+                            if (data.errors.password) {
+                                document.getElementById('regPassword-error').textContent = data.errors.password;
+                            }
+                            if (data.errors.confirm_password) {
+                                document.getElementById('regconPass-error').textContent = data.errors.confirm_password;
+                                document.getElementById('conPass').textContent = '';
+                            }
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            });
+
             openModalButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     modal.classList.add('active');
@@ -393,33 +492,45 @@
             });
 
             toSignUpButton.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevent default anchor behavior
+                event.preventDefault();
                 signInForm.classList.add('hidden');
                 signUpForm.classList.remove('hidden');
                 signUpForm.classList.add('slide-in');
                 signInForm.classList.remove('slide-in');
+
+                document.getElementById('username-error').textContent = '';
+                document.getElementById('password-error').textContent = '';
             });
 
             toSignInButton.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevent default anchor behavior
+                event.preventDefault();
                 signUpForm.classList.add('hidden');
                 signInForm.classList.remove('hidden');
                 signInForm.classList.add('slide-in');
                 signUpForm.classList.remove('slide-in');
+
+                document.getElementById('regUsername-error').textContent = '';
+                document.getElementById('regEmail-error').textContent = '';
+                document.getElementById('regPassword-error').textContent = '';
+                document.getElementById('regconPass-error').textContent = '';
             });
 
             closeModalButton.addEventListener('click', () => {
                 modal.classList.remove('active');
-            });
+                clearFormInputs(loginForm);
+                clearFormInputs(signupForm);
 
-            // Optional: Close modal when clicking outside of the modal-content
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                }
+                document.getElementById('username-error').textContent = '';
+                document.getElementById('password-error').textContent = '';
+
+                document.getElementById('regUsername-error').textContent = '';
+                document.getElementById('regEmail-error').textContent = '';
+                document.getElementById('regPassword-error').textContent = '';
+                document.getElementById('regconPass-error').textContent = '';
             });
         });
     </script>
+
 </body>
 
 </html>

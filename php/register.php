@@ -1,42 +1,60 @@
 <?php
 include '../include/db_conn.php';
 
-session_start();
-
 $errors = [];
-$success_message = "";
-$error_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $email = trim($_POST['email']);
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     $confirm_password = trim($_POST['confirm-password']);
     $role = "user";
     $pp = "default.png";
-    $_SESSION['profile-pic'] = $pp;
 
-    if (empty($errors)) {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (email, username, password, role, profile_picture) VALUES (?, ?, ?, ?, ?)";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $email, $username, $hashed_password, $role, $pp);
-        if ($stmt->execute()) {
-            $success_message = "Registration successful!";
-            header("Location: ../user/home.php");
-            exit();
-        } else {
-            $error_message = "There was an error registering your account. Please try again.";
-        }
-        $stmt->close();
+    if (empty($username)) {
+        $errors['username'] = "Enter your username";
+    }
+    if (empty($email)) {
+        $errors['email'] = "Enter your email";
+    }
+    if (empty($password)) {
+        $errors['password'] = "Enter your password";
+    }
+    if (empty($confirm_password)) {
+        $errors['confirm_password'] = "Confirm your password";
+    }
+    if ($password != $confirm_password) {
+        $errors['confirm_password'] = "Passwords do not match";
+    }
+    
+    if (!empty($errors)) {
+        echo json_encode(['success' => false, 'errors' => $errors]);
+        exit();
     }
 
-    $_SESSION['errors'] = $errors;
-    $_SESSION['success_message'] = $success_message;
-    $_SESSION['error_message'] = $error_message;
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO users (email, username, password, role, profile_picture) VALUES (?, ?, ?, ?, ?)";
 
-    header("Location: ../login.php");
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("sssss", $email, $username, $hashed_password, $role, $pp);
+
+        if ($stmt->execute()) {
+            session_start();
+            $_SESSION['profile-pic'] = $pp;
+            echo json_encode(['success' => true, 'redirect' => 'user/home']);
+        } else {
+            $errors['register'] = "Something went wrong, please try again";
+            echo json_encode(['success' => false, 'errors' => $errors]);
+        }
+
+        $stmt->close();
+    } else {
+        $errors['register'] = "Failed to prepare the SQL statement";
+        echo json_encode(['success' => false, 'errors' => $errors]);
+    }
+    
+    $conn->close();
     exit();
 }
 ?>
