@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
+$tours = $_SESSION['tours_id'];
 
 include 'includes/dashboard_query.php';
 ?>
@@ -40,17 +41,10 @@ include 'includes/dashboard_query.php';
 
 			<ul class="box-info">
 				<li>
-					<i class='bx bxs-calendar-check'></i>
-					<span class="text">
-						<h3><?php echo $total_pending ?></h3>
-						<p>Pending</p>
-					</span>
-				</li>
-				<li>
 					<i class='bx bxs-group'></i>
 					<span class="text">
 						<h3><?php echo $total_users ?></h3>
-						<p>Users</p>
+						<p>Books</p>
 					</span>
 				</li>
 				<li>

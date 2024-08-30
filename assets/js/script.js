@@ -9,6 +9,16 @@ menuBar.addEventListener('click', function () {
 
 
 
+const searchIcon = document.getElementById('search-icon');
+const searchContainer = document.querySelector('.search-container');
+const searchInput = document.getElementById('search-input');
+
+searchIcon.addEventListener('click', () => {
+    searchContainer.classList.toggle('expanded');
+    if (searchContainer.classList.contains('expanded')) {
+        searchInput.focus();
+    }
+});
 
 
 
