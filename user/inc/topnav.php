@@ -26,20 +26,71 @@
   .icon {
     display: none;
   }
+
+  /* Dropdown for profile picture */
+  .profile-dropdown {
+    position: absolute;
+    right: 10px; /* Adjust as needed */
+    top: 60px;
+    width: 100px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none; /* Initially hidden */
+    z-index: 1000;
+  }
+
+  .profile-dropdown a {
+    font-size: x-small;
+    padding: 10px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    width: 100%; /* Ensures links take full width */
+    box-sizing: border-box; /* Include padding in width */
+  }
+
+
+  .profile-dropdown a:hover {
+    background-color: #f1f1f1;
+  }
 </style>
+
 <div class="topnav" id="myTopnav">
   <div class="nav__logo"><a href="../user/home">BagoTours.</a></div>
   <a href="home">Home</a>
-  <a href="map">destination</a>
+  <a href="map">Destination</a>
   <input type="text" id="search" class="search-input" placeholder="Search...">
   <div id="dropdown" class="dropdown" style="display: none;"></div>
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">
     <i class="fa fa-bars"></i>
   </a>
-  <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic">
 
-  <a href="../php/logout.php">Logout</a>
+  <!-- Profile Picture -->
+  <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" width="40" height="40" onclick="toggleProfileDropdown()">
+
+  <!-- Profile Dropdown Menu -->
+  <div id="profileDropdown" class="profile-dropdown">
+  <a href="#">
+    <i class="fa fa-user-circle"></i> Manage Account
+  </a>
+  <a href="#">
+    <i class="fa fa-cog"></i> Settings
+  </a>
+  <a href="../php/logout.php" onclick="return confirmLogout()">
+  <i class="fa fa-sign-out"></i> Logout
+</a>
 </div>
+
+
+</div>
+<script>
+  function confirmLogout() {
+    // Show confirmation dialog
+    return confirm('Do you want to log out?');
+  }
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
@@ -67,4 +118,20 @@
       $("#dropdown").css("display", "none");
     });
   });
+
+  // Function to toggle profile dropdown visibility
+  function toggleProfileDropdown() {
+    var dropdown = document.getElementById("profileDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+
+  // Close the profile dropdown if clicked outside
+  window.onclick = function(event) {
+    if (!event.target.matches('.author-4')) {
+      var dropdown = document.getElementById("profileDropdown");
+      if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+      }
+    }
+  };
 </script>
