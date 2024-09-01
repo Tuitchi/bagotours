@@ -20,7 +20,6 @@ if ($result->num_rows > 0) {
     ];
   }
 }
-$touristSpotsJson = json_encode($touristSpots);
 ?>
 
 <!DOCTYPE html>
@@ -74,70 +73,72 @@ $touristSpotsJson = json_encode($touristSpots);
   <div id='map'></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
+document.addEventListener('DOMContentLoaded', () => {
+  mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20wZ3VqMzZuMDVhNDJycW9mbHE3emh2NCJ9.BFCb9yfuCSZDZW_U5Qdi3Q';
 
-      navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      });
+  navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 0
+  });
 
-      function successLocation(position) {
-        setupMap([position.coords.longitude, position.coords.latitude]);
-      }
+  function successLocation(position) {
+    setupMap([position.coords.longitude, position.coords.latitude]);
+  }
 
-      function errorLocation() {
-        setupMap([122.8313, 10.5338]);
-      }
+  function errorLocation() {
+    setupMap([122.8313, 10.5338]);
+  }
 
-      function setupMap(center) {
-        const map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/mapbox/streets-v12',
-          center: center,
-          zoom: 11
-        });
-
-        const touristSpots = <?php echo $touristSpotsJson; ?>;
-
-        touristSpots.forEach(spot => {
-          const el = document.createElement('div');
-          el.className = 'marker';
-          el.style.backgroundImage = `url(../assets/icons/${spot.type.split(' ')[0]}.png)`;
-
-          const marker = new mapboxgl.Marker(el)
-            .setLngLat([spot.longitude, spot.latitude])
-            .addTo(map);
-
-          const popupContent = `
-            <div class="popup-content">
-              <img src="../upload/Tour Images/${spot.image}" alt="${spot.title}">
-              <h3>${spot.title}</h3>
-              <p>${spot.address}</p>
-            </div>
-          `;
-
-          const popup = new mapboxgl.Popup({
-            closeOnClick: false,
-            offset: 25
-          }).setHTML(popupContent);
-
-          marker.getElement().addEventListener('mouseenter', () => {
-            popup.addTo(map);
-            popup.setLngLat([spot.longitude, spot.latitude]);
-          });
-
-          marker.getElement().addEventListener('mouseleave', () => {
-            popup.remove();
-          });
-
-          marker.getElement().addEventListener('click', () => {
-            window.location.href = `tour?tours=${spot.id}`;
-          });
-        });
-      }
+  function setupMap(center) {
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: center,
+      zoom: 11
     });
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.GeolocateControl({
+      positionOptions: { enableHighAccuracy: true },
+      trackUserLocation: true,
+      showUserHeading: true
+    }));
+
+    const touristSpots = <?php echo json_encode($touristSpots); ?>;
+
+    touristSpots.forEach(({ type, longitude, latitude, image, title, address, id }) => {
+      const markerEl = document.createElement('div');
+      markerEl.className = 'marker';
+      markerEl.style.backgroundImage = `url(../assets/icons/${type.split(' ')[0]}.png)`;
+      markerEl.style.width = '30px';
+      markerEl.style.height = '30px';
+      markerEl.style.backgroundSize = 'cover';
+
+      const marker = new mapboxgl.Marker(markerEl)
+        .setLngLat([longitude, latitude])
+        .addTo(map);
+
+      const popupContent = `
+        <div class="popup-content" style="border-radius:26px;">
+          <img src="../upload/Tour Images/${image}" alt="${title}" style="width: 100%; height: 80%;">
+          <h3>${title}</h3>
+          <p>${address}</p>
+        </div>
+      `;
+
+      const popup = new mapboxgl.Popup({ closeOnClick: false, offset: 25 ,closeButton: false})
+        .setLngLat([longitude, latitude])
+        .setHTML(popupContent);
+
+      markerEl.addEventListener('mouseenter', () => popup.addTo(map));
+      markerEl.addEventListener('mouseleave', () => popup.remove());
+      markerEl.addEventListener('click', () => {
+        window.location.href = `tour?tours=${id}`;
+      });
+    });
+  }
+});
+
 
     function myFunction() {
       var x = document.getElementById("myTopnav");
