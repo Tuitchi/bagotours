@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($password != $confirm_password) {
         $errors['confirm_password'] = "Passwords do not match";
     }
-    
+
     if (!empty($errors)) {
         echo json_encode(['success' => false, 'errors' => $errors]);
         exit();
@@ -53,8 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors['register'] = "Failed to prepare the SQL statement";
         echo json_encode(['success' => false, 'errors' => $errors]);
     }
-    
+
     $conn->close();
     exit();
 }
-?>

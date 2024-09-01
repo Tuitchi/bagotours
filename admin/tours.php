@@ -199,9 +199,9 @@ $tour = getAllTours($conn);
                     <h1>Tours</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
-                <button class="btn-download" id="btn-download">
+                <a class="btn-download" id="btn-download">
                     <i class='bx bx-plus'></i>Add tours
-                </button>
+                </a>
             </div>
             <div class="table-data">
                 <div class="order">
@@ -317,6 +317,14 @@ $tour = getAllTours($conn);
                 zoom: 10.2
             });
 
+            map.addControl(new mapboxgl.NavigationControl());
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true,
+                showUserHeading: true
+            }));
             var marker;
 
             function resizeMap() {

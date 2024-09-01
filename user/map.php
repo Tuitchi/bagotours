@@ -1,25 +1,14 @@
 <?php
 session_start();
-include("../include/db_conn.php");
+include '../func/user_func.php';
 
-$query = "SELECT id, title, latitude, longitude, type, img, address FROM tours";
-$result = $conn->query($query);
+$touristSpots = getAllTours($conn);
 
-$touristSpots = [];
-
-if ($result->num_rows > 0) {
-  while ($row = $result->fetch_assoc()) {
-    $touristSpots[] = [
-      'id' => $row['id'],
-      'title' => $row['title'],
-      'latitude' => $row['latitude'],
-      'longitude' => $row['longitude'],
-      'type' => $row['type'],
-      'image' => $row['img'],
-      'address' => $row['address']
-    ];
-  }
+foreach ($touristSpots as &$spot) {
+    $spot['average_rating'] = getAverageRating($conn, $spot['id']);
 }
+unset($spot);
+
 ?>
 
 <!DOCTYPE html>
@@ -29,41 +18,11 @@ if ($result->num_rows > 0) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/map.css">
 
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 
-  <style>
-    #map {
-      width: 100%;
-      height: 500px;
-    }
-
-    .marker {
-      background-size: cover;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .popup-content img {
-      width: 100%;
-      height: auto;
-      border-radius: 5px;
-    }
-
-    .popup-content h3 {
-      margin: 10px 0 5px;
-      font-size: 16px;
-    }
-
-    .popup-content p {
-      margin: 0;
-      font-size: 14px;
-      color: #555;
-    }
-  </style>
 </head>
 
 <body>
@@ -106,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const touristSpots = <?php echo json_encode($touristSpots); ?>;
 
-    touristSpots.forEach(({ type, longitude, latitude, image, title, address, id }) => {
+    touristSpots.forEach(({ type, longitude, latitude, img, title, address, id, average_rating }) => {
       const markerEl = document.createElement('div');
       markerEl.className = 'marker';
       markerEl.style.backgroundImage = `url(../assets/icons/${type.split(' ')[0]}.png)`;
@@ -120,9 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const popupContent = `
         <div class="popup-content" style="border-radius:26px;">
-          <img src="../upload/Tour Images/${image}" alt="${title}" style="width: 100%; height: 80%;">
+          <img src="../upload/Tour Images/${img}" alt="${title}" style="width: 100%; height: 80%;">
           <h3>${title}</h3>
           <p>${address}</p>
+          <p>⭐ ${(Math.floor(average_rating*100)/100).toFixed(1)} / 5</p>
         </div>
       `;
 
