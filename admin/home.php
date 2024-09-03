@@ -42,59 +42,13 @@ $touristSpotsJson = json_encode($touristSpots);
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
 	<link rel="stylesheet" href="../assets/css/admin.css">
+	<link rel="stylesheet" href="../assets/css/map.css">
 	<!-- Mapbox -->
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 	<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 
 	<title>BaGoTours. Home</title>
-	<style>
-		#map {
-			width: 100%;
-			height: 500px;
-		}
-
-		.marker {
-			background-size: cover;
-			width: 30px;
-			height: 30px;
-			border-radius: 50%;
-			cursor: pointer;
-		}
-
-		.mapboxgl-popup {
-			max-width: 200px;
-			font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-		}
-
-		.mapboxgl-popup-content {
-			text-align: center;
-			font-weight: bold;
-		}
-
-		.marker:hover {
-			transform: scale(1.1);
-		}
-
-		.marker:active {
-			transform: scale(1.2);
-		}
-
-		.popup-content {
-			background-color: #fff;
-			padding: 20px;
-			border-radius: 5px;
-		}
-
-		.popup-content img {
-			width: 180px;
-		}
-
-		.popup-close {
-			color: black;
-			font-size: 20px;
-			cursor: pointer;
-		}
-	</style>
+	
 </head>
 
 <body>
@@ -154,7 +108,8 @@ $touristSpotsJson = json_encode($touristSpots);
 
 				const popup = new mapboxgl.Popup({
 						closeOnClick: false,
-						offset: 25
+						offset: 25,
+						closeButton:false
 					})
 					.setHTML(popupContent);
 
@@ -168,7 +123,7 @@ $touristSpotsJson = json_encode($touristSpots);
 				});
 
 				marker.getElement().addEventListener('click', () => {
-					window.location.href = `tourist_spot_details.php?id=${spot.id}`;
+					window.location.href = `view_tour?id=${spot.id}`;
 				});
 			});
 		});

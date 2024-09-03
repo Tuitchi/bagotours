@@ -3,7 +3,6 @@
 include '../include/db_conn.php';
 session_start();
 
-session_regenerate_id();
 $errors = [];
 $success_msg = "";
 $fail_msg = "";
