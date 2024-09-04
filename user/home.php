@@ -19,6 +19,7 @@ $tours = getAllTours($conn);
 
   <main>
     <div class="content">
+      <!-- Recommended Tours Section -->
       <header class="recomendation">
         <?php
         $tab = 1;
@@ -43,10 +44,11 @@ $tours = getAllTours($conn);
             <button class="circle-button" onclick="showTab(<?php echo $i; ?>)"></button>
           <?php } ?>
         </div>
-
       </header>
+      <!-- Tours Section -->
       <div class="head">Tours</div>
-      <div class="cardmain">
+
+      <aside class="cardmain">
         <?php
         foreach ($tours as $tour) {
           $average_rating = getAverageRating($conn, $tour['id']); ?>
@@ -60,126 +62,108 @@ $tours = getAllTours($conn);
                 <h7 class="rating">⭐<?php echo number_format($average_rating, 1) ?></h7>
               </h6>
             </div>
-
             <p><?php echo $tour['description'] ?></p>
           </a>
         <?php }
         ?>
-      </div>
-
+      </aside>
     </div>
-    <div class="topdestination">
-      <h1>Popular</h1>
-      <div class="btn">
-        <button>Weekly</button>
-        <button>Monthly</button>
-      </div>
-      <div class="popular">
-        <div class="destination">
-          <div class="Popcontent">
-            <img src="../assets/gallery-1.jpg" alt="">
-            <div class="details">
-              <h2>name:</h2>
-              <p>Type:</p>
+    <!-- Popular Destinations Section -->
+    <asi class="container">
+      <div class="topdestination">
+        <div class="relative flex justify-between align-baseline font-500 bg-[#222222] border-b-[1px] border-[#312f40] px-[15px] py-[8px]">
+          <h3 class="text-[15px] text-white font-semibold leading-5 m-0">Popular</h3>
+        </div>
+        <div class="btn">
+          <button>Weekly</button>
+          <button>Monthly</button>
+        </div>
+        <div class="popular">
+          <div class="destination">
+            <div class="Popcontent">
+              <img src="../assets/gallery-1.jpg" alt="">
+              <div class="details">
+                <h2>name:</h2>
+                <p>Type:</p>
+              </div>
             </div>
-          </div>
           </div>
           <div class="destination">
-          <div class="Popcontent">
-            <img src="../assets/gallery-1.jpg" alt="">
-            <div class="details">
-              <h2>tan juan</h2>
-              <p>Type:</p>
-              <p>historical site</p>
+            <div class="Popcontent">
+              <img src="../assets/gallery-1.jpg" alt="">
+              <div class="details">
+                <h2>tan juan</h2>
+                <p>Type:</p>
+                <p>historical site</p>
+              </div>
             </div>
-          </div>
           </div>
           <div class="destination">
-          <div class="Popcontent">
-            <img src="../assets/gallery-1.jpg" alt="">
-            <div class="details">
-              <h2>name:</h2>
-              <p>Type:</p>
+            <div class="Popcontent">
+              <img src="../assets/gallery-1.jpg" alt="">
+              <div class="details">
+                <h2>name:</h2>
+                <p>Type:</p>
+              </div>
             </div>
-          </div>
           </div>
         </div>
-        
+      </div>
+    </asi>
   </main>
 
-<footer class="footer-distributed">
+  <footer class="footer-distributed">
+    <div class="footer-left">
+      <img src="../assets/kapbat.png" alt="">
+      <p class="footer-links">
+        <a href="#" class="link-1">Home</a>
+        <a href="#">About</a>
+        <a href="#">Faq</a>
+        <a href="#">Contact</a>
+      </p>
+      <p class="footer-company-name">Company Name © 2015</p>
+    </div>
+    <div class="footer-center">
+      <div>
+        <i class="fa fa-phone"></i>
+        <p>+1.555.555.5555</p>
+      </div>
+      <div>
+        <i class="fa fa-envelope"></i>
+        <p><a href="mailto:support@company.com">kapitanbato24@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-right">
+      <p class="footer-company-about">
+        <span>About BagoTours.</span>
+        Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
+      </p>
+      <div class="footer-icons">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+        <a href="#"><i class="fa fa-github"></i></a>
+      </div>
+    </div>
+  </footer>
 
-<div class="footer-left">
+  <script>
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
 
-  <img src="../assets/kapbat.png" alt="">
-
-  <p class="footer-links">
-    <a href="#" class="link-1">Home</a>
-    
-    <a href="#">About</a>
-    
-    <a href="#">Faq</a>
-    
-    <a href="#">Contact</a>
-  </p>
-
-  <p class="footer-company-name">Company Name © 2015</p>
-</div>
-
-<div class="footer-center">
-
-
-  <div>
-    <i class="fa fa-phone"></i>
-    <p>+1.555.555.5555</p>
-  </div>
-
-  <div>
-    <i class="fa fa-envelope"></i>
-    <p><a href="mailto:support@company.com">kapitanbato24@gmail.com</a></p>
-  </div>
-
-</div>
-
-<div class="footer-right">
-
-  <p class="footer-company-about">
-    <span>About BagoTours.</span>
-    Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
-  </p>
-
-  <div class="footer-icons">
-
-    <a href="#"><i class="fa fa-facebook"></i></a>
-    <a href="#"><i class="fa fa-twitter"></i></a>
-    <a href="#"><i class="fa fa-linkedin"></i></a>
-    <a href="#"><i class="fa fa-github"></i></a>
-
-  </div>
-
-</div>
-
-</footer>
-
-<script>
-function myFunction() {
-var x = document.getElementById("myTopnav");
-if (x.className === "topnav") {
-  x.className += " responsive";
-} else {
-  x.className = "topnav";
-}
-}
-
-  function showTab(tabNumber) {
+    function showTab(tabNumber) {
       const tabs = document.querySelectorAll('.tab');
       tabs.forEach(tab => {
-          tab.classList.remove('active');
+        tab.classList.remove('active');
       });
-
       document.getElementById('tab' + tabNumber).classList.add('active');
-  }
-</script>
-
+    }
+  </script>
 </body>
 </html>
