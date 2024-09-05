@@ -30,7 +30,7 @@
         }
 
         .modal-content {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
@@ -39,7 +39,7 @@
             position: relative;
             transform: scale(0.9);
             transition: transform 0.3s ease-in-out;
-            color: white;
+            color: black;
             padding: 20px;
         }
 
@@ -78,12 +78,14 @@
         .form-container {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            height: 450px;
             align-items: center;
             color: #fff;
         }
 
         .form-container h2 {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             text-align: center;
             color: white;
         }
@@ -96,7 +98,7 @@
         }
 
         .form-container input {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -109,7 +111,7 @@
             margin-top: 10px;
             text-align: center;
             text-decoration: underline;
-            color: skyblue;
+            color: blue;
         }
 
         .form-container p {
