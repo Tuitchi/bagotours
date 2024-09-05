@@ -2,8 +2,9 @@
   .dropdown {
     position: absolute;
     top: 39px;
-    left: 420px;
-    width: calc(100% - 1124px);
+    left: 338px;
+    max-width: 400px;
+    min-width: 300px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -14,9 +15,9 @@
   }
 
   .dropdown-item {
-    padding: 10px;
+    width: 300px;
     cursor: pointer;
-    color: #333;
+    color: black;
   }
 
   .dropdown-item:hover {
@@ -31,8 +32,8 @@
   .profile-dropdown {
     position: absolute;
     right: 10px; /* Adjust as needed */
-    top: 60px;
-    width: 100px;
+    top: 50px;
+    width: 150px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -42,7 +43,8 @@
   }
 
   .profile-dropdown a {
-    font-size: x-small;
+    text-align: left;
+    font-size: small;
     padding: 10px;
     display: block;
     color: #333;
@@ -67,11 +69,15 @@
     <i class="fa fa-bars"></i>
   </a>
 
-  <!-- Profile Picture -->
   <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" width="40" height="40" onclick="toggleProfileDropdown()">
 
-  <!-- Profile Dropdown Menu -->
   <div id="profileDropdown" class="profile-dropdown">
+  <a href="#">
+    <i class="	fa fa-pencil-square-o"></i> Reviews
+  </a>
+  <a href="#">
+    <i class="fa fa-address-book-o"></i> Bookings
+  </a>
   <a href="#">
     <i class="fa fa-user-circle"></i> Manage Account
   </a>
@@ -87,7 +93,6 @@
 </div>
 <script>
   function confirmLogout() {
-    // Show confirmation dialog
     return confirm('Do you want to log out?');
   }
 </script>
@@ -118,14 +123,10 @@
       $("#dropdown").css("display", "none");
     });
   });
-
-  // Function to toggle profile dropdown visibility
   function toggleProfileDropdown() {
     var dropdown = document.getElementById("profileDropdown");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
   }
-
-  // Close the profile dropdown if clicked outside
   window.onclick = function(event) {
     if (!event.target.matches('.author-4')) {
       var dropdown = document.getElementById("profileDropdown");

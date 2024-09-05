@@ -76,7 +76,6 @@ if (isset($_GET['id'])) {
         .tour-container .btn-delete {
             background-color: #dc3545;
         }
-        
     </style>
 </head>
 
@@ -84,7 +83,7 @@ if (isset($_GET['id'])) {
     <?php include 'includes/sidebar.php'; ?>
     <section id="content">
         <?php include 'includes/navbar.php'; ?>
-        <main>
+        <main id="main">
             <div class="head-title">
                 <div class="left">
                     <h1>View Tours</h1>
@@ -100,7 +99,7 @@ if (isset($_GET['id'])) {
                     <p><strong>Type:</strong> <?php echo htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($tour['description'], ENT_QUOTES, 'UTF-8')); ?></p>
                     <p><strong>Status:</strong> <?php echo $tour['status'] == 1 ? 'Active' : 'Inactive'; ?></p>
-                    <a href="edit_tour.php?id=<?php echo urlencode($tour['id']); ?>" class="btn-edit">Edit</a>
+                    <button class="btn-edit" type="button" onclick="loadDoc()">Edit</button>
                     <a href="#" class="btn-delete" data-tour-id="<?php echo $tour['id']; ?>">Delete</a>
 
                 <?php } else { ?>
@@ -112,6 +111,16 @@ if (isset($_GET['id'])) {
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function loadDoc() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("main").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "edit_tour?id=<?php echo $tour['id']?>", true);
+            xhttp.send();
+        }
         document.addEventListener('DOMContentLoaded', () => {
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
 
@@ -134,7 +143,6 @@ if (isset($_GET['id'])) {
                 .setLngLat([<?php echo htmlspecialchars($tour['longitude']); ?>, <?php echo htmlspecialchars($tour['latitude']); ?>])
                 .addTo(map);
 
-            // Disable interactions
             map.dragPan.disable();
             map.scrollZoom.disable();
             map.touchZoomRotate.disable();
