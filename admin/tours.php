@@ -227,9 +227,10 @@ $tour = getAllTours($conn);
                             }
                             echo '<div class="content">';
                             echo '<h4>' . htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8') . '</h4>';
-                            echo '<p>Address: ' . htmlspecialchars($row['address'], ENT_QUOTES, 'UTF-8') . '</p>';
-                            echo '<p>Type: ' . htmlspecialchars($row['type'], ENT_QUOTES, 'UTF-8') . '</p>';
-                            echo '<p>Description: ' . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<p style="font-size:13px">' . htmlspecialchars($row['type'], ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<p>' . htmlspecialchars($row['address'], ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<p><strong>About</strong></p>';
+                            echo '<p style="font-size:13px;">' . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<p>Status: ' . htmlspecialchars($stats, ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<div class="action-buttons">';
                             echo '<a href="view_tour?id=' . urlencode($row['id']) . '" class="btn-edit">View</a>';

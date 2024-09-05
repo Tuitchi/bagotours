@@ -81,7 +81,7 @@ if (!$result) {
 											</select>
 										</td>
 										<td>
-											<button class="btn-delete" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">Delete</button>
+											<button class="btn-delete" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">🗑️</button>
 											<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">View</button>
 										</td>
 									</tr>
@@ -99,7 +99,19 @@ if (!$result) {
 		</main>
 	</section>
 	<script src="../assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
+		const Toast = Swal.mixin({
+			toast: true,
+			position: "top-end",
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			didOpen: (toast) => {
+				toast.onmouseenter = Swal.stopTimer;
+				toast.onmouseleave = Swal.resumeTimer;
+			}
+		});
 		document.querySelectorAll('.btn-view').forEach(button => {
 			button.addEventListener('click', function() {
 				var userId = this.getAttribute('data-user-id');
@@ -128,7 +140,10 @@ if (!$result) {
 						.then(response => response.json())
 						.then(data => {
 							if (data.success) {
-								console.log('Status updated successfully.');
+								Toast.fire({
+                                    icon:'success',
+                                    title: 'Status updated successfully!'
+                                });
 							} else {
 								console.error('Failed to update status:', data.message);
 							}

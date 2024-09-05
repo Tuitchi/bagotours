@@ -1,7 +1,8 @@
 <?php
 include("../include/db_conn.php");
 
-function getAllTours($conn) {
+function getAllTours($conn)
+{
     $sql = "SELECT * FROM tours WHERE status = 1";
     $result = mysqli_query($conn, $sql);
     $tours = [];
@@ -13,7 +14,8 @@ function getAllTours($conn) {
     return $tours;
 }
 
-function getTourById($conn, $id) {
+function getTourById($conn, $id)
+{
     $stmt = $conn->prepare("SELECT * FROM tours WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -24,7 +26,8 @@ function getTourById($conn, $id) {
         return null;
     }
 }
-function getAverageRating($conn, $tour_id) {
+function getAverageRating($conn, $tour_id)
+{
     $stmt = $conn->prepare("
         SELECT COALESCE(AVG(r.rating), 0) AS average_rating
         FROM review_rating r
@@ -39,7 +42,8 @@ function getAverageRating($conn, $tour_id) {
     }
 }
 
-function getTourImages($conn, $tourId) {
+function getTourImages($conn, $tourId)
+{
     $stmt = $conn->prepare("SELECT * FROM tours_image WHERE tours_id = ?");
     $stmt->bind_param("i", $tourId);
     $stmt->execute();
@@ -49,4 +53,16 @@ function getTourImages($conn, $tourId) {
         $images[] = $row;
     }
     return $images;
+}
+
+function getAllPopular($conn)
+{
+    $stmt = $conn->prepare("SELECT t.id, t.title, t.address, t.type, t.img, COUNT(rr.id) AS rating_count FROM tours t INNER JOIN review_rating rr ON t.id = rr.tour_id GROUP BY t.id ORDER BY rating_count DESC;");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $popularTours = [];
+    while ($row = $result->fetch_assoc()) {
+        $popularTours[] = $row;
+    }
+    return $popularTours;
 }

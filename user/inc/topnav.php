@@ -1,64 +1,69 @@
 <style>
   .topnav {
-  overflow: hidden;
-  background-color: #333333b0;
-  height: 50px;
-  
-}
+    overflow: hidden;
+    background-color: #333333b0;
+    height: 50px;
 
-.nav__logo a {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--white);
-  font-family: serif;
-}
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-  font-family: Arial, Helvetica, sans-serif;
-}
+  }
 
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
+  .nav__logo a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--white);
+    font-family: serif;
+  }
 
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-.topnav input[type=text] {
-  float: none;   
-  padding: 4px;
-  border: none;
-  margin-top: 10px;
-  /* margin-right: 50px; */
-  margin-left: 20px;
-  font-size: 17px;
-  border-radius: 10px;
-}
-.author-4{
-  float: right;
-  width: 45px; 
-  height: 45px;
-  border-radius: 100px;
-  margin-top: 3px;
-  margin-right: 30px;
-}
-.topnav .icon {
-  display: none;
-}
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  .topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+  }
+
+  .topnav input[type=text] {
+    float: none;
+    padding: 4px;
+    border: none;
+    margin-top: 10px;
+    /* margin-right: 50px; */
+    margin-left: 20px;
+    font-size: 17px;
+    border-radius: 10px;
+  }
+
+  .author-4 {
+    float: right;
+    width: 45px;
+    height: 45px;
+    border-radius: 100px;
+    margin-top: 3px;
+    margin-right: 30px;
+  }
+
+  .topnav .icon {
+    display: none;
+  }
 
   .dropdown {
     position: absolute;
     top: 39px;
-    left: 420px;
-    width: calc(100% - 1124px);
+    left: 338px;
+    max-width: 400px;
+    min-width: 300px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -69,9 +74,9 @@
   }
 
   .dropdown-item {
-    padding: 10px;
+    width: 300px;
     cursor: pointer;
-    color: #333;
+    color: black;
   }
 
   .dropdown-item:hover {
@@ -85,25 +90,30 @@
   /* Dropdown for profile picture */
   .profile-dropdown {
     position: absolute;
-    right: 10px; /* Adjust as needed */
-    top: 60px;
-    width: 100px;
+    right: 10px;
+    /* Adjust as needed */
+    top: 50px;
+    width: 150px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: none; /* Initially hidden */
+    display: none;
+    /* Initially hidden */
     z-index: 1000;
   }
 
   .profile-dropdown a {
-    font-size: x-small;
+    text-align: left;
+    font-size: small;
     padding: 10px;
     display: block;
     color: #333;
     text-decoration: none;
-    width: 100%; /* Ensures links take full width */
-    box-sizing: border-box; /* Include padding in width */
+    width: 100%;
+    /* Ensures links take full width */
+    box-sizing: border-box;
+    /* Include padding in width */
   }
 
 
@@ -122,27 +132,30 @@
     <i class="fa fa-bars"></i>
   </a>
 
-  <!-- Profile Picture -->
   <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" width="40" height="40" onclick="toggleProfileDropdown()">
 
-  <!-- Profile Dropdown Menu -->
   <div id="profileDropdown" class="profile-dropdown">
-  <a href="manageAccount.php">
-    <i class="fa fa-user-circle"></i> Manage Account
-  </a>
-  <a href="#">
-    <i class="fa fa-cog"></i> Settings
-  </a>
-  <a href="../php/logout.php" onclick="return confirmLogout()">
-  <i class="fa fa-sign-out"></i> Logout
-</a>
-</div>
+    <a href="#">
+      <i class="	fa fa-pencil-square-o"></i> Reviews
+    </a>
+    <a href="#">
+      <i class="fa fa-address-book-o"></i> Bookings
+    </a>
+    <a href="manageAccount.php">
+      <i class="fa fa-user-circle"></i> Manage Account
+    </a>
+    <a href="#">
+      <i class="fa fa-cog"></i> Settings
+    </a>
+    <a href="../php/logout.php" onclick="return confirmLogout()">
+      <i class="fa fa-sign-out"></i> Logout
+    </a>
+  </div>
 
 
 </div>
 <script>
   function confirmLogout() {
-    // Show confirmation dialog
     return confirm('Do you want to log out?');
   }
 </script>
@@ -174,13 +187,10 @@
     });
   });
 
-  // Function to toggle profile dropdown visibility
   function toggleProfileDropdown() {
     var dropdown = document.getElementById("profileDropdown");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
   }
-
-  // Close the profile dropdown if clicked outside
   window.onclick = function(event) {
     if (!event.target.matches('.author-4')) {
       var dropdown = document.getElementById("profileDropdown");
@@ -191,20 +201,20 @@
   };
 </script>
 <script>
-    function myFunction() {
-      var x = document.getElementById("myTopnav");
-      if (x.className === "topnav") {
-        x.className += " responsive";
-      } else {
-        x.className = "topnav";
-      }
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
     }
+  }
 
-    function showTab(tabNumber) {
-      const tabs = document.querySelectorAll('.tab');
-      tabs.forEach(tab => {
-        tab.classList.remove('active');
-      });
-      document.getElementById('tab' + tabNumber).classList.add('active');
-    }
-  </script>
+  function showTab(tabNumber) {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.getElementById('tab' + tabNumber).classList.add('active');
+  }
+</script>
