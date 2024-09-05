@@ -77,47 +77,45 @@ if (!$tour) {
 <body>
 
   <?php include('inc/topnav.php'); ?>
-  <div class="title">
-    <h2>BaGoTours</h2>
-    <p> => </p>
-    <h2><?php echo htmlspecialchars($tour['title']);?></h2>
-    <button class="split" id="myBtn">Book Now!</button>
-  </div>
-  <head>
-<div class="slideshow-container">
-
-<div class="mySlides fade">
-  <div class="numbertext">1 / 3</div>
-  <img src="../assets/gallery-1.jpg" style="width:100%">
-  <div class="text"><?php echo htmlspecialchars($tour['title']);?></div>
-</div>
-
-<div class="mySlides fade">
-  <div class="numbertext">2 / 3</div>
-  <img src="../assets/gallery-2.jpg" style="width:100%">
-  <div class="text"><?php echo htmlspecialchars($tour['title']);?></div>
-</div>
-
-<div class="mySlides fade">
-  <div class="numbertext">3 / 3</div>
-  <img src="../assets/gallery-3.jpg" style="width:100%">
-  <div class="text"><?php echo htmlspecialchars($tour['title']);?></div>
-</div>
-
-<a class="prev" onclick="plusSlides(-1)">❮</a>
-<a class="next" onclick="plusSlides(1)">❯</a>
-
-</div>
-<br>
-
-<div style="text-align:center">
-  <span class="dot" onclick="currentSlide(1)"></span> 
-  <span class="dot" onclick="currentSlide(2)"></span> 
-  <span class="dot" onclick="currentSlide(3)"></span> 
-</div>
-  </head>
   
   <main>
+    <div class="title">
+      <h2>BaGoTours</h2>
+      <p> => </p>
+      <h2><?php echo htmlspecialchars($tour['title']);?></h2>
+      <button class="split" id="myBtn">Book Now!</button>
+    </div>
+  <div class="slideshow-container">
+  
+  <div class="mySlides fade">
+    <div class="numbertext">1 / 3</div>
+    <img src="../assets/gallery-1.jpg" style="width:100%">
+    <div class="text"><?php echo htmlspecialchars($tour['title']);?></div>
+  </div>
+  
+  <div class="mySlides fade">
+    <div class="numbertext">2 / 3</div>
+    <img src="../assets/gallery-2.jpg" style="width:100%">
+    <div class="text"><?php echo htmlspecialchars($tour['title']);?></div>
+  </div>
+  
+  <div class="mySlides fade">
+    <div class="numbertext">3 / 3</div>
+    <img src="../assets/gallery-3.jpg" style="width:100%">
+    <div class="text"><?php echo htmlspecialchars($tour['title']);?></div>
+  </div>
+  
+  <a class="prev" onclick="plusSlides(-1)">❮</a>
+  <a class="next" onclick="plusSlides(1)">❯</a>
+  
+  </div>
+  <br>
+  
+  <div style="text-align:center">
+    <span class="dot" onclick="currentSlide(1)"></span> 
+    <span class="dot" onclick="currentSlide(2)"></span> 
+    <span class="dot" onclick="currentSlide(3)"></span> 
+  </div>
       <div id='map' style='width: 400px; height: 300px;'></div>
       <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
       <h2><?php echo htmlspecialchars($tour['title']); ?></h2>

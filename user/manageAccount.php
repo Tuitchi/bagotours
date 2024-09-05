@@ -1,255 +1,239 @@
-<?php
-session_start();
-include("../func/user_func.php");
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Settings</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* General Styles */
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    transition: background-color 0.3s, color 0.3s;
-}
+        .container {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 1200px;
+            border: #037d54 1px solid;
+            width: 750px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
+        .editUser {
+            flex: 1;
+            max-width: 200px;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
 
-/* Navigation Bar Styles */
+        .editUser ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
+        .editUser ul li {
+            margin: 10px 0;
+        }
 
-/* Main Content and Sidebar Styles */
-.container {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
-    max-width: 1200px;
-    border: #037d54 1px solid;
-    width: 750px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
+        .editUser ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-.editUser {
-    flex: 1;
-    max-width: 200px;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-}
+        .editUser ul li a:hover {
+            color: #04AA6D;
+        }
 
-.editUser ul {
-    list-style-type: none;
-    padding: 0;
-}
+        /* Aside Styles */
+        aside {
+            flex: 3;
+            padding: 20px;
+        }
 
-.editUser ul li {
-    margin: 10px 0;
-}
+        aside>div {
+            display: none;
+        }
 
-.editUser ul li a {
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-}
+        .Account,
+        .changepassword,
+        .personalDetails,
+        .notifications,
+        .loginAlerts,
+        .booking,
+        .upgrade {
+            display: none;
+        }
 
-.editUser ul li a:hover {
-    color: #04AA6D;
-}
+        .Account {
+            display: block;
+        }
 
-/* Aside Styles */
-aside {
-    flex: 3;
-    padding: 20px;
-}
+        h3 {
+            margin-top: 0;
+        }
 
-aside > div {
-    display: none;
-}
+        input[type="file"] {
+            display: block;
+            margin-top: 10px;
+        }
 
-.Account, .changepassword, .personalDetails, .notifications, .loginAlerts, .booking, .upgrade {
-    display: none;
-}
+        img#profilePreview {
+            max-width: 100px;
+            margin-top: 10px;
+        }
 
-.Account {
-    display: block;
-}
+        form {
+            margin: 20px 0;
+        }
 
-h3 {
-    margin-top: 0;
-}
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
 
-input[type="file"] {
-    display: block;
-    margin-top: 10px;
-}
+        input[type="submit"],
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-img#profilePreview {
-    max-width: 100px;
-    margin-top: 10px;
-}
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #037d54;
+        }
 
-form {
-    margin: 20px 0;
-}
+        .error {
+            color: red;
+            display: none;
+        }
 
-input[type="text"], input[type="password"], input[type="email"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-input[type="submit"], button {
-    background-color: #04AA6D;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
 
-input[type="submit"]:hover, button:hover {
-    background-color: #037d54;
-}
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
 
-.error {
-    color: red;
-    display: none;
-}
+        th {
+            background-color: #f4f4f4;
+        }
 
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
 
-th, td {
-    padding: 10px;
-    text-align: left;
-}
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
 
-th {
-    background-color: #f4f4f4;
-}
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-}
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
-}
+            .editUser,
+            aside {
+                max-width: 100%;
+                border: none;
+            }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
+            .editUser {
+                margin-bottom: 20px;
+            }
+        }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
+        @media (max-width: 480px) {
+            .topnav {
+                flex-direction: column;
+                align-items: flex-start;
+                height: auto;
+            }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        padding: 10px;
-    }
+            .topnav a {
+                display: block;
+                width: 100%;
+            }
 
-    .editUser, aside {
-        max-width: 100%;
-        border: none;
-    }
+            .topnav input[type=text] {
+                width: 100%;
+                margin-top: 10px;
+            }
 
-    .editUser {
-        margin-bottom: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .topnav {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-    }
-
-    .topnav a {
-        display: block;
-        width: 100%;
-    }
-
-    .topnav input[type=text] {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .editUser ul li a {
-        font-size: 16px;
-    }
-}
-
+            .editUser ul li a {
+                font-size: 16px;
+            }
+        }
     </style>
-</head>
-<body>
     <main>
-    <?php include('inc/topnav.php'); ?>
+        <?php include('inc/topnav.php'); ?>
         <div class="container">
-            <div class="editUser">  
+            <div class="editUser">
                 <h2>Profile</h2>
                 <ul>
-                    <li><a href="#" onclick="showContent('Account')"><i class="fas fa-user"></i> Account</a></li> 
-                    <li><a href="#" onclick="showContent('changepassword')"><i class="fas fa-lock"></i> Change Password</a></li>
+                    <li><a href="#" onclick="showContent('Account')"><i class="fas fa-user"></i> Account</a></li>
                     <li><a href="#" onclick="showContent('personalDetails')"><i class="fas fa-id-card"></i> Personal Details</a></li>
+                    <li><a href="#" onclick="showContent('changepassword')"><i class="fas fa-lock"></i> Change Password</a></li>
                     <li><a href="#" onclick="showContent('notifications')"><i class="fas fa-bell"></i> Notifications</a></li>
-                    <li><a href="#" onclick="showContent('booking')"><i class="fas fa-calendar-check"></i> Booking</a></li>
                     <li><a href="#" onclick="showContent('upgrade')"><i class="fas fa-arrow-up"></i> Upgrade</a></li>
                 </ul>
             </div>
             <aside>
                 <div class="Account">
-                    
+
                     <img src="../assets/gallery-1.jpg" alt="Profile Preview" style="width:100px; margin-top:10px;">
                     <p>Username: John Doe</p>
                     <p>Email: john@example.com</p>
                     <p>Phone: 1234567890</p>
-                    
+
                 </div>
                 <div class="changepassword">
                     <h3>Change Password</h3>
@@ -268,7 +252,7 @@ th {
                 <div class="personalDetails">
                     <h3>Personal Details</h3>
                     <form>
-                    <h3>Account Information</h3>
+                        <h3>Account Information</h3>
                         <label for="profilePicture">Change Profile Picture:</label>
                         <input type="file" id="profilePicture" onchange="previewImage(event)">
                         <img id="profilePreview" src="../assets/gallery-1.jpg" alt="Profile Preview" style="width:100px; margin-top:10px;"> <br>
@@ -290,36 +274,13 @@ th {
                         <input type="submit" value="Save Settings">
                     </form>
                 </div>
-                <div class="booking">
-                    <h3>Booking History</h3>
-                    <table>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Destination</th>
-                            <th>Price</th>
-                        </tr>
-                        <tr>
-                            <td>12/01/2022</td>
-                            <td>10:00 AM</td>
-                            <td>Paris</td>
-                            <td>$100</td>
-                        </tr>
-                        <tr>
-                            <td>12/02/2022</td>
-                            <td>12:00 PM</td>
-                            <td>New York</td>
-                            <td>$200</td>
-                        </tr>
-                    </table>
-                </div>
                 <div class="upgrade">
                     <h3>Upgrade Account to Owner</h3>
                     <p>Are you an Owner of a resort, Beach, Pools?</p>
                     <button onclick="showUpgradeModal()">Upgrade</button>
                 </div>
-                
-            </aside>    
+
+            </aside>
         </div>
     </main>
     <div id="upgradeModal" class="modal">
@@ -331,20 +292,20 @@ th {
             <button onclick="closeUpgradeModal()">Cancel</button>
         </div>
         <div id="resortOwnerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeResortOwnerModal()">&times;</span>
-            <h2>Resort Owner Details</h2>
-            <form id="resortOwnerForm">
-                <label for="resortName">Resort Name:</label>
-                <input type="text" id="resortName" name="resortName" required><br><br>
-                <label for="resortLocation">Location:</label>
-                <input type="text" id="resortLocation" name="resortLocation" required><br><br>
-                <label for="resortDescription">Description:</label>
-                <textarea id="resortDescription" name="resortDescription" required></textarea><br><br>
-                <input type="submit" value="Submit">
-            </form>
+            <div class="modal-content">
+                <span class="close" onclick="closeResortOwnerModal()">&times;</span>
+                <h2>Resort Owner Details</h2>
+                <form id="resortOwnerForm">
+                    <label for="resortName">Resort Name:</label>
+                    <input type="text" id="resortName" name="resortName" required><br><br>
+                    <label for="resortLocation">Location:</label>
+                    <input type="text" id="resortLocation" name="resortLocation" required><br><br>
+                    <label for="resortDescription">Description:</label>
+                    <textarea id="resortDescription" name="resortDescription" required></textarea><br><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
-    </div>
     </div>
     <script>
         function showContent(section) {
@@ -357,7 +318,7 @@ th {
             const newPassword = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             const errorElement = document.getElementById('passwordError');
-            
+
             if (newPassword !== confirmPassword) {
                 errorElement.style.display = 'block';
                 return false;
@@ -371,7 +332,7 @@ th {
             const password = document.getElementById('newPassword').value;
             const strength = document.getElementById('passwordStrength');
             let strengthText = '';
-            
+
             if (password.length >= 8) {
                 strengthText = 'Strong';
                 strength.style.color = 'green';
@@ -382,7 +343,7 @@ th {
                 strengthText = 'Weak';
                 strength.style.color = 'red';
             }
-            
+
             strength.textContent = 'Password Strength: ' + strengthText;
         }
 
@@ -422,5 +383,3 @@ th {
             }
         }
     </script>
-</body>
-</html>

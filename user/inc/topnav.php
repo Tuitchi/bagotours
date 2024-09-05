@@ -138,9 +138,9 @@
     <a href="#">
       <i class="	fa fa-pencil-square-o"></i> Reviews
     </a>
-    <a href="#">
-      <i class="fa fa-address-book-o"></i> Bookings
-    </a>
+    <button type="button" onclick="loadBook()">
+      <i class="fa fa-address-book-o"></i> Booking
+    </button>
     <a href="manageAccount.php">
       <i class="fa fa-user-circle"></i> Manage Account
     </a>
@@ -161,6 +161,16 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  function loadBook() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("main").innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("GET", "booking", true);
+    xhttp.send();
+  }
   $(document).ready(function() {
     $("#search").on("keyup", function() {
       let query = $(this).val();
