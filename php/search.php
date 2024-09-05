@@ -15,11 +15,11 @@ if (isset($_POST['query'])) {
             <img style="width:40px;height:40px;border-radius: 4px;object-fit: cover;" src="../upload/Tour Images/' . $row['img'] . '">
             <div style="display:flex;flex-direction:column;">
                 <h3 style="font-size:14px;margin:0;color:#333;">' . $row['title'] . '</h3>
-                <h5 style="font-size:12px;margin:0;color:#666;">' . $row['type'] . '</h5>
+                <h5 style="font-size:10px;margin:0;color:#666;text-align: left;">' . $row['type'] . '</h5>
             </div>
         </a>';
         }
     } else {
-        echo '<div class="dropdown-item">No results found</div>';
+        echo '<div class="dropdown-item" style="display:flex;padding:15px;font-size:13px">No results found</div>';
     }
 }

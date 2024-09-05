@@ -29,8 +29,10 @@ unset($spot);
 
   <?php include('inc/topnav.php'); ?>
   <main id="main">
-    <div id='map'></div>
+    <div id='map' style="margin:25px;border-radius:10px"></div>
   </main>
+  
+  <?php include 'inc/footer.php' ?>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {

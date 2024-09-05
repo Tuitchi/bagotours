@@ -1,4 +1,8 @@
 <main>
+    <div>
+        <h1>Bookings</h1>
+        <a href="add_booking.php" class="btn btn-primary">Add Booking</a>
+    </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
