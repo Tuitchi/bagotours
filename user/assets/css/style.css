@@ -234,6 +234,7 @@ overflow: hidden;
   color: #1f1f1f;
 }
 
+<<<<<<< HEAD
 .topdestination{
 display: block;
 background-color: #f9f9f9;
@@ -242,12 +243,27 @@ width: 300px;
 text-align: center;
 height: auto;
 margin-right: 10px;
+=======
+/* Container for the whole layout */
+.container {
+  display: flex;
+  flex-wrap: wrap; /* Allows content to wrap on smaller screens */
+  gap: 10px; /* Adds space between flex items */
+  justify-content: center; /* Center the flex items */
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
 }
-.topdestination h1{
-font-size: 1.5rem;
-font-weight: 600;
-margin-bottom: 10px;
+
+/* Your topdestination class */
+.topdestination {
+  display: block;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+  flex: 0 1 150px; /* Allows it to shrink/grow and sets a base width */
+  text-align: center;
+  height: 700px;
+  margin: 10px;
 }
+<<<<<<< HEAD
 .destination{
 margin-top: 15px;
 padding: 5px;
@@ -256,8 +272,26 @@ backdrop-filter: blur(4.4px);
 -webkit-backdrop-filter: blur(4.4px);
 border-radius: 10px;
 color: #ddd;
+=======
+
+.topdestination h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
 }
-.Popcontent{
+
+.destination {
+  margin-top: 5px;
+  padding: 2px;
+  box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+  backdrop-filter: blur(4.4px);
+  -webkit-backdrop-filter: blur(4.4px);
+  border-radius: 10px;
+  color: #ddd;
+}
+
+.Popcontent {
   display: flex;
   align-items: left;
 }
@@ -266,34 +300,53 @@ color: #ddd;
   color: black;
   display: block;
 }
-.popular{
+
+.popular {
   background-color: #f9f9f9;
   box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+<<<<<<< HEAD
   width: auto;
+=======
+  width: 100%; /* Allows it to use the full width within its parent */
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
   text-align: center;
 }
-.destination img{
+
+.destination img {
   width: 50%;
+<<<<<<< HEAD
   height: 50%;
   border-radius: 10px;
+=======
+  height: auto; /* Keeps the aspect ratio */
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
   object-fit: cover;
 }
-.details{
-  color: black;
-display: flex;
-flex-direction: column;
 
+.details {
+  color: black;
+  display: flex;
+  flex-direction: column;
 }
+
+.details h2 {
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+<<<<<<< HEAD
 .details h2{
 font-size: 13px;
 font-weight: 600;
 margin-bottom: 1px;
+=======
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
 
+.details p {
+  font-size: 8px;
+  margin-bottom: 1px;
 }
-.details p{
-font-size: 8px;
-margin-bottom: 1px;
-}
+
 
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
