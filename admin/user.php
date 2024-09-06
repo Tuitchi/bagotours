@@ -6,17 +6,14 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php?action=Invalid");
     exit();
 }
+
 $user_id = $_SESSION['user_id'];
-$pp = $_SESSION['profile-pic'];
 
 $query = "SELECT * FROM users WHERE id <> ?";
-if ($stmt = $conn->prepare($query)) {
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    die('Error preparing statement');
-}
+$stmt = $conn->prepare($query) or die('Error preparing statement');
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -38,8 +35,6 @@ if ($stmt = $conn->prepare($query)) {
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
             background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
@@ -77,6 +72,7 @@ if ($stmt = $conn->prepare($query)) {
                     <span class="text">Add user</span>
                 </a>
             </div>
+
             <div class="table-data" id="userTableContainer">
                 <div class="order">
                     <div class="head">
@@ -101,16 +97,16 @@ if ($stmt = $conn->prepare($query)) {
                             if ($result->num_rows > 0) {
                                 $counter = 1;
                                 while ($row = $result->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . htmlspecialchars($counter++) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                                    echo "<td>
-                                            <a href='#' class='btn-view' data-id='" . htmlspecialchars($row['id']) . "'>View</a> |
-                                            <a href='#' class='btn-edit'>Edit</a> |
-                                            <a href='#' class='btn-delete' data-id='" . htmlspecialchars($row['id']) . "'>Delete</a>
-                                        </td>";
-                                    echo "</tr>";
+                                    echo "<tr>
+                                            <td>" . htmlspecialchars($counter++) . "</td>
+                                            <td>" . htmlspecialchars($row['name']) . "</td>
+                                            <td>" . htmlspecialchars($row['email']) . "</td>
+                                            <td>
+                                                <a href='#' class='btn-view' data-id='" . htmlspecialchars($row['id']) . "'>View</a> |
+                                                <a href='#' class='btn-edit' data-id='" . htmlspecialchars($row['id']) . "'>Edit</a> |
+                                                <a href='#' class='btn-delete' data-id='" . htmlspecialchars($row['id']) . "'>Delete</a>
+                                            </td>
+                                          </tr>";
                                 }
                             } else {
                                 echo "<tr><td colspan='4'>No users found.</td></tr>";
@@ -123,7 +119,6 @@ if ($stmt = $conn->prepare($query)) {
         </main>
     </section>
 
-    <!-- Modal for viewing user information -->
     <div id="viewUserModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -131,126 +126,151 @@ if ($stmt = $conn->prepare($query)) {
             <div id="userInfoContent"></div>
         </div>
     </div>
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit User Information</h2>
+            <div id="editUserContent"></div>
+        </div>
+    </div>
 
-    <!-- Modal for adding new user -->
     <div id="addUserModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add User</h2>
             <form id="addUserForm">
-                <div id="userInfoContent">
-                    <div class="form-group">
-                        <label for="userName">Name:</label>
-                        <input type="text" name="userName" id="userName" >
-                    </div>
-                    <div class="form-group">
-                        <label for="userEmail">Email:</label>
-                        <input type="email" name="userEmail" id="userEmail" >
-                    </div>
-                    <div class="form-group">
-                        <label for="userPassword">Password:</label>
-                        <input type="password" name="userPassword" id="userPassword" >
-                    </div>
-                    <div class="form-group">
-                        <label for="userRole">Role:</label>
-                        <select name="userRole" id="userRole" >
-                            <option value="">Select Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="owner">Owner</option>
-                            <option value="user">User</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn-submit">Add User</button>
-                    </div>
+                <div class="form-group">
+                    <label for="userName">Name:</label>
+                    <input type="text" name="userName" id="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" name="userEmail" id="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password:</label>
+                    <input type="password" name="userPassword" id="userPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role:</label>
+                    <select name="userRole" id="userRole" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="owner">Owner</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">Add User</button>
                 </div>
             </form>
         </div>
     </div>
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
+
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.btn-view').forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const userId = this.getAttribute('data-id');
-                    fetchUserInfo(userId);
-                });
+        $(document).ready(function() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+            $('.btn-view').click(function(event) {
+                event.preventDefault();
+                const userId = $(this).data('id');
+                viewUser(userId);
+            });
+            $('.btn-edit').click(function(event) {
+                event.preventDefault();
+                const userId = $(this).data('id');
+                editUser(userId);
             });
 
-            const modal = document.getElementById('viewUserModal');
-            const closeModalButton = modal.querySelector('.close');
-
-            function fetchUserInfo(userId) {
-                fetch(`../php/get_user_info.php?id=${userId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const user = data.user;
-                            const userInfoContent = document.getElementById('userInfoContent');
-                            userInfoContent.innerHTML = `
-                                <p style="text-align: center;">
-                                    <img src="../upload/Profile Pictures/${user.profile_picture}" alt="Profile Picture" width="100">
-                                </p>
-                                <p><strong>Name:</strong> ${user.name ? user.name : 'N/A'}</p>
-                                <p><strong>Username:</strong> ${user.username ? user.username : 'N/A'}</p>
-                                <p><strong>Email:</strong> ${user.email ? user.email : 'N/A'}</p>
-                                <p><strong>Phone Number:</strong> ${user.phone_number ? user.phone_number : 'N/A'}</p>
-                                <p><strong>Role:</strong> ${user.role ? user.role : 'N/A'}</p>
-                                <p><strong>Date Created:</strong> ${user.date_created ? user.date_created : 'N/A'}</p>
-                            `;
-                            modal.style.display = 'block';
-                        } else {
-                            alert('Unable to fetch user information.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                        alert('There was an error fetching the user information.');
-                    });
+            function viewUser(userId) {
+                $.getJSON(`../php/get_user_info.php?id=${userId}`, function(data) {
+                    if (data.success) {
+                        $('#userInfoContent').html(`
+                            <p style="text-align: center;">
+                                <img src="../upload/Profile Pictures/${data.user.profile_picture}" alt="Profile Picture" width="100">
+                            </p>
+                            <p><strong>Name:</strong> ${data.user.name || 'N/A'}</p>
+                            <p><strong>Username:</strong> ${data.user.username || 'N/A'}</p>
+                            <p><strong>Email:</strong> ${data.user.email || 'N/A'}</p>
+                            <p><strong>Phone Number:</strong> ${data.user.phone_number || 'N/A'}</p>
+                            <p><strong>Role:</strong> ${data.user.role || 'N/A'}</p>
+                            <p><strong>Date Created:</strong> ${data.user.date_created || 'N/A'}</p>
+                        `);
+                        $('#viewUserModal').show();
+                    } else {
+                        alert('Unable to fetch user information.');
+                    }
+                }).fail(function() {
+                    alert('There was an error fetching the user information.');
+                });
             }
 
-            closeModalButton.onclick = function() {
-                modal.style.display = 'none';
-            };
+            function editUser(userId) {
+                $.getJSON(`../php/get_user_info.php?id=${userId}`, function(data) {
+                    if (data.success) {
+                        $('#editUserContent').html(`
+                        <form id="editUserForm">
+                            <input type="hidden" name="editUserId" value="${userId}">
+                            <div class="form-group">
+                                <label for="editName">Name</label>
+                                <input type="text" name="editName" id="editName" value="${data.user.name || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmail">Email</label>
+                                <input type="email" name="editEmail" id="editEmail" value="${data.user.email || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPhoneNumber">Phone Number</label>
+                                <input type="text" name="editPhoneNumber" id="editPhoneNumber" value="${data.user.phone_number || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editUsername">Username</label>
+                                <input type="text" name="editUsername" id="editUsername" value="${data.user.username || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editRole">Role</label>
+                                <select name="editRole" id="editRole" required>
+                                    <option value="admin" ${data.user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                                    <option value="owner" ${data.user.role === 'owner' ? 'selected' : ''}>Owner</option>
+                                    <option value="user" ${data.user.role === 'user' ? 'selected' : ''}>User</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-submit">Save Changes</button>
+                        </form>
+                    `);
+                        $('#editUserModal').show();
+                    } else {
+                        alert('Unable to fetch user information.');
+                    }
+                }).fail(function() {
+                    alert('There was an error fetching the user information.');
+                });
+            }
 
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            };
-        });
-
-        $(document).ready(function() {
+            // Close modal
+            $('.close').click(function() {
+                $(this).closest('.modal').hide();
+            });
             $('#addUserForm').submit(function(event) {
                 event.preventDefault();
-
                 $.ajax({
-                    url: '../php/admin/usercode.php',
+                    url: '../php/admin/addUser.php',
                     type: 'POST',
                     data: $(this).serialize(),
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
                             $('#addUserModal').hide();
-
                             Toast.fire({
                                 icon: 'success',
                                 title: response.message
@@ -271,11 +291,36 @@ if ($stmt = $conn->prepare($query)) {
                     }
                 });
             });
-
-            $('.close').click(function() {
-                $(this).closest('.modal').hide();
+            $(document).on('submit', '#editUserForm', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '../php/admin/editUser.php',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editUserModal').hide();
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                            $('#userTableContainer').load(location.href + ' #userTableContainer > *');
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'There was an error processing the request.'
+                        });
+                    }
+                });
             });
-
             $(window).click(function(event) {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();

@@ -1,3 +1,5 @@
+<?php 
+$pp = $_SESSION['profile-pic'];?>
 <style>
 	nav {
 		display: flex;

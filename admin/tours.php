@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 $user_id = $_SESSION['user_id'];
-$pp = $_SESSION['profile-pic'];
 
 $tour = getAllTours($conn);
 ?>

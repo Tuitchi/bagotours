@@ -17,10 +17,10 @@
     <a href="#">
       <i class="	fa fa-pencil-square-o"></i> Reviews
     </a>
-    <button type="button" onclick="loadBook()">
+    <a href="booking">
       <i class="fa fa-address-book-o"></i> Booking
-    </button>
-    <a href="manageAccount.php">
+    </a>
+    <a href="manageAccount">
       <i class="fa fa-user-circle"></i> Manage Account
     </a>
     <a href="#">
@@ -48,6 +48,16 @@
       }
     };
     xhttp.open("GET", "booking", true);
+    xhttp.send();
+  }
+  function loadManageAcc() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("main").innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("GET", "manageAccount", true);
     xhttp.send();
   }
   $(document).ready(function() {

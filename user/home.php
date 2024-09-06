@@ -14,11 +14,9 @@ $popularTours = getAllPopular($conn);
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
  </head>
-
 <body>
 
   <?php include('inc/topnav.php'); ?>
-
   <main id="main">
     <div class="content">
       <header class="recomendation">
@@ -94,7 +92,6 @@ $popularTours = getAllPopular($conn);
           </div>
         <?php } ?>
       </div>
-
   </main>
   <?php include 'inc/footer.php' ?>
 
