@@ -15,16 +15,12 @@ try {
         if (!isset($_SESSION['user_id'])) {
             throw new Exception('User not authenticated.');
         }
-
-        // Fetch images associated with the tour
         $sql_images = "SELECT img FROM tours_image WHERE tours_id = '$tour_id'";
         $result_images = mysqli_query($conn, $sql_images);
 
         if ($result_images) {
             while ($row = mysqli_fetch_assoc($result_images)) {
                 $image_path = '../upload/Tour Images/' . $row['img'];
-
-                // Delete the image file from the server
                 if (file_exists($image_path)) {
                     if (!unlink($image_path)) {
                         throw new Exception('Failed to delete image file.');
@@ -32,14 +28,10 @@ try {
                 }
             }
         }
-
-        // Delete images records from the database
         $sql_delete_images = "DELETE FROM tours_image WHERE tours_id = '$tour_id'";
         if (!mysqli_query($conn, $sql_delete_images)) {
             throw new Exception('Failed to delete images from database: ' . mysqli_error($conn));
         }
-
-        // Delete the tour record from the database
         $sql_delete_tour = "DELETE FROM tours WHERE id = '$tour_id'";
         if (!mysqli_query($conn, $sql_delete_tour)) {
             throw new Exception('Failed to delete tour: ' . mysqli_error($conn));
@@ -56,4 +48,3 @@ try {
 }
 
 echo json_encode($response);
-?>
