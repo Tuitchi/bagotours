@@ -46,6 +46,8 @@ $popularTours = getAllPopular($conn);
       </header>
       <!-- Tours Section -->
       <div class="head">Tours</div>
+      
+
 
       <aside class="cardmain">
         <?php
@@ -67,16 +69,9 @@ $popularTours = getAllPopular($conn);
         ?>
       </aside>
     </div>
-    <div class="topdestination">
-      <h1>Popular</h1>
-      <div class="btn">
-        <button>Weekly</button>
-        <button>Monthly</button>
-      </div>
-      <div class="popular">
-        <?php foreach ($popularTours as $popTour) {
-          $average_rating = getAverageRating($conn, $popTour['id']); ?>
+   
 
+<<<<<<< Updated upstream
           <div class="destination">
             <a class="popLink" href="tour?tours=<?php echo $popTour['id'] ?>">
               <div class="Popcontent">
@@ -92,8 +87,11 @@ $popularTours = getAllPopular($conn);
           </div>
         <?php } ?>
       </div>
+=======
+
+>>>>>>> Stashed changes
   </main>
-  <?php include 'inc/footer.php' ?>
+  <?php include ('inc/footer.php') ?>
 
   <script>
     function myFunction() {
@@ -113,6 +111,7 @@ $popularTours = getAllPopular($conn);
       document.getElementById('tab' + tabNumber).classList.add('active');
     }
   </script>
+  
 </body>
 
 </html>

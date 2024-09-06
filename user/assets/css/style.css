@@ -3,21 +3,19 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: #f2f2f2;
 }
+
 .topnav {
   overflow: hidden;
   background-color: #333333b0;
   height: 50px;
-
 }
 
 .nav__logo a {
-  margin-left: 20px;
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--white);
   font-family: serif;
 }
-
 .topnav a {
   float: left;
   display: block;
@@ -38,157 +36,66 @@ body {
   background-color: #04AA6D;
   color: white;
 }
-
 .topnav input[type=text] {
-  padding-left: 40px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  height: 30px;
-  margin-top: 7px;
+  float: none;   
+  padding: 4px;
+  border: none;
+  margin-top: 10px;
+  /* margin-right: 50px; */
   margin-left: 20px;
-  border-radius: 4px;
   font-size: 17px;
-  position: relative;
+  border-radius: 10px;
 }
-
-.search-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.search-wrapper .fa-search {
-  position: absolute;
-  top: 55%;
-  left: 30px;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: black;
-  z-index: 10;
-}
-
-#search {
-  padding-left: 35px;
-  width: 200px;
-  z-index: 1;
-}
-
-.author-4 {
-
+.author-4{
   float: right;
-  width: 45px;
-  height: 45px;
-  border-radius: 100px;
-  margin-top: 3px;
-  margin-right: 20px;
-}
-
-.topnav .icon {
-  display: none;
-}
-
-.dropdown {
-  text-align: left;
-  position: absolute;
-  top: 39px;
-  left: 355px;
-  max-width: 400px;
-  min-width: 300px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-}
-
-.dropdown-item {
-  width: 300px;
-  cursor: pointer;
-  color: black;
-}
-
-.dropdown-item:hover {
-  background-color: #f1f1f1;
-}
-
-.icon {
-  display: none;
-}
-
-.profile-dropdown {
-  position: absolute;
-  right: 10px;
-  top: 50px;
-  width: 150px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: none;
-  z-index: 1000;
-}
-
-.profile-dropdown a {
-  text-align: left;
-  font-size: small;
-  padding: 10px;
-  display: block;
-  color: #333;
-  text-decoration: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-
-.profile-dropdown a:hover {
-  background-color: #f1f1f1;
-}
-.author-4 {
-  float: right;
-  width: 45px;
+  width: 45px; 
   height: 45px;
   border-radius: 100px;
   margin-top: 3px;
   margin-right: 30px;
 }
-
 .topnav .icon {
   display: none;
 }
-
-.content {
-  display: block;
-  margin-top: 10px;
-  width: auto;
-  margin-left: 20px;
+.content{
+display: block;
+margin-top: 10px;
+width: auto;
+margin-left: 20px;
 }
+/* img menu */
 
-main {
-  margin:0 20px;
-  display: flex;
+/* main*/
+main{
+  display: grid;
   justify-content: space-between;
+  align-items: center;
+  justify-content: center;  
+  justify-self: center;
+  background-color: #f2f2f2;
+  max-width: 1000px;
 }
-
 .recomendation {
   flex: 1;
   background-color: #a98ecd80;
   backdrop-filter: blur(4.4px);
   -webkit-backdrop-filter: blur(4.4px);
   height: 256px;
-  width: 900px;
-  padding: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  width: 774px;
+  align-self: center;
+  margin: 10px auto;
   border-radius: 5px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
 }
 
 .circle-container {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  position: relative;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .circle-button {
@@ -199,9 +106,9 @@ main {
   border: none;
   border-radius: 50%;
   text-align: center;
-  line-height: 50px;
-  font-size: 20px;
-  margin: 10px;
+  line-height: 20px; /* Adjusted to match button height */
+  font-size: 14px; /* Adjusted for better fit */
+  margin: 0 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -215,26 +122,45 @@ main {
 }
 
 .tab.active {
-  display: block;
+  display: flex; /* Changed to flex to ensure proper alignment */
+  height: 100%;
+  width: 100%;
+  align-items: center;
 }
 
 .tabcontainer {
   display: flex;
-
+ 
+}
+#tab1{
+  background-image: url("../capstone landing page/assets/discover-3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
+}
+#tab2{
+  background-image: url("../capstone landing page/assets/discover-2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
+}
+#tab3{
+  background-image: url("../capstone landing page/assets/gallery-1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
 }
 
-.details {
-  padding: 10px;
+.details{
+  padding: 10px;  
 }
-
-.recomendation h2 {
-  font-size: 3rem;
-  font-weight:bolder;
+.recomendation h2{
+  font-size: 1.5rem;
+  font-weight: 600;
   margin-bottom: 10px;
 }
-
-.recomendation p {
-  font-size: 1.5rem;
+.recomendation p{
+  font-size: 1rem;
   margin-bottom: 10px;
 }
 
@@ -242,23 +168,21 @@ main {
   width: 240px;
   height: 211px;
   object-fit: cover;
-  border-radius: 8px;
   margin-bottom: 10px;
 }
-
-.head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #D9D9D9;
-  height: auto !important;
-  width: 900px;
-  padding: 20px;
-  display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+.head{
+display: flex;
+justify-content: space-between;
+align-items: center;  
+background-color: #D9D9D9;
+height: auto !important;
+width: 774px;
+padding: 20px;
+display: flex;
+margin-top: 10px;
+margin-bottom: 10px;
+border-radius: 5px;
+box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
 }
 
 .cardmain {
@@ -331,33 +255,57 @@ main {
   color: #1f1f1f;
 }
 
-.topdestination {
-  border-radius: 10px;
-  padding:15px;
-  display: block;
-  position: relative;
-  background-color: #f9f9f9;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  width: auto;
-  text-align: center;
-  height: auto;
-  margin:20px 10px;
+<<<<<<< HEAD
+.topdestination{
+display: block;
+background-color: #f9f9f9;
+box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+width: 300px;
+text-align: center;
+height: auto;
+margin-right: 10px;
+=======
+/* Container for the whole layout */
+.container {
+  display: flex;
+  flex-wrap: wrap; /* Allows content to wrap on smaller screens */
+  gap: 10px; /* Adds space between flex items */
+  justify-content: center; /* Center the flex items */
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
 }
 
-.destination {
-  margin-top: 15px;
-  padding: 5px;
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(4.4px);
-  -webkit-backdrop-filter: blur(4.4px);
-  border-radius: 10px;
-  color: #ddd;
+/* Your topdestination class */
+.topdestination {
+  display: block;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+  flex: 0 1 150px; /* Allows it to shrink/grow and sets a base width */
+  text-align: center;
+  height: 700px;
+  margin: 10px;
+}
+<<<<<<< HEAD
+.destination{
+margin-top: 15px;
+padding: 5px;
+box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+backdrop-filter: blur(4.4px);
+-webkit-backdrop-filter: blur(4.4px);
+border-radius: 10px;
+color: #ddd;
+=======
+
+.topdestination h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
 }
 
 .destination {
   margin-top: 5px;
   padding: 2px;
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
   backdrop-filter: blur(4.4px);
   -webkit-backdrop-filter: blur(4.4px);
   border-radius: 10px;
@@ -368,7 +316,6 @@ main {
   display: flex;
   align-items: left;
 }
-
 .popLink {
   text-decoration: none;
   color: black;
@@ -377,15 +324,23 @@ main {
 
 .popular {
   background-color: #f9f9f9;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+<<<<<<< HEAD
   width: auto;
+=======
+  width: 100%; /* Allows it to use the full width within its parent */
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
   text-align: center;
 }
 
 .destination img {
   width: 50%;
+<<<<<<< HEAD
   height: 50%;
   border-radius: 10px;
+=======
+  height: auto; /* Keeps the aspect ratio */
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
   object-fit: cover;
 }
 
@@ -400,12 +355,13 @@ main {
   font-weight: 600;
   margin-bottom: 1px;
 }
-
-.details h2 {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 1px;
-}
+<<<<<<< HEAD
+.details h2{
+font-size: 13px;
+font-weight: 600;
+margin-bottom: 1px;
+=======
+>>>>>>> b38a13d9ede2a2c6f335349f18f0a7af2a22dbd5
 
 .details p {
   font-size: 8px;
