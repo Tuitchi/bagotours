@@ -1,27 +1,32 @@
 <?php
 include '../include/db_conn.php';
+session_start();
 
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
-    
+
     if ($id > 0) {
         $sql = 'DELETE FROM users WHERE id = ?';
 
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param('i', $id);
-            $stmt->execute();
-            $stmt->close();
-            echo 'User deleted successfully';
+
+            if ($stmt->execute() && $stmt->affected_rows > 0) {
+                echo json_encode(['success' => true, 'message' => 'user deleted successfully.']);
+                exit();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Unable to delete user. User may not exist.']);
+                exit();
+            }
         } else {
-            echo 'Error preparing statement';
+            echo json_encode(['success' => false, 'message' => 'Error preparing statement.']);
+            exit();
         }
     } else {
-        echo 'Invalid user ID';
+        echo json_encode(['success' => false, 'message' => 'Invalid user ID.']);
+        exit();
     }
-    
-    $conn->close();
 } else {
-    echo 'No user ID specified';
+    echo json_encode(['success' => false, 'message' => 'No user ID specified.']);
+    exit();
 }
-?>
-<!-- fdsdafsdsdfsgsf -->

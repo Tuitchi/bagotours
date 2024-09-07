@@ -1,9 +1,15 @@
 body {
+  overflow: hidden;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #f2f2f2;
-  align-items: center;
-  justify-content: center;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333333b0;
+  height: 50px;
+
 }
 
 
@@ -16,6 +22,38 @@ main{
   max-width: 1000px;
   width: 100%;
 }
+
+
+.profile-dropdown a:hover {
+  background-color: #f1f1f1;
+}
+
+.author-4 {
+  float: right;
+  width: 45px;
+  height: 45px;
+  border-radius: 100px;
+  margin-top: 3px;
+  margin-right: 30px;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+.content {
+  display: block;
+  margin-top: 10px;
+  width: auto;
+  margin-left: 20px;
+}
+
+main {
+  margin: 0 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .recomendation {
   background-color: #a98ecd80;
   backdrop-filter: blur(4.4px);
@@ -97,16 +135,38 @@ main{
 }
 
 
-.head{
-background-color: #D9D9D9;
-height: auto !important;
-width: 100%;
-padding: 20px;
-display: flex;
-margin-top: 10px;
-margin-bottom: 10px;
-border-radius: 5px;
-box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+.recomendation h2 {
+  font-size: 3rem;
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+
+.recomendation p {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.recomendation img {
+  width: 240px;
+  height: 211px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #D9D9D9;
+  height: auto !important;
+  width: 900px;
+  padding: 20px;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .cardmain {
@@ -166,7 +226,7 @@ box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
   color: white;
   border: none;
   border-radius: 5px;
-  margin :0 0 0 10px;
+  margin: 0 0 0 10px;
   text-decoration: none;
   cursor: pointer;
   padding: 8px;
@@ -179,6 +239,18 @@ box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
   color: #1f1f1f;
 }
 
+.topdestination {
+  border-radius: 10px;
+  padding: 15px;
+  display: block;
+  position: relative;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  width: auto;
+  text-align: center;
+  height: auto;
+  margin: 20px 10px;
+}
 
 
 

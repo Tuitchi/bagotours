@@ -83,12 +83,14 @@ $result = $stmt->get_result();
                         </div>
                         <i class='bx bx-filter'></i>
                     </div>
-                    <table>
+                    <table id="userTable">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Type</th>
+                                <th>Date Registered</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -101,6 +103,9 @@ $result = $stmt->get_result();
                                             <td>" . htmlspecialchars($counter++) . "</td>
                                             <td>" . htmlspecialchars($row['name']) . "</td>
                                             <td>" . htmlspecialchars($row['email']) . "</td>
+                                            <td>" . htmlspecialchars($row['role']) . "</td>
+                                            <td>" . date('M. d, Y', strtotime($row['date_created'])) . "</td>
+
                                             <td>
                                                 <a href='#' class='btn-view' data-id='" . htmlspecialchars($row['id']) . "'>View</a> |
                                                 <a href='#' class='btn-edit' data-id='" . htmlspecialchars($row['id']) . "'>Edit</a> |
@@ -191,6 +196,11 @@ $result = $stmt->get_result();
                 const userId = $(this).data('id');
                 editUser(userId);
             });
+            $('.btn-delete').click(function(event) {
+                event.preventDefault();
+                const userId = $(this).data('id');
+                deleteUser(userId);
+            });
 
             function viewUser(userId) {
                 $.getJSON(`../php/get_user_info.php?id=${userId}`, function(data) {
@@ -254,6 +264,41 @@ $result = $stmt->get_result();
                     }
                 }).fail(function() {
                     alert('There was an error fetching the user information.');
+                });
+            }
+
+            function deleteUser(userId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `../php/delete_user.php?id=${userId}`,
+                            type: 'POST',
+                            data: $(this).serialize(),
+                            dataType: 'json',
+                            success: function(response) {
+                                if (response.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: response.message
+                                    });
+                                    $('#userTableContainer').load(location.href + ' #userTableContainer > *');
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: response.message
+                                    });
+                                }
+                            },
+                        });
+                    }
                 });
             }
 
