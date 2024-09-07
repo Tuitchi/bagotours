@@ -1,5 +1,4 @@
 body {
-  overflow: hidden;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #f2f2f2;
@@ -48,11 +47,7 @@ main{
   margin-left: 20px;
 }
 
-main {
-  margin: 0 20px;
-  display: flex;
-  justify-content: space-between;
-}
+
 
 .recomendation {
   background-color: #a98ecd80;
