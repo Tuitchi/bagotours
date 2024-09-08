@@ -26,6 +26,18 @@ function getTourById($conn, $id)
         return null;
     }
 }
+function getUserById($conn, $id)
+{
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    } else {
+        return null;
+    }
+}
 function getAverageRating($conn, $tour_id)
 {
     $stmt = $conn->prepare("

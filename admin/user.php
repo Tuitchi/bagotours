@@ -218,10 +218,16 @@ $result = $stmt->get_result();
                         `);
                         $('#viewUserModal').show();
                     } else {
-                        alert('Unable to fetch user information.');
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Unable to fetch user information.'
+                        });
                     }
                 }).fail(function() {
-                    alert('There was an error fetching the user information.');
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'There was an error fetching the user information.'
+                    });
                 });
             }
 
@@ -260,10 +266,16 @@ $result = $stmt->get_result();
                     `);
                         $('#editUserModal').show();
                     } else {
-                        alert('Unable to fetch user information.');
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Unable to fetch user information.'
+                        });
                     }
                 }).fail(function() {
-                    alert('There was an error fetching the user information.');
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'There was an error fetching the user information.'
+                    });
                 });
             }
 

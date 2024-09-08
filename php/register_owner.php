@@ -1,39 +1,52 @@
-<?php 
+<?php
 
 include '../include/db_conn.php';
 session_start();
 
-$errors = [];
-$success_msg = "";
-$fail_msg = "";
 $user_id = $_SESSION['user_id'];
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = trim($_POST['title']);
     $address = trim($_POST['address']);
     $description = trim($_POST['description']);
+    $type = trim($_POST['type']);
     $status = 0;
 
-    if (empty($title)) {
-        $errors['title'] = "Please enter a title.";
-    }
-    if (empty($address)) {
-        $errors['address'] = "Please enter an address.";
-    }
-    if (empty($description)) {
-        $errors['description'] = "Please enter a description.";
-    }
-    
-    if (empty($errors)) {
-        $stmt = $conn->prepare("INSERT INTO tours (user_id, title, address, description, status) VALUES (?,?,?,?,?)");
-        $stmt->bind_param("issss", $user_id, $title, $address, $description, $status);
-        
-        if ($stmt->execute()) {
-            $success_msg = "Tour added successfully.";
+    if (isset($_FILES['proofImage']) && $_FILES['proofImage']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['proofImage']['tmp_name'];
+        $fileName = $_FILES['proofImage']['name'];
+        $fileSize = $_FILES['proofImage']['size'];
+        $fileType = $_FILES['proofImage']['type'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+        if (in_array($fileExtension, $allowedExtensions)) {
+            $uploadFileDir = '../upload/Profile_Pictues/';
+            $destPath = $uploadFileDir . $fileName;
+
+            if (move_uploaded_file($fileTmpPath, $destPath)) {
+                echo 'File is successfully uploaded.';
+            } else {
+                echo 'There was some error moving the file to upload directory.';
+            }
         } else {
-            $fail_msg = "An error occurred while adding the tour. Please try again.";
-        
+            echo 'Upload failed. Allowed file types: ' . implode(', ', $allowedExtensions);
+        }
+    } else {
+        echo 'No file uploaded or there was an upload error.';
+    }
+
+    if (empty($errors)) {
+        $stmt = $conn->prepare("INSERT INTO tours (user_id, title, address, description,type, status) VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param("isssss", $user_id, $title, $address, $description, $type, $status);
+
+        if ($stmt->execute()) {
+            echo "success";
+        } else {
+
             $stmt->close();
             $conn->close();
             exit();
@@ -42,6 +55,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $conn->close();
     }
 }
-
-
-?>
