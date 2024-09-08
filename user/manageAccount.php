@@ -11,122 +11,296 @@
         height: 675px !important;
     }
 
-    .container {
-        display: flex;
-        justify-content: center;
-        margin: 20px auto;
-        max-width: 1200px;
-        width: 750px;
-        background: #fff;
-        border: 1px solid #037d54;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+    main {
+    height: 675px !important;
+}
 
-    .editUser {
-        flex: 1;
-        max-width: 200px;
-        padding: 20px;
-        border-right: 1px solid #ddd;
-    }
+.container {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+    max-width: 1200px;
+    width: 750px;
+    background: #fff;
+    border: 1px solid #037d54;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
 
-    .editUser ul {
-        padding: 0;
-        list-style: none;
-    }
+.editUser {
+    flex: 1;
+    max-width: 200px;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+}
 
-    .editUser ul li {
-        margin: 10px 0;
-    }
+.editUser ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
 
-    .editUser ul li a {
-        color: #333;
-        font-weight: bold;
-        text-decoration: none;
-    }
+.editUser ul li {
+    margin: 10px 0;
+}
 
-    .editUser ul li a:hover {
-        color: #04AA6D;
-    }
+.editUser ul li a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-    aside {
-        flex: 3;
-        padding: 20px;
-    }
+.editUser ul li a:hover {
+    color: #04AA6D;
+}
 
-    aside>div {
-        display: none;
-    }
+aside {
+    flex: 3;
+    padding: 20px;
+}
 
-    .Account {
-        display: block;
-    }
+aside > div {
+    display: none;
+}
 
-    h3 {
-        margin-top: 0;
-    }
+/* Profile Container */
+.Account {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 20px auto;
+}
 
-    input[type="file"],
-    img#profilePreview {
-        margin-top: 10px;
-    }
+/* Profile Image */
+.profile-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid #ddd;
+}
 
-    form {
-        margin: 20px 0;
-    }
+/* Profile Details */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    select {
-        width: calc(100% - 22px);
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
+/* Profile Items */
+.profile-item {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+}
 
-    #resortLocation {
-        float: left;
-        border-right: none;
-        width: 80%;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-    }
 
-    #resortLoc {
-        border-left: none;
-        float: left;
-        height: 40px;
-        width: 15%;
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-    }
+.password-strength {
+    color: red;
+    margin-top: 5px;
+}
 
-    #proof {
-        width: 50%;
-    }
+/* Map Container */
 
-    input[type="submit"],
-    button {
-        background-color: #04AA6D;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+/* Personal Details Container */
+.personalDetails {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 550px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
 
-    input[type="submit"]:hover,
-    button:hover {
-        background-color: #037d54;
-    }
+/* Section Heading */
+.personalDetails h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
 
-    .error {
-        color: red;
-        display: none;
-    }
+/* Labels */
+.personalDetails label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Input Fields */
+.personalDetails input[type="text"],
+.personalDetails input[type="email"],
+.personalDetails input[type="file"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Profile Picture Preview */
+#profilePreview {
+    display: block;
+    margin: 10px 0;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+/* Submit Button */
+.personalDetails input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Submit Button Hover */
+.personalDetails input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+input[type="submit"],
+button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #037d54;
+} 
+/* changepassword */
+.changepassword {
+    background-color: #fff;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.changepassword h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.changepassword label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.changepassword input[type="password"] {
+    width: calc(100% - 22px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.changepassword .password-strength {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #e74c3c;
+}
+
+.changepassword .error {
+    display: block;
+    margin-top: 5px;
+    color: #e74c3c;
+    font-size: 14px;
+}
+
+.changepassword input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.changepassword input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    display: none;
+    margin-top: 5px;
+}
+
 
     table {
         width: 100%;
@@ -254,40 +428,53 @@
         </div>
         <aside>
             <div class="Account">
-                <img src="../assets/gallery-1.jpg" alt="Profile Preview" style="width:100px;">
-                <p>Username: John Doe</p>
-                <p>Email: john@example.com</p>
-                <p>Phone: 1234567890</p>
+                <img src="../assets/gallery-1.jpg" alt="Profile Preview" class="profile-image">
+                <div class="profile-details">
+                    <p class="profile-item">Username: John Doe</p>
+                    <p class="profile-item">Email: john@example.com</p>
+                    <p class="profile-item">Phone: 1234567890</p>
+                </div>
             </div>
+
             <div class="changepassword">
                 <h3>Change Password</h3>
                 <form onsubmit="return validateForm()">
                     <label for="oldPassword">Old Password:</label>
                     <input type="password" id="oldPassword" name="oldPassword" required>
+
                     <label for="newPassword">New Password:</label>
                     <input type="password" id="newPassword" name="newPassword" required onkeyup="checkPasswordStrength()">
-                    <div id="passwordStrength" style="color:red"></div>
+                    <div id="passwordStrength" class="password-strength"></div>
+
                     <label for="confirmPassword">Confirm Password:</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
                     <span class="error" id="passwordError">Passwords do not match!</span>
+
                     <input type="submit" value="Change">
                 </form>
             </div>
+
             <div class="personalDetails">
                 <h3>Personal Details</h3>
                 <form>
+                <img id="profilePreview" src="../assets/gallery-1.jpg" alt="Profile Preview" style="width:100px;">
                     <label for="profilePicture">Change Profile Picture:</label>
                     <input type="file" id="profilePicture" onchange="previewImage(event)">
-                    <img id="profilePreview" src="../assets/gallery-1.jpg" alt="Profile Preview" style="width:100px;">
+                    
+
                     <label for="fullName">Full Name:</label>
                     <input type="text" id="fullName" name="fullName" value="John Doe" required>
+
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" value="john@example.com" required>
+
                     <label for="phone">Phone:</label>
                     <input type="text" id="phone" name="phone" value="1234567890" required>
+
                     <input type="submit" value="Update Details">
                 </form>
             </div>
+
             <div class="notifications">
                 <h3>Notification Settings</h3>
                 <form>

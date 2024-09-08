@@ -18,35 +18,35 @@ $popularTours = getAllPopular($conn);
  </head>
  <?php include('inc/topnav.php'); ?>
 <body>
-<main id="main">
+
 
   
     <div class="content">
-    <header class="recomendation">
-  <?php
-  $tab = 1;
-  foreach ($tours as $tour) { ?>
-    <div id="tab<?php echo $tab; ?>" class="tab <?php echo $tab === 1 ? 'active' : ''; ?>">
-      <div class="tabcontainer">
-        <div class="details">
-          <h2><?php echo $tour['title'] ?></h2>
-          <p><?php echo $tour['description'] ?></p>
+          <header class="recomendation">
+        <?php
+        $tab = 1;
+        foreach ($tours as $tour) { ?>
+          <div id="tab<?php echo $tab; ?>" class="tab <?php echo $tab === 1 ? 'active' : ''; ?>">
+            <div class="tabcontainer">
+              <div class="details">
+                <h2><?php echo $tour['title'] ?></h2>
+                <p><?php echo $tour['description'] ?></p>
+              </div>
+              <div>
+                <img src="../upload/Tour Images/<?php echo $tour['img'] ?>" alt="">
+              </div>
+            </div>
+          </div>
+        <?php
+          $tab++;
+        }
+        ?>
+        <div class="circle-container">
+          <?php for ($i = 1; $i < $tab; $i++) { ?>
+            <button class="circle-button" onclick="showTab(<?php echo $i; ?>)"></button>
+          <?php } ?>
         </div>
-        <div>
-          <img src="../upload/Tour Images/<?php echo $tour['img'] ?>" alt="">
-        </div>
-      </div>
-    </div>
-  <?php
-    $tab++;
-  }
-  ?>
-  <div class="circle-container">
-    <?php for ($i = 1; $i < $tab; $i++) { ?>
-      <button class="circle-button" onclick="showTab(<?php echo $i; ?>)"></button>
-    <?php } ?>
-  </div>
-</header>
+      </header>
 
 
       <!-- Tours Section -->
