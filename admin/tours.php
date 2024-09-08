@@ -303,10 +303,10 @@ $tour = getAllTours($conn);
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById("addTourModal");
-            var mapboxModal = document.getElementById("mapboxModal");
             var btn = document.getElementById("btn-download");
-            var btnSetLocation = document.getElementById("set-location");
             var closeBtn = document.querySelector(".close");
+            var mapboxModal = document.getElementById("mapboxModal");
+            var btnSetLocation = document.getElementById("set-location");
             var closeMapBtn = document.querySelector(".close-map");
 
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';

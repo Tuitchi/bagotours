@@ -3,8 +3,14 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
 </head>
 <style>
+    main {
+        height: 675px !important;
+    }
+
     .container {
         display: flex;
         justify-content: center;
@@ -71,13 +77,32 @@
 
     input[type="text"],
     input[type="password"],
-    input[type="email"], select {
+    input[type="email"],
+    select {
         width: calc(100% - 22px);
         padding: 10px;
         margin-bottom: 10px;
         border: 1px solid #ddd;
         border-radius: 4px;
     }
+
+    #resortLocation {
+        float: left;
+        border-right: none;
+        width: 80%;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    #resortLoc {
+        border-left: none;
+        float: left;
+        height: 40px;
+        width: 15%;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
     #proof {
         width: 50%;
     }
@@ -194,7 +219,8 @@
         cursor: pointer;
         text-align: center;
     }
-    .upload-area img{
+
+    .upload-area img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -202,6 +228,13 @@
 
     .upload-area:hover {
         background-color: #f4f4f4;
+    }
+
+    #mapboxModal .modal-content {
+        width: 50%;
+        height: 80%;
+        max-width: 80%;
+        max-height: 100%;
     }
 </style>
 
@@ -266,12 +299,13 @@
             </div>
             <div class="upgrade">
                 <h3>Upgrade Account to Owner</h3>
-                <p>Are you an Owner of a resort, Beach, Pools?</p>
+                <p>Are you an <strong>Owner</strong> of a Resorts, Beach Resort, Swimming pool or etc.?</p>
                 <button onclick="showUpgradeModal()">Upgrade</button>
             </div>
         </aside>
     </div>
 </main>
+<?php include 'inc/footer.php' ?>
 
 <div id="upgradeModal" class="modal">
     <div class="modal-content">
@@ -286,21 +320,58 @@
 <div id="resortOwnerModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeResortOwnerModal()">&times;</span>
-        <h2>Resort Owner Details</h2>
+        <h2>Tourist Attraction Owner Details</h2>
         <form id="resortOwnerForm">
-            <label for="resortName">Resort Name:</label>
+            <label for="resortName">Tourist Attraction Name:</label>
             <input type="text" id="resortName" name="resortName" required>
-            <label for="proof">Type of resort:</label>
+            <label for="proof">Type of Attraction:</label>
             <select name="type" id="type">
                 <option value="none" selected disabled hidden>Select an Option</option>
-                <option value="Mountain Resort">Mountain Resort</option>
                 <option value="Beach Resort">Beach Resort</option>
-                <option value="Park">Park</option>
-                <option value="Historical Landmark">Historical Landmark</option>
+                <option value="Campsite">Campsite</option>
                 <option value="Falls">Falls</option>
+                <option value="Historical Landmark">Historical Landmark</option>
+                <option value="Mountain Resort">Mountain Resort</option>
+                <option value="Park">Park</option>
+                <option value="Swimming Pool">Swimming Pool</option>
             </select>
             <label for="resortLocation">Location:</label>
-            <input type="text" id="resortLocation" name="resortLocation" required>
+            <div style="clear:both;">
+                <input type="text" id="resortLocation" name="resortLocation" readonly required>
+                <button id="resortLoc" type="button"><i class="fa fa-map-marker"></i></button>
+                <select id="barangay" name="barangay" style="width: 44%; float: left;">
+                    <option value="none" selected disabled hidden>Select a Barangay</option>
+                    <option value="Abuanan">Abuanan</option>
+                    <option value="Alianza">Alianza</option>
+                    <option value="Atipuluan">Atipuluan</option>
+                    <option value="Bacong-Montilla">Bacong-Montilla</option>
+                    <option value="Bagroy">Bagroy</option>
+                    <option value="Balingasag">Balingasag</option>
+                    <option value="Banago">Banago</option>
+                    <option value="Binubuhan">Binubuhan</option>
+                    <option value="Busay">Busay</option>
+                    <option value="Calumangan">Calumangan</option>
+                    <option value="Caridad">Caridad</option>
+                    <option value="Dulao">Dulao</option>
+                    <option value="Ilijan">Ilijan</option>
+                    <option value="Lag-asan">Lag-asan</option>
+                    <option value="Ma-ao Barrio">Ma-ao Barrio</option>
+                    <option value="Mailum">Mailum</option>
+                    <option value="Malingin">Malingin</option>
+                    <option value="Napoles">Napoles</option>
+                    <option value="Pacol">Pacol</option>
+                    <option value="Poblacion">Poblacion</option>
+                    <option value="Sampinit">Sampinit</option>
+                    <option value="Tabunan">Tabunan</option>
+                    <option value="Taloc">Taloc</option>
+                    <option value="Tampalon">Tampalon</option>
+                </select>
+                <select id="purok" name="purok" style="width: 44%;float: left;">
+                    <option value="none" selected disabled hidden>Select a Purok</option>
+                </select>
+                <input type="hidden" id="tour-latitude" name="latitude">
+                <input type="hidden" id="tour-longitude" name="longitude">
+            </div><br style="clear:both;" />
             <label for="proof">Proof:</label>
             <select name="proof" id="proof">
                 <option value="none" selected disabled hidden>Select an Option</option>
@@ -310,6 +381,7 @@
                 <option value="Mayor's Permit">Mayor's Permit</option>
                 <option value="Barangay Permit">Barangay Permit</option>
             </select>
+            <p style="font-size:smaller;">Insert your proof image below.</p>
             <div class="upload-area" id="uploadArea">
                 <p>Drag & Drop or Click to Upload File</p>
                 <input type="file" id="fileInput" hidden>
@@ -318,45 +390,117 @@
         </form>
     </div>
 </div>
+<!-- Mapbox Modal -->
+<div id="mapboxModal" class="modal">
+    <div class="modal-content">
+        <span class="close-map">&times;</span>
+        <div id="map" style="height: 94%; width:100%"></div>
+    </div>
+</div>
 
 <script>
-    // Toggle sections
-    document.querySelectorAll('.editUser ul li a').forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            const section = this.getAttribute('data-section');
-            document.querySelectorAll('aside > div').forEach(div => {
-                div.style.display = 'none';
+    document.addEventListener('DOMContentLoaded', function() {
+        // Profile section toggle logic
+        document.querySelectorAll('.editUser ul li a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const section = this.getAttribute('data-section');
+                document.querySelectorAll('aside > div').forEach(div => {
+                    div.style.display = 'none';
+                });
+                document.querySelector('.' + section).style.display = 'block';
             });
-            document.querySelector('.' + section).style.display = 'block';
         });
-    });
 
-    function checkPasswordStrength() {
-        const strengthBar = document.getElementById('passwordStrength');
-        const password = document.getElementById('newPassword').value;
-        const strength = password.length > 8 ? 'Strong' : 'Weak';
-        strengthBar.textContent = `Password Strength: ${strength}`;
-    }
-
-    // Validate password form
-    function validateForm() {
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const errorSpan = document.getElementById('passwordError');
-        if (newPassword !== confirmPassword) {
-            errorSpan.style.display = 'block';
-            return false;
-        } else {
-            errorSpan.style.display = 'none';
-            return true;
+        // Password validation and strength checking
+        function validateForm() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorSpan = document.getElementById('passwordError');
+            if (newPassword !== confirmPassword) {
+                errorSpan.style.display = 'block';
+                return false;
+            } else {
+                errorSpan.style.display = 'none';
+                return true;
+            }
         }
-    }
 
-    function previewImage(event) {
-        const profilePreview = document.getElementById('profilePreview');
-        profilePreview.src = URL.createObjectURL(event.target.files[0]);
-    }
+        function checkPasswordStrength() {
+            const strengthBar = document.getElementById('passwordStrength');
+            const password = document.getElementById('newPassword').value;
+            const strength = password.length > 8 ? 'Strong' : 'Weak';
+            strengthBar.textContent = `Password Strength: ${strength}`;
+        }
+
+        // Image Preview for profile picture
+        function previewImage(event) {
+            const profilePreview = document.getElementById('profilePreview');
+            profilePreview.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        // Mapbox initialization for resort location modal
+        const mapboxModal = document.getElementById("mapboxModal");
+        const btnSetLocation = document.getElementById("resortLoc");
+        const closeMapBtn = document.querySelector(".close-map");
+
+        mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [122.9413, 10.4998],
+            zoom: 10.2
+        });
+        map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true,
+            showUserHeading: true
+        }));
+
+        let marker;
+
+        function reverseGeocode(lng, lat) {
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const placeName = data.features[0]?.place_name || "Location not found";
+                    document.getElementById('resortLocation').value = placeName;
+                })
+                .catch(err => console.error("Error in reverse geocoding: ", err));
+        }
+
+        map.on('click', function(e) {
+            const lngLat = e.lngLat;
+            if (marker) {
+                marker.setLngLat(lngLat);
+            } else {
+                marker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map);
+            }
+            reverseGeocode(lngLat.lng, lngLat.lat);
+            document.getElementById('tour-longitude').value = lngLat.lng;
+            document.getElementById('tour-latitude').value = lngLat.lat;
+            mapboxModal.style.display = "none";
+        });
+
+        btnSetLocation.onclick = function() {
+            mapboxModal.style.display = "block";
+            map.resize(); // Ensure the map resizes properly when the modal opens
+        };
+
+        closeMapBtn.onclick = function() {
+            mapboxModal.style.display = "none";
+        };
+
+        window.onclick = function(event) {
+            if (event.target == mapboxModal) {
+                mapboxModal.style.display = "none";
+            }
+        };
+    });
 
     function showUpgradeModal() {
         document.getElementById('upgradeModal').style.display = 'block';
@@ -373,46 +517,5 @@
 
     function closeResortOwnerModal() {
         document.getElementById('resortOwnerModal').style.display = 'none';
-    }
-    const uploadArea = document.getElementById('uploadArea');
-    const fileInput = document.getElementById('fileInput');
-
-    uploadArea.addEventListener('click', () => fileInput.click());
-
-    uploadArea.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        uploadArea.style.backgroundColor = '#f4f4f4';
-    });
-
-    uploadArea.addEventListener('dragleave', () => {
-        uploadArea.style.backgroundColor = '#fff';
-    });
-
-    uploadArea.addEventListener('drop', (event) => {
-        event.preventDefault();
-        const file = event.dataTransfer.files[0];
-        let fileType = file.type;
-        let validExtensions = ['image/jpeg', 'image/jpg', 'image/png', 'image/png'];
-        if (validExtensions.includes(fileType)) {
-            let fileReader = new FileReader();
-            fileReader.onload = () => {
-                uploadArea.style.backgroundColor = '#fff';
-                const img = document.createElement('img');
-                let fileUrl = fileReader.result;
-                let imgTag = `<img src="${fileUrl}" alt="">`;
-                uploadArea.innerHTML = imgTag;
-            };
-            fileReader.readAsDataURL(file);
-        } else {
-            alert('Invalid file type. Only JPEG, JPG, PNG images are allowed.');
-        }
-    });
-
-    fileInput.addEventListener('change', () => {
-        handleFiles(fileInput.files);
-    });
-
-    function handleFiles(files) {
-        console.log('Files Uploaded:', files);
     }
 </script>
