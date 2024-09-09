@@ -1,4 +1,10 @@
-<?php session_start() ?>
+<?php session_start();
+
+$toast = '';
+
+if (isset($_GET['process'])) {
+    $toast = $_GET['process'];
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,11 +26,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            max-height: auto;
             margin: 0;
         }
 
         #resortOwnerForm {
+            margin: 40px 0;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
@@ -124,6 +132,7 @@
 
         .progress.active {
             background-color: #28a745;
+            transition: background-color 0.5s ease;
         }
 
         .progress:last-child {
@@ -262,7 +271,7 @@
                 <p style="font-size:smaller;">Insert your proof image below.</p>
                 <div class="upload-area" id="uploadArea">
                     <p>Drag & Drop or Click to Upload File</p>
-                    <input type="file" id="fileInput" name="proofImage" hidden required>
+                    <input type="file" id="fileInput" name="proofImage" accept="image/*" hidden required>
                 </div>
 
                 <div class="step-buttons">
@@ -274,6 +283,8 @@
     </main>
     <?php include 'inc/footer.php' ?>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 0;
@@ -284,6 +295,24 @@
             const uploadArea = document.getElementById("uploadArea");
             const fileInput = document.getElementById("fileInput");
 
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+            <?php if ($toast === 'success') { ?>
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Your booking has been added successfully!'
+                });
+            <?php } else if ($toast === 'error') { ?>
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error occured while adding booking!'
+                });
+            <?php } ?>
 
             function showStep(stepIndex) {
                 steps.forEach((step, index) => {
@@ -367,7 +396,13 @@
 
             btnSetLocation.onclick = function() {
                 mapboxModal.style.display = "block";
-                map.resize();
+                setTimeout(() => {
+                    map.resize();
+                    map.flyTo({
+                        center: [122.9413, 10.4998],
+                        essential: true
+                    });
+                }, 200);
             };
 
             closeMapBtn.onclick = function() {
@@ -394,6 +429,7 @@
             uploadArea.addEventListener('drop', (event) => {
                 event.preventDefault();
                 const file = event.dataTransfer.files[0];
+                console.log(fileInput.files);
                 DisplayFile(file);
 
             });
@@ -418,7 +454,13 @@
                     };
                     fileReader.readAsDataURL(file);
                 } else {
-                    alert('Invalid file type. Only JPEG, JPG, PNG images are allowed.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid File',
+                        text: 'Only JPEG, JPG, and PNG images are allowed.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             }
 
