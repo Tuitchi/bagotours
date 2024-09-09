@@ -1,13 +1,19 @@
-<?php 
-$query_count = "SELECT COUNT(*) AS total_books FROM booking WHERE tours_id = $tours_id";
-$result_count = mysqli_query($conn, $query_count);
-$total_users = mysqli_fetch_assoc($result_count)['total_books'];
+<?php
+$tour_id = isset($_SESSION["tour_id"]) ? $_SESSION["tour_id"] : 0;
 
-$query_pending = "SELECT COUNT(*) as total_pending FROM tours WHERE status = 0";
-$result_pending = mysqli_query($conn, $query_pending);
-$total_pending = mysqli_fetch_assoc($result_pending)['total_pending'];
+$query_count = "SELECT COUNT(*) AS total_books FROM booking WHERE tours_id = ?";
+$stmt_count = $conn->prepare($query_count);
+$stmt_count->bind_param("i", $tour_id);
+$stmt_count->execute();
+$result_count = $stmt_count->get_result();
+$total_books = $result_count->fetch_assoc()['total_books'];
 
-$query_tours = "SELECT COUNT(*) as total_tours FROM tours WHERE status = 1";
-$result_tours = mysqli_query($conn, $query_tours);
-$total_tours = mysqli_fetch_assoc($result_tours)['total_tours'];
-?>
+$query_inq = "SELECT COUNT(*) as total_inquiry FROM inquiry WHERE tour_id = ?";
+$stmt_inq = $conn->prepare($query_inq);
+$stmt_inq->bind_param("i", $tour_id);
+$stmt_inq->execute();
+$result_inq = $stmt_inq->get_result();
+$total_inq = $result_inq->fetch_assoc()['total_inquiry'];
+
+$stmt_count->close();
+$stmt_inq->close();

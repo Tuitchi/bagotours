@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         setcookie("username", $username, time() + (86400 * 30), "/");
     }
 
-    $sql = "SELECT id FROM tours WHERE user_id = ?";
+    $sql = "SELECT id FROM tours WHERE user_id = ? AND status = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $_SESSION['user_id']);
     $stmt->execute();

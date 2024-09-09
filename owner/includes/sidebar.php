@@ -15,7 +15,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             </a>
         </li>
         <li class="<?php echo $current_page == 'tour' ? 'active' : ''; ?>">
-            <a href="tours">
+            <a href="tour">
                 <i class='bx bxs-map-alt'></i>
                 <span class="text">Tour</span>
             </a>

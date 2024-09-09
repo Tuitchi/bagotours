@@ -8,11 +8,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$tour_id = $_SESSION['tour_id'];
 $pp = $_SESSION['profile-pic'];
 
 $query = "SELECT b.*, t.title as tour_title, u.username FROM booking b
           JOIN tours t ON b.tours_id = t.id
-          JOIN users u ON b.user_id = u.id
+          JOIN users u ON b.user_id = u.id WHERE t.id = '$tour_id'
           ORDER BY b.date_sched DESC";
 $result = mysqli_query($conn, $query);
 

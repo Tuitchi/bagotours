@@ -177,8 +177,8 @@ $result = mysqli_query($conn, $query);
                     <p><strong>Proof:</strong> ${data.pending.proof}</p>
                     <img src="../upload/Permits/${data.pending.proofImage} alt="Proof Picture" width="100">
                     <p><strong>Date:</strong> ${formattedDate}</p>
-                    <a class="accept-btn" href="../php/updatePending.php?status=1&id=${data.pending.id}">Accept</a>
-                    <a class="accept-btn" href="../php/updatePending.php?status=2&id=${data.pending.id}">Decline</a>
+                    <a class="accept-btn" href="../php/updatePending.php?status=1&tour_id=${data.pending.tours.id}&user_id=${data.pending.users.id}">Accept</a>
+                    <a class="accept-btn" href="../php/updatePending.php?status=2&tour_id=${data.pending.tours.id}">Decline</a>
                 `);
                         $('#viewModal').show();
                     } else {
