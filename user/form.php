@@ -1,7 +1,7 @@
 <?php session_start();
 
 $toast = '';
-
+$user_id = $_SESSION['user_id'];
 if (isset($_GET['process'])) {
     $toast = $_GET['process'];
 } ?>
@@ -17,11 +17,6 @@ if (isset($_GET['process'])) {
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-
         main {
             display: flex;
             justify-content: center;
@@ -51,9 +46,9 @@ if (isset($_GET['process'])) {
             font-weight: bold;
         }
 
-        input[type="text"],
-        select,
-        input[type="file"] {
+        main input[type="text"],
+        main select,
+        main input[type="file"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 15px;
@@ -191,10 +186,12 @@ if (isset($_GET['process'])) {
 
 <body>
     <?php include('inc/topnav.php'); ?>
-    <main>
-        <form id="resortOwnerForm" action="../php/register_owner.php" method="post" enctype="multipart/form-data">
+    <main><?php 
+    require_once('../func/user_func.php');
+    if (!alreadyRegistered($user_id)) { ?>
+        <form id="resortOwnerForm" action="../php/register_owner.php" method="POST" enctype="multipart/form-data">
             <div class="progress-container">
-                <div class="progress active"></div>
+                <div class="progress"></div>
                 <div class="progress"></div>
                 <div class="progress"></div>
             </div>
@@ -222,8 +219,21 @@ if (isset($_GET['process'])) {
                     <button type="button" class="next-btn">Next</button>
                 </div>
             </div>
-
             <div class="step" id="step2">
+                <h2>tourist Attraction Image</h2>
+                <label for="img">Image:</label>
+                <p style="font-size:smaller;">Insert your proof image below.</p>
+                <input type="file" id="fileInput2" name="img" accept="image/*" required>
+                <div class="upload-area" id="uploadArea">
+                </div>
+
+                <div class="step-buttons">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <div class="step" id="step3">
                 <h2>Location Details</h2>
                 <label for="resortLocation">Location:</label>
                 <div style="clear:both;">
@@ -256,7 +266,7 @@ if (isset($_GET['process'])) {
                 </div>
             </div>
 
-            <div class="step" id="step3">
+            <div class="step" id="step4">
                 <h2>Proof of Permits</h2>
                 <label for="proof">Proof:</label>
                 <select name="proof" id="proof" required>
@@ -269,9 +279,8 @@ if (isset($_GET['process'])) {
                 </select>
 
                 <p style="font-size:smaller;">Insert your proof image below.</p>
+                <input type="file" id="fileInput" name="proofImage" accept="image/*" required>
                 <div class="upload-area" id="uploadArea">
-                    <p>Drag & Drop or Click to Upload File</p>
-                    <input type="file" id="fileInput" name="proofImage" accept="image/*" hidden required>
                 </div>
 
                 <div class="step-buttons">
@@ -280,11 +289,13 @@ if (isset($_GET['process'])) {
                 </div>
             </div>
         </form>
+        <?php } else {?>
+        <p>You have already registered as a resort owner. Please <a href="../php/logout.php">logout</a> and try again.</p>
+        <?php }?>
     </main>
     <?php include 'inc/footer.php' ?>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 0;
@@ -293,26 +304,6 @@ if (isset($_GET['process'])) {
             const nextBtns = document.querySelectorAll(".next-btn");
             const prevBtns = document.querySelectorAll(".prev-btn");
             const uploadArea = document.getElementById("uploadArea");
-            const fileInput = document.getElementById("fileInput");
-
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            });
-            <?php if ($toast === 'success') { ?>
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Your booking has been added successfully!'
-                });
-            <?php } else if ($toast === 'error') { ?>
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Error occured while adding booking!'
-                });
-            <?php } ?>
 
             function showStep(stepIndex) {
                 steps.forEach((step, index) => {
@@ -414,32 +405,9 @@ if (isset($_GET['process'])) {
                     mapboxModal.style.display = "none";
                 }
             };
-
-            uploadArea.addEventListener('click', () => fileInput.click());
-
-            uploadArea.addEventListener('dragover', (event) => {
-                event.preventDefault();
-                uploadArea.style.backgroundColor = '#f4f4f4';
-            });
-
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.style.backgroundColor = '#fff';
-            });
-
-            uploadArea.addEventListener('drop', (event) => {
-                event.preventDefault();
-                const file = event.dataTransfer.files[0];
-                console.log(fileInput.files);
-                DisplayFile(file);
-
-            });
             fileInput.addEventListener('change', (event) => {
                 event.preventDefault();
                 const file = fileInput.files[0];
-                DisplayFile(file);
-            });
-
-            function DisplayFile(file) {
                 let fileType = file.type;
                 let validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
                 if (validExtensions.includes(fileType)) {
@@ -462,10 +430,66 @@ if (isset($_GET['process'])) {
                         showConfirmButton: false
                     });
                 }
-            }
+            });
 
+            const form = document.getElementById('resortOwnerForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        console.log(`${key}: ${value.name}`);
+                    } else {
+                        console.log(`${key}: ${value}`);
+                    }
+                }
+
+                fetch('../php/register_owner.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: data.message,
+                                timer: 3000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../user/form?status=success';
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while processing your request.',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                    });
+            });
         });
     </script>
+
 </body>
 
 </html>

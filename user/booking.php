@@ -1,6 +1,11 @@
 <?php
+include_once '../include/db_conn.php';
+include_once '../func/user_func.php';
 session_start();
 
+$user_id = $_SESSION["user_id"];
+
+$booking = getBookingById($conn, $user_id);
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,61 +15,98 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        .title-button-wrapper {
+        main {
+            overflow-x: auto;
             display: block;
-            width: 100%;
+            height: 675px;
+        }
+
+        .title-button-wrapper {
+            display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
         h1 {
-            margin: 0 auto;
+            margin: 0;
             text-align: center;
             flex-grow: 1;
         }
+
         table {
-            width: 100%;
+            margin: auto;
+            width: 80%;
             border-collapse: collapse;
         }
+
         th,
         td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #f4f4f4;
         }
-        tr:hover {background-color: #f5f5f5;}
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .table-responsive {
+            width: 100%;
+        }
+
+        .btn-primary {
+            float: right;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 
         @media screen and (max-width: 768px) {
             table {
                 display: block;
                 width: 100%;
+                overflow-x: auto;
             }
+
             thead {
                 position: absolute;
                 top: -9999px;
                 left: -9999px;
             }
+
             tr {
                 border: none;
             }
+
             tr:nth-child(odd) {
                 background-color: #f9f9f9;
             }
+
             th {
                 position: sticky;
                 top: 0;
                 background-color: #f4f4f4;
                 z-index: 2;
             }
+
             td {
                 border: none;
                 position: relative;
                 padding-left: 50%;
             }
+
             td:before {
                 position: absolute;
                 left: 6px;
@@ -74,31 +116,24 @@ session_start();
                 text-align: right;
                 font-weight: bold;
                 background-color: #f4f4f4;
-                color: white;
+                color: #333;
                 border-radius: 4px;
-                transition: background-color 0.3s ease;
+                content: attr(data-label);
+                display: inline-block;
             }
         }
 
-        .table-responsive {
-            width: 100%;
-        }
-
-        .btn btn-primary {
-            float: right;
-            right: 0;
-        }
         @media screen and (max-width: 600px) {
-           .title-button-wrapper {
+            .title-button-wrapper {
                 flex-direction: column;
             }
         }
+
         @media screen and (max-width: 480px) {
-           .title-button-wrapper {
+            .title-button-wrapper {
                 margin-bottom: 10px;
             }
         }
-
     </style>
 </head>
 
@@ -122,21 +157,25 @@ session_start();
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Sample Tour</td>
-                        <td>2024-09-15</td>
-                        <td>5</td>
-                        <td>Active</td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="#" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
+                    <?php
+                    $counter = 1;
+                    foreach ($booking as $book) { ?>
+                        <tr>
+                            <td><?php echo $counter++; ?></td>
+                            <td><?php echo htmlspecialchars($book['tour_title']); ?></td>
+                            <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($book['date_scheduled']))); ?></td>
+                            <td><?php echo htmlspecialchars($book['number_of_people']); ?></td>
+                            <td><?php echo htmlspecialchars($book['status']); ?></td>
+                            <td>
+                                <a href="delete_booking.php?id=<?php echo $book['booking_id']; ?>" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
     </main>
+    <?php include('inc/footer.php'); ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -148,33 +187,15 @@ session_start();
             timer: 3000,
             timerProgressBar: true,
         });
-        <?php if ($status === 'success'): ?>
+
+        <?php if (isset($status)): ?>
             Toast.fire({
-                icon: 'success',
-                title: 'Your booking has been added successfully!'
-            });
-        <?php endif; ?>
-        <?php if ($status === 'error'): ?>
-            Toast.fire({
-                icon: 'error',
-                title: 'Error occured while adding booking!'
-            });
-        <?php endif; ?>
-        <?php if ($status === 'edit'): ?>
-            Toast.fire({
-                icon: 'success',
-                title: 'Your booking has been updated successfully!'
-            });
-        <?php endif; ?>
-        <?php if ($status === 'delete'): ?>
-            Toast.fire({
-                icon: 'success',
-                title: 'Your booking has been deleted successfully!'
+                icon: '<?php echo $status; ?>',
+                title: 'Your booking has been <?php echo $status === 'success' ? 'added' : ($status === 'edit' ? 'updated' : 'deleted'); ?> successfully!'
             });
         <?php endif; ?>
     </script>
 
-    <?php include('inc/footer.php'); ?>
 </body>
 
 </html>

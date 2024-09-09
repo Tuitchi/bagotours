@@ -21,34 +21,72 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- My CSS -->
     <link rel="stylesheet" href="../assets/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
     <title>BaGoTours. Pending</title>
     <style>
-        .modal {
+        #zoomModal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 10000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 60px;
+        }
+
+        .zoom-modal-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90%;
+            margin: auto;
+        }
+
+        .zoom-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .close-zoom {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
 
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 50%;
+            width: 80%;
         }
 
         .close {
@@ -73,8 +111,8 @@ $result = mysqli_query($conn, $query);
                     <h1>Pending</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
-
             </div>
+
             <div class="table-data">
                 <div class="order">
                     <div class="head">
@@ -119,7 +157,7 @@ $result = mysqli_query($conn, $query);
                                     echo "</tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='7'>No users found.</td></tr>";
+                                echo "<tr><td colspan='7'>No pending tours found.</td></tr>";
                             }
                             ?>
                         </tbody>
@@ -128,6 +166,7 @@ $result = mysqli_query($conn, $query);
             </div>
         </main>
     </section>
+
     <div id="viewModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -135,10 +174,18 @@ $result = mysqli_query($conn, $query);
             <div id="applicationInfoContent"></div>
         </div>
     </div>
+    <div id="zoomModal" class="modal">
+        <span class="close-zoom">&times;</span>
+        <div class="zoom-modal-content">
+            <img id="zoomImage" src="" alt="Zoomed Image">
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
+
     <script>
         $(document).ready(function() {
             const Toast = Swal.mixin({
@@ -150,7 +197,7 @@ $result = mysqli_query($conn, $query);
             });
 
             $('.close').click(function() {
-                $('#viewModal').hide();
+                $('#viewModal').fadeOut();
             });
 
             $('.view-btn').click(function(event) {
@@ -163,24 +210,29 @@ $result = mysqli_query($conn, $query);
                 $.getJSON(`../php/get_pending.php?id=${id}`, function(data) {
                     if (data.success) {
                         const originalDate = new Date(data.pending.date_created);
-                        const formattedDate = originalDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',hour12: true});
+                        const formattedDate = originalDate.toLocaleString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true
+                        });
                         $('#applicationInfoContent').html(`
-                    <p style="text-align: center;">
-                    <h1>${data.pending.title}</h1>
-                    <img src="../upload/Tour Images/${data.pending.img}" alt="Tour Picture" width="100">
-                    </p>
-                    <p><strong>Name:</strong> ${data.pending.name}</p>
-                    <p><strong>Email:</strong> ${data.pending.email}</p>
-                    <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
-                    <p><strong>Address:</strong> ${data.pending.address}</p>
-                    <p style="overflow: hidden; white-space: normal;height: 5em;text-overflow: -o-ellipsis-lastline; "><strong>Description:</strong> ${data.pending.description}</p>
-                    <p><strong>Proof:</strong> ${data.pending.proof}</p>
-                    <img src="../upload/Permits/${data.pending.proofImage} alt="Proof Picture" width="100">
-                    <p><strong>Date:</strong> ${formattedDate}</p>
-                    <a class="accept-btn" href="../php/updatePending.php?status=1&tour_id=${data.pending.tours.id}&user_id=${data.pending.users.id}">Accept</a>
-                    <a class="accept-btn" href="../php/updatePending.php?status=2&tour_id=${data.pending.tours.id}">Decline</a>
-                `);
-                        $('#viewModal').show();
+                            <h1 style="text-align: center;">${data.pending.title}</h1>
+                            <img src="../upload/Tour Images/${data.pending.img}" alt="Tour Picture" width="100" class="zoomable-img">
+                            <p><strong>Name:</strong> ${data.pending.name}</p>
+                            <p><strong>Email:</strong> ${data.pending.email}</p>
+                            <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
+                            <p><strong>Address:</strong> ${data.pending.address}</p>
+                            <p style="overflow: hidden; white-space: normal; height: 5em; text-overflow: ellipsis;"><strong>Description:</strong> ${data.pending.description}</p>
+                            <p><strong>Proof:</strong> ${data.pending.proof}</p>
+                            <img src="../upload/Permits/${data.pending.proof_image}" alt="Proof Picture" width="100" class="zoomable-img">
+                            <p><strong>Date:</strong> ${formattedDate}</p>
+                            <a class="accept-btn" href="../php/updatePending.php?status=1&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
+                            <a class="accept-btn" href="../php/updatePending.php?status=2&tour_id=${data.pending.id}">Decline</a>
+                        `);
+                        $('#viewModal').fadeIn();
                     } else {
                         Toast.fire({
                             icon: 'error',
@@ -194,6 +246,21 @@ $result = mysqli_query($conn, $query);
                     });
                 });
             }
+            $(document).on('click', '.zoomable-img', function() {
+                const imgSrc = $(this).attr('src');
+                $('#zoomImage').attr('src', imgSrc);
+                $('#zoomModal').fadeIn();
+            });
+
+            $('.close-zoom').click(function() {
+                $('#zoomModal').fadeOut();
+            });
+
+            $(window).click(function(event) {
+                if ($(event.target).is('#zoomModal')) {
+                    $('#zoomModal').fadeOut();
+                }
+            });
         });
     </script>
 

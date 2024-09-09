@@ -1,17 +1,22 @@
+<head>
+  <link rel="stylesheet" href="assets/css/topnav.css">
+</head>
+<head>
+  <link rel="stylesheet" href="assets/css/topnav.css">
+</head>
 <div class="topnav" id="myTopnav">
   <div class="nav__logo">
     <a href="../user/home">BagoTours.</a>
   </div>
-  <a href="home">Home</a>
-  <a href="map">Destination</a>
+  <div class="nav-links">
+    <a href="home">Home</a>
+    <a href="map">Destination</a>
+  </div>
   <div class="search-wrapper">
     <i class="fa fa-search"></i>
     <input type="text" id="search" class="search-input" placeholder="Search...">
+    <div id="dropdown" class="dropdown"></div> <!-- Removed duplicate dropdown -->
   </div>
-  <div id="dropdown" class="dropdown" style="display: none;"></div>
-  <a href="javascript:void(0);" class="icon" onclick="toggleResponsiveNav()">
-    <i class="fa fa-bars"></i>
-  </a>
   <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" onclick="toggleProfileDropdown()">
   <div id="profileDropdown" class="profile-dropdown" style="display: none;">
     <a href="review">
@@ -26,23 +31,39 @@
     <a href="setting">
       <i class="fa fa-cog"></i> Settings
     </a>
-    <a href="../php/logout.php" onclick="return confirmLogout()">
+    <a href="#" onclick="return confirmLogout()">
       <i class="fa fa-sign-out"></i> Logout
     </a>
   </div>
+  <a href="javascript:void(0);" class="icon" onclick="toggleResponsiveNav()">
+    <i class="fa fa-bars"></i>
+  </a>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
   function confirmLogout() {
-    return confirm('Do you want to log out?');
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Log out',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '../php/logout.php';
+      }
+    });
   }
 
   function toggleResponsiveNav() {
     const nav = document.getElementById("myTopnav");
-    if (nav.className === "topnav") {
-      nav.className += " responsive";
+    const links = document.querySelector(".nav-links");
+    if (links.style.display === "flex") {
+      links.style.display = "none";
     } else {
-      nav.className = "topnav";
+      links.style.display = "flex";
     }
   }
 
@@ -50,15 +71,27 @@
     $("#search").on("keyup", function() {
       const query = $(this).val();
       if (query.length > 1) {
+        console.log('Search triggered with query:', query);
+        $("#dropdown").html("<div style='padding:10px;'>Loading...</div>").show();
+
         $.ajax({
-          url: "../php/search.php",
+          url: "../php/search.php",  // Make sure this file exists and works properly
           method: "POST",
           data: { query: query },
           success: function(data) {
             $("#dropdown").html(data).show();
+          },
+          error: function() {
+            $("#dropdown").html("<div style='padding:10px;'>Error fetching results</div>").show();
           }
         });
       } else {
+        $("#dropdown").hide();
+      }
+    });
+
+    $(document).click(function(event) {
+      if (!$(event.target).closest('.search-wrapper').length) {
         $("#dropdown").hide();
       }
     });
@@ -83,3 +116,4 @@
     }
   };
 </script>
+

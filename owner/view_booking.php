@@ -8,14 +8,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if (!isset($_GET['user_id']) || !isset($_GET['booking_id'])) {
-    header("Location: ../admin/booking.php");
+    header("Location: ../owner/booking.php");
     exit();
 }
 
 $user_id = $_GET['user_id'];
 $booking_id = $_GET['booking_id'];
 
-// Fetch user details
 $query_user = "SELECT id, username, email, phone_number FROM users WHERE id = ?";
 $stmt_user = mysqli_prepare($conn, $query_user);
 mysqli_stmt_bind_param($stmt_user, "i", $user_id);
@@ -28,7 +27,6 @@ if ($user_result) {
     die("User not found.");
 }
 
-// Fetch booking details
 $query_booking = "SELECT b.*, t.title as tour_title FROM booking b
                   JOIN tours t ON b.tours_id = t.id
                   WHERE b.id = ?";
@@ -50,9 +48,7 @@ if ($booking_result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- My CSS -->
     <link rel="stylesheet" href="../assets/css/admin.css">
 
     <title>BaGoTours. View Booking</title>

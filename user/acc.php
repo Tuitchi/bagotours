@@ -12,6 +12,13 @@ $user = getUserById($conn, $user_id);
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
 </head>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+
     main {
         height: 675px !important;
     }
@@ -71,7 +78,7 @@ $user = getUserById($conn, $user_id);
         margin-top: 0;
     }
 
-    input[type="file"],
+    main input[type="file"],
     img#profilePreview {
         margin-top: 10px;
         margin-left: 25%;
@@ -89,10 +96,10 @@ $user = getUserById($conn, $user_id);
         margin: 20px 0;
     }
 
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    select {
+    main input[type="text"],
+    main input[type="password"],
+    main input[type="email"],
+    main select {
         width: calc(100% - 22px);
         padding: 10px;
         margin-bottom: 10px;
@@ -267,24 +274,28 @@ $user = getUserById($conn, $user_id);
                 </div>
                 <div class="changepassword">
                     <h3>Change Password</h3>
-                    <form onsubmit="return validateForm()" action="../php/changePass.php" method="post">
+                    <form id="changePasswordForm">
                         <label for="oldPassword">Old Password:</label>
                         <input type="password" id="oldPassword" name="oldPassword" required>
+
                         <label for="newPassword">New Password:</label>
                         <input type="password" id="newPassword" name="newPassword" required onkeyup="checkPasswordStrength()">
                         <div id="passwordStrength" style="color:red"></div>
+
                         <label for="confirmPassword">Confirm Password:</label>
                         <input type="password" id="confirmPassword" name="confirmPassword" required>
-                        <span class="error" id="passwordError">Passwords do not match!</span>
+
+                        <span class="error" id="passwordError" style="display: none;">Passwords do not match!</span>
+
                         <input type="submit" value="Save">
                     </form>
                 </div>
                 <div class="personalDetails">
                     <h3>Personal Details</h3>
-                    <form>
+                    <form action="../php/updateAcc.php" method="POST" enctype="multipart/form-data">
                         <div class="profilepic" id="profilePic">
                             <img id="profilePreview" src="../upload/Profile Pictures/<?php echo $user['profile_picture'] ?>" alt="Profile Preview">
-                            <input type="file" id="profilePicture" hidden>
+                            <input type="file" id="profilePicture" name="profilePicture">
                             <label for="profilePicture" id="pp-icon"><i class="fa fa-camera" aria-hidden="true"></i></label>
                         </div>
                         <label for="fullName">Full Name:</label>
@@ -333,6 +344,43 @@ $user = getUserById($conn, $user_id);
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("changePasswordForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const oldPassword = document.getElementById("oldPassword").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            const passwordError = document.getElementById("passwordError");
+            if (newPassword !== confirmPassword) {
+                passwordError.style.display = "block";
+                passwordError.innerHTML = "Passwords do not match!";
+                return;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            const formData = new FormData();
+            formData.append("oldPassword", oldPassword);
+            formData.append("newPassword", newPassword);
+            formData.append("confirmPassword", confirmPassword);
+
+            fetch("../php/changePass.php", {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "error") {
+                        passwordError.style.display = "block";
+                        passwordError.innerHTML = data.message;
+                    } else if (data.status === "success") {
+                        alert("Password updated successfully!");
+                        passwordError.style.display = "none";
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
         document.querySelectorAll('.editUser ul li a').forEach(link => {
             link.addEventListener('click', function(event) {
                 event.preventDefault();
@@ -358,10 +406,19 @@ $user = getUserById($conn, $user_id);
         }
 
         function checkPasswordStrength() {
-            const strengthBar = document.getElementById('passwordStrength');
-            const password = document.getElementById('newPassword').value;
-            const strength = password.length > 8 ? 'Strong' : 'Weak';
-            strengthBar.textContent = `Password Strength: ${strength}`;
+            const newPassword = document.getElementById("newPassword").value;
+            const passwordStrength = document.getElementById("passwordStrength");
+
+            if (newPassword.length < 6) {
+                passwordStrength.innerHTML = "Weak";
+                passwordStrength.style.color = "red";
+            } else if (newPassword.length >= 6 && newPassword.length < 10) {
+                passwordStrength.innerHTML = "Medium";
+                passwordStrength.style.color = "orange";
+            } else {
+                passwordStrength.innerHTML = "Strong";
+                passwordStrength.style.color = "green";
+            }
         }
 
         function previewImage(event) {

@@ -22,7 +22,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         </li>
         <li class="<?php echo $current_page == 'booking' ? 'active' : ''; ?>">
             <a href="booking">
-                <i class='bx bxs-calendar-star' ></i>
+                <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
             </a>
         </li>
@@ -53,10 +53,26 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             </a>
         </li>
         <li>
-            <a href="../php/logout.php" class="logout">
+            <a href="#" class="logout" onclick="return confirmLogout()">
                 <i class='bx bxs-log-out-circle'></i>
                 <span class="text">Logout</span>
             </a>
         </li>
     </ul>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Log out',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '../php/logout.php';
+            }
+        });
+    }
+</script>

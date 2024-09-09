@@ -78,38 +78,6 @@ include 'includes/dashboard_query.php';
 
 	<script src="../assets/js/script.js"></script>
 	<script>
-		google.charts.load('current', {
-			'packages': ['corechart']
-		});
-		google.charts.setOnLoadCallback(drawChart);
-
-		function drawChart() {
-			fetch('assets/chart.php')
-				.then(response => response.json())
-				.then(tourData => {
-					if (Array.isArray(tourData) && tourData.length > 0) {
-						const data = google.visualization.arrayToDataTable([
-							['Tour Type', 'Count'],
-							...tourData
-						]);
-
-						const options = {
-							title: 'Tours by Type',
-							is3D: true
-						};
-
-						const chart = new google.visualization.PieChart(document.getElementById('myChart'));
-						chart.draw(data, options);
-					} else {
-						console.error('No data or invalid data format:', tourData);
-						document.getElementById('myChart').innerHTML = '<p>No data available to display.</p>';
-					}
-				})
-				.catch(error => {
-					console.error('Error fetching data:', error);
-					document.getElementById('myChart').innerHTML = '<p>Failed to load chart data.</p>';
-				});
-		}
 	</script>
 </body>
 
