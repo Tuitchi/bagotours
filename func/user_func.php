@@ -26,6 +26,33 @@ function getTourById($conn, $id)
         return null;
     }
 }
+function getBookingById($conn, $id)
+{
+    $stmt = $conn->prepare("SELECT 
+        b.id AS booking_id,
+        t.title AS tour_title,
+        b.date_sched AS date_scheduled,
+        b.people AS number_of_people,
+        CASE 
+            WHEN b.status = 1 THEN 'Approved'
+            WHEN b.status = 2 THEN 'Disapproved'
+            ELSE 'Pending'
+        END AS status
+    FROM 
+        booking b
+    JOIN 
+        tours t ON b.tours_id = t.id
+    WHERE 
+        b.user_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $bookings = [];
+    while ($row = $result->fetch_assoc()) {
+        $bookings[] = $row;
+    }
+    return $bookings;
+}
 function getUserById($conn, $id)
 {
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
@@ -77,4 +104,22 @@ function getAllPopular($conn)
         $popularTours[] = $row;
     }
     return $popularTours;
+}
+
+function alreadyRegistered($user_id) {
+    global $conn;
+
+    $sql = "SELECT COUNT(*) FROM tours WHERE user_id = ?";
+    
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        return $count > 0;
+    } else {
+        return false;
+    }
 }

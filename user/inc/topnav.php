@@ -1,181 +1,22 @@
-<style>
-  .topnav {
-  overflow: hidden;
-  background-color: #333333b0;
-  height: 50px;
-
-}
-
-.nav__logo a {
-  margin-left: 20px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--white);
-  font-family: serif;
-}
-
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-
-.topnav input[type=text] {
-  padding-left: 40px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  height: 30px;
-  margin-top: 7px;
-  margin-left: 20px;
-  border-radius: 4px;
-  font-size: 17px;
-  position: relative;
-}
-
-.search-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.search-wrapper .fa-search {
-  position: absolute;
-  top: 55%;
-  left: 30px;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: black;
-  z-index: 10;
-}
-
-#search {
-  padding-left: 35px;
-  width: 200px;
-  z-index: 1;
-}
-
-.author-4 {
-
-  float: right;
-  width: 45px;
-  height: 45px;
-  border-radius: 100px;
-  margin-top: 3px;
-  margin-right: 20px;
-}
-
-.topnav .icon {
-  display: none;
-}
-
-.dropdown {
-  text-align: left;
-  position: absolute;
-  top: 39px;
-  left: 355px;
-  max-width: 400px;
-  min-width: 300px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-}
-
-.dropdown-item {
-  width: 300px;
-  cursor: pointer;
-  color: black;
-}
-
-.dropdown-item:hover {
-  background-color: #f1f1f1;
-}
-
-.icon {
-  display: none;
-}
-
-.profile-dropdown {
-  position: absolute;
-  right: 10px;
-  top: 50px;
-  width: 150px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: none;
-  z-index: 1000;
-}
-
-.profile-dropdown a {
-  text-align: left;
-  font-size: small;
-  padding: 10px;
-  display: block;
-  color: #333;
-  text-decoration: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-
-.profile-dropdown a:hover {
-  background-color: #f1f1f1;
-}
-
-.author-4 {
-  float: right;
-  width: 45px;
-  height: 45px;
-  border-radius: 100px;
-  margin-top: 3px;
-  margin-right: 30px;
-}
-
-.topnav .icon {
-  display: none;
-}
-
-.content {
-  display: block;
-  margin-top: 10px;
-  width: 90%;
-  margin: auto;
-}
-
-</style>
+<head>
+  <link rel="stylesheet" href="assets/css/topnav.css">
+</head>
+<head>
+  <link rel="stylesheet" href="assets/css/topnav.css">
+</head>
 <div class="topnav" id="myTopnav">
   <div class="nav__logo">
     <a href="../user/home">BagoTours.</a>
   </div>
-  <a href="home">Home</a>
-  <a href="map">Destination</a>
+  <div class="nav-links">
+    <a href="home">Home</a>
+    <a href="map">Destination</a>
+  </div>
   <div class="search-wrapper">
     <i class="fa fa-search"></i>
     <input type="text" id="search" class="search-input" placeholder="Search...">
+    <div id="dropdown" class="dropdown"></div> <!-- Removed duplicate dropdown -->
   </div>
-  <div id="dropdown" class="dropdown" style="display: none;"></div>
-  <a href="javascript:void(0);" class="icon" onclick="toggleResponsiveNav()">
-    <i class="fa fa-bars"></i>
-  </a>
   <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" onclick="toggleProfileDropdown()">
   <div id="profileDropdown" class="profile-dropdown" style="display: none;">
     <a href="review">
@@ -190,23 +31,39 @@
     <a href="setting">
       <i class="fa fa-cog"></i> Settings
     </a>
-    <a href="../php/logout.php" onclick="return confirmLogout()">
+    <a href="#" onclick="return confirmLogout()">
       <i class="fa fa-sign-out"></i> Logout
     </a>
   </div>
+  <a href="javascript:void(0);" class="icon" onclick="toggleResponsiveNav()">
+    <i class="fa fa-bars"></i>
+  </a>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
   function confirmLogout() {
-    return confirm('Do you want to log out?');
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Log out',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '../php/logout.php';
+      }
+    });
   }
 
   function toggleResponsiveNav() {
     const nav = document.getElementById("myTopnav");
-    if (nav.className === "topnav") {
-      nav.className += " responsive";
+    const links = document.querySelector(".nav-links");
+    if (links.style.display === "flex") {
+      links.style.display = "none";
     } else {
-      nav.className = "topnav";
+      links.style.display = "flex";
     }
   }
 
@@ -214,15 +71,27 @@
     $("#search").on("keyup", function() {
       const query = $(this).val();
       if (query.length > 1) {
+        console.log('Search triggered with query:', query);
+        $("#dropdown").html("<div style='padding:10px;'>Loading...</div>").show();
+
         $.ajax({
-          url: "../php/search.php",
+          url: "../php/search.php",  // Make sure this file exists and works properly
           method: "POST",
           data: { query: query },
           success: function(data) {
             $("#dropdown").html(data).show();
+          },
+          error: function() {
+            $("#dropdown").html("<div style='padding:10px;'>Error fetching results</div>").show();
           }
         });
       } else {
+        $("#dropdown").hide();
+      }
+    });
+
+    $(document).click(function(event) {
+      if (!$(event.target).closest('.search-wrapper').length) {
         $("#dropdown").hide();
       }
     });
@@ -247,3 +116,4 @@
     }
   };
 </script>
+
