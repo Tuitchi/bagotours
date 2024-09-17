@@ -165,9 +165,157 @@ if (!$tour) {
       transition: transform 0.3s;
     }
 
-    .tour-images img:hover {
-      transform: scale(1.1);
-    }
+  .book-btn {
+    padding: 8px 16px; /* Smaller padding for the button */
+  }
+}
+ 
+.title {
+    overflow: hidden;
+    background-color: hsl(0, 5%, 34%);
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    
+  }
+  
+  .title h2 {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .title p{
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    margin-top: 30px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .title h2 {
+ 
+    color: rgb(235, 233, 233);
+  }
+  
+  /* Create a right-aligned (split) link inside the navigation bar */
+
+  .title .split {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #0444aa;
+    color: white;
+    padding: 10px 13px;
+    margin-right: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+.split:hover{
+    background-color: #496c8f;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    
+}
+
+/* image slide */
+
+
+/* Slideshow container */
+/* Slideshow Container */
+.slideshow-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  /* Slides */
+  .mySlides {
+    display: none;
+    background-color: #f9f9f9;
+    padding: 10px;
+    transition: opacity 1s ease;
+    opacity: 0;
+    transition: transform 0.5s ease;
+    
+  }
+  
+  .mySlides img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    
+  }
+  
+  /* Navigation Buttons */
+  .prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: rgb(18, 17, 17);
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+  
+  .prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Dots */
+  .dot-container {
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+  
+  .active, .dot:hover {
+    background-color: #717171;
+  }
+  
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+
+/* RESORT DEATILS */
+
 
 
     .book-btn:hover {
