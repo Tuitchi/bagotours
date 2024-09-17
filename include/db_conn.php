@@ -1,16 +1,16 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "tourism";
+$DATABASE_HOSTNAME = "localhost";
+$DATABASE_USERNAME = "root";
+$DATABASE_PASSWORD = "";
+$DATABASE_NAME = "tourism";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($DATABASE_HOSTNAME, $DATABASE_USERNAME, $DATABASE_PASSWORD, $DATABASE_NAME);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    $connection_message = "Database connected successfully";
+    $sql = "SELECT file FROM system_info WHERE type = 'Tab Icon' LIMIT 1;";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $GLOBALS['webIcon'] = $row['file'];
 }
-?>

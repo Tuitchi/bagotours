@@ -1,9 +1,6 @@
 <head>
   <link rel="stylesheet" href="assets/css/topnav.css">
 </head>
-<head>
-  <link rel="stylesheet" href="assets/css/topnav.css">
-</head>
 <div class="topnav" id="myTopnav">
   <div class="nav__logo">
     <a href="../user/home">BagoTours.</a>
@@ -15,10 +12,15 @@
   <div class="search-wrapper">
     <i class="fa fa-search"></i>
     <input type="text" id="search" class="search-input" placeholder="Search...">
-    <div id="dropdown" class="dropdown"></div> <!-- Removed duplicate dropdown -->
+    <div id="dropdown" class="dropdown"></div>
   </div>
   <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" onclick="toggleProfileDropdown()">
   <div id="profileDropdown" class="profile-dropdown" style="display: none;">
+    <a href="notifications">
+      <i class="fa fa-bell"></i> Notification
+      <?php require_once ''; ?>
+			<span class="num"><?php echo $notifCount?></span>
+    </a>
     <a href="review">
       <i class="fa fa-pencil-square-o"></i> Reviews
     </a>

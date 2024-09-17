@@ -28,4 +28,3 @@ if ($stmt->execute()) {
     header("Location: ../admin/pending?process=error&message=Failed to update tour status");
     exit();
 }
-?>

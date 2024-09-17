@@ -106,11 +106,12 @@ function getAllPopular($conn)
     return $popularTours;
 }
 
-function alreadyRegistered($user_id) {
+function alreadyRegistered($user_id)
+{
     global $conn;
 
     $sql = "SELECT COUNT(*) FROM tours WHERE user_id = ?";
-    
+
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
@@ -121,5 +122,57 @@ function alreadyRegistered($user_id) {
         return $count > 0;
     } else {
         return false;
+    }
+}
+
+function emailAlreadyUsed($conn, $email)
+{
+    $sql = "SELECT * FROM users WHERE email = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $stmt->close();
+            return true;
+        } else {
+            $stmt->close();
+            return false;
+        }
+    }
+    return false;
+}
+
+function usernameAlreadyUsed($conn, $username)
+{
+    $sql = "SELECT * FROM users WHERE username = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $stmt->close();
+            return true;
+        } else {
+            $stmt->close();
+            return false;
+        }
+    }
+    return false;
+}
+
+function getNotificationsCount($conn) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM notification WHERE user_id = ? AND unread = 1");
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $stmt->close();
+        return $result->fetch_assoc()['COUNT(*)'];
+    } else {
+        $stmt->close();
+        return 0;
     }
 }

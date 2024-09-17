@@ -23,6 +23,7 @@ if (!$tour) {
 
   <link rel="stylesheet" href="assets/css/tours.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css">
@@ -236,30 +237,19 @@ if (!$tour) {
         <h2>Book in <?php echo htmlspecialchars($tour['title']) ?> </h2>
       </div>
       <div class="modal-body">
-        <?php 
-        $sql = 'SELECT is_verified FROM users WHERE id = ' . $_SESSION['user_id'];
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
-        $verified = $row['is_verified'];
-        ?>
-        <?php if ($verified == false) { ?>
-          <form action="../php/booking.php" method="post">
-            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>" />
-            <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>" />
-            <label for="phone">Phone:</label><br>
-            <input type="tel" id="phone" name="phone" required><br>
-            <label for="date">Date:</label><br>
-            <input type="date" id="date" name="date" required><br>
-            <label for="time">Time:</label><br>
-            <input type="time" id="time" name="time" required><br>
-            <label for="people">Number of people:</label><br>
-            <input type="number" id="people" name="people" min="1" required><br>
-            <input type="submit" value="Book now">
-          </form>
-        <?php } else { ?>
-          <p>Please verify your account to book in this resort.</p>
-          <a href="verify.php">Verify your account</a>
-        <?php } ?>
+        <form action="../php/booking.php" method="post">
+          <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>" />
+          <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>" />
+          <label for="phone">Phone:</label><br>
+          <input type="tel" id="phone" name="phone" required><br>
+          <label for="date">Date:</label><br>
+          <input type="date" id="date" name="date" required><br>
+          <label for="time">Time:</label><br>
+          <input type="time" id="time" name="time" required><br>
+          <label for="people">Number of people:</label><br>
+          <input type="number" id="people" name="people" min="1" required><br>
+          <input type="submit" value="Book now">
+        </form>
       </div>
     </div>
   </div>

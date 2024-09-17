@@ -52,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         $profile_picture = $row['profile_picture'];
     }
+    unset($_SESSION['profile-pic']);
+    $_SESSION['profile-pic'] = $profile_picture;
 
     $stmt = $conn->prepare("UPDATE users SET name = ?, username = ?, email = ?, phone_number = ?, profile_picture = ? WHERE id = ?");
     $stmt->bind_param("sssssi", $fullName, $username, $email, $phone, $profile_picture, $user_id);

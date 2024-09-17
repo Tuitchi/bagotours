@@ -7,6 +7,7 @@ $user = getUserById($conn, $user_id);
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
@@ -77,7 +78,6 @@ $user = getUserById($conn, $user_id);
     h3 {
         margin-top: 0;
     }
-
     main input[type="file"],
     img#profilePreview {
         margin-top: 10px;
@@ -246,7 +246,7 @@ $user = getUserById($conn, $user_id);
 </style>
 
 <body>
-    <?php include('inc/topnav.php'); ?>
+    <?php require('inc/topnav.php'); ?>
 
     <main>
         <div class="container">

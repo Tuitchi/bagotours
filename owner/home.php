@@ -40,6 +40,7 @@ $touristSpotsJson = json_encode($touristSpots);
 
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
 	<!-- My CSS -->
 	<link rel="stylesheet" href="../assets/css/admin.css">
 	<!-- Mapbox -->
