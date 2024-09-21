@@ -16,6 +16,13 @@ function getTourById($conn, $id)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+function getTourImageById($conn, $id)
+{
+    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE id = :id");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 function getBookingById($conn, $id)
 {

@@ -11,28 +11,33 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
-
-
+try {
+    // Fetching inquiries from the database
+    $query = "SELECT u.name, u.email, i.subject, i.message, i.status, i.date_created 
+              FROM inquiry i 
+              JOIN users u ON i.user_id = u.id 
+              ORDER BY i.date_created DESC";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Database query failed: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
-
-    <!-- Boxicons -->
+    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo htmlspecialchars($webIcon); ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- My CSS -->
     <link rel="stylesheet" href="../assets/css/admin.css">
-
     <title>BaGoTours. Inquiries</title>
 </head>
 
 <body>
-
     <!-- SIDEBAR -->
     <?php include 'includes/sidebar.php'; ?>
     <!-- SIDEBAR -->
@@ -72,19 +77,15 @@ $pp = $_SESSION['profile-pic'];
                         </thead>
                         <tbody>
                             <?php
-                            // Fetching inquiries from the database
-                            $query = "SELECT u.name, u.email, i.subject, i.message, i.status, i.date_created FROM inquiry i JOIN users u ON i.user_id = u.id ORDER BY i.date_created DESC";
-                            $result = mysqli_query($conn, $query);
-                            
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
+                            if (!empty($inquiries)) {
+                                foreach ($inquiries as $row) {
                                     echo "<tr>";
                                     echo "<td>" . htmlspecialchars($row['name']) . "</td>";
                                     echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                                     echo "<td>" . htmlspecialchars($row['subject']) . "</td>";
                                     echo "<td>" . htmlspecialchars($row['message']) . "</td>";
                                     echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($row['date_created']) . "</td>"; // Ensure the correct column name
                                     echo "</tr>";
                                 }
                             } else {
@@ -102,5 +103,4 @@ $pp = $_SESSION['profile-pic'];
 
     <script src="../assets/js/script.js"></script>
 </body>
-
 </html>

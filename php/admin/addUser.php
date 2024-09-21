@@ -20,9 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $query = "INSERT INTO users (name, email, password, role, date_created) VALUES (?, ?, ?, ?, NOW())";
+    $query = "INSERT INTO users (name, email, password, role, date_created) VALUES (:name, :email, :password, :role, NOW())";
     if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hashed_password);
+        $stmt->bindParam(':role', $role);
+        
         if ($stmt->execute()) {
             echo json_encode(['success' => true, 'message' => 'User added successfully.']);
             exit();
@@ -38,4 +42,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit();
 }
-?>

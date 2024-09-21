@@ -20,9 +20,7 @@ try {
         throw new Exception("No file found for 'Tab Icon'.");
     }
 } catch (PDOException $e) {
-    // Log PDO-specific error messages
     error_log("PDO error: " . $e->getMessage());
 } catch (Exception $e) {
-    // Log general exceptions
     error_log($e->getMessage());
 }

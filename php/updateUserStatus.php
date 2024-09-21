@@ -1,26 +1,24 @@
 <?php
 require '../include/db_conn.php';
-
-session_start(); // Make sure session is started
+session_start();
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    $sql = "UPDATE users SET role = 'owner' WHERE id = ?";
+    $sql = "UPDATE users SET role = 'owner' WHERE id = :user_id";
 
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("i", $user_id);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            $sql = "SELECT id FROM tours WHERE user_id = ? AND status = 1";
+            $sql = "SELECT id FROM tours WHERE user_id = :user_id AND status = 1";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $_SESSION['user_id']);
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
-            $result = $stmt->get_result();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result->num_rows > 0) {
-                $tours = $result->fetch_assoc();
-                $_SESSION['tour_id'] = $tours['id'];
+            if ($result) {
+                $_SESSION['tour_id'] = $result['id'];
                 header("Location: ../owner/home?dsp=intro");
                 exit();
             }

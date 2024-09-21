@@ -11,16 +11,28 @@ $user_id = $_SESSION['user_id'];
 $tour_id = $_SESSION['tour_id'];
 $pp = $_SESSION['profile-pic'];
 
-$query = "SELECT b.*, t.title as tour_title, u.username FROM booking b
-          JOIN tours t ON b.tours_id = t.id
-          JOIN users u ON b.user_id = u.id WHERE t.id = '$tour_id'
-          ORDER BY b.date_sched DESC";
-$result = mysqli_query($conn, $query);
+try {
+	$query = "SELECT b.*, t.title AS tour_title, u.username 
+              FROM booking b
+              JOIN tours t ON b.tours_id = t.id
+              JOIN users u ON b.user_id = u.id 
+              WHERE t.id = :tour_id
+              ORDER BY b.date_sched DESC";
 
-if (!$result) {
-	die("Database query failed: " . mysqli_error($conn));
+	$stmt = $conn->prepare($query);
+	$stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+	$stmt->execute();
+
+	$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	if (!$bookings) {
+		echo "No bookings found for this tour.";
+	}
+} catch (PDOException $e) {
+	die("Database query failed: " . $e->getMessage());
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +40,7 @@ if (!$result) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
+	<link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" href="../assets/css/admin.css">
 

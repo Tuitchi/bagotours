@@ -3,14 +3,14 @@ include '../include/db_conn.php';
 
 if (isset($_POST['query'])) {
     $query = htmlspecialchars($_POST['query'], ENT_QUOTES, 'UTF-8');
-    $stmt = $conn->prepare("SELECT id, img, title, type FROM tours WHERE title LIKE ? LIMIT 10");
+    $stmt = $conn->prepare("SELECT id, img, title, type FROM tours WHERE title LIKE :searchTerm LIMIT 10");
     $searchTerm = "%" . $query . "%";
-    $stmt->bind_param("s", $searchTerm);
+    $stmt->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
+    if (count($result) > 0) {
+        foreach ($result as $row) {
             echo '<a class="dropdown-item" style="font-size:15px;display:flex;align-items:center;gap: 15px;text-decoration:none;" href="tour?tours=' . $row['id'] . '">
                     <img style="width:40px;height:40px;border-radius: 4px;object-fit: cover;" src="../upload/Tour Images/' . $row['img'] . '">
                     <div style="display:flex;flex-direction:column;">

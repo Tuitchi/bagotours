@@ -3,10 +3,12 @@ session_start();
 require '../include/db_conn.php';
 
 function updateNotificationStatus($conn, $notificationId) {
-    $sql = 'UPDATE notifications SET is_read = 1 WHERE id = ?';
+    $sql = 'UPDATE notifications SET is_read = 1 WHERE id = :id';
 
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param('i', $notificationId);
+    $stmt = $conn->prepare($sql);
+    
+    if ($stmt) {
+        $stmt->bindParam(':id', $notificationId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return ['success' => true];

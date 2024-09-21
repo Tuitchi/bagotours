@@ -13,13 +13,13 @@ $tour_id = $_SESSION['tour_id'];
 
 $query = "SELECT b.*, t.title as tour_title, u.username FROM booking b
           JOIN tours t ON b.tours_id = t.id
-          JOIN users u ON b.user_id = u.id WHERE t.id = '$tour_id'
+          JOIN users u ON b.user_id = u.id WHERE t.id = :tour_id
           ORDER BY b.date_sched DESC";
-$result = mysqli_query($conn, $query);
 
-if (!$result) {
-	die("Database query failed: " . mysqli_error($conn));
-}
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ if (!$result) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
+	<link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" href="../assets/css/admin.css">
 
@@ -67,8 +67,8 @@ if (!$result) {
 							</tr>
 						</thead>
 						<tbody>
-							<?php if (mysqli_num_rows($result) > 0): ?>
-								<?php while ($row = mysqli_fetch_assoc($result)): ?>
+							<?php if ($result): ?>
+								<?php foreach ($result as $row): ?>
 									<tr>
 										<td><?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></td>
 										<td><?php echo htmlspecialchars($row['tour_title'], ENT_QUOTES, 'UTF-8'); ?></td>
@@ -87,21 +87,20 @@ if (!$result) {
 											<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">View</button>
 										</td>
 									</tr>
-								<?php endwhile; ?>
+								<?php endforeach; ?>
 							<?php else: ?>
 								<tr>
 									<td colspan="7" style="text-align: center;">No bookings found.</td>
 								</tr>
 							<?php endif; ?>
 						</tbody>
-
 					</table>
 				</div>
 			</div>
 		</main>
 	</section>
 	<script src="../assets/js/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		const Toast = Swal.mixin({
 			toast: true,
@@ -114,11 +113,11 @@ if (!$result) {
 				toast.onmouseleave = Swal.resumeTimer;
 			}
 		});
+
 		document.querySelectorAll('.btn-view').forEach(button => {
 			button.addEventListener('click', function() {
 				var userId = this.getAttribute('data-user-id');
 				var bookingId = this.getAttribute('data-booking-id');
-
 				window.location.href = '../admin/view_booking.php?user_id=' + userId + '&booking_id=' + bookingId;
 			});
 		});
@@ -143,9 +142,9 @@ if (!$result) {
 						.then(data => {
 							if (data.success) {
 								Toast.fire({
-                                    icon:'success',
-                                    title: 'Status updated successfully!'
-                                });
+									icon: 'success',
+									title: 'Status updated successfully!'
+								});
 							} else {
 								console.error('Failed to update status:', data.message);
 							}
@@ -155,6 +154,7 @@ if (!$result) {
 						});
 				});
 			});
+
 			document.querySelectorAll('.btn-delete').forEach(button => {
 				button.addEventListener('click', function() {
 					var bookingId = this.getAttribute('data-booking-id');

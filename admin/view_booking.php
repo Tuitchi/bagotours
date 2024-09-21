@@ -15,31 +15,32 @@ if (!isset($_GET['user_id']) || !isset($_GET['booking_id'])) {
 $user_id = $_GET['user_id'];
 $booking_id = $_GET['booking_id'];
 
-// Fetch user details
-$query_user = "SELECT id, username, email, phone_number FROM users WHERE id = ?";
-$stmt_user = mysqli_prepare($conn, $query_user);
-mysqli_stmt_bind_param($stmt_user, "i", $user_id);
-mysqli_stmt_execute($stmt_user);
-$user_result = mysqli_stmt_get_result($stmt_user);
+try {
+    // Fetch user details
+    $query_user = "SELECT id, username, email, phone_number FROM users WHERE id = :user_id";
+    $stmt_user = $conn->prepare($query_user);
+    $stmt_user->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt_user->execute();
+    $user = $stmt_user->fetch(PDO::FETCH_ASSOC);
 
-if ($user_result) {
-    $user = mysqli_fetch_assoc($user_result);
-} else {
-    die("User not found.");
-}
+    if (!$user) {
+        die("User not found.");
+    }
 
-$query_booking = "SELECT b.*, t.title as tour_title FROM booking b
-                  JOIN tours t ON b.tours_id = t.id
-                  WHERE b.id = ?";
-$stmt_booking = mysqli_prepare($conn, $query_booking);
-mysqli_stmt_bind_param($stmt_booking, "i", $booking_id);
-mysqli_stmt_execute($stmt_booking);
-$booking_result = mysqli_stmt_get_result($stmt_booking);
+    // Fetch booking details
+    $query_booking = "SELECT b.*, t.title as tour_title FROM booking b
+                      JOIN tours t ON b.tours_id = t.id
+                      WHERE b.id = :booking_id";
+    $stmt_booking = $conn->prepare($query_booking);
+    $stmt_booking->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+    $stmt_booking->execute();
+    $booking = $stmt_booking->fetch(PDO::FETCH_ASSOC);
 
-if ($booking_result) {
-    $booking = mysqli_fetch_assoc($booking_result);
-} else {
-    die("Booking not found.");
+    if (!$booking) {
+        die("Booking not found.");
+    }
+} catch (PDOException $e) {
+    die("Error: " . $e->getMessage());
 }
 ?>
 
@@ -48,7 +49,7 @@ if ($booking_result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
+    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
 
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
@@ -65,7 +66,7 @@ if ($booking_result) {
             <div class="head-title">
                 <div class="left">
                     <h1>View Booking</h1>
-                    <?php include 'includes/breadcrumb.php';?>
+                    <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>
 

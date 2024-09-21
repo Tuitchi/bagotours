@@ -7,12 +7,14 @@ $status = isset($_GET["status"]) ? intval($_GET["status"]) : 0;
 if ($status == 2) {
     $currentDate = date('Y-m-d');
     $newDate = date('Y-m-d', strtotime('+7 days'));
-    $stmt = $conn->prepare("UPDATE tours SET status = ?, expiry = '$newDate' WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE tours SET status = :status, expiry = :expiry WHERE id = :id");
+    $stmt->bindParam(':expiry', $newDate);
 } else {
-    $stmt = $conn->prepare("UPDATE tours SET status = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE tours SET status = :status WHERE id = :id");
 }
 
-$stmt->bind_param('ii', $status, $id);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
 if ($stmt->execute()) {
     header("Location: ../admin/pending?process=success");

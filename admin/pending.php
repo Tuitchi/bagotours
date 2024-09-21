@@ -8,11 +8,14 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php?action=Invalid");
     exit();
 }
+
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
-$query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 0;";
-$result = mysqli_query($conn, $query);
+$query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 0";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -135,9 +138,9 @@ $result = mysqli_query($conn, $query);
                         </thead>
                         <tbody>
                             <?php
-                            if (mysqli_num_rows($result) > 0) {
+                            if ($result) {
                                 $counter = 1;
-                                while ($row = mysqli_fetch_assoc($result)) {
+                                foreach ($result as $row) {
                                     $status = $row['status'];
                                     echo "<tr>";
                                     echo "<td>" . $counter++ . "</td>";

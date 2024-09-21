@@ -207,7 +207,10 @@ $tour = getAllTours($conn);
                 <div class="order">
                     <div class="head">
                         <h3>Tourist Spot List</h3>
-                        <i class='bx bx-search'></i>
+                        <div class="search-container">
+                            <i class='bx bx-search' id="search-icon"></i>
+                            <input type="text" id="search-input" placeholder="Search...">
+                        </div>
                         <i class='bx bx-filter'></i>
                     </div>
                     <?php

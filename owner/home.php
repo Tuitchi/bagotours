@@ -2,34 +2,43 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-	header("Location: ../login.php?action=Invalid");
-	exit();
+    header("Location: ../login.php?action=Invalid");
+    exit();
 }
+
 require_once '../include/db_conn.php';
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
-$query = "SELECT id, title, latitude, longitude, type, address, img FROM tours";
-$result = $conn->query($query);
+try {
+    $query = "SELECT id, title, latitude, longitude, type, address, img FROM tours";
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$touristSpots = [];
+    $touristSpots = [];
 
-if ($result->num_rows > 0) {
-	while ($row = $result->fetch_assoc()) {
-		$touristSpots[] = [
-			'id' => $row['id'],
-			'title' => $row['title'],
-			'latitude' => $row['latitude'],
-			'longitude' => $row['longitude'],
-			'type' => $row['type'],
-			'image' => $row['img'],
-			'address' => $row['address']
-		];
-	}
+    if ($result) {
+        foreach ($result as $row) {
+            $touristSpots[] = [
+                'id' => $row['id'],
+                'title' => $row['title'],
+                'latitude' => $row['latitude'],
+                'longitude' => $row['longitude'],
+                'type' => $row['type'],
+                'image' => $row['img'],
+                'address' => $row['address']
+            ];
+        }
+    }
+
+    $touristSpotsJson = json_encode($touristSpots);
+} catch (PDOException $e) {
+    error_log("Error fetching tours: " . $e->getMessage());
+    $touristSpotsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
 }
-
-$touristSpotsJson = json_encode($touristSpots);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

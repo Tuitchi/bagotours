@@ -25,9 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $query = "UPDATE users  set name=?, email=?, phone_number=?, username=?, role=? WHERE id = $id;";
+    $query = "UPDATE users SET name = :name, email = :email, phone_number = :phone, username = :username, role = :role WHERE id = :id";
     if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param("sssss", $name, $email, $phone, $username, $role);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
         if ($stmt->execute()) {
             echo json_encode(['success' => true, 'message' => 'User edited successfully.']);
             exit();

@@ -50,7 +50,14 @@ $tour = $_SESSION['tour_id'];
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
 						<h3></h3>
-						<p>Tours</p>
+						<p>Likes</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-map-pin'></i>
+					<span class="text">
+						<h3></h3>
+						<p>Inquiry</p>
 					</span>
 				</li>
 			</ul>
@@ -59,7 +66,8 @@ $tour = $_SESSION['tour_id'];
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3>Tours</h3>
+						<h3>Reports</h3>
+						<i class='bx bx-filter'></i>
 					</div>
 					<div id="myChart" style="max-width:100%; height:400px"></div>
 				</div>
@@ -67,7 +75,6 @@ $tour = $_SESSION['tour_id'];
 					<div class="head">
 						<h3>Notifcations</h3>
 						<i class='bx bx-plus'></i>
-						<i class='bx bx-filter'></i>
 					</div>
 				</div>
 			</div>

@@ -9,12 +9,17 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$query = "SELECT * FROM users WHERE id <> ?";
-$stmt = $conn->prepare($query) or die('Error preparing statement');
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+try {
+    $query = "SELECT * FROM users WHERE id <> :user_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die('Error: ' . $e->getMessage());
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,27 +102,27 @@ $result = $stmt->get_result();
                         </thead>
                         <tbody>
                             <?php
-                            if ($result->num_rows > 0) {
+                            if (!empty($result)) {
                                 $counter = 1;
-                                while ($row = $result->fetch_assoc()) {
+                                foreach ($result as $row) {
                                     echo "<tr>
-                                            <td>" . htmlspecialchars($counter++) . "</td>
-                                            <td>" . htmlspecialchars($row['name']) . "</td>
-                                            <td>" . htmlspecialchars($row['email']) . "</td>
-                                            <td>" . htmlspecialchars($row['role']) . "</td>
-                                            <td>" . date('M. d, Y', strtotime($row['date_created'])) . "</td>
-
-                                            <td>
-                                                <a href='#' class='btn-view' data-id='" . htmlspecialchars($row['id']) . "'>View</a> |
-                                                <a href='#' class='btn-edit' data-id='" . htmlspecialchars($row['id']) . "'>Edit</a> |
-                                                <a href='#' class='btn-delete' data-id='" . htmlspecialchars($row['id']) . "'>Delete</a>
-                                            </td>
-                                          </tr>";
+                <td>" . htmlspecialchars($counter++) . "</td>
+                <td>" . htmlspecialchars($row['name']) . "</td>
+                <td>" . htmlspecialchars($row['email']) . "</td>
+                <td>" . htmlspecialchars($row['role']) . "</td>
+                <td>" . date('M. d, Y', strtotime($row['date_created'])) . "</td>
+                <td>
+                    <a href='#' class='btn-view' data-id='" . htmlspecialchars($row['id']) . "'>View</a> |
+                    <a href='#' class='btn-edit' data-id='" . htmlspecialchars($row['id']) . "'>Edit</a> |
+                    <a href='#' class='btn-delete' data-id='" . htmlspecialchars($row['id']) . "'>Delete</a>
+                </td>
+              </tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='4'>No users found.</td></tr>";
+                                echo "<tr><td colspan='6'>No users found.</td></tr>";
                             }
                             ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -187,17 +192,17 @@ $result = $stmt->get_result();
                 timer: 3000,
                 timerProgressBar: true
             });
-            $('.btn-view').click(function(event) {
+            $(document).on('click', '.btn-view', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 viewUser(userId);
             });
-            $('.btn-edit').click(function(event) {
+            $(document).on('click', '.btn-edit', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 editUser(userId);
             });
-            $('.btn-delete').click(function(event) {
+            $(document).on('click', '.btn-delete', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 deleteUser(userId);
@@ -208,7 +213,7 @@ $result = $stmt->get_result();
                     if (data.success) {
                         $('#userInfoContent').html(`
                             <p style="text-align: center;">
-                                <img src="../upload/Profile Pictures/${data.user.profile_picture}" alt="Profile Picture" width="100">
+                                <img src="../upload/Profile Pictures/${data.user.profile_picture}" alt="Profile Picture" width="100" height="100">
                             </p>
                             <p><strong>Name:</strong> ${data.user.name || 'N/A'}</p>
                             <p><strong>Username:</strong> ${data.user.username || 'N/A'}</p>
@@ -302,7 +307,7 @@ $result = $stmt->get_result();
                                         icon: 'success',
                                         title: response.message
                                     });
-                                    $('#userTableContainer').load(location.href + ' #userTableContainer > *');
+                                    $('main').load(location.href + ' main > ');
                                 } else {
                                     Toast.fire({
                                         icon: 'error',
@@ -315,7 +320,6 @@ $result = $stmt->get_result();
                 });
             }
 
-            // Close modal
             $('.close').click(function() {
                 $(this).closest('.modal').hide();
             });

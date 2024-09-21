@@ -1,5 +1,5 @@
 <?php
-include '../include/db_conn.php';
+include '../include/db_conn.php'; // Ensure this file sets up a PDO connection
 
 $errors = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -51,27 +51,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $hashed_password = password_hash($pwd, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture) VALUES (?,?,?,?,?,?)";
+    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture) VALUES (?, ?, ?, ?, ?, ?)";
 
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("ssssss", $name, $email, $uname, $pwd, $role, $pp);
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$name, $email, $uname, $hashed_password, $role, $pp]);
 
-        if ($stmt->execute()) {
-            session_start();
-            $_SESSION['profile-pic'] = $pp;
-            $_SESSION['user_id'] = $conn->insert_id;
-            echo json_encode(['success' => true, 'redirect' => 'user/home']);
-        } else {
-            error_log("MySQL error: " . $stmt->error);
-            $errors['register'] = "Something went wrong, please try again.";
-            echo json_encode(['success' => false, 'errors' => $errors]);
-        }
-        $stmt->close();
-    } else {
-        $errors['register'] = "Failed to prepare the SQL statement.";
+        session_start();
+        $_SESSION['profile-pic'] = $pp;
+        $_SESSION['user_id'] = $conn->lastInsertId();
+        echo json_encode(['success' => true, 'redirect' => 'user/home']);
+    } catch (PDOException $e) {
+        error_log("PDO error: " . $e->getMessage());
+        $errors['register'] = "Something went wrong, please try again.";
         echo json_encode(['success' => false, 'errors' => $errors]);
     }
 
-    $conn->close();
+    $conn = null; // Close the connection
     exit();
 }

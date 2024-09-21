@@ -10,7 +10,7 @@ $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 $tour_id = $_SESSION['tour_id'];
 $tour = getTourById($conn, $tour_id);
-
+$tourImage = getTourImageById($conn, $tour_id);
 ?>
 
 <!DOCTYPE html>
@@ -28,12 +28,22 @@ $tour = getTourById($conn, $tour_id);
     <title>BaGoTours - View Tour</title>
     <style>
         .tour-container {
-            width: 60%;
-            margin: 0 auto;
+            width: 100%;
+            margin: 25px auto;
             padding: 20px;
             background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+        .head {
+            font-size: larger;
+            display: flex;
+            justify-content: space-between;
+        }
+        i {
+            cursor: pointer;
+        }
+        i:hover {
+            color: gray !important;
         }
 
         .tour-container h1 {
@@ -42,13 +52,14 @@ $tour = getTourById($conn, $tour_id);
         }
 
         .tour-container img {
-            width: 100%;
+            margin: 20px;
+            float: left;
+            width: 50%;
             border-radius: 10px;
         }
 
         .tour-container p {
             font-size: 1.2em;
-            margin: 10px 0;
         }
 
         .tour-container .btn-edit,
@@ -83,19 +94,39 @@ $tour = getTourById($conn, $tour_id);
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>
-            <div id="map" style="height: 400px; width: 100%; margin-top: 20px;"></div>
             <div class="tour-container">
-                <?php if (!empty($tour)) { ?>
+                <div class="head">
                     <h1><?php echo htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                    <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Tour Image">
-                    <p><strong>Address:</strong> <?php echo htmlspecialchars($tour['address'], ENT_QUOTES, 'UTF-8'); ?></p>
-                    <p><strong>Type:</strong> <?php echo htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8'); ?></p>
-                    <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($tour['description'], ENT_QUOTES, 'UTF-8')); ?></p>
-                    <p><strong>Status:</strong> <?php echo $tour['status'] == 1 ? 'Active' : 'Inactive'; ?></p>
-                    <button class="btn-edit" type="button" onclick="loadDoc()">Edit</button>
-                <?php } else { ?>
-                    <p>Tour not found.</p>
-                <?php } ?>
+                    <i class='bx bx-edit-alt' onclick="loadDoc()"></i>
+                </div>
+                <div class="detail-container">
+                    <?php if (!empty($tour)) { ?>
+                        <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Tour Image">
+                        <p><strong>Address:</strong> <?php echo htmlspecialchars($tour['address'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><strong>Type:</strong> <?php echo htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($tour['description'], ENT_QUOTES, 'UTF-8')); ?></p>
+                        <p><strong>Status:</strong> <?php echo $tour['status'] == 1 ? 'Active' : 'Inactive'; ?></p>
+                    <?php } else { ?>
+                        <p>Tour not found.</p>
+                    <?php } ?>
+                </div>
+                <div id="tour-images">
+                    <h2>Images</h2>
+                    <div class="row">
+                        <?php if (!empty($tourImage)) {
+                            foreach ($tourImage as $img) { ?>
+                                <div class="col-md-3">
+                                    <img src="../upload/Tour Images/<?php echo htmlspecialchars($img['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Tour Image" style="width: 100%; border-radius: 10px;">
+                                </div>
+                            <?php }
+                        } else { ?>
+                            <p>No images found.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div id="map" style="height: 400px; width: 100%; margin-top: 20px;"></div>
+                <button class="btn-edit" type="button" onclick="loadDoc()">Edit</button>
+            </div>
             </div>
         </main>
     </section>
