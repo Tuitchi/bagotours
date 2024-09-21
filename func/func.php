@@ -1,57 +1,33 @@
 <?php
 function getTouristSpots($conn) {
     $query = "SELECT id, title, latitude, longitude, type, img, address FROM tours";
-    $result = $conn->query($query);
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $touristSpots = [];
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $touristSpots[] = [
-                'id' => $row['id'],
-                'title' => $row['title'],
-                'latitude' => $row['latitude'],
-                'longitude' => $row['longitude'],
-                'type' => $row['type'],
-                'image' => $row['img'],
-                'address' => $row['address']
-            ];
-        }
-    }
-
-    return json_encode($touristSpots);
+    return json_encode($result);
 }
 
-function createNotification($userId, $message, $url, $type = 'info') {
-    global $conn;
-
-    $stmt = $conn->prepare("INSERT INTO notifications (user_id, message, url, type) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("isss", $userId, $message, $url, $type);
+function createNotification($conn, $userId, $message, $url, $type) {
+    $stmt = $conn->prepare("INSERT INTO notifications (user_id, message, url, type) VALUES (:user_id, :message, :url, :type)");
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam(':message', $message, PDO::PARAM_STR);
+    $stmt->bindParam(':url', $url, PDO::PARAM_STR);
+    $stmt->bindParam(':type', $type, PDO::PARAM_STR);
     $stmt->execute();
 }
-function getNotifications($userId) {
-    global $conn;
 
-    $stmt = $conn->prepare("SELECT id, message, url FROM notifications WHERE user_id = ? AND is_read = 0 ORDER BY created_at DESC");
-    $stmt->bind_param("i", $userId);
+function getNotifications($conn, $userId) {
+    $stmt = $conn->prepare("SELECT id, message, url FROM notifications WHERE user_id = :user_id ORDER BY created_at DESC");
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-
-    $notifications = [];
-    while ($row = $result->fetch_assoc()) {
-        $notifications[] = $row;
-    }
-    return $notifications;
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getNotificationCount($userId) {
-    global $conn; // Your database connection
-
-    $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM notifications WHERE user_id = ? AND is_read = 0");
-    $stmt->bind_param("i", $userId);
+function getNotificationCount($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT COUNT(*) AS unread_count FROM notifications WHERE user_id = :user_id AND is_read = 0");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    
-    $row = $result->fetch_assoc();
-    return $row['count'];
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['unread_count'];
 }

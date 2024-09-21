@@ -16,7 +16,6 @@ $user_id = $_GET['user_id'];
 $booking_id = $_GET['booking_id'];
 
 try {
-    // Fetch user details
     $query_user = "SELECT id, username, email, phone_number FROM users WHERE id = :user_id";
     $stmt_user = $conn->prepare($query_user);
     $stmt_user->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -27,7 +26,6 @@ try {
         die("User not found.");
     }
 
-    // Fetch booking details
     $query_booking = "SELECT b.*, t.title as tour_title FROM booking b
                       JOIN tours t ON b.tours_id = t.id
                       WHERE b.id = :booking_id";

@@ -10,11 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $status = '0';
 
     try {
-        // Prepare the SQL query using PDO
+        // Insert booking
         $stmt = $conn->prepare("INSERT INTO booking (user_id, tours_id, phone_number, date_sched, people, status) 
                                 VALUES (:user_id, :tour_id, :phone, :datetime, :people, :status)");
 
-        // Bind the parameters to the statement
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
         $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
@@ -22,16 +21,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':people', $people, PDO::PARAM_INT);
         $stmt->bindParam(':status', $status, PDO::PARAM_STR);
 
-        // Execute the statement
         if ($stmt->execute()) {
-            header("Location: ../user/tour?tours=$tour_id&status=success");
-            exit();
+            $booking_id = $conn->lastInsertId();
+            try {
+                $stmt = $conn->prepare("SELECT user_id FROM tours WHERE id = :tour_id");
+                $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($row) {
+                    require_once '../func/func.php';
+                    $message = "Someone booked a tour.";
+                    $url = "view_booking.php?user_id=$user_id&booking_id=$booking_id";
+                    $type = 'booking';
+
+                    createNotification($conn, $row['user_id'], $message, $url, $type);
+
+                    header("Location: ../user/tour?tours=$tour_id&status=success$booking_id");
+                    exit();
+                } else {
+                    header("Location: ../user/tour?tours=$tour_id&status=error");
+                    exit();
+                }
+            } catch (PDOException $e) {
+                error_log("Error: " . $e->getMessage());
+                header("Location: ../user/tour?tours=$tour_id&status=error");
+                exit();
+            }
         } else {
             header("Location: ../user/tour?tours=$tour_id&status=error");
             exit();
         }
     } catch (PDOException $e) {
-        // Handle any errors with a redirect and log the error for debugging
         error_log("Error: " . $e->getMessage());
         header("Location: ../user/tour?tours=$tour_id&status=error");
         exit();

@@ -106,7 +106,7 @@ try {
                                 $counter = 1;
                                 foreach ($result as $row) {
                                     echo "<tr>
-                <td>" . htmlspecialchars($counter++) . "</td>
+                <td><strong>" . htmlspecialchars($counter++) . "</strong></td>
                 <td>" . htmlspecialchars($row['name']) . "</td>
                 <td>" . htmlspecialchars($row['email']) . "</td>
                 <td>" . htmlspecialchars($row['role']) . "</td>

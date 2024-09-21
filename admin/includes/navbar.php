@@ -103,6 +103,7 @@ $pp = $_SESSION['profile-pic'];
 				method: 'POST',
 				dataType: 'json',
 				success: function(data) {
+					console.log(data);
 					$('#notification-count').text(data.count);
 					let notificationDropdown = $('#notification-dropdown');
 					notificationDropdown.empty();

@@ -4,8 +4,8 @@ require '../include/db_conn.php';
 require '../func/func.php';
 
 $userId = $_SESSION['user_id'];
-$notificationCount = getNotificationCount($userId);
-$notifications = getNotifications($userId);
+$notificationCount = getNotificationCount($conn,$userId);
+$notifications = getNotifications($conn,$userId);
 
 $response = [
     'count' => $notificationCount,
