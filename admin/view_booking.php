@@ -28,7 +28,6 @@ if ($user_result) {
     die("User not found.");
 }
 
-// Fetch booking details
 $query_booking = "SELECT b.*, t.title as tour_title FROM booking b
                   JOIN tours t ON b.tours_id = t.id
                   WHERE b.id = ?";

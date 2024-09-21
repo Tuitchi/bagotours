@@ -9,8 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 $tour = $_SESSION['tour_id'];
-
-include 'includes/dashboard_query.php';
 ?>
 
 <!DOCTYPE html>
@@ -44,14 +42,14 @@ include 'includes/dashboard_query.php';
 				<li>
 					<i class='bx bxs-group'></i>
 					<span class="text">
-						<h3><?php echo $total_books ?></h3>
+						<h3></h3>
 						<p>Books</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3><?php echo $total_inq ?></h3>
+						<h3></h3>
 						<p>Tours</p>
 					</span>
 				</li>

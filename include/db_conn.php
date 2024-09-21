@@ -4,13 +4,25 @@ $DATABASE_USERNAME = "root";
 $DATABASE_PASSWORD = "";
 $DATABASE_NAME = "tourism";
 
-$conn = new mysqli($DATABASE_HOSTNAME, $DATABASE_USERNAME, $DATABASE_PASSWORD, $DATABASE_NAME);
+try {
+    $conn = new PDO("mysql:host=$DATABASE_HOSTNAME;dbname=$DATABASE_NAME", $DATABASE_USERNAME, $DATABASE_PASSWORD);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} else {
     $sql = "SELECT file FROM system_info WHERE type = 'Tab Icon' LIMIT 1;";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-    $GLOBALS['webIcon'] = $row['file'];
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $GLOBALS['webIcon'] = $row['file'];
+    } else {
+        throw new Exception("No file found for 'Tab Icon'.");
+    }
+} catch (PDOException $e) {
+    // Log PDO-specific error messages
+    error_log("PDO error: " . $e->getMessage());
+} catch (Exception $e) {
+    // Log general exceptions
+    error_log($e->getMessage());
 }

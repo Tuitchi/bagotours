@@ -14,28 +14,30 @@ if (isset($_GET['id'])) {
 
     // Validate that the ID is greater than zero
     if ($id > 0) {
-        $sql = 'DELETE FROM users WHERE id = ?';
+        $sql = 'DELETE FROM users WHERE id = :id';
 
-        // Prepare the SQL statement
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param('i', $id); // Bind the ID parameter
+        try {
+            // Prepare the SQL statement using PDO
+            $stmt = $conn->prepare($sql);
+            
+            // Bind the ID parameter
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
             // Execute the statement and check if rows were affected
             if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
+                if ($stmt->rowCount() > 0) {
                     echo json_encode(['success' => true, 'message' => 'User deleted successfully.']);
                 } else {
                     echo json_encode(['success' => false, 'message' => 'Unable to delete user. User may not exist.']);
                 }
             } else {
                 // If execute fails, log the error and return a generic message
-                error_log('Error executing delete: ' . $stmt->error);
+                error_log('Error executing delete: ' . implode(' ', $stmt->errorInfo()));
                 echo json_encode(['success' => false, 'message' => 'Error executing deletion.']);
             }
-
-            $stmt->close();
-        } else {
-            error_log('Error preparing statement: ' . $conn->error);
+        } catch (PDOException $e) {
+            // Log any PDO exception
+            error_log('Error preparing statement: ' . $e->getMessage());
             echo json_encode(['success' => false, 'message' => 'Error preparing statement.']);
         }
     } else {
@@ -44,7 +46,3 @@ if (isset($_GET['id'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'No user ID specified.']);
 }
-
-// Close the database connection
-$conn->close();
-?>

@@ -2,15 +2,9 @@
 include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
-if (isset($_GET['id'])) {
-    $tour_id = $_GET['id'];
-    $tour = getTourById($conn, $tour_id);
-} else {
-    header("Location: tours.php");
-    exit();
-}
+    $tour = getTourById($conn, $_SESSION['tour_id']);
 ?>
-<main>
+<main id="main">
     <div class="head-title">
         <div class="left">
             <h1>Edit Tours</h1>
@@ -54,7 +48,7 @@ if (isset($_GET['id'])) {
                 </p>
                 <a href="#" class="btn-edit" onclick="document.getElementById('editTour').submit(); return false;">Save Edit</a>
             </form>
-            <a href="view_tour.php?id=<?php echo htmlspecialchars($tour['id'], ENT_QUOTES, 'UTF-8'); ?>" class="btn-delete">Cancel</a>
+            <a href="tour" class="btn-delete">Cancel</a>
         <?php } else { ?>
             <p>Tour not found.</p>
         <?php } ?>

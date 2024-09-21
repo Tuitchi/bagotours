@@ -1,14 +1,15 @@
 <?php
 include '../include/db_conn.php';
 session_start();
+
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $title = mysqli_real_escape_string($conn, $_POST['title']);
-        $address = mysqli_real_escape_string($conn, $_POST['address']);
-        $type = mysqli_real_escape_string($conn, $_POST['type']);
-        $description = mysqli_real_escape_string($conn, $_POST['description']);
-        $longitude = mysqli_real_escape_string($conn, $_POST['longitude']);
-        $latitude = mysqli_real_escape_string($conn, $_POST['latitude']);
+        $title = $_POST['title'];
+        $address = $_POST['address'];
+        $type = $_POST['type'];
+        $description = $_POST['description'];
+        $longitude = $_POST['longitude'];
+        $latitude = $_POST['latitude'];
         $status = '1';
 
         if (!isset($_SESSION['user_id'])) {
@@ -36,13 +37,26 @@ try {
             }
 
             $sql = "INSERT INTO tours (user_id, title, address, type, description, img, status, longitude, latitude) 
-                    VALUES ('$user_id', '$title', '$address', '$type', '$description', '$image_name', '$status','$longitude', '$latitude')";
+                    VALUES (:user_id, :title, :address, :type, :description, :img, :status, :longitude, :latitude)";
 
-            if (!mysqli_query($conn, $sql)) {
-                throw new Exception('Failed to add tour: ' . mysqli_error($conn));
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':address', $address);
+            $stmt->bindParam(':type', $type);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':img', $image_name);
+            $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':longitude', $longitude);
+            $stmt->bindParam(':latitude', $latitude);
+
+            // Execute the prepared statement
+            if ($stmt->execute()) {
+                header("Location: ../admin/tours?status=success");
+                exit();
+            } else {
+                throw new Exception('Failed to add tour.');
             }
-            header("Location: ../admin/tours?status=success");
-            exit();
         } else {
             throw new Exception('Image upload failed or no image selected.');
         }

@@ -2,27 +2,27 @@
 include '../include/db_conn.php';
 
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = intval($_GET['id']);
 
-    $query = "SELECT users.*, tours.* FROM tours JOIN users ON users.id = tours.user_id WHERE tours.id = ? AND tours.status = 0";
-    if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param("i", $id);
+    $query = "SELECT users.*, tours.* FROM tours 
+              JOIN users ON users.id = tours.user_id 
+              WHERE tours.id = :id AND tours.status = 0";
+
+    try {
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $pending = $result->fetch_assoc();
+        
+        if ($stmt->rowCount() > 0) {
+            $pending = $stmt->fetch(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'pending' => $pending]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Tour not found']);
         }
-
-        $stmt->close();
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Error preparing statement']);
+    } catch (PDOException $e) {
+        error_log("Error executing query: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error processing request']);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
-
-$conn->close();

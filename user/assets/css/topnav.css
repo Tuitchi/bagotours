@@ -128,6 +128,9 @@
         width: 100%;
         margin: 10px 0;
     }
+    .search-input {
+        width: 80%;
+    }
 
     .author-4 {
         order: 2;

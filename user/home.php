@@ -4,6 +4,7 @@ include("../func/user_func.php");
 
 $tours = getAllTours($conn);
 $popularTours = getAllPopular($conn);
+
 ?>
 <!DOCTYPE html>
 <html>

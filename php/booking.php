@@ -9,13 +9,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $people = $_POST['people'];
     $status = '0';
 
-    $stmt = $conn->prepare("INSERT INTO booking (user_id, tours_id, phone_number, date_sched, people, status) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("iissis", $user_id, $tour_id, $phone, $datetime, $people, $status);
+    try {
+        // Prepare the SQL query using PDO
+        $stmt = $conn->prepare("INSERT INTO booking (user_id, tours_id, phone_number, date_sched, people, status) 
+                                VALUES (:user_id, :tour_id, :phone, :datetime, :people, :status)");
 
-    if ($stmt->execute()) {
-        header("Location: ../user/tour?tours=$tour_id&status=success");
-        exit();
-    } else {
+        // Bind the parameters to the statement
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+        $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $stmt->bindParam(':datetime', $datetime, PDO::PARAM_STR);
+        $stmt->bindParam(':people', $people, PDO::PARAM_INT);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            header("Location: ../user/tour?tours=$tour_id&status=success");
+            exit();
+        } else {
+            header("Location: ../user/tour?tours=$tour_id&status=error");
+            exit();
+        }
+    } catch (PDOException $e) {
+        // Handle any errors with a redirect and log the error for debugging
+        error_log("Error: " . $e->getMessage());
         header("Location: ../user/tour?tours=$tour_id&status=error");
         exit();
     }

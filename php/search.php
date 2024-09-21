@@ -11,7 +11,7 @@ if (isset($_POST['query'])) {
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            echo '<a class="dropdown-item" style="font-size:13px;display:flex;align-items:center;gap: 15px;" href="tour?tours=' . $row['id'] . '">
+            echo '<a class="dropdown-item" style="font-size:15px;display:flex;align-items:center;gap: 15px;text-decoration:none;" href="tour?tours=' . $row['id'] . '">
                     <img style="width:40px;height:40px;border-radius: 4px;object-fit: cover;" src="../upload/Tour Images/' . $row['img'] . '">
                     <div style="display:flex;flex-direction:column;">
                         <h3 style="font-size:14px;margin:0;color:#333;">' . $row['title'] . '</h3>

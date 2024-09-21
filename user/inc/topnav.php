@@ -1,4 +1,5 @@
 <head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="assets/css/topnav.css">
 </head>
 <div class="topnav" id="myTopnav">
@@ -16,11 +17,7 @@
   </div>
   <img class="author-4" src="../upload/Profile Pictures/<?php echo !empty($_SESSION['profile-pic']) ? $_SESSION['profile-pic'] : 'default.jpg'; ?>" alt="profile-pic" onclick="toggleProfileDropdown()">
   <div id="profileDropdown" class="profile-dropdown" style="display: none;">
-    <a href="notifications">
-      <i class="fa fa-bell"></i> Notification
-      <?php require_once ''; ?>
-			<span class="num"><?php echo $notifCount?></span>
-    </a>
+
     <a href="review">
       <i class="fa fa-pencil-square-o"></i> Reviews
     </a>
@@ -73,20 +70,21 @@
     $("#search").on("keyup", function() {
       const query = $(this).val();
       if (query.length > 1) {
-        console.log('Search triggered with query:', query);
         $("#dropdown").html("<div style='padding:10px;'>Loading...</div>").show();
 
         $.ajax({
-          url: "../php/search.php",  // Make sure this file exists and works properly
-          method: "POST",
-          data: { query: query },
-          success: function(data) {
-            $("#dropdown").html(data).show();
-          },
-          error: function() {
-            $("#dropdown").html("<div style='padding:10px;'>Error fetching results</div>").show();
-          }
-        });
+  url: "../php/search.php",
+  method: "POST",
+  data: { query: query },
+  success: function(data) {
+    $("#dropdown").html(data).show();
+  },
+  error: function(xhr, status, error) {
+    console.error("Error: " + error);
+    $("#dropdown").html("<div style='padding:10px;'>Error fetching results</div>").show();
+  }
+});
+
       } else {
         $("#dropdown").hide();
       }
@@ -118,4 +116,3 @@
     }
   };
 </script>
-

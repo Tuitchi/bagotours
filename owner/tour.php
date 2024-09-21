@@ -76,7 +76,7 @@ $tour = getTourById($conn, $tour_id);
     <?php include 'includes/sidebar.php'; ?>
     <section id="content">
         <?php include 'includes/navbar.php'; ?>
-        <main>
+        <main id="main">
             <div class="head-title">
                 <div class="left">
                     <h1>View Tours</h1>
@@ -109,9 +109,10 @@ $tour = getTourById($conn, $tour_id);
                     document.getElementById("main").innerHTML = this.responseText;
                 }
             };
-            xhttp.open("GET", "edit_tour?id=<?php echo $tour['id']?>", true);
+            xhttp.open("GET", "edit_tour.php", true);
             xhttp.send();
         }
+
         document.addEventListener('DOMContentLoaded', () => {
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
 
@@ -138,47 +139,6 @@ $tour = getTourById($conn, $tour_id);
             map.scrollZoom.disable();
             map.touchZoomRotate.disable();
             map.rotate.disable();
-        });
-
-        document.querySelector('.btn-delete').addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const tourId = this.getAttribute('data-tour-id');
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This action cannot be undone.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('../php/delete_tour.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: new URLSearchParams({
-                                'tour_id': tourId
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-                            if (data.success) {
-                                Swal.fire('Deleted!', data.message, 'success').then(() => {
-                                    window.location.href = 'tours.php';
-                                });
-                            } else {
-                                Swal.fire('Error!', data.message, 'error');
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire('Error!', 'An error occurred while deleting the tour.', 'error');
-                        });
-                }
-            });
         });
     </script>
 </body>

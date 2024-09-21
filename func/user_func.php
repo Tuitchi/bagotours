@@ -4,28 +4,19 @@ include("../include/db_conn.php");
 function getAllTours($conn)
 {
     $sql = "SELECT * FROM tours WHERE status = 1";
-    $result = mysqli_query($conn, $sql);
-    $tours = [];
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $tours[] = $row;
-        }
-    }
-    return $tours;
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getTourById($conn, $id)
 {
-    $stmt = $conn->prepare("SELECT * FROM tours WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    $stmt = $conn->prepare("SELECT * FROM tours WHERE id = :id");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
-    } else {
-        return null;
-    }
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
 function getBookingById($conn, $id)
 {
     $stmt = $conn->prepare("SELECT 
@@ -43,136 +34,78 @@ function getBookingById($conn, $id)
     JOIN 
         tours t ON b.tours_id = t.id
     WHERE 
-        b.user_id = ?");
-    $stmt->bind_param("i", $id);
+        b.user_id = :user_id");
+    $stmt->bindParam(":user_id", $id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    $bookings = [];
-    while ($row = $result->fetch_assoc()) {
-        $bookings[] = $row;
-    }
-    return $bookings;
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 function getUserById($conn, $id)
 {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
-    } else {
-        return null;
-    }
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
 function getAverageRating($conn, $tour_id)
 {
     $stmt = $conn->prepare("
         SELECT COALESCE(AVG(r.rating), 0) AS average_rating
         FROM review_rating r
-        WHERE r.tour_id = ?");
-    $stmt->bind_param("i", $tour_id);
+        WHERE r.tour_id = :tour_id");
+    $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc()['average_rating'];
-    } else {
-        return 0;
-    }
+    return $stmt->fetchColumn() ?: 0;
 }
 
 function getTourImages($conn, $tourId)
 {
-    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE tours_id = ?");
-    $stmt->bind_param("i", $tourId);
+    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE tours_id = :tours_id");
+    $stmt->bindParam(":tours_id", $tourId, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    $images = [];
-    while ($row = $result->fetch_assoc()) {
-        $images[] = $row;
-    }
-    return $images;
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getAllPopular($conn)
 {
-    $stmt = $conn->prepare("SELECT t.id, t.title, t.address, t.type, t.img, COUNT(rr.id) AS rating_count FROM tours t INNER JOIN review_rating rr ON t.id = rr.tour_id GROUP BY t.id ORDER BY rating_count DESC;");
+    $stmt = $conn->prepare("SELECT t.id, t.title, t.address, t.type, t.img, COUNT(rr.id) AS rating_count 
+        FROM tours t 
+        INNER JOIN review_rating rr ON t.id = rr.tour_id 
+        GROUP BY t.id 
+        ORDER BY rating_count DESC");
     $stmt->execute();
-    $result = $stmt->get_result();
-    $popularTours = [];
-    while ($row = $result->fetch_assoc()) {
-        $popularTours[] = $row;
-    }
-    return $popularTours;
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function alreadyRegistered($user_id)
+function registerStatus($conn, $user_id)
 {
-    global $conn;
-
-    $sql = "SELECT COUNT(*) FROM tours WHERE user_id = ?";
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $stmt->bind_result($count);
-        $stmt->fetch();
-        $stmt->close();
-
-        return $count > 0;
-    } else {
-        return false;
-    }
+    $stmt = $conn->prepare("SELECT status FROM tours WHERE user_id = :user_id LIMIT 1");
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() ?: null;
 }
 
 function emailAlreadyUsed($conn, $email)
 {
-    $sql = "SELECT * FROM users WHERE email = ?";
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $stmt->close();
-            return true;
-        } else {
-            $stmt->close();
-            return false;
-        }
-    }
-    return false;
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
 }
 
 function usernameAlreadyUsed($conn, $username)
 {
-    $sql = "SELECT * FROM users WHERE username = ?";
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $stmt->close();
-            return true;
-        } else {
-            $stmt->close();
-            return false;
-        }
-    }
-    return false;
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt->bindParam(":username", $username, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
 }
 
-function getNotificationsCount($conn) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM notification WHERE user_id = ? AND unread = 1");
-    $stmt->bind_param("i", $_SESSION['user_id']);
+function getNotificationsCount($conn)
+{
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM notification WHERE user_id = :user_id AND unread = 1");
+    $stmt->bindParam(":user_id", $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $stmt->close();
-        return $result->fetch_assoc()['COUNT(*)'];
-    } else {
-        $stmt->close();
-        return 0;
-    }
+    return $stmt->fetchColumn() ?: 0;
 }
