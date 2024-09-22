@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    // Handle proof image upload
     if (isset($_FILES['proofImage']) && $_FILES['proofImage']['error'] == 0) {
         $upload_dir = '../upload/Permits/';
         $image = $_FILES['proofImage']['name'];
@@ -63,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    // Insert into the database
     try {
         $sql = "INSERT INTO tours (user_id, title, address, type, description, status, longitude, latitude, proof, proof_image, img) 
                 VALUES (:user_id, :title, :address, :type, :description, :status, :longitude, :latitude, :proof, :proof_image, :img)";
@@ -82,6 +80,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ':proof_image' => $image_name,
             ':img' => $img
         ]);
+        $id = $conn->lastInsertId();
+        try {
+            $sql = "SELECT id FROM users WHERE role = 'admin' LIMIT 1";
+            $stmt = $conn->prepare($sql);
+            if ($stmt->execute()) {
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+            require_once '../func/func.php';
+            $message = "Someone upgrade there account, please check the application form.";
+            $url = "pending.php?view=true&id=$id";
+            $type = 'booking';
+            createNotification($conn, $admin['id'], $message, $url, $type);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to get admin id.']);
+            }
+        } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to add notification: ' . $e->getMessage()]);
+        }
+        
 
         echo json_encode(['status' => 'success', 'message' => 'You Registered Successfully. Please wait for your acceptance process.']);
     } catch (PDOException $e) {
@@ -93,4 +109,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
     exit();
 }
-?>

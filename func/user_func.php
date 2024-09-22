@@ -85,13 +85,15 @@ function getAllPopular($conn)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function registerStatus($conn, $user_id)
+function registerStatus($user_id)
 {
-    $stmt = $conn->prepare("SELECT status FROM tours WHERE user_id = :user_id LIMIT 1");
-    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    global $conn;
+    $stmt = $conn->prepare("SELECT status FROM tours WHERE user_id = ? LIMIT 1");
+    $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    return $stmt->fetchColumn() ?: null;
+    return $stmt->fetchColumn();
 }
+
 
 function emailAlreadyUsed($conn, $email)
 {

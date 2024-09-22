@@ -43,22 +43,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-
     if ($uploadOk == 0 || empty($profile_picture)) {
         $stmt = $conn->prepare("SELECT profile_picture FROM users WHERE id = ?");
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
+        $stmt->execute([$user_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $profile_picture = $row['profile_picture'];
     }
+
     unset($_SESSION['profile-pic']);
     $_SESSION['profile-pic'] = $profile_picture;
 
     $stmt = $conn->prepare("UPDATE users SET name = ?, username = ?, email = ?, phone_number = ?, profile_picture = ? WHERE id = ?");
-    $stmt->bind_param("sssssi", $fullName, $username, $email, $phone, $profile_picture, $user_id);
-
-    if ($stmt->execute()) {
+    if ($stmt->execute([$fullName, $username, $email, $phone, $profile_picture, $user_id])) {
         $_SESSION['status'] = 'success';
         header("Location: ../user/acc.php?update=success");
         exit();

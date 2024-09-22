@@ -14,8 +14,6 @@ if (!isset($_GET['user_id']) || !isset($_GET['booking_id'])) {
 
 $user_id = $_GET['user_id'];
 $booking_id = $_GET['booking_id'];
-
-// Fetch user details using PDO
 $query_user = "SELECT id, username, email, phone_number FROM users WHERE id = :user_id";
 $stmt_user = $conn->prepare($query_user);
 $stmt_user->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -26,7 +24,6 @@ if (!$user) {
     die("User not found.");
 }
 
-// Fetch booking details using PDO
 $query_booking = "SELECT b.*, t.title as tour_title FROM booking b
                   JOIN tours t ON b.tours_id = t.id
                   WHERE b.id = :booking_id";
@@ -34,10 +31,6 @@ $stmt_booking = $conn->prepare($query_booking);
 $stmt_booking->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
 $stmt_booking->execute();
 $booking = $stmt_booking->fetch(PDO::FETCH_ASSOC);
-
-if (!$booking) {
-    die("Booking not found.");
-}
 ?>
 
 
@@ -66,19 +59,24 @@ if (!$booking) {
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>
-
             <div class="info">
-                <h2>User Details</h2>
-                <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <?php
+                if (!$booking) {
+                    echo "<p>Booking not found.</p>";
+                    return;
+                } else { ?>
+                    <h2>User Details</h2>
+                    <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                <h2>Booking Details</h2>
-                <p><strong>Tour:</strong> <?php echo htmlspecialchars($booking['tour_title'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Date Scheduled:</strong> <?php echo htmlspecialchars($booking['date_sched'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>People:</strong> <?php echo htmlspecialchars($booking['people'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($booking['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Status:</strong> <?php echo $booking['status'] == '0' ? 'Pending' : ($booking['status'] == '1' ? 'Confirmed' : ($booking['status'] == '2' ? 'Completed' : 'Cancelled')); ?></p>
+                    <h2>Booking Details</h2>
+                    <p><strong>Tour:</strong> <?php echo htmlspecialchars($booking['tour_title'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Date Scheduled:</strong> <?php echo htmlspecialchars($booking['date_sched'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>People:</strong> <?php echo htmlspecialchars($booking['people'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($booking['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Status:</strong> <?php echo $booking['status'] == '0' ? 'Pending' : ($booking['status'] == '1' ? 'Confirmed' : ($booking['status'] == '2' ? 'Completed' : 'Cancelled')); ?></p>
+                <?php } ?>
             </div>
         </main>
     </section>

@@ -200,17 +200,25 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 timerProgressBar: true
             });
 
+            // Close the modal when clicking the close button
             $('.close').click(function() {
                 $('#viewModal').fadeOut();
             });
 
+            // Open modal when clicking the view button
             $('.view-btn').click(function(event) {
                 event.preventDefault();
                 const id = $(this).data('id');
                 View(id);
             });
 
+            // Function to show the modal and fetch data
             function View(id) {
+                let url = new URL(window.location.href);
+                url.searchParams.set('view', 'true');
+                url.searchParams.set('id', id);
+                window.history.pushState({}, '', url);
+
                 $.getJSON(`../php/get_pending.php?id=${id}`, function(data) {
                     if (data.success) {
                         const originalDate = new Date(data.pending.date_created);
@@ -222,22 +230,29 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             minute: '2-digit',
                             hour12: true
                         });
+
+                        // Update modal content with fetched data
                         $('#applicationInfoContent').html(`
-                            <h1 style="text-align: center;">${data.pending.title}</h1>
-                            <img src="../upload/Tour Images/${data.pending.img}" alt="Tour Picture" width="100" class="zoomable-img">
-                            <p><strong>Name:</strong> ${data.pending.name}</p>
-                            <p><strong>Email:</strong> ${data.pending.email}</p>
-                            <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
-                            <p><strong>Address:</strong> ${data.pending.address}</p>
-                            <p style="overflow: hidden; white-space: normal; height: 5em; text-overflow: ellipsis;"><strong>Description:</strong> ${data.pending.description}</p>
-                            <p><strong>Proof:</strong> ${data.pending.proof}</p>
-                            <img src="../upload/Permits/${data.pending.proof_image}" alt="Proof Picture" width="100" class="zoomable-img">
-                            <p><strong>Date:</strong> ${formattedDate}</p>
-                            <a class="accept-btn" href="../php/updatePending.php?status=1&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
-                            <a class="accept-btn" href="../php/updatePending.php?status=2&tour_id=${data.pending.id}">Decline</a>
-                        `);
+                    <h1 style="text-align: center;">${data.pending.title}</h1>
+                    <img src="../upload/Tour Images/${data.pending.img}" alt="Tour Picture" width="100" class="zoomable-img">
+                    <p><strong>Name:</strong> ${data.pending.name}</p>
+                    <p><strong>Email:</strong> ${data.pending.email}</p>
+                    <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
+                    <p><strong>Address:</strong> ${data.pending.address}</p>
+                    <p style="overflow: hidden; white-space: normal; height: 5em; text-overflow: ellipsis;">
+                        <strong>Description:</strong> ${data.pending.description}
+                    </p>
+                    <p><strong>Proof:</strong> ${data.pending.proof}</p>
+                    <img src="../upload/Permits/${data.pending.proof_image}" alt="Proof Picture" width="100" class="zoomable-img">
+                    <p><strong>Date:</strong> ${formattedDate}</p>
+                    <a class="accept-btn" href="../php/updatePending.php?status=1&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
+                    <a class="accept-btn" href="../php/updatePending.php?status=2&tour_id=${data.pending.id}">Decline</a>
+                `);
+
+                        // Show the modal
                         $('#viewModal').fadeIn();
                     } else {
+                        // Show error if unable to fetch data
                         Toast.fire({
                             icon: 'error',
                             title: 'Unable to fetch pending information.'
@@ -250,16 +265,22 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     });
                 });
             }
+            const urlParams = new URLSearchParams(window.location.search);
+            const view = urlParams.get('view');
+            const id = urlParams.get('id');
+
+            if (view === 'true' && id) {
+                View(id);
+            }
+
             $(document).on('click', '.zoomable-img', function() {
                 const imgSrc = $(this).attr('src');
                 $('#zoomImage').attr('src', imgSrc);
                 $('#zoomModal').fadeIn();
             });
-
             $('.close-zoom').click(function() {
                 $('#zoomModal').fadeOut();
             });
-
             $(window).click(function(event) {
                 if ($(event.target).is('#zoomModal')) {
                     $('#zoomModal').fadeOut();

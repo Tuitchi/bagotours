@@ -27,14 +27,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            header("Location: view_tour.php?success=TourUpdated");
+            if ($_SESSION['role'] == 'owner') {
+                header("Location: view_tour.php?success=TourUpdated");
+            } else {
+                header("Location: ../admin/view_tour.php?id=$tour_id&success=TourUpdated");
+            }
+            exit();
         } else {
-            header("Location: edit_tour.php?error=UpdateFailed");
+            if ($_SESSION['role'] == 'owner') {
+                header("Location: view_tour.php?error=updateFailed");
+            } else {
+                header("Location: ../admin/view_tour.php?id=$tour_id&error=updateFailed");
+            }
+            exit();
         }
     } else {
-        header("Location: edit_tour.php?error=SQLPrepareFailed");
+        if ($_SESSION['role'] == 'owner') {
+            header("Location: view_tour.php?error=SQLError");
+        } else {
+            header("Location: ../admin/view_tour.php?id=$tour_id&error=SQLError");
+        }
+        exit();
     }
 } else {
-    header("Location: tour.php");
+    if ($_SESSION['role'] == 'owner') {
+        header("Location: tour.php?error=NotFound");
+    } else {
+        header("Location: ../admin/tour.php?error=NotFound");
+    }
     exit();
 }

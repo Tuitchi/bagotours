@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../include/db_conn.php';
 session_start();
 
@@ -33,10 +33,6 @@ try {
     $stmt_booking->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
     $stmt_booking->execute();
     $booking = $stmt_booking->fetch(PDO::FETCH_ASSOC);
-
-    if (!$booking) {
-        die("Booking not found.");
-    }
 } catch (PDOException $e) {
     die("Error: " . $e->getMessage());
 }
@@ -44,6 +40,7 @@ try {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,6 +53,7 @@ try {
 
     <title>BaGoTours. View Booking</title>
 </head>
+
 <body>
     <?php include 'includes/sidebar.php'; ?>
     <section id="content">
@@ -69,20 +67,27 @@ try {
             </div>
 
             <div class="info">
-                <h2>User Details</h2>
-                <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <?php
+                if (!$booking) {
+                    echo "<p>Booking not found.</p>";
+                    return;
+                } else { ?>
+                    <h2>User Details</h2>
+                    <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                <h2>Booking Details</h2>
-                <p><strong>Tour:</strong> <?php echo htmlspecialchars($booking['tour_title'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Date Scheduled:</strong> <?php echo htmlspecialchars($booking['date_sched'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>People:</strong> <?php echo htmlspecialchars($booking['people'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($booking['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p><strong>Status:</strong> <?php echo $booking['status'] == '0' ? 'Pending' : ($booking['status'] == '1' ? 'Confirmed' : ($booking['status'] == '2' ? 'Completed' : 'Cancelled')); ?></p>
+                    <h2>Booking Details</h2>
+                    <p><strong>Tour:</strong> <?php echo htmlspecialchars($booking['tour_title'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Date Scheduled:</strong> <?php echo htmlspecialchars($booking['date_sched'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>People:</strong> <?php echo htmlspecialchars($booking['people'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($booking['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Status:</strong> <?php echo $booking['status'] == '0' ? 'Pending' : ($booking['status'] == '1' ? 'Confirmed' : ($booking['status'] == '2' ? 'Completed' : 'Cancelled')); ?></p>
+                <?php } ?>
             </div>
         </main>
     </section>
     <script src="../assets/js/script.js"></script>
 </body>
+
 </html>

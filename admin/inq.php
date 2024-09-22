@@ -74,7 +74,6 @@ $pp = $_SESSION['profile-pic'];
                         </thead>
                         <tbody>
                             <?php
-                            // Fetching inquiries from the database
                             $query = "SELECT u.name, u.email, i.subject, i.message, i.status, i.date_created FROM inquiry i JOIN users u ON i.user_id = u.id ORDER BY i.date_created DESC";
                             $stmt = $conn->prepare($query);
                             $stmt->execute();

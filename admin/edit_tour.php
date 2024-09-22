@@ -17,10 +17,9 @@ if (isset($_GET['id'])) {
             <?php include 'includes/breadcrumb.php'; ?>
         </div>
     </div>
-    <div id="map" style="height: 400px; width: 80%; margin-top: 20px;"></div>
     <div class="tour-container">
         <?php if (!empty($tour)) { ?>
-            <form id="editTour" action="update_tour.php" method="POST">
+            <form id="editTour" action="../php/updateTour.php" method="POST">
                 <input type="hidden" name="tour_id" value="<?php echo htmlspecialchars($tour['id'], ENT_QUOTES, 'UTF-8'); ?>">
                 <h1>
                     <input type="text" name="title" value="<?php echo htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8'); ?>" required>

@@ -1,10 +1,17 @@
-<?php session_start();
+<?php 
+session_start();
+include '../include/db_conn.php';
 
 $toast = '';
 $user_id = $_SESSION['user_id'];
+
+require_once('../func/user_func.php');
+$status = registerStatus($user_id);
+
 if (isset($_GET['process'])) {
     $toast = $_GET['process'];
-} ?>
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -187,123 +194,143 @@ if (isset($_GET['process'])) {
 
 <body>
     <?php include('inc/topnav.php'); ?>
-    <main><?php
-            require_once('../func/user_func.php');
-            if (registerStatus($user_id) == null) { ?>
-
-            <form id="resortOwnerForm" action="../php/register_owner.php" method="POST" enctype="multipart/form-data">
-                <div class="progress-container">
-                    <div class="progress active"></div>
-                    <div class="progress"></div>
-                    <div class="progress"></div>
-                    <div class="progress"></div>
-                </div>
-
-                <div class="step active" id="step1">
-                    <h2>Tourist Attraction Details</h2>
-                    <label for="resortName">Tourist Attraction Name:</label>
-                    <input type="text" id="resortName" name="title" required>
-
-                    <label for="type">Type of Attraction:</label>
-                    <select name="type" id="type" required>
-                        <option value="none" selected disabled hidden>Select an Option</option>
-                        <option value="Beach Resort">Beach Resort</option>
-                        <option value="Campsite">Campsite</option>
-                        <option value="Falls">Falls</option>
-                        <option value="Historical Landmark">Historical Landmark</option>
-                        <option value="Mountain Resort">Mountain Resort</option>
-                        <option value="Park">Park</option>
-                        <option value="Swimming Pool">Swimming Pool</option>
-                    </select>
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" required></textarea>
-
-                    <div class="step-buttons">
-                        <button type="button" class="next-btn">Next</button>
-                    </div>
-                </div>
-                <div class="step" id="step2">
-                    <h2>tourist Attraction Image</h2>
-                    <label for="img">Image:</label>
-                    <p style="font-size:smaller;">Insert your proof image below.</p>
-                    <input type="file" id="fileInput2" name="img" accept="image/*" required>
-                    <div class="upload-area" id="uploadArea">
+    <main>
+        <?php
+        switch ($status) {
+            case null:
+        ?>
+                <form id="resortOwnerForm" action="../php/register_owner.php" method="POST" enctype="multipart/form-data">
+                    <div class="progress-container">
+                        <div class="progress active"></div>
+                        <div class="progress"></div>
+                        <div class="progress"></div>
+                        <div class="progress"></div>
                     </div>
 
-                    <div class="step-buttons">
-                        <button type="button" class="prev-btn">Previous</button>
-                        <button type="button" class="next-btn">Next</button>
-                    </div>
-                </div>
+                    <div class="step active" id="step1">
+                        <h2>Tourist Attraction Details</h2>
+                        <label for="resortName">Tourist Attraction Name:</label>
+                        <input type="text" id="resortName" name="title" required>
 
-                <div class="step" id="step3">
-                    <h2>Location Details</h2>
-                    <label for="resortLocation">Location:</label>
-                    <div style="clear:both;">
-                        <input type="text" id="resortLocation" name="address" readonly>
-                        <button id="resortLoc" type="button"><i class="fa fa-map-marker"></i></button>
-                        <select id="barangay" name="barangay" style="width: 44%; float: left;" required>
-                            <option value="none" selected disabled hidden>Select a Barangay</option>
-                            <option value="Abuanan">Abuanan</option>
-                            <option value="Alianza">Alianza</option>
+                        <label for="type">Type of Attraction:</label>
+                        <select name="type" id="type" required>
+                            <option value="none" selected disabled hidden>Select an Option</option>
+                            <option value="Beach Resort">Beach Resort</option>
+                            <option value="Campsite">Campsite</option>
+                            <option value="Falls">Falls</option>
+                            <option value="Historical Landmark">Historical Landmark</option>
+                            <option value="Mountain Resort">Mountain Resort</option>
+                            <option value="Park">Park</option>
+                            <option value="Swimming Pool">Swimming Pool</option>
                         </select>
-                        <select id="purok" name="purok" style="width: 44%; float: left;" required>
-                            <option value="none" selected disabled hidden>Select a Purok</option>
-                            <option value="Abuanan">Abuanan</option>
-                            <option value="Alianza">Alianza</option>
+
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" rows="4" required></textarea>
+
+                        <div class="step-buttons">
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="step" id="step2">
+                        <h2>Tourist Attraction Image</h2>
+                        <label for="img">Image:</label>
+                        <p style="font-size:smaller;">Insert your proof image below.</p>
+                        <input type="file" id="fileInput2" name="img" accept="image/*" required>
+                        <div class="upload-area" id="uploadArea">
+                        </div>
+
+                        <div class="step-buttons">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="step" id="step3">
+                        <h2>Location Details</h2>
+                        <label for="resortLocation">Location:</label>
+                        <div style="clear:both;">
+                            <input type="text" id="resortLocation" name="address" readonly>
+                            <button id="resortLoc" type="button"><i class="fa fa-map-marker"></i></button>
+                            <select id="barangay" name="barangay" style="width: 44%; float: left;" required>
+                                <option value="none" selected disabled hidden>Select a Barangay</option>
+                                <option value="Abuanan">Abuanan</option>
+                                <option value="Alianza">Alianza</option>
+                            </select>
+                            <select id="purok" name="purok" style="width: 44%; float: left;" required>
+                                <option value="none" selected disabled hidden>Select a Purok</option>
+                                <option value="Abuanan">Abuanan</option>
+                                <option value="Alianza">Alianza</option>
+                            </select>
+                            <input type="hidden" id="tour-latitude" name="latitude">
+                            <input type="hidden" id="tour-longitude" name="longitude">
+                        </div><br style="clear:both;" />
+
+                        <div class="step-buttons">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <div id="mapboxModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-map">&times;</span>
+                            <div id="map"></div>
+                        </div>
+                    </div>
+
+                    <div class="step" id="step4">
+                        <h2>Proof of Permits</h2>
+                        <label for="proof">Proof:</label>
+                        <select name="proof" id="proof" required>
+                            <option value="none" selected disabled hidden>Select an Option</option>
+                            <option value="Business permit">Business Permit</option>
+                            <option value="Occupancy permit">Occupancy Permit</option>
+                            <option value="Building Permit">Building Permit</option>
+                            <option value="Mayor's Permit">Mayor's Permit</option>
+                            <option value="Barangay Permit">Barangay Permit</option>
                         </select>
-                        <input type="hidden" id="tour-latitude" name="latitude">
-                        <input type="hidden" id="tour-longitude" name="longitude">
-                    </div><br style="clear:both;" />
 
-                    <div class="step-buttons">
-                        <button type="button" class="prev-btn">Previous</button>
-                        <button type="button" class="next-btn">Next</button>
+                        <p style="font-size:smaller;">Insert your proof image below.</p>
+                        <input type="file" id="fileInput" name="proofImage" accept="image/*" required>
+                        <div class="upload-area" id="uploadArea">
+                        </div>
+
+                        <div class="step-buttons">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <input type="submit" value="Submit">
+                        </div>
                     </div>
-                </div>
-
-                <div id="mapboxModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-map">&times;</span>
-                        <div id="map"></div>
-                    </div>
-                </div>
-
-                <div class="step" id="step4">
-                    <h2>Proof of Permits</h2>
-                    <label for="proof">Proof:</label>
-                    <select name="proof" id="proof" required>
-                        <option value="none" selected disabled hidden>Select an Option</option>
-                        <option value="Business permit">Business Permit</option>
-                        <option value="Occupancy permit">Occupancy Permit</option>
-                        <option value="Building Permit">Building Permit</option>
-                        <option value="Mayor's Permit">Mayor's Permit</option>
-                        <option value="Barangay Permit">Barangay Permit</option>
-                    </select>
-
-                    <p style="font-size:smaller;">Insert your proof image below.</p>
-                    <input type="file" id="fileInput" name="proofImage" accept="image/*" required>
-                    <div class="upload-area" id="uploadArea">
-                    </div>
-
-                    <div class="step-buttons">
-                        <button type="button" class="prev-btn">Previous</button>
-                        <input type="submit" value="Submit">
-                    </div>
-                </div>
-            </form>
-        <?php } elseif(registerStatus($user_id) == 0) { ?>
-            <p>Your registration is pending approval. You will be notified once approved.</p>
-            <?php } elseif(registerStatus($user_id) == 1) { ?>
-                <p>Your registration has been approved. Are you sure you want to become a <strong>tourist attraction owner?</strong><a href="../php/updateUserStatus.php">click here!</a></p>
-            <?php }else {?>
+                </form>
+            <?php
+                break;
+            case 0:
+            ?>
+                <p>Your registration is pending approval. You will be notified once approved.</p>
+            <?php
+                break;
+            case 1:
+            ?>
+                <p>Your registration has been approved. Are you sure you want to become a <strong>tourist attraction owner?</strong>
+                    <a href="../php/updateUserStatus.php">Click here!</a>
+                </p>
+            <?php
+                break;
+            case 2:
+            ?>
                 <p>Your registration has been denied. Please try again next week.</p>
-            <?php }?>
+            <?php
+                break;
+            default:
+            ?>
+                <p>An unknown error occurred. Please try again later.</p>
+            <?php
+        }
+        ?>
     </main>
     <?php include 'inc/footer.php' ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/form.js"></script>
-
 </body>
 
 </html>
