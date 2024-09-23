@@ -22,14 +22,26 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         </li>
         <li class="<?php echo $current_page == 'booking' ? 'active' : ''; ?>">
             <a href="booking">
-                <i class='bx bxs-calendar-star' ></i>
+                <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
+            </a>
+        </li>
+        <li class="<?php echo $current_page == 'review' ? 'active' : ''; ?>">
+            <a href="review">
+                <i class='bx bxs-message-rounded'></i>
+                <span class="text">Review and Rating</span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
             <a href="inq">
                 <i class='bx bxs-message-rounded'></i>
                 <span class="text">Inquiries</span>
+            </a>
+        </li>
+        <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">
+            <a href="qr">
+                <i class='bx bx-qr'></i>
+                <span class="text">QR Code</span>
             </a>
         </li>
     </ul>
@@ -50,17 +62,17 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-      function confirmLogout() {
-    Swal.fire({
-                title: 'Are you sure?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Log out',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-              if (result.isConfirmed) {
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Log out',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 window.location.href = '../php/logout.php';
-              }
-            });
-  }
+            }
+        });
+    }
 </script>

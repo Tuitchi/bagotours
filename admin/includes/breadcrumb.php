@@ -63,6 +63,10 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Users', 'url' => 'user']
     ],
+    'qr' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'QR Code', 'url' => 'qr']
+    ],
 ];
 $page = basename($_SERVER['PHP_SELF'], '.php');
 $currentBreadcrumbs = $breadcrumbs[$page] ?? $breadcrumbs['home'];

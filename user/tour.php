@@ -485,13 +485,11 @@ if (!$tour) {
           <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>" />
           <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>" />
           <label for="phone">Phone:</label><br>
-          <input type="tel" id="phone" name="phone" required><br>
+          <input type="tel" id="phone" name="phone" required pattern="^(09|\+639)\d{9}$" placeholder="e.g. 09123456789 or +639123456789"><br>
           <label for="date">Date:</label><br>
           <input type="date" id="date" name="date" required><br>
-          <label for="time">Time:</label><br>
-          <input type="time" id="time" name="time" required><br>
           <label for="people">Number of people:</label><br>
-          <input type="number" id="people" name="people" min="1" required><br>
+          <input type="number" id="people" name="people" min="1" max="50" required><br>
           <input type="submit" value="Book now">
         </form>
       </div>
@@ -503,7 +501,6 @@ if (!$tour) {
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
-
       const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -537,6 +534,25 @@ if (!$tour) {
           modal.style.display = "none";
         }
       };
+    });
+    const dateInput = document.getElementById('date');
+    const today = new Date();
+    const minDate = new Date();
+    minDate.setDate(today.getDate() + 3);
+
+    const formatDate = (date) => {
+      return date.toISOString().split('T')[0];
+    };
+    dateInput.setAttribute('min', formatDate(minDate));
+    const phoneInput = document.getElementById('phone');
+
+    phoneInput.addEventListener('input', function() {
+      const phonePattern = /^(09|\+639)\d{9}$/;
+      if (!phonePattern.test(phoneInput.value)) {
+        phoneInput.setCustomValidity('Please enter a valid Philippine phone number.');
+      } else {
+        phoneInput.setCustomValidity('');
+      }
     });
 
     <?php if (isset($_GET["success"])) : ?>

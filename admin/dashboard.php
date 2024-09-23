@@ -43,8 +43,15 @@ include 'includes/dashboard_query.php';
 				<li>
 					<i class='bx bxs-calendar-check'></i>
 					<span class="text">
-						<h3><?php echo $total_pending ?></h3>
-						<p>Pending</p>
+						<h3><?php echo $total_visit ?></h3>
+						<p>Total Visit</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-calendar-check'></i>
+					<span class="text">
+						<h3><?php echo $nonbago_visit ?></h3>
+						<p>Non-Bago City Visitors</p>
 					</span>
 				</li>
 				<li>

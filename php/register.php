@@ -1,5 +1,6 @@
 <?php
-include '../include/db_conn.php'; // Ensure this file sets up a PDO connection
+include '../include/db_conn.php';
+session_start();
 
 $errors = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -8,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastname = htmlspecialchars(trim($_POST['lastname']));
     $name = $firstname . " " . $lastname;
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $home = $_POST['home-address'];
     $uname = htmlspecialchars(trim($_POST['username']));
     $pwd = trim($_POST['pwd']);
     $confirm_password = trim($_POST['con-pwd']);
@@ -20,6 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($firstname) || empty($lastname)) {
         $errors['name'] = "Enter your first and last name.";
+    }
+    if (empty($home)) {
+        $errors['home'] = "Enter your home address.";
     }
     if (empty($uname)) {
         $errors['uname'] = "Enter your username.";
@@ -45,19 +50,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (!empty($errors)) {
-        echo json_encode(['success' => false, 'errors' => $errors, 'uname' => $uname]);
+        echo json_encode(['success' => false, 'errors' => $errors]);
         exit();
     }
 
     $hashed_password = password_hash($pwd, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture,home_address) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->execute([$name, $email, $uname, $hashed_password, $role, $pp]);
+        $stmt->execute([$name, $email, $uname, $hashed_password, $role, $pp, $home]);
 
-        session_start();
         $_SESSION['profile-pic'] = $pp;
         $_SESSION['user_id'] = $conn->lastInsertId();
         echo json_encode(['success' => true, 'redirect' => 'user/home']);
@@ -67,6 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(['success' => false, 'errors' => $errors]);
     }
 
-    $conn = null; // Close the connection
+    $conn = null;
     exit();
 }

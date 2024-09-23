@@ -44,6 +44,12 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <span class="text">Pending</span>
             </a>
         </li>
+        <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">
+            <a href="qr">
+                <i class='bx bx-qr'></i>
+                <span class="text">QR Code</span>
+            </a>
+        </li>
     </ul>
     <ul class="side-menu">
         <li class="<?php echo $current_page == 'setting' ? 'active' : ''; ?>">

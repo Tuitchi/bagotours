@@ -1,13 +1,15 @@
 <?php
-$query_book = "SELECT COUNT(*) AS total_users FROM users";
+$query_book = "SELECT COUNT(*) AS total_books FROM booking b JOIN tours t ON b.tours_id = t.id JOIN users u ON u.id = t.user_id";
 $stmt_book = $conn->prepare($query_book);
 $stmt_book->execute();
-$total_users = $stmt_book->fetchColumn();
+$total_books = $stmt_book->fetchColumn();
 
-$query_star = "SELECT COUNT(*) AS total_pending FROM tours WHERE status = 0";
+$query_star = "SELECT SUM(rating) AS total_stars FROM review_rating WHERE tour_id = :tour_id";
 $stmt_star = $conn->prepare($query_star);
+$stmt_star->bindParam(':tour_id', $tour, PDO::PARAM_INT);
 $stmt_star->execute();
-$total_pending = $stmt_star->fetchColumn();
+$total_stars = $stmt_star->fetchColumn();
+
 
 $query_tours = "SELECT COUNT(*) AS total_tours FROM tours WHERE status = 1";
 $stmt_tours = $conn->prepare($query_tours);

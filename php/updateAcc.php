@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+    $home_address = isset($_POST['home-address']) ? trim($_POST['home-address']) : '';
 
     $profile_picture = $_FILES['profilePicture']['name'];
     $profile_picture_temp = $_FILES['profilePicture']['tmp_name'];
@@ -53,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     unset($_SESSION['profile-pic']);
     $_SESSION['profile-pic'] = $profile_picture;
 
-    $stmt = $conn->prepare("UPDATE users SET name = ?, username = ?, email = ?, phone_number = ?, profile_picture = ? WHERE id = ?");
-    if ($stmt->execute([$fullName, $username, $email, $phone, $profile_picture, $user_id])) {
+    $stmt = $conn->prepare("UPDATE users SET name = ?, username = ?, email = ?, phone_number = ?, profile_picture = ?,home_address = ? WHERE id = ?");
+    if ($stmt->execute([$fullName, $username, $email, $phone, $profile_picture,$home_address, $user_id])) {
         $_SESSION['status'] = 'success';
         header("Location: ../user/acc.php?update=success");
         exit();

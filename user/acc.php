@@ -21,7 +21,8 @@ $user = getUserById($conn, $user_id);
     }
 
     main {
-        height: 675px !important;
+        min-height: 675px;
+        height: auto;
     }
 
     .container {
@@ -78,6 +79,7 @@ $user = getUserById($conn, $user_id);
     h3 {
         margin-top: 0;
     }
+
     main input[type="file"],
     img#profilePreview {
         margin-top: 10px;
@@ -97,6 +99,7 @@ $user = getUserById($conn, $user_id);
     }
 
     main input[type="text"],
+    main input[type="tel"],
     main input[type="password"],
     main input[type="email"],
     main select {
@@ -266,7 +269,8 @@ $user = getUserById($conn, $user_id);
                         <img src="../upload/Profile Pictures/<?php echo $user['profile_picture'] ?>" alt="Profile Preview" style="width:100px;">
                         <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?></p>
                         <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><strong>Email:</strong><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><strong>Email Address:</strong><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><strong>Home Address:</strong><?php echo htmlspecialchars($user['home_address'], ENT_QUOTES, 'UTF-8'); ?></p>
                         <p><strong>Phone:</strong><?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <?php } else { ?>
                         <p>You are not logged in.</p>
@@ -302,10 +306,12 @@ $user = getUserById($conn, $user_id);
                         <input type="text" id="fullName" name="fullName" value="<?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?>">
                         <label for="username">username:</label>
                         <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?>">
-                        <label for="email">Email:</label>
+                        <label for="email">Email Address:</label>
                         <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?>">
                         <label for="phone">Phone:</label>
-                        <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="tel" id="phone" name="phone" maxlength="11" required pattern="^(09|\+639)\d{9}$" placeholder="e.g. 09123456789" value="<?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <label for="home-address">Home Address:</label>
+                        <input type="text" id="home-address" name="home-address" value="<?php echo htmlspecialchars($user['home_address'], ENT_QUOTES, 'UTF-8'); ?>">
                         <input type="submit" value="Update">
                     </form>
                 </div>

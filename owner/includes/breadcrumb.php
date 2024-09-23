@@ -1,18 +1,18 @@
 <style>
     .breadcrumb a {
-    text-decoration: none;
-    color: #007bff;
-}
+        text-decoration: none;
+        color: #007bff;
+    }
 
-.breadcrumb .breadcrumb-active {
-    color: #5891e0;
-    font-weight:600;
-    cursor: default;
-}
+    .breadcrumb .breadcrumb-active {
+        color: #5891e0;
+        font-weight: 600;
+        cursor: default;
+    }
 
-.breadcrumb .breadcrumb-active::after {
-    content: "";
-}
+    .breadcrumb .breadcrumb-active::after {
+        content: "";
+    }
 </style>
 <?php
 $breadcrumbs = [
@@ -43,6 +43,14 @@ $breadcrumbs = [
     'tour' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Tour', 'url' => 'tour']
+    ],
+    'qr' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'QR Code', 'url' => 'qr']
+    ],
+    'review' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Review', 'url' => 'review']
     ],
 ];
 $page = basename($_SERVER['PHP_SELF'], '.php');

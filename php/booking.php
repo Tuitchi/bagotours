@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     createNotification($conn, $row['user_id'], $message, $url, $type);
 
-                    header("Location: ../user/tour?tours=$tour_id&status=success$booking_id");
+                    header("Location: ../user/tour?tours=$tour_id&status=success");
                     exit();
                 } else {
                     header("Location: ../user/tour?tours=$tour_id&status=error");

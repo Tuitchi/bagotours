@@ -1,5 +1,6 @@
 <?php
 include '../include/db_conn.php';
+session_start();
 
 $errors = [];
 
@@ -40,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        session_start();
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['role'] = $row['role'];
         $_SESSION['profile-pic'] = $row['profile_picture'];

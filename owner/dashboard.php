@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 $tour = $_SESSION['tour_id'];
+include_once 'includes/dashboard_query.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ $tour = $_SESSION['tour_id'];
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
+	<link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" href="../assets/css/admin.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -26,7 +27,6 @@ $tour = $_SESSION['tour_id'];
 </head>
 
 <body>
-
 	<?php include 'includes/sidebar.php'; ?>
 	<section id="content">
 		<?php include 'includes/navbar.php'; ?>
@@ -42,15 +42,15 @@ $tour = $_SESSION['tour_id'];
 				<li>
 					<i class='bx bxs-group'></i>
 					<span class="text">
-						<h3></h3>
+						<h3><?php echo $total_books?></h3>
 						<p>Books</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3></h3>
-						<p>Likes</p>
+						<h3><?php echo $total_stars?></h3>
+						<p>Total Stars</p>
 					</span>
 				</li>
 				<li>

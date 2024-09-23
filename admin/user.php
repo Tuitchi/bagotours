@@ -319,10 +319,6 @@ try {
                     }
                 });
             }
-
-            $('.close').click(function() {
-                $(this).closest('.modal').hide();
-            });
             $('#addUserForm').submit(function(event) {
                 event.preventDefault();
                 $.ajax({
@@ -387,6 +383,10 @@ try {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();
                 }
+            });
+
+            $('.close').click(function() {
+                $(this).closest('.modal').hide();
             });
         });
     </script>
