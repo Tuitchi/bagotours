@@ -499,6 +499,7 @@
                         document.getElementById('regUsername-error').textContent = '';
                         document.getElementById('signup-username').style.border = '1px solid #ddd';
                         document.getElementById('regEmail-error').textContent = '';
+                        document.getElementById('regHome-error').textContent = '';
                         document.getElementById('email').style.border = '1px solid #ddd';
                         document.getElementById('home-address').style.border = '1px solid #ddd';
                         document.getElementById('regPassword-error').textContent = '';
