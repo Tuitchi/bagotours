@@ -95,7 +95,7 @@ if (isset($_GET['tour_id'])) {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            height: 450px;
+            height: 500px;
             align-items: center;
             color: #fff;
         }
@@ -198,7 +198,7 @@ if (isset($_GET['tour_id'])) {
                     <div id="username-error" class="error-message"></div>
                     <label for="password">Password</label>
                     <input id="password" name="password" type="password" placeholder="Password" />
-                    <div id="password-error" class="error-message"></div> x
+                    <div id="password-error" class="error-message"></div>
                     <button type="submit" class="btn">Sign in</button>
                 </form>
                 <a href="#" id="forgot-password">Forgot Password?</a>
@@ -218,9 +218,13 @@ if (isset($_GET['tour_id'])) {
                     <input id="signup-username" name="username" type="text" placeholder="Username" autocomplete="username" />
                     <div id="regUsername-error" class="error-message"></div>
 
-                    <label for="email">Email</label>
+                    <label for="email">Email Address</label>
                     <input id="email" name="email" type="text" placeholder="Email" autocomplete="email" />
                     <div id="regEmail-error" class="error-message"></div>
+                    
+                    <label for="home-address">Home Address</label>
+                    <input id="home-address" name="home-address" type="text" placeholder="e.g., Barangay, City, Provice, Country" autocomplete="email" />
+                    <div id="regHome-error" class="error-message"></div>
 
                     <label for="pwd">Password</label>
                     <input id="pwd" name="pwd" type="password" placeholder="Password" />
@@ -336,6 +340,8 @@ if (isset($_GET['tour_id'])) {
                         document.getElementById('lname').style.border = '1px solid #ddd';
                         document.getElementById('regUsername-error').textContent = '';
                         document.getElementById('signup-username').style.border = '1px solid #ddd';
+                        document.getElementById('regHome-error').textContent = '';
+                        document.getElementById('home-address').style.border = '1px solid #ddd';
                         document.getElementById('regEmail-error').textContent = '';
                         document.getElementById('email').style.border = '1px solid #ddd';
                         document.getElementById('regPassword-error').textContent = '';
@@ -361,6 +367,10 @@ if (isset($_GET['tour_id'])) {
                             if (data.errors.email) {
                                 document.getElementById('regEmail-error').textContent = data.errors.email;
                                 document.getElementById('email').style.border = '1px solid red';
+                            }
+                            if (data.errors.home) {
+                                document.getElementById('regHome-error').textContent = data.errors.home;
+                                document.getElementById('home-address').style.border = '1px solid red';
                             }
                             if (data.errors.pwd) {
                                 document.getElementById('regPassword-error').textContent = data.errors.pwd;
