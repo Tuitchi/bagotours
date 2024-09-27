@@ -1,5 +1,4 @@
 <?php
-
 require '../include/db_conn.php';
 require '../vendor/autoload.php';
 
@@ -19,11 +18,14 @@ if (!extension_loaded('gd')) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $selectedValue = $_POST["tour"];
-    list($title, $tour_id) = explode('|', $selectedValue);
+    list($title, $id) = explode('|', $selectedValue);
     require_once '../func/func.php';
 
     $qrCodePath = '../upload/QRcodes/' . $title . '.png';
-    $url = 'http://bagotours.com/bagotours/visit?tour_id=' . $tour_id;
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $domain = $_SERVER['HTTP_HOST'];
+    $path = dirname(dirname($_SERVER['PHP_SELF']));
+    $url = $protocol . $domain . $path . '/visit?tour_id=' . $id;
 
     if (empty($selectedValue)) {
         echo json_encode(['success' => false, 'message' => 'Please select an option.']);
@@ -35,15 +37,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $qrCode = QrCode::create($url)
             ->setEncoding(new Encoding('UTF-8'))
-            ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
-            ->setSize(300)
-            ->setMargin(10)
+            ->setErrorCorrectionLevel(ErrorCorrectionLevel::Low)
+            ->setSize(400)
+            ->setMargin(15) 
             ->setRoundBlockSizeMode(RoundBlockSizeMode::Margin)
             ->setForegroundColor(new Color(0, 0, 0))
-            ->setBackgroundColor(new Color(255, 255, 255));
+            ->setBackgroundColor(new Color(255, 255, 255)); 
 
         $label = Label::create($title)
-            ->setTextColor(new Color(255, 0, 0));
+            ->setTextColor(new Color(0, 150, 136));
 
         $logoPath = __DIR__ . '/../assets/icons/websiteIcon.png';
         if (file_exists($logoPath)) {
@@ -53,8 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $logo = null;
         }
-        if (validateQR($conn, $tour_id)) {
-            echo json_encode(['success' => false, 'message' => 'This tour produces a QR code already.']);
+
+        if (validateQR($conn, $id)) {
+            echo json_encode(['success' => false, 'message' => 'This tour already has a QR code.']);
             exit();
         } else {
             try {
@@ -65,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         VALUES (:tour_id, :title, :qr_code_path, NOW(), NOW())";
 
                 if ($stmt = $conn->prepare($sql)) {
-                    $stmt->bindParam(':tour_id', $tour_id);
+                    $stmt->bindParam(':tour_id', $id);
                     $stmt->bindParam(':title', $title);
                     $stmt->bindParam(':qr_code_path', $qrCodePath);
                     if ($stmt->execute()) {

@@ -167,7 +167,7 @@ $pp = $_SESSION['profile-pic'];
                         <h3>Generated QR Code</h3>
                     </div>
                     <?php require_once '../func/func.php';
-                    $qrcodes = getAllQR($conn);
+                    $qrcodes = getAllQR($conn, $user_id);
                     foreach ($qrcodes as $qr) { ?>
                         <div class="tourQR">
                             <img id="qr-image" src="<?php echo $qr['qr_code_path'] ?>">

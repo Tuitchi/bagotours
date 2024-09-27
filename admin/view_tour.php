@@ -11,8 +11,8 @@ $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
 if (isset($_GET['id'])) {
-    $tour_id = $_GET['id'];
-    $tour = getTourById($conn, $tour_id);
+    $id = $_GET['id'];
+    $tour = getTourById($conn, $id);
 } else {
     header("Location: tours.php");
     exit();

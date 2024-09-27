@@ -1,5 +1,6 @@
 <?php
 include '../include/db_conn.php';
+require_once __DIR__ . '/../func/dashboardFunc.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -9,7 +10,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 $tour = $_SESSION['tour_id'];
-include_once 'includes/dashboard_query.php';
 ?>
 
 <!DOCTYPE html>
@@ -40,24 +40,24 @@ include_once 'includes/dashboard_query.php';
 
 			<ul class="box-info">
 				<li>
+					<i class='bx bxs-map-pin'></i>
+					<span class="text">
+						<h3><?php echo totalVisitors($conn)?></h3>
+						<p>Visitors</p>
+					</span>
+				</li>
+				<li>
 					<i class='bx bxs-group'></i>
 					<span class="text">
-						<h3><?php echo $total_books?></h3>
+						<h3><?php echo totalBooking($conn) == "" ? 0 : totalBooking($conn)?></h3>
 						<p>Books</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3><?php echo $total_stars?></h3>
-						<p>Total Stars</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-map-pin'></i>
-					<span class="text">
-						<h3></h3>
-						<p>Inquiry</p>
+						<h3><?php echo totalStars($conn)?></h3>
+						<p>Stars</p>
 					</span>
 				</li>
 			</ul>

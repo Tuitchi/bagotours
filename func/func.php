@@ -47,10 +47,11 @@ function validateQR($conn, $tour_id)
     return $result['count'] > 0;
 }
 
-function getAllQR($conn)
+function getAllQR($conn, $user_id)
 {
-    $query = "SELECT id,title, qr_code_path FROM qrcode";
+    $query = "SELECT * FROM qrcode qr JOIN tours t ON qr.tour_id = t.id JOIN users u ON u.id = t.user_id WHERE u.id = :user_id";
     $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $result;

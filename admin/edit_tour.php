@@ -3,8 +3,8 @@ include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
 if (isset($_GET['id'])) {
-    $tour_id = $_GET['id'];
-    $tour = getTourById($conn, $tour_id);
+    $id = $_GET['id'];
+    $tour = getTourById($conn, $id);
 } else {
     header("Location: tours.php");
     exit();

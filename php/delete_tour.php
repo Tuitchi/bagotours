@@ -10,7 +10,7 @@ try {
             throw new Exception('Tour ID is required.');
         }
 
-        $tour_id = intval($_POST['tour_id']);
+        $id = intval($_POST['tour_id']);
 
         if (!isset($_SESSION['user_id'])) {
             throw new Exception('User not authenticated.');
@@ -19,7 +19,7 @@ try {
         // Fetch all images associated with the tour using PDO
         $sql_images = "SELECT img FROM tours_image WHERE tours_id = :tour_id";
         $stmt_images = $conn->prepare($sql_images);
-        $stmt_images->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+        $stmt_images->bindParam(':tour_id', $id, PDO::PARAM_INT);
         $stmt_images->execute();
         $images = $stmt_images->fetchAll(PDO::FETCH_ASSOC);
 
@@ -36,7 +36,7 @@ try {
         // Delete the images from the `tours_image` table
         $sql_delete_images = "DELETE FROM tours_image WHERE tours_id = :tour_id";
         $stmt_delete_images = $conn->prepare($sql_delete_images);
-        $stmt_delete_images->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+        $stmt_delete_images->bindParam(':tour_id', $id, PDO::PARAM_INT);
 
         if (!$stmt_delete_images->execute()) {
             throw new Exception('Failed to delete images from database.');
@@ -45,7 +45,7 @@ try {
         // Delete the tour from the `tours` table
         $sql_delete_tour = "DELETE FROM tours WHERE id = :tour_id";
         $stmt_delete_tour = $conn->prepare($sql_delete_tour);
-        $stmt_delete_tour->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+        $stmt_delete_tour->bindParam(':tour_id', $id, PDO::PARAM_INT);
 
         if (!$stmt_delete_tour->execute()) {
             throw new Exception('Failed to delete tour.');

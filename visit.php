@@ -2,12 +2,12 @@
 require_once 'func/func.php';
 session_start();
 if (isset($_GET['tour_id'])) {
-    $tour_id = $_GET['tour_id'];
-    if (validateQR($conn, $tour_id)) {
+    $id = $_GET['tour_id'];
+    if (validateQR($conn, $id)) {
         try {
             $query = "SELECT title FROM tours WHERE id = :tour_id";
             $stmt = $conn->prepare($query);
-            $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+            $stmt->bindParam(':tour_id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $title = $row['title'];
@@ -239,10 +239,10 @@ if (isset($_GET['tour_id'])) {
                 <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
             </div>
             <?php } else {
-            if (hasVisitedToday($conn, $tour_id, $_SESSION['user_id'])) { ?>
+            if (hasVisitedToday($conn, $id, $_SESSION['user_id'])) { ?>
                 <h1>You've already been to <?php echo $title ?> today.</h1>
             <?php } else {
-                if (recordVisit($conn, $tour_id, $_SESSION['user_id'])) {
+                if (recordVisit($conn, $id, $_SESSION['user_id'])) {
                     try {
                         $stmt = $conn->prepare("SELECT name FROM users WHERE id = :id");
                         $stmt->bindParam(':id', $_SESSION['user_id'], PDO::PARAM_INT);

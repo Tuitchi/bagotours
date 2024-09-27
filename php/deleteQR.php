@@ -20,12 +20,7 @@ if (isset($_GET['id'])) {
                 $row = $stmt1->fetch(PDO::FETCH_ASSOC);
                 if ($row) {
                     $qr_code_path = $row['qr_code_path'];
-                    if (unlink($qr_code_path)) {
-                    } else {
-                        error_log('Error deleting QR code file: ' . $qr_code_path);
-                        echo json_encode(['success' => false, 'message' => 'Error deleting QR code file.']);
-                        exit();
-                    }
+                    unlink($qr_code_path);
                 } else {
                     echo json_encode(['success' => false, 'message' => 'QR code not found.']);
                     exit();

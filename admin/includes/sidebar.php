@@ -1,8 +1,10 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
+require_once __DIR__ . '/../../func/dashboardFunc.php';
+$sidebarHiddenClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === '1' ? 'hide' : '';
 ?>
 
-<section id="sidebar">
+<section id="sidebar" class="<?php echo $sidebarHiddenClass; ?>">
     <a href="home" class="brand">
         <i class='bx bxs-smile'></i>
         <span class="text">BaGoTours</span>
@@ -24,6 +26,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             <a href="booking">
                 <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
+                <span class="pending"><?php echo totalBooking($conn)?></span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
@@ -42,6 +45,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             <a href="pending">
                 <i class='bx bxs-time'></i>
                 <span class="text">Pending</span>
+                <span class="pending"><?php echo totalPending($conn)?></span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">
@@ -66,6 +70,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         </li>
     </ul>
 </section>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmLogout() {

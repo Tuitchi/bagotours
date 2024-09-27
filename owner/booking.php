@@ -8,19 +8,19 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$tour_id = $_SESSION['tour_id'];
+$id = $_SESSION['tour_id'];
 $pp = $_SESSION['profile-pic'];
 
 try {
     $query = "SELECT b.*, t.title AS tour_title, u.username 
               FROM booking b
-              JOIN tours t ON b.tours_id = t.id
+              JOIN tours t ON b.tour_id = t.id
               JOIN users u ON b.user_id = u.id 
               WHERE t.id = :tour_id
               ORDER BY b.date_sched DESC";
 
     $stmt = $conn->prepare($query);
-    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->bindParam(':tour_id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
     $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -123,7 +123,7 @@ try {
                     var bookingId = this.getAttribute('data-booking-id');
                     var newStatus = this.value;
 
-                    fetch('../php/update_status.php', {
+                    fetch('../php/updateBooking.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'

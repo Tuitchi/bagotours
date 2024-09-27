@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
-include 'includes/dashboard_query.php';
+require_once __DIR__ . '/../func/dashboardFunc.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ include 'includes/dashboard_query.php';
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
+	<link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" href="../assets/css/admin.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -43,40 +43,75 @@ include 'includes/dashboard_query.php';
 				<li>
 					<i class='bx bxs-calendar-check'></i>
 					<span class="text">
-						<h3><?php echo $total_visit ?></h3>
-						<p>Total Visit</p>
+						<h3><?php echo totalVisitors($conn); ?></h3>
+						<p>Total Visitors</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-calendar-check'></i>
 					<span class="text">
-						<h3><?php echo $nonbago_visit ?></h3>
-						<p>Non-Bago City Visitors</p>
+						<h3><?php echo nonBago($conn); ?></h3>
+						<p>Non-Bago City Residence Visitors</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-calendar-check'></i>
+					<span class="text">
+						<h3><?php echo Bago($conn); ?></h3>
+						<p>Bago City Visitors</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-group'></i>
 					<span class="text">
-						<h3><?php echo $total_users ?></h3>
-						<p>Users</p>
+						<h3><?php echo totalStars($conn); ?></h3>
+						<p>Stars</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3><?php echo $total_tours ?></h3>
+						<h3><?php echo totalTours($conn); ?></h3>
 						<p>Tours</p>
 					</span>
 				</li>
 			</ul>
 
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Visitors</h3>
+						<div class="filter">
+							<select name="tour" id="tour" required>
+								<option value="" selected disabled hidden>Select an Option</option>
+								<option value="">All</option>
+								<?php require_once '../func/func.php';
+								$tours = getTouristSpots($conn, $user_id);
+								foreach ($tours as $tour) { ?>
+									<option value="<?php echo $tour['id'] ?>"><?php echo $tour['title'] ?></option>
+								<?php } ?>
+							</select>
+							<select id="timeFilter">
+								<option value="" selected disabled hidden>Select an Option</option>
+								<option value="">all</option>
+								<option value="daily">Daily</option>
+								<option value="monthly">Monthly</option>
+								<option value="yearly">Yearly</option>
+							</select>
+						</div>
+					</div>
+					<div id="visitorChart" style="max-width:100%; height:400px"></div>
+					<div class="loader"></div>
+				</div>
+			</div>
 
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
 						<h3>Tours</h3>
 					</div>
-					<div id="myChart" style="max-width:100%; height:400px"></div>
+					<div id="ToursChart" style="max-width:100%; height:400px"></div>
+					<div class="loader"></div>
 				</div>
 				<div class="todo">
 					<div class="head">
@@ -95,10 +130,11 @@ include 'includes/dashboard_query.php';
 		google.charts.load('current', {
 			'packages': ['corechart']
 		});
-		google.charts.setOnLoadCallback(drawChart);
+		google.charts.setOnLoadCallback(tourChart);
+		google.charts.setOnLoadCallback(visitorChart);
 
-		function drawChart() {
-			fetch('assets/chart.php')
+		function tourChart() {
+			fetch('assets/tourChart.php')
 				.then(response => response.json())
 				.then(tourData => {
 					if (Array.isArray(tourData) && tourData.length > 0) {
@@ -112,19 +148,75 @@ include 'includes/dashboard_query.php';
 							is3D: true
 						};
 
-						const chart = new google.visualization.PieChart(document.getElementById('myChart'));
+						const chart = new google.visualization.PieChart(document.getElementById('ToursChart'));
 						chart.draw(data, options);
 					} else {
 						console.error('No data or invalid data format:', tourData);
-						document.getElementById('myChart').innerHTML = '<p>No data available to display.</p>';
+						document.getElementById('ToursChart').innerHTML = '<p>No data available to display.</p>';
 					}
 				})
 				.catch(error => {
 					console.error('Error fetching data:', error);
-					document.getElementById('myChart').innerHTML = '<p>Failed to load chart data.</p>';
+					document.getElementById('ToursChart').innerHTML = '<p>Failed to load chart data.</p>';
+				});
+		}
+
+		document.getElementById('tour').addEventListener('change', applyFilters);
+		document.getElementById('timeFilter').addEventListener('change', applyFilters);
+
+		function applyFilters() {
+			const tourId = document.getElementById('tour').value;
+			const timeFilter = document.getElementById('timeFilter').value;
+
+			visitorChart(tourId, timeFilter);
+		}
+
+		function visitorChart(tourId = null, timeFilter) {
+			const url = new URL('/bagotours/admin/assets/visitorChart.php', window.location.origin);
+			if (tourId) {
+				url.searchParams.append('tour', tourId);
+			}
+			url.searchParams.append('time', timeFilter);
+
+			fetch(url)
+				.then(response => response.json())
+				.then(visitorData => {
+					if (Array.isArray(visitorData) && visitorData.length > 0) {
+						const data = google.visualization.arrayToDataTable([
+							['City Residence', 'Count'],
+							...visitorData
+						]);
+
+						const options = {
+							title: 'Visitor Report',
+							is3D: true,
+							colors: ['#FF5722', '#4CAF50', '#2196F3', '#FFC107'],
+							pieSliceText: 'value',
+							legend: {
+								position: 'right',
+								textStyle: {
+									color: '#333',
+									fontSize: 14
+								}
+							},
+							chartArea: {
+								left: 10,
+								top: 20,
+								width: '80%',
+								height: '70%'
+							},
+						};
+
+						const chart = new google.visualization.PieChart(document.getElementById('visitorChart'));
+						chart.draw(data, options);
+					} else {
+						document.getElementById('visitorChart').innerHTML = '<p>No data available to display.</p>';
+					}
+				})
+				.catch(error => {
+					document.getElementById('visitorChart').innerHTML = '<p>Failed to load chart data.</p>';
 				});
 		}
 	</script>
 </body>
-
 </html>

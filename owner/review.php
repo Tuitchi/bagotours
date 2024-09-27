@@ -9,9 +9,9 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 $user_id = $_SESSION['user_id'];
-$tour_id = $_SESSION['tour_id'];
+$id = $_SESSION['tour_id'];
 
-$RRs = getAllRR($conn, $tour_id);
+$RRs = getAllRR($conn, $id);
 ?>
 
 <!DOCTYPE html>

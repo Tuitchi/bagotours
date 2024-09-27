@@ -8,9 +8,9 @@ if (!isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
-$tour_id = $_SESSION['tour_id'];
-$tour = getTourById($conn, $tour_id);
-$tourImage = getTourImageById($conn, $tour_id);
+$id = $_SESSION['tour_id'];
+$tour = getTourById($conn, $id);
+$tourImage = getTourImageById($conn, $id);
 ?>
 
 <!DOCTYPE html>

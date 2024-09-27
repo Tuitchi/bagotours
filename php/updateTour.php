@@ -4,7 +4,7 @@ include '../func/user_func.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $tour_id = $_POST['tour_id'];
+    $id = $_POST['tour_id'];
     $title = htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8');
     $address = htmlspecialchars($_POST['address'], ENT_QUOTES, 'UTF-8');
     $type = htmlspecialchars($_POST['type'], ENT_QUOTES, 'UTF-8');
@@ -24,20 +24,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-        $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+        $stmt->bindParam(':tour_id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             if ($_SESSION['role'] == 'owner') {
                 header("Location: view_tour.php?success=TourUpdated");
             } else {
-                header("Location: ../admin/view_tour.php?id=$tour_id&success=TourUpdated");
+                header("Location: ../admin/view_tour.php?id=$id&success=TourUpdated");
             }
             exit();
         } else {
             if ($_SESSION['role'] == 'owner') {
                 header("Location: view_tour.php?error=updateFailed");
             } else {
-                header("Location: ../admin/view_tour.php?id=$tour_id&error=updateFailed");
+                header("Location: ../admin/view_tour.php?id=$id&error=updateFailed");
             }
             exit();
         }
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_SESSION['role'] == 'owner') {
             header("Location: view_tour.php?error=SQLError");
         } else {
-            header("Location: ../admin/view_tour.php?id=$tour_id&error=SQLError");
+            header("Location: ../admin/view_tour.php?id=$id&error=SQLError");
         }
         exit();
     }

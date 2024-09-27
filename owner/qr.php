@@ -8,23 +8,23 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 $user_id = $_SESSION['user_id'];
-$tour_id = $_SESSION['tour_id'];
+$id = $_SESSION['tour_id'];
 $pp = $_SESSION['profile-pic'];
 $title = '';
 
 try {
     $stmt = $conn->prepare("SELECT title FROM tours WHERE id = :tour_id");
-    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->bindParam(':tour_id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $title = $stmt->fetchColumn();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 
-if (!validateQR($conn, $tour_id)) {
+if (!validateQR($conn, $id)) {
     echo '<script>
     document.addEventListener("DOMContentLoaded", function() {
-        var tourId = "' . $tour_id . '";
+        var tourId = "' . $id . '";
         var title = "' . $title . '";
         
         fetch("../php/generateQR.php", {
@@ -56,7 +56,7 @@ if (!validateQR($conn, $tour_id)) {
     });
     </script>';
 } else {
-    $qr = getQR($conn, $tour_id);
+    $qr = getQR($conn, $id);
 }
 ?>
 

@@ -66,8 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_id'] = $conn->lastInsertId();
         echo json_encode(['success' => true, 'redirect' => 'user/home']);
     } catch (PDOException $e) {
-        error_log("PDO error: " . $e->getMessage());
-        $errors['register'] = "Something went wrong, please try again.";
+        $errors['register'] = "PDO error: " . $e->getMessage();
         echo json_encode(['success' => false, 'errors' => $errors]);
     }
 
