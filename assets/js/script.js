@@ -6,10 +6,23 @@ menuBar.addEventListener("click", function () {
   sidebar.classList.toggle("hide");
 
   const isHidden = sidebar.classList.contains("hide");
+
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "../../php/SideNavHidden.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
   xhr.send("sidebar_hidden=" + (isHidden ? "1" : "0"));
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      console.log("Sidebar state saved successfully!");
+    } else {
+      console.error("Failed to save sidebar state:", xhr.statusText);
+    }
+  };
+  xhr.onerror = function () {
+    console.error("Network error: Unable to save sidebar state.");
+  };
 });
 
 const searchIcon = document.getElementById("search-icon");

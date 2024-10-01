@@ -1,7 +1,7 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
 require_once __DIR__ . '/../../func/dashboardFunc.php';
-$sidebarHiddenClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === '1' ? 'hide' : '';
+$sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === "1";
 ?>
 
 <section id="sidebar" class="<?php echo $sidebarHiddenClass; ?>">
@@ -26,7 +26,7 @@ $sidebarHiddenClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_h
             <a href="booking">
                 <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
-                <span class="pending" style="padding-left:50%"><?php echo totalBooking($conn) ?></span>
+                <span class="pending" style="padding-left:50%"><?php echo totalBooking($conn, $user_id) ?></span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'review' ? 'active' : ''; ?>">

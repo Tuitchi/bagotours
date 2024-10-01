@@ -21,9 +21,6 @@ if (isset($_GET['id'])) {
                 if ($row) {
                     $qr_code_path = $row['qr_code_path'];
                     unlink($qr_code_path);
-                } else {
-                    echo json_encode(['success' => false, 'message' => 'QR code not found.']);
-                    exit();
                 }
             } else {
                 error_log('Error fetching QR code data: ' . implode(' ', $stmt1->errorInfo()));
@@ -36,7 +33,6 @@ if (isset($_GET['id'])) {
             exit();
         }
 
-        // Prepare to delete the QR code entry from the database
         $sql = 'DELETE FROM qrcode WHERE id = :id';
 
         try {

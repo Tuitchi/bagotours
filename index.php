@@ -32,7 +32,7 @@
         }
 
         .modal-content {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(138, 138, 138, 0.6);
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
@@ -76,8 +76,8 @@
             height: 10px;
             color: red;
             text-align: right;
-            font-size: 12px;
-            top: -48px;
+            font-size: 14px;
+            top: -52px;
             margin-top: -10px;
         }
 
@@ -90,26 +90,21 @@
             color: #fff;
         }
 
-        .form-container h2 {
-            margin-bottom: 5px;
-            text-align: center;
-            color: white;
-        }
-
-        .form-container label {
-            align-self: flex-start;
-            margin-bottom: 3px;
-            font-size: 14px;
-            color: white;
+        .modal-content h2 {
+            margin-bottom: 20px;
+            text-align: left;
+            color: black;
         }
 
         .form-container input {
+            margin: 8px 0;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background: rgba(255, 255, 255, 0.8);
             color: #333;
             width: 100%;
+            min-width: 350px;
         }
 
         .form-container #forgot-password {
@@ -173,6 +168,15 @@
                 opacity: 1;
                 transform: translateX(0);
             }
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox input {
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -362,10 +366,8 @@
             <div id="sign-in-form" class="form-container">
                 <form id="loginForm">
                     <h2>Sign In</h2>
-                    <label for="username">Username or E-mail</label>
                     <input id="username" name="username" type="text" placeholder="Email" autocomplete="username" />
                     <div id="username-error" class="error-message"></div>
-                    <label for="password">Password</label>
                     <input id="password" name="password" type="password" placeholder="Password" />
                     <div id="password-error" class="error-message"></div>
                     <button type="submit" class="btn">Sign in</button>
@@ -376,31 +378,25 @@
             <div id="sign-up-form" class="form-container hidden">
                 <h2>Sign Up</h2>
                 <form id="signupForm">
-                    <label for="name">Name</label>
                     <div id="name" class="name">
-                        <input id="fname" name="firstname" type="text" placeholder="First name" style="width: 49%;" autocomplete="first name" />
-                        <input id="lname" name="lastname" type="text" placeholder="Last name" style="width: 49%;" />
+                        <input id="fname" name="firstname" type="text" placeholder="First name" style="width: 49%;min-width:auto" autocomplete="first name" />
+                        <input id="lname" name="lastname" type="text" placeholder="Last name" style="width: 49%;min-width:auto" />
                     </div>
                     <div id="regName-error" class="error-message"></div>
 
-                    <label for="signup-username">Username</label>
                     <input id="signup-username" name="username" type="text" placeholder="Username" autocomplete="username" />
                     <div id="regUsername-error" class="error-message"></div>
 
-                    <label for="email">Email Address</label>
                     <input id="email" name="email" type="text" placeholder="Email" autocomplete="email" />
                     <div id="regEmail-error" class="error-message"></div>
-                    
-                    <label for="home-address">Home Address</label>
-                    <input id="home-address" name="home-address" type="text" placeholder="e.g., Barangay, City, Provice, Country" autocomplete="email" />
+
+                    <input id="home-address" name="home-address" type="text" placeholder="Home Address" />
                     <div id="regHome-error" class="error-message"></div>
 
 
-                    <label for="pwd">Password</label>
                     <input id="pwd" name="pwd" type="password" placeholder="Password" />
                     <div id="regPassword-error" class="error-message"></div>
 
-                    <label for="con-pwd">Confirm Password</label>
                     <input id="con-pwd" name="con-pwd" id="conPass" type="password" placeholder="Confirm password" />
                     <div id="regconPass-error" class="error-message"></div>
 
@@ -570,10 +566,20 @@
                 signInForm.classList.add('slide-in');
                 signUpForm.classList.remove('slide-in');
 
+
+                document.getElementById('regName-error').textContent = '';
+                document.getElementById('fname').style.border = '1px solid #ddd';
+                document.getElementById('lname').style.border = '1px solid #ddd';
                 document.getElementById('regUsername-error').textContent = '';
+                document.getElementById('signup-username').style.border = '1px solid #ddd';
                 document.getElementById('regEmail-error').textContent = '';
+                document.getElementById('regHome-error').textContent = '';
+                document.getElementById('email').style.border = '1px solid #ddd';
+                document.getElementById('home-address').style.border = '1px solid #ddd';
                 document.getElementById('regPassword-error').textContent = '';
+                document.getElementById('pwd').style.border = '1px solid #ddd';
                 document.getElementById('regconPass-error').textContent = '';
+                document.getElementById('con-pwd').style.border = '1px solid #ddd';
             });
 
             closeModalButton.addEventListener('click', () => {
@@ -581,15 +587,19 @@
                 clearFormInputs(loginForm);
                 clearFormInputs(signupForm);
 
-                document.getElementById('username-error').textContent = '';
-                document.getElementById('username').style.border = '1px solid #ddd';
-                document.getElementById('password-error').textContent = '';
-                document.getElementById('password').style.border = '1px solid #ddd';
-
+                document.getElementById('regName-error').textContent = '';
+                document.getElementById('fname').style.border = '1px solid #ddd';
+                document.getElementById('lname').style.border = '1px solid #ddd';
                 document.getElementById('regUsername-error').textContent = '';
+                document.getElementById('signup-username').style.border = '1px solid #ddd';
                 document.getElementById('regEmail-error').textContent = '';
+                document.getElementById('regHome-error').textContent = '';
+                document.getElementById('email').style.border = '1px solid #ddd';
+                document.getElementById('home-address').style.border = '1px solid #ddd';
                 document.getElementById('regPassword-error').textContent = '';
+                document.getElementById('pwd').style.border = '1px solid #ddd';
                 document.getElementById('regconPass-error').textContent = '';
+                document.getElementById('con-pwd').style.border = '1px solid #ddd';
             });
         });
     </script>

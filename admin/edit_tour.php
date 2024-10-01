@@ -2,6 +2,8 @@
 include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
+$pageRole = "admin";
+require_once '../php/accValidation.php';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $tour = getTourById($conn, $id);

@@ -42,21 +42,21 @@ $tour = $_SESSION['tour_id'];
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3><?php echo totalVisitors($conn)?></h3>
+						<h3><?php echo totalVisitors($conn, $user_id)?></h3>
 						<p>Visitors</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-group'></i>
 					<span class="text">
-						<h3><?php echo totalBooking($conn) == "" ? 0 : totalBooking($conn)?></h3>
+						<h3><?php echo totalBooking($conn, $user_id) == "" ? 0 : totalBooking($conn, $user_id)?></h3>
 						<p>Books</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3><?php echo totalStars($conn)?></h3>
+						<h3><?php echo totalStars($conn, $user_id)?></h3>
 						<p>Stars</p>
 					</span>
 				</li>

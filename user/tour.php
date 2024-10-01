@@ -1,6 +1,8 @@
 <?php
 include("../func/user_func.php");
 session_start();
+$pageRole = "user";
+require_once '../php/accValidation.php';
 
 $id = isset($_GET["tours"]) ? intval($_GET["tours"]) : 0;
 $status = isset($_GET["status"]) ? $_GET["status"] : '';

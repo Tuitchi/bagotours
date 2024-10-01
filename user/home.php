@@ -1,7 +1,8 @@
 <?php
 session_start();
 include("../func/user_func.php");
-
+$pageRole = "user";
+require_once '../php/accValidation.php';
 $tours = getAllTours($conn);
 $popularTours = getAllPopular($conn);
 

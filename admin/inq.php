@@ -2,12 +2,9 @@
 include '../include/db_conn.php';
 session_start();
 
-session_regenerate_id();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+$pageRole = "admin";
+require_once '../php/accValidation.php';
 
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];

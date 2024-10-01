@@ -2,6 +2,8 @@
 session_start();
 include '../func/user_func.php';
 
+$pageRole = "user";
+require_once '../php/accValidation.php';
 $touristSpots = getAllTours($conn);
 
 foreach ($touristSpots as &$spot) {

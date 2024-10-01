@@ -1,5 +1,7 @@
 <?php session_start();
 include_once '../func/user_func.php';
+$pageRole = "user";
+require_once '../php/accValidation.php';
 
 $user_id = $_SESSION['user_id'];
 $user = getUserById($conn, $user_id);

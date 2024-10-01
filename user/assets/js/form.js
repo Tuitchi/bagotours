@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const nextBtns = document.querySelectorAll(".next-btn");
   const prevBtns = document.querySelectorAll(".prev-btn");
   const uploadArea = document.getElementById("uploadArea");
+  const fileInput = document.getElementById("fileInput");
+  const fileInputTour = document.getElementById("fileInput2");
 
   function showStep(stepIndex) {
     steps.forEach((step, index) => {
@@ -118,16 +120,20 @@ document.addEventListener("DOMContentLoaded", function () {
   fileInput.addEventListener("change", (event) => {
     event.preventDefault();
     const file = fileInput.files[0];
+    if (!file) return;
     let fileType = file.type;
     let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+
     if (validExtensions.includes(fileType)) {
       let fileReader = new FileReader();
       fileReader.onload = () => {
         uploadArea.style.backgroundColor = "#fff";
+        uploadArea.innerHTML = "";
         const img = document.createElement("img");
         img.src = fileReader.result;
-        img.alt = "";
-        uploadArea.innerHTML = "";
+        img.alt = "Uploaded image";
+        img.style.maxWidth = "100%";
+        img.style.height = "auto";
         uploadArea.appendChild(img);
       };
       fileReader.readAsDataURL(file);

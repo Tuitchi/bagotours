@@ -1,6 +1,8 @@
-<?php 
+<?php
 session_start();
 include '../include/db_conn.php';
+$pageRole = "user";
+require_once '../php/accValidation.php';
 
 $toast = '';
 $user_id = $_SESSION['user_id'];
@@ -324,7 +326,7 @@ if (isset($_GET['process'])) {
             default:
             ?>
                 <p>An unknown error occurred. Please try again later.</p>
-            <?php
+        <?php
         }
         ?>
     </main>

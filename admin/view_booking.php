@@ -2,10 +2,9 @@
 include '../include/db_conn.php';
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+
+$pageRole = "admin";
+require_once '../php/accValidation.php';
 
 if (!isset($_GET['user_id']) || !isset($_GET['booking_id'])) {
     header("Location: ../admin/booking.php");

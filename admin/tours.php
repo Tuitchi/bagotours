@@ -4,10 +4,9 @@ include '../func/user_func.php';
 
 session_start();
 $status = isset($_GET["status"]) ? $_GET["status"] : '';
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+
+$pageRole = "admin";
+require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
 
 $tour = getAllTours($conn);

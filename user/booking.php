@@ -2,6 +2,8 @@
 include_once '../include/db_conn.php';
 include_once '../func/user_func.php';
 session_start();
+$pageRole = "user";
+require_once '../php/accValidation.php';
 
 $user_id = $_SESSION["user_id"];
 

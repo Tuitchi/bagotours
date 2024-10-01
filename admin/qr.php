@@ -3,10 +3,9 @@ include '../include/db_conn.php';
 session_start();
 
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+
+$pageRole = "admin";
+require_once '../php/accValidation.php';
 
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
@@ -115,6 +114,7 @@ $pp = $_SESSION['profile-pic'];
         #btn-delete:hover {
             background-color: red;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -225,6 +225,7 @@ $pp = $_SESSION['profile-pic'];
                 event.preventDefault();
                 const QRid = $(this).data('id');
                 deleteQR(QRid);
+                console.log(QRid);
             });
 
             function deleteQR(QRid) {

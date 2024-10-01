@@ -1,13 +1,13 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
 require_once __DIR__ . '/../../func/dashboardFunc.php';
-$sidebarHiddenClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === '1' ? 'hide' : '';
+$sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === "1";
 ?>
 
-<section id="sidebar" class="<?php echo $sidebarHiddenClass; ?>">
+<section id="sidebar" class="<?php echo $sidebarHidden ? 'hide' : ''; ?>">
     <a href="home" class="brand">
-        <i class='bx bxs-smile'></i>
-        <span class="text">BaGoTours</span>
+        <img src="../assets/icons/websiteIcon.png" alt="" style="width: 60px;">
+        <span class="text">BagoTours - Admin</span>
     </a>
     <ul class="side-menu top">
         <li class="<?php echo $current_page == 'dashboard' ? 'active' : ''; ?>">

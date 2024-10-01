@@ -49,7 +49,7 @@ function validateQR($conn, $tour_id)
 
 function getAllQR($conn, $user_id)
 {
-    $query = "SELECT * FROM qrcode qr JOIN tours t ON qr.tour_id = t.id JOIN users u ON u.id = t.user_id WHERE u.id = :user_id";
+    $query = "SELECT qr.id,qr.title,qr.qr_code_path FROM qrcode qr JOIN tours t ON qr.tour_id = t.id JOIN users u ON u.id = t.user_id WHERE u.id = :user_id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -68,7 +68,7 @@ function getQR($conn, $tour_id)
 
 function recordVisit($conn, $tourId, $userId)
 {
-    $home = $conn->prepare("SELECT CASE WHEN home_address LIKE '%Bago City%' THEN 'Bago City' ELSE 'Non-Bago City' END AS residence_status FROM users WHERE id = :user_id");
+    $home = $conn->prepare("SELECT CASE WHEN home_address LIKE '%Bago%' THEN 'Bago City' ELSE 'Non-Bago City' END AS residence_status FROM users WHERE id = :user_id");
     $home->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $home->execute();
     $homeAddress = $home->fetch()['residence_status'];
