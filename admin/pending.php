@@ -23,7 +23,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>BaGoTours. Pending</title>
@@ -125,10 +125,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
                                 <th>Email</th>
-                                <th>Title</th>
-                                <th>Address</th>
+                                <th>Tour Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -141,10 +139,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     $status = $row['status'];
                                     echo "<tr>";
                                     echo "<td>" . $counter++ . "</td>";
-                                    echo "<td>" . $row['name'] . "</td>";
                                     echo "<td>" . $row['email'] . "</td>";
                                     echo "<td>" . $row['title'] . "</td>";
-                                    echo "<td>" . $row['address'] . "</td>";
                                     echo "<td>";
                                     if ($status == 0) {
                                         echo "Pending";

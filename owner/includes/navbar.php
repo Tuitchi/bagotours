@@ -39,7 +39,6 @@ $pp = $_SESSION['profile-pic'];
 		object-fit: cover;
 	}
 
-	/* Notification Dropdown Styles */
 	.notification-dropdown {
 		position: absolute;
 		top: 40px;

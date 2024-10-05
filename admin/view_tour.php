@@ -25,10 +25,10 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
+    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />

@@ -28,7 +28,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<link rel="stylesheet" href="../assets/css/admin.css">
+	<link rel="stylesheet" href="assets/css/admin.css">
 
 	<title>BaGoTours. Booking</title>
 </head>
@@ -74,15 +74,24 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 										<td><?php echo htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?></td>
 										<td><?php echo htmlspecialchars($row['phone_number'], ENT_QUOTES, 'UTF-8'); ?></td>
 										<td>
-											<select class="status-select" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">
-												<option value="0" <?php if ($row['status'] == '0') echo 'selected'; ?>>Pending</option>
-												<option value="1" <?php if ($row['status'] == '1') echo 'selected'; ?>>Confirmed</option>
-												<option value="2" <?php if ($row['status'] == '2') echo 'selected'; ?>>Cancelled</option>
-											</select>
+											<?php 
+											switch ($row['status']) {
+												case "0":
+												  echo "Pending";
+												  break;
+												case "1":
+												  echo "Confirmed";
+												  break;
+												case "2":
+												  echo "Cancelled";
+												  break;
+												default:
+												  echo "Error status";
+											  }?>
 										</td>
 										<td>
-											<button class="btn-delete" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">🗑️</button>
-											<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">View</button>
+											
+											<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"><i class='bx bx-edit-alt'></i>Edit</button>
 										</td>
 									</tr>
 								<?php endforeach; ?>
@@ -126,7 +135,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					var bookingId = this.getAttribute('data-booking-id');
 					var newStatus = this.value;
 
-					fetch('../php/update_status.php', {
+					fetch('../php/updateBooking.php', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded'

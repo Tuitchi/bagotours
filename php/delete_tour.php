@@ -17,7 +17,7 @@ try {
         }
 
         // Fetch all images associated with the tour using PDO
-        $sql_images = "SELECT img FROM tours_image WHERE tours_id = :tour_id";
+        $sql_images = "SELECT img FROM tours_image WHERE tour_id = :tour_id";
         $stmt_images = $conn->prepare($sql_images);
         $stmt_images->bindParam(':tour_id', $id, PDO::PARAM_INT);
         $stmt_images->execute();
@@ -31,15 +31,6 @@ try {
                     throw new Exception('Failed to delete image file: ' . $image_path);
                 }
             }
-        }
-
-        // Delete the images from the `tours_image` table
-        $sql_delete_images = "DELETE FROM tours_image WHERE tours_id = :tour_id";
-        $stmt_delete_images = $conn->prepare($sql_delete_images);
-        $stmt_delete_images->bindParam(':tour_id', $id, PDO::PARAM_INT);
-
-        if (!$stmt_delete_images->execute()) {
-            throw new Exception('Failed to delete images from database.');
         }
 
         // Delete the tour from the `tours` table

@@ -2,10 +2,8 @@
 include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+$pageRole = "owner";
+require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 $id = $_SESSION['tour_id'];
@@ -22,7 +20,7 @@ $tourImage = getTourImageById($conn, $id);
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/owner.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <title>BaGoTours - View Tour</title>

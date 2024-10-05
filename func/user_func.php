@@ -1,6 +1,13 @@
 <?php
 include("../include/db_conn.php");
 
+function getAllToursforAdmin($conn)
+{
+    $sql = "SELECT * FROM tours WHERE status = 1 OR status = 3";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 function getAllTours($conn)
 {
     $sql = "SELECT * FROM tours WHERE status = 1";
@@ -39,7 +46,7 @@ function getBookingById($conn, $id)
     FROM 
         booking b
     JOIN 
-        tours t ON b.tours_id = t.id
+        tours t ON b.tour_id = t.id
     WHERE 
         b.user_id = :user_id");
     $stmt->bindParam(":user_id", $id, PDO::PARAM_INT);
@@ -68,8 +75,8 @@ function getAverageRating($conn, $tour_id)
 
 function getTourImages($conn, $tourId)
 {
-    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE tours_id = :tours_id");
-    $stmt->bindParam(":tours_id", $tourId, PDO::PARAM_INT);
+    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE tour_id = :tour_id");
+    $stmt->bindParam(":tour_id", $tourId, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -83,6 +90,30 @@ function getAllPopular($conn)
         ORDER BY rating_count DESC");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+// Register Owner
+
+function registerExpiry($conn, $user_id)
+{
+    $stmt = $conn->prepare("SELECT expiry, id FROM tours WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    $date = date('Y-m-d');
+    
+    foreach ($tours as $tour) {
+        if ($tour['expiry'] == $date) {
+            $deleteStmt = $conn->prepare("DELETE FROM tours WHERE user_id = :user_id AND id = :tour_id");
+            $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $deleteStmt->bindParam(':tour_id', $tour['id'], PDO::PARAM_INT);
+            
+            if ($deleteStmt->execute()) {
+                require_once 'func.php';
+                createNotification($conn, $user_id, $tour['id'], "You can Register as an owner again.", "form.php", "Upgrade cancelled");
+            }
+        }
+    }
 }
 
 function registerStatus($user_id)
@@ -117,4 +148,23 @@ function getNotificationsCount($conn)
     $stmt->bindParam(":user_id", $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn() ?: 0;
+}
+
+
+// booking
+function isAlreadyBook($conn, $user_id, $tour_id)
+{
+    $stmt = $conn->prepare("SELECT * FROM booking WHERE user_id = :user_id AND tour_id = :tour_id");
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+}
+
+function isBookable($conn, $tour_id)
+{
+    $stmt = $conn->prepare("SELECT * FROM tours WHERE id = :tour_id AND bookable = 1");
+    $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
 }

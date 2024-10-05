@@ -3,7 +3,7 @@ include("../func/user_func.php");
 session_start();
 $pageRole = "user";
 require_once '../php/accValidation.php';
-
+$user_id = $_SESSION['user_id'];
 $id = isset($_GET["tours"]) ? intval($_GET["tours"]) : 0;
 $status = isset($_GET["status"]) ? $_GET["status"] : '';
 
@@ -470,7 +470,14 @@ if (!$tour) {
         </div>
         <div class="btn">
           <button class="go-here-btn">Go Here</button>
-          <button class="book-now-btn">Book now</button>
+          <?php
+          if (isBookable($conn, $id)) {
+            if (!isAlreadyBook($conn, $user_id, $id)) { ?>
+              <button class="book-now-btn">Book now</button>
+            <?php } else { ?>
+              <button class="book-btn" disabled>Already Booked</button>
+          <?php }
+          } ?>
         </div>
       </div>
     </div>

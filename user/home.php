@@ -65,7 +65,6 @@ $popularTours = getAllPopular($conn);
                 <h7 class="rating">⭐<?php echo number_format($average_rating, 1) ?></h7>
               </h6>
             </div>
-            <p><?php echo $tour['description'] ?></p>
           </a>
         <?php }
         ?>

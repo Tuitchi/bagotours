@@ -26,7 +26,7 @@ try {
     }
 
     $query_booking = "SELECT b.*, t.title as tour_title FROM booking b
-                      JOIN tours t ON b.tours_id = t.id
+                      JOIN tours t ON b.tour_id = t.id
                       WHERE b.id = :booking_id";
     $stmt_booking = $conn->prepare($query_booking);
     $stmt_booking->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
@@ -43,12 +43,10 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
+    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
 
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- My CSS -->
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
 
     <title>BaGoTours. View Booking</title>
 </head>

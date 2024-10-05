@@ -4,7 +4,6 @@ session_start();
 
 $errors = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $firstname = htmlspecialchars(trim($_POST['firstname']));
     $lastname = htmlspecialchars(trim($_POST['lastname']));
     $name = $firstname . " " . $lastname;

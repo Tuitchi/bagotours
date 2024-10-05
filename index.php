@@ -477,9 +477,7 @@
                 event.preventDefault();
 
                 const formData = new FormData(signupForm);
-                for (let [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
+
                 $.ajax({
                     url: 'php/register.php',
                     type: 'POST',

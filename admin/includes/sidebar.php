@@ -1,10 +1,10 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
 require_once __DIR__ . '/../../func/dashboardFunc.php';
-$sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === "1";
+$sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === 'hide' ? 'hide' : '';
 ?>
 
-<section id="sidebar" class="<?php echo $sidebarHidden ? 'hide' : ''; ?>">
+<section id="sidebar" class="<?php $sidebarClass ?>">
     <a href="home" class="brand">
         <img src="../assets/icons/websiteIcon.png" alt="" style="width: 60px;">
         <span class="text">BagoTours - Admin</span>
@@ -26,7 +26,7 @@ $sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden
             <a href="booking">
                 <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
-                <span class="pending"><?php echo totalBooking($conn)?></span>
+                <span class="notifCount"><?php echo totalBooking($conn, $user_id)?></span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
@@ -45,7 +45,7 @@ $sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden
             <a href="pending">
                 <i class='bx bxs-time'></i>
                 <span class="text">Pending</span>
-                <span class="pending"><?php echo totalPending($conn)?></span>
+                <span class="notifCount"><?php echo totalPending($conn)?></span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">

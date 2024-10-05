@@ -2,17 +2,14 @@
 include '../include/db_conn.php';
 session_start();
 
-session_regenerate_id();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+$pageRole = "owner";
+require_once '../php/accValidation.php';
+
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
 try {
-    // Fetching inquiries from the database
     $query = "SELECT u.name, u.email, i.subject, i.message, i.status, i.date_created 
               FROM inquiry i 
               JOIN users u ON i.user_id = u.id 
@@ -33,7 +30,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo htmlspecialchars($webIcon); ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/owner.css">
     <title>BaGoTours. Inquiries</title>
 </head>
 

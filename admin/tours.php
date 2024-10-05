@@ -9,7 +9,7 @@ $pageRole = "admin";
 require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
 
-$tour = getAllTours($conn);
+$tour = getAllToursforAdmin($conn);
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $tour = getAllTours($conn);
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
@@ -162,7 +162,7 @@ $tour = getAllTours($conn);
         }
 
         .action-buttons {
-            font-size: 12px;
+            border-radius: 8px;
             position: absolute;
             bottom: 10px;
             right: 10px;
@@ -184,6 +184,13 @@ $tour = getAllTours($conn);
 
         .btn-delete {
             background-color: #dc3545;
+        }
+        .radio {
+            width: 25%;
+            display: flex;
+            gap: 5px;
+            cursor: pointer;
+            justify-items: flex-start ;
         }
     </style>
 </head>
@@ -217,7 +224,7 @@ $tour = getAllTours($conn);
                         foreach ($tour as $row) {
                             if ($row['status'] == 1) {
                                 $stats = 'Active';
-                            } elseif ($row['status'] == 2) {
+                            } elseif ($row['status'] == 3) {
                                 $stats = 'Inactive';
                             }
                             $images = explode(',', $row['img']);
@@ -233,7 +240,7 @@ $tour = getAllTours($conn);
                             echo '<p>' . htmlspecialchars($row['address'], ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<p><strong>About</strong></p>';
                             echo '<p style="font-size:13px;">' . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . '</p>';
-                            echo '<p>Status: ' . htmlspecialchars($stats, ENT_QUOTES, 'UTF-8') . '</p>';
+                            echo '<p id="stats" style="color:' . ($stats == 'Active' ? 'green' : 'red') . ';">' . htmlspecialchars($stats, ENT_QUOTES, 'UTF-8') . '</p>';
                             echo '<div class="action-buttons">';
                             echo '<a href="view_tour?id=' . urlencode($row['id']) . '" class="btn-edit">View</a>';
                             echo '</div>';
@@ -278,6 +285,13 @@ $tour = getAllTours($conn);
                 <div class="form-group">
                     <label for="tour-images">Image:</label>
                     <input type="file" id="tour-images" name="img" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookable">Booking is available?</label>
+                    <div class="radio" id="bookable">
+                        <input type="radio" id="true" name="bookable" value="1"><label for="true">Yes</label>
+                        <input type="radio" id="false" name="bookable" value="0"><label for="false">No</label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="tour-longitude">Longitude:</label>

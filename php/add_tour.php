@@ -10,6 +10,7 @@ try {
         $description = $_POST['description'];
         $longitude = $_POST['longitude'];
         $latitude = $_POST['latitude'];
+        $bookable = $_POST['bookable'];
         $status = '1';
 
         if (!isset($_SESSION['user_id'])) {
@@ -36,8 +37,8 @@ try {
                 throw new Exception('Failed to upload the image.');
             }
 
-            $sql = "INSERT INTO tours (user_id, title, address, type, description, img, status, longitude, latitude) 
-                    VALUES (:user_id, :title, :address, :type, :description, :img, :status, :longitude, :latitude)";
+            $sql = "INSERT INTO tours (user_id, title, address, type, description, img, bookable, status, longitude, latitude) 
+                    VALUES (:user_id, :title, :address, :type, :description, :img, :bookable, :status, :longitude, :latitude)";
 
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
@@ -46,6 +47,7 @@ try {
             $stmt->bindParam(':type', $type);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':img', $image_name);
+            $stmt->bindParam(':bookable', $bookable);
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':longitude', $longitude);
             $stmt->bindParam(':latitude', $latitude);

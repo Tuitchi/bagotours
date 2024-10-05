@@ -10,10 +10,11 @@ function getTouristSpots($conn, $user_id)
 }
 
 // NOTIFICATIONS
-function createNotification($conn, $userId, $message, $url, $type)
+function createNotification($conn, $userId, $tour_id, $message, $url, $type)
 {
-    $stmt = $conn->prepare("INSERT INTO notifications (user_id, message, url, type) VALUES (:user_id, :message, :url, :type)");
+    $stmt = $conn->prepare("INSERT INTO notifications (user_id, tour_id, message, url, type) VALUES (:user_id, :tour_id, :message, :url, :type)");
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
     $stmt->bindParam(':message', $message, PDO::PARAM_STR);
     $stmt->bindParam(':url', $url, PDO::PARAM_STR);
     $stmt->bindParam(':type', $type, PDO::PARAM_STR);

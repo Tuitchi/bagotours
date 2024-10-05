@@ -8,10 +8,12 @@ $toast = '';
 $user_id = $_SESSION['user_id'];
 
 require_once('../func/user_func.php');
+registerExpiry($conn, $user_id);
 $status = registerStatus($user_id);
 
 if (isset($_GET['process'])) {
     $toast = $_GET['process'];
+
 }
 ?>
 <!DOCTYPE html>
@@ -57,8 +59,7 @@ if (isset($_GET['process'])) {
         }
 
         main input[type="text"],
-        main select,
-        main input[type="file"] {
+        main select {
             width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 15px;
@@ -68,12 +69,14 @@ if (isset($_GET['process'])) {
 
         #resortLocation {
             float: left;
-            width: 80%;
+            width: 70%;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
         }
 
         #resortLoc {
+            border-radius: 5px;
+            border: 1px solid #ccc;
             width: 15%;
             float: left;
             height: 40px;
@@ -81,11 +84,35 @@ if (isset($_GET['process'])) {
             border-bottom-left-radius: 0;
         }
 
-        .upload-area {
+
+        .upload-area,
+        .tourImages {
+            width: 100%;
+            height: auto;
             border: 2px dashed #ccc;
             text-align: center;
             cursor: pointer;
         }
+
+        .tourImages {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .MainTour {
+            border: 1px solid #ccc;
+            width: 100%;
+            height: 200px;
+        }
+
+        .upload-areaTour {
+            display: flex;
+            border: 1px solid #ccc;
+            width: 32.83%;
+            height: 100px;
+        }
+
 
         .upload-area:hover {
             background-color: #f9f9f9;
@@ -144,7 +171,8 @@ if (isset($_GET['process'])) {
             margin-right: 0;
         }
 
-        .upload-area img {
+        .upload-area img,
+        .tourImages img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -201,7 +229,7 @@ if (isset($_GET['process'])) {
         switch ($status) {
             case null:
         ?>
-                <form id="resortOwnerForm" action="../php/register_owner.php" method="POST" enctype="multipart/form-data">
+                <form id="resortOwnerForm" enctype="multipart/form-data">
                     <div class="progress-container">
                         <div class="progress active"></div>
                         <div class="progress"></div>
@@ -229,7 +257,7 @@ if (isset($_GET['process'])) {
                         <label for="description">Description:</label>
                         <textarea id="description" name="description" rows="4" required></textarea>
 
-                        <div class="step-buttons">
+                        <div class="step-buttons" style="float:right">
                             <button type="button" class="next-btn">Next</button>
                         </div>
                     </div>
@@ -237,9 +265,14 @@ if (isset($_GET['process'])) {
                     <div class="step" id="step2">
                         <h2>Tourist Attraction Image</h2>
                         <label for="img">Image:</label>
-                        <p style="font-size:smaller;">Insert your proof image below.</p>
-                        <input type="file" id="fileInput2" name="img" accept="image/*" required>
-                        <div class="upload-area" id="uploadArea">
+                        <p style="font-size:smaller;">Insert your tour image below.</p>
+                        <div class="tourImages">
+                            <input type="file" id="fileInputTour" name="img" accept="image/*" required>
+                            <div class="MainTour" id="uploadAreaMainTour"></div>
+                            <input type="file" id="fileInputTours" name="tourImage[]" accept="image/*" multiple required style="width: 100%;">
+                            <div class="upload-areaTour" id="uploadAreaTour1"></div>
+                            <div class="upload-areaTour" id="uploadAreaTour2"></div>
+                            <div class="upload-areaTour" id="uploadAreaTour3"></div>
                         </div>
 
                         <div class="step-buttons">
@@ -251,18 +284,28 @@ if (isset($_GET['process'])) {
                     <div class="step" id="step3">
                         <h2>Location Details</h2>
                         <label for="resortLocation">Location:</label>
+                        <p style="font-size:smaller;">Available only in the Bago City area.</p>
                         <div style="clear:both;">
-                            <input type="text" id="resortLocation" name="address" readonly>
+                            <input type="text" id="resortLocation" name="address" required readonly>
                             <button id="resortLoc" type="button"><i class="fa fa-map-marker"></i></button>
-                            <select id="barangay" name="barangay" style="width: 44%; float: left;" required>
+                            <select id="barangay" name="barangay" style="width: 44%; float: left;margin-right:10px" required>
                                 <option value="none" selected disabled hidden>Select a Barangay</option>
                                 <option value="Abuanan">Abuanan</option>
                                 <option value="Alianza">Alianza</option>
+                                <option value="Atipuluan">Atipuluan</option>
+                                <option value="Bacong">Bacong</option>
+                                <option value="Bagroy">Bagroy</option>
+                                <option value="Balingasag">Balingasag</option>
+                                <option value="Binubuhan">Binubuhan</option>
+                                <option value="Busay">Busay</option>
+                                <option value="Calumangan">Calumangan</option>
+                                <option value="Caridad">Caridad</option>
+                                <option value="Dulao">Dulao</option>
+                                <option value="Ilijan">Ilijan</option>
+                                <option value="Lag-asan">Lag-asan</option>
                             </select>
                             <select id="purok" name="purok" style="width: 44%; float: left;" required>
                                 <option value="none" selected disabled hidden>Select a Purok</option>
-                                <option value="Abuanan">Abuanan</option>
-                                <option value="Alianza">Alianza</option>
                             </select>
                             <input type="hidden" id="tour-latitude" name="latitude">
                             <input type="hidden" id="tour-longitude" name="longitude">
@@ -283,6 +326,7 @@ if (isset($_GET['process'])) {
 
                     <div class="step" id="step4">
                         <h2>Proof of Permits</h2>
+
                         <label for="proof">Proof:</label>
                         <select name="proof" id="proof" required>
                             <option value="none" selected disabled hidden>Select an Option</option>
@@ -294,15 +338,17 @@ if (isset($_GET['process'])) {
                         </select>
 
                         <p style="font-size:smaller;">Insert your proof image below.</p>
-                        <input type="file" id="fileInput" name="proofImage" accept="image/*" required>
-                        <div class="upload-area" id="uploadArea">
-                        </div>
+                        <input type="file" id="fileInput" name="proofImage[]" multiple accept="image/*" required>
+                        <div class="upload-area" id="proofUploadArea1"></div>
+                        <div class="upload-area" id="proofUploadArea2"></div>
+                        <div class="upload-area" id="proofUploadArea3"></div>
 
                         <div class="step-buttons">
                             <button type="button" class="prev-btn">Previous</button>
                             <input type="submit" value="Submit">
                         </div>
                     </div>
+
                 </form>
             <?php
                 break;
@@ -332,6 +378,7 @@ if (isset($_GET['process'])) {
     </main>
     <?php include 'inc/footer.php' ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/purok.js"></script>
     <script src="assets/js/form.js"></script>
 </body>
 

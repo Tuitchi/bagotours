@@ -2,10 +2,8 @@
 include '../include/db_conn.php';
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+$pageRole = "owner";
+require_once '../php/accValidation.php';
 
 $user_id = $_SESSION['user_id'];
 $id = $_SESSION['tour_id'];
@@ -37,7 +35,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/owner.css">
 
     <title>BaGoTours. Booking</title>
 </head>

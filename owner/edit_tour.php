@@ -2,6 +2,11 @@
 include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
+
+
+$pageRole = "owner";
+require_once '../php/accValidation.php';
+
 $tour = getTourById($conn, $_SESSION['tour_id']);
 ?>
 <main id="main">

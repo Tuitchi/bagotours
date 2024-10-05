@@ -4,10 +4,8 @@ include '../func/func.php';
 
 session_start();
 $status = isset($_GET["status"]) ? $_GET["status"] : '';
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php?action=Invalid");
-    exit();
-}
+$pageRole = "owner";
+require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
 $id = $_SESSION['tour_id'];
 
@@ -23,7 +21,7 @@ $RRs = getAllRR($conn, $id);
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/owner.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>

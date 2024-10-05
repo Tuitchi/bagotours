@@ -28,38 +28,9 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <title>BaGoTours. Users</title>
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
+    <title>BaGoTours. Users</title> 
 </head>
 
 <body>
@@ -111,9 +82,11 @@ try {
                 <td>" . htmlspecialchars($row['role']) . "</td>
                 <td>" . date('M. d, Y', strtotime($row['date_created'])) . "</td>
                 <td>
-                    <a href='#' class='btn-view' data-id='" . htmlspecialchars($row['id']) . "'>View</a> |
-                    <a href='#' class='btn-edit' data-id='" . htmlspecialchars($row['id']) . "'>Edit</a> |
-                    <a href='#' class='btn-delete' data-id='" . htmlspecialchars($row['id']) . "'>Delete</a>
+                <div class='actions'>
+                    <a href='#' class='btn' id='view' data-id='" . htmlspecialchars($row['id']) . "'><i class='bx bx-folder'>View</i></a> 
+                    <a href='#' class='btn' id='edit' data-id='" . htmlspecialchars($row['id']) . "'><i class='bx bx-edit-alt'>Edit</i></a>
+                    <a href='#' class='btn' id='delete' data-id='" . htmlspecialchars($row['id']) . "'><i class='bx bx-trash'>Delete</i></a>
+                    </div>
                 </td>
               </tr>";
                                 }
@@ -191,17 +164,17 @@ try {
                 timer: 3000,
                 timerProgressBar: true
             });
-            $(document).on('click', '.btn-view', function(event) {
+            $(document).on('click', '#view', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 viewUser(userId);
             });
-            $(document).on('click', '.btn-edit', function(event) {
+            $(document).on('click', '#edit', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 editUser(userId);
             });
-            $(document).on('click', '.btn-delete', function(event) {
+            $(document).on('click', '#delete', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 deleteUser(userId);

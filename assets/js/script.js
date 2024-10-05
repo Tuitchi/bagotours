@@ -7,23 +7,21 @@ menuBar.addEventListener("click", function () {
 
   const isHidden = sidebar.classList.contains("hide");
 
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "../../php/SideNavHidden.php", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-  xhr.send("sidebar_hidden=" + (isHidden ? "1" : "0"));
-
-  xhr.onload = function () {
-    if (xhr.status === 200) {
+  $.ajax({
+    url: "/../../php/SideNavHidden.php",
+    type: "POST",
+    data: {
+      sidebar_hidden: isHidden ? "hide" : ""
+    },
+    success: function (response) {
       console.log("Sidebar state saved successfully!");
-    } else {
-      console.error("Failed to save sidebar state:", xhr.statusText);
+    },
+    error: function (xhr, status, error) {
+      console.error("Failed to save sidebar state:", error);
     }
-  };
-  xhr.onerror = function () {
-    console.error("Network error: Unable to save sidebar state.");
-  };
+  });
 });
+
 
 const searchIcon = document.getElementById("search-icon");
 const searchContainer = document.querySelector(".search-container");
@@ -67,15 +65,5 @@ window.addEventListener("resize", function () {
   if (this.innerWidth > 576) {
     searchButtonIcon.classList.replace("bx-x", "bx-search");
     searchForm.classList.remove("show");
-  }
-});
-
-const switchMode = document.getElementById("switch-mode");
-
-switchMode.addEventListener("change", function () {
-  if (this.checked) {
-    document.body.classList.add("dark");
-  } else {
-    document.body.classList.remove("dark");
   }
 });

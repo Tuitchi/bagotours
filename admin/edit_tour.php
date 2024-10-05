@@ -49,7 +49,7 @@ if (isset($_GET['id'])) {
                 <div class="status-container">
                     <input type="radio" id="status1" name="status" value="1" <?php echo ($tour['status'] == 1) ? 'checked' : ''; ?>>
                     <label for="status1">Active</label>
-                    <input type="radio" id="status2" name="status" value="2" <?php echo ($tour['status'] == 2) ? 'checked' : ''; ?>>
+                    <input type="radio" id="status2" name="status" value="3" <?php echo ($tour['status'] == 3) ? 'checked' : ''; ?>>
                     <label for="status2">Inactive</label>
                 </div>
                 </p>

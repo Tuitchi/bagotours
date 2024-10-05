@@ -9,7 +9,7 @@ $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
 try {
-    $query = "SELECT id, title, latitude, longitude, type, address, img FROM tours";
+    $query = "SELECT id, title, latitude, longitude, type, address, img FROM tours WHERE status = 1";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -49,7 +49,7 @@ try {
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
-	<link rel="stylesheet" href="../assets/css/admin.css">
+	<link rel="stylesheet" href="assets/css/admin.css">
 	<link rel="stylesheet" href="../assets/css/map.css">
 	<!-- Mapbox -->
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
