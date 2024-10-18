@@ -26,7 +26,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
             <a href="booking">
                 <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
-                <span class="notifCount"><?php echo totalBooking($conn, $user_id)?></span>
+                <?php if (totalBooking($conn, $user_id) > 0) echo  "<span class='notifCount'>".totalBooking($conn, $user_id)."</span>"?>
             </a>
         </li>
         <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
@@ -45,7 +45,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
             <a href="pending">
                 <i class='bx bxs-time'></i>
                 <span class="text">Pending</span>
-                <span class="notifCount"><?php echo totalPending($conn)?></span>
+                <?php if (totalPending($conn) > 0) echo  "<span class='notifCount'>".totalPending($conn)."</span>"?>
             </a>
         </li>
         <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">

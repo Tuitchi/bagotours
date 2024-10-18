@@ -1,8 +1,13 @@
 <?php
 include '../include/db_conn.php';
+require_once '../func/func.php';
 session_start();
 
 $errors = [];
+
+if (isset($_COOKIE['device_id'])){
+    unset($_COOKIE['device_id']);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
@@ -40,38 +45,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(['success' => false, 'errors' => $errors]);
             exit();
         }
+        $device_id = $row['device_id'];
+        if (empty($row['device_id'])) {
+            $device_id = md5($row['email'] . $row['username']);
+            $stmt = $conn->prepare("UPDATE users SET device_id = ? WHERE id=?");
+            $stmt->execute([$device_id, $row['id']]);
+        }
+        setcookie('device_id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
 
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['role'] = $row['role'];
         $_SESSION['profile-pic'] = $row['profile_picture'];
         $role = strtolower($row['role']);
 
-        if (isset($_POST['remember'])) {
-            setcookie("username", $username, time() + (86400 * 30), "/");
+        if ($role == 'admin' || $role == 'owner') {
+            $sql = "SELECT id FROM tours WHERE user_id = :user_id AND status = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $tours = $stmt->fetch(PDO::FETCH_ASSOC);
+                checkBooking($conn, $tours['id']);
+                $_SESSION['tour_id'] = $tours['id'];
+            }
         }
 
-        $sql = "SELECT id FROM tours WHERE user_id = :user_id AND status = 1";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            $tours = $stmt->fetch(PDO::FETCH_ASSOC);
-            $_SESSION['tour_id'] = $tours['id'];
-        }
 
         $redirect = '';
         if ($role === "admin") {
             $redirect = 'admin/home';
         } elseif ($role === "user") {
-            $redirect = 'user/home';
+            $redirect = '';
         } elseif ($role === "owner") {
             $redirect = 'owner/home';
         } else {
             echo json_encode(['success' => false, 'errors' => ['role' => 'Invalid role']]);
             exit();
         }
-
         echo json_encode(['success' => true, 'redirect' => $redirect]);
         exit();
     } catch (PDOException $e) {

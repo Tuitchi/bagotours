@@ -75,3 +75,9 @@ $currentBreadcrumbs = $breadcrumbs[$page] ?? $breadcrumbs['home'];
         <?php endif; ?>
     <?php endforeach; ?>
 </ul>
+<div id="rotate-message">
+    <div class="message">
+        <p>Please rotate your device to landscape mode for the best experience.</p>
+        <img src="../assets/rotate.gif" alt="Rotate Icon">
+    </div>
+</div>

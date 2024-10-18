@@ -1,18 +1,18 @@
 <style>
     .breadcrumb a {
-    text-decoration: none;
-    color: #007bff;
-}
+        text-decoration: none;
+        color: #007bff;
+    }
 
-.breadcrumb .breadcrumb-active {
-    color: #5891e0;
-    font-weight:600;
-    cursor: default;
-}
+    .breadcrumb .breadcrumb-active {
+        color: #5891e0;
+        font-weight: 600;
+        cursor: default;
+    }
 
-.breadcrumb .breadcrumb-active::after {
-    content: "";
-}
+    .breadcrumb .breadcrumb-active::after {
+        content: "";
+    }
 </style>
 <?php
 $breadcrumbs = [
@@ -90,3 +90,9 @@ $currentBreadcrumbs = $breadcrumbs[$page] ?? $breadcrumbs['home'];
         <?php endif; ?>
     <?php endforeach; ?>
 </ul>
+<div id="rotate-message">
+    <div class="message">
+        <p>Please rotate your device to landscape mode for the best experience.</p>
+        <img src="../assets/rotate.gif" alt="Rotate Icon">
+    </div>
+</div>

@@ -33,7 +33,6 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Dashboard</h1>
 					<?php include 'includes/breadcrumb.php'; ?>
 				</div>
 			</div>
@@ -123,7 +122,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 		</main>
 	</section>
 
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="../assets/js/script.js"></script>
 	<script>
 		google.charts.load('current', {

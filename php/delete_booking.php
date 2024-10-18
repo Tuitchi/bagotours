@@ -1,8 +1,8 @@
 <?php
 include '../include/db_conn.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $booking_id = $_POST['booking_id'];
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $booking_id = $_GET['id'];
 
     try {
         $query = "DELETE FROM booking WHERE id = :id";
@@ -11,13 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':id', $booking_id, PDO::PARAM_INT);
         
         if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
+            header("Location: ../user/booking?delete=success");
+            exit();
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to delete booking.']);
+            header("Location: ../user/booking?delete=error");
+            exit();
         }
     } catch (PDOException $e) {
-        // Handle any errors
         error_log("Error: " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Failed to delete booking.']);
+        header("Location: ../user/booking?delete=error");
+        exit();
     }
+} else {
+    header("Location: ../user/booking?delete=methodError");
+    exit();
 }

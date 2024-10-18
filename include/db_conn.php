@@ -1,8 +1,11 @@
 <?php
+
 $DATABASE_HOSTNAME = "localhost";
 $DATABASE_USERNAME = "root";
 $DATABASE_PASSWORD = "";
 $DATABASE_NAME = "tourism";
+
+$salt = "ATON_ATON_LANG_NI!";
 
 try {
     $conn = new PDO("mysql:host=$DATABASE_HOSTNAME;dbname=$DATABASE_NAME", $DATABASE_USERNAME, $DATABASE_PASSWORD);
@@ -11,7 +14,6 @@ try {
     $sql = "SELECT file FROM system_info WHERE type = 'Tab Icon' LIMIT 1;";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row) {
@@ -22,5 +24,5 @@ try {
 } catch (PDOException $e) {
     error_log("PDO error: " . $e->getMessage());
 } catch (Exception $e) {
-    error_log($e->getMessage());
+    error_log("General error: " . $e->getMessage());
 }

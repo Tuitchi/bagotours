@@ -4,20 +4,13 @@ session_start();
 
 $pageRole = "admin";
 require_once '../php/accValidation.php';
+require_once '../func/func.php';
 
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
-$id = $_SESSION['tour_id'];
 
-$query = "SELECT b.*, t.title as tour_title, u.username FROM booking b
-          JOIN tours t ON b.tour_id = t.id
-          JOIN users u ON b.user_id = u.id WHERE t.id = :tour_id
-          ORDER BY b.date_sched DESC";
+$result = getBooking($conn, $user_id);
 
-$stmt = $conn->prepare($query);
-$stmt->bindParam(':tour_id', $id, PDO::PARAM_INT);
-$stmt->execute();
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +24,44 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	<link rel="stylesheet" href="assets/css/admin.css">
 
 	<title>BaGoTours. Booking</title>
+	<style>
+		.media img {
+			max-width: 150px;
+		}
+
+		.media {
+			width: 60%;
+			display: flex;
+			align-items: center;
+		}
+
+		.btn-group {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.btn-group a {
+			padding: 10px 15px;
+			margin-right: 10px;
+			border: none;
+			background-color: #4CAF50;
+			color: white;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+		.btn-group .btn-success:hover {
+			background-color: #45a049;
+		}
+
+		.btn-group .btn-danger {
+			background-color: red;
+		}
+
+		.btn-group .btn-danger:hover {
+			background-color: darkred;
+		}
+	</style>
 </head>
 
 <body>
@@ -40,7 +71,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Booking</h1>
 					<?php include 'includes/breadcrumb.php'; ?>
 				</div>
 			</div>
@@ -74,24 +104,47 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 										<td><?php echo htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?></td>
 										<td><?php echo htmlspecialchars($row['phone_number'], ENT_QUOTES, 'UTF-8'); ?></td>
 										<td>
-											<?php 
+											<?php
 											switch ($row['status']) {
 												case "0":
-												  echo "Pending";
-												  break;
+													echo "Pending";
+													break;
 												case "1":
-												  echo "Confirmed";
-												  break;
+													echo "Confirmed";
+													break;
 												case "2":
-												  echo "Cancelled";
-												  break;
+													echo "Cancelled";
+													break;
+												case "3":
+													echo "Ongoing";
+													break;
+												case "4":
+													echo "Completed";
+													break;
 												default:
-												  echo "Error status";
-											  }?>
+													echo "Error status";
+											} ?>
 										</td>
-										<td>
-											
-											<button class="btn-view" data-user-id="<?php echo htmlspecialchars($row['user_id'], ENT_QUOTES, 'UTF-8'); ?>" data-booking-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"><i class='bx bx-edit-alt'></i>Edit</button>
+										<td><?php
+											switch ($row['status']) {
+												case "0":
+													echo "<button class='btn-view' data-id=". $row['id']."><i class='bx bx-edit-alt'></i>Edit</button>";
+													break;
+												case "1":
+													echo "<button class='btn-waiting'>Waiting...</button>";
+													break;
+												case "2":
+													echo "<button class='btn-drop'>Cancelled</button>";
+													break;
+												case "3":
+													echo "<button class='btn-ready' data-id=". $row['id'].">Approval</button>";
+													break;
+												case "4":
+													echo "<button class='btn-success'>Completed</button>";
+													break;
+												default:
+													echo "Error status";
+											} ?>
 										</td>
 									</tr>
 								<?php endforeach; ?>
@@ -106,88 +159,144 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			</div>
 		</main>
 	</section>
-	<script src="../assets/js/script.js"></script>
+	<!-- MODAL -->
+	<div id="viewModal" class="modal fade">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Booking Details</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div id="applicationInfoContent" class="modal-body">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="completeModal" class="modal fade">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Booking Details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div id="completeContent" class="modal-body">
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="../assets/js/script.js"></script>
 	<script>
-		const Toast = Swal.mixin({
-			toast: true,
-			position: "top-end",
-			showConfirmButton: false,
-			timer: 3000,
-			timerProgressBar: true,
-			didOpen: (toast) => {
-				toast.onmouseenter = Swal.stopTimer;
-				toast.onmouseleave = Swal.resumeTimer;
+		$(document).ready(function() {
+			console.log(typeof Swal !== 'undefined' ? 'SweetAlert2 Loaded' : 'SweetAlert2 Not Loaded');
+
+			const Toast = Swal.mixin({
+				toast: true,
+				position: 'top-end',
+				showConfirmButton: false,
+				timer: 3000,
+				timerProgressBar: true
+			});
+
+			// Function to fetch and display booking details
+			function fetchBookingData(id, modalContent, modalId) {
+				$.getJSON(`../php/getBooking.php?id=${id}`)
+					.done(function(data) {
+						if (data.success && data.book) {
+							const formattedDate = new Date(data.book.date_sched).toLocaleString('en-US', {
+								month: 'long',
+								day: 'numeric',
+								year: 'numeric',
+							});
+							const createdDate = new Date(data.book.date_created).toLocaleString('en-US', {
+								month: 'long',
+								day: 'numeric',
+								year: 'numeric',
+							});
+							let people = data.book.people ? `${data.book.people} Persons` : 'Not Specified';
+
+							// Create a reusable function for generating the content
+							const generateContent = (action) => `
+                        <h3 class="mx-auto">${data.book.tour_title} <span class="badge badge-info">${formattedDate}</span></h3>
+                        <div class="content">
+                            <div class="media">
+                                <img class="align-self-start mr-3 img-thumbnail" src="../upload/Profile Pictures/${data.book.profile_picture}" alt="Image" style="max-width: 150px;">
+                                <div class="media-body">
+                                    <h4 class="mt-0">${data.book.name}</h4>
+                                    <ul class="list-unstyled">
+                                        <li><p><i class='bx bx-pin'></i> ${data.book.home_address}</p></li>
+                                        <li><i class='bx bx-male'></i> ${people}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="rightInfo">
+                                <div class="contact">
+                                    <h6>Contact Information</h6>
+                                    <p><i class='bx bx-envelope'></i> ${data.book.email}</p>
+                                    <p><i class='bx bx-phone'></i> ${data.book.phone_number}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <span>Book Created: ${createdDate}</span>
+                        <div class="btn-group">
+                            ${action === 'view' ? `
+                                <a class="btn-success" href="../php/updateBooking.php?status=1&id=${data.book.booking_id}&user=${data.book.user_id}&tour=${data.book.tour_id}">Approve</a>
+                                <a class="btn-danger" href="../php/updateBooking.php?status=2&id=${data.book.booking_id}&user=${data.book.user_id}&tour=${data.book.tour_id}">Decline</a>
+                            ` : `
+                                <a class="btn-success" href="../php/updateBooking.php?status=4&id=${data.book.booking_id}&user=${data.book.user_id}&tour=${data.book.tour_id}">Complete</a>
+                                <a class="btn-danger" href="../php/updateBooking.php?status=2&id=${data.book.booking_id}&user=${data.book.user_id}&tour=${data.book.tour_id}">Drop</a>
+                            `}
+                        </div>
+                    `;
+
+							modalContent.html(generateContent(modalId === '#viewModal' ? 'view' : 'complete'));
+							$(modalId).modal('show');
+						} else {
+							Toast.fire({
+								icon: 'error',
+								title: 'Unable to fetch booking information.'
+							});
+						}
+					})
+					.fail(function(jqXHR, textStatus, errorThrown) {
+						console.error(`Error fetching booking data: ${textStatus}`, errorThrown);
+						Toast.fire({
+							icon: 'error',
+							title: 'There was an error fetching the booking information.'
+						});
+					});
 			}
-		});
 
-		document.querySelectorAll('.btn-view').forEach(button => {
-			button.addEventListener('click', function() {
-				var userId = this.getAttribute('data-user-id');
-				var bookingId = this.getAttribute('data-booking-id');
-				window.location.href = '../admin/view_booking.php?user_id=' + userId + '&booking_id=' + bookingId;
+			$('.btn-view').click(function(event) {
+				event.preventDefault();
+				const id = $(this).data('id');
+				fetchBookingData(id, $('#applicationInfoContent'), '#viewModal');
 			});
-		});
-
-		document.addEventListener('DOMContentLoaded', function() {
-			document.querySelectorAll('.status-select').forEach(select => {
-				select.addEventListener('change', function() {
-					var bookingId = this.getAttribute('data-booking-id');
-					var newStatus = this.value;
-
-					fetch('../php/updateBooking.php', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/x-www-form-urlencoded'
-							},
-							body: new URLSearchParams({
-								'booking_id': bookingId,
-								'status': newStatus
-							})
-						})
-						.then(response => response.json())
-						.then(data => {
-							if (data.success) {
-								Toast.fire({
-									icon: 'success',
-									title: 'Status updated successfully!'
-								});
-							} else {
-								console.error('Failed to update status:', data.message);
-							}
-						})
-						.catch(error => {
-							console.error('Error:', error);
-						});
-				});
+			$('.btn-ready').click(function(event) {
+				event.preventDefault();
+				const id = $(this).data('id');
+				fetchBookingData(id, $('#completeContent'), '#completeModal');
 			});
 
-			document.querySelectorAll('.btn-delete').forEach(button => {
-				button.addEventListener('click', function() {
-					var bookingId = this.getAttribute('data-booking-id');
+			const urlParams = new URLSearchParams(window.location.search);
+			const id = urlParams.get('id');
 
-					fetch('../php/delete_booking.php', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/x-www-form-urlencoded'
-							},
-							body: new URLSearchParams({
-								'booking_id': bookingId
-							})
-						})
-						.then(response => response.json())
-						.then(data => {
-							if (data.success) {
-								location.reload();
-							} else {
-								console.error('Failed to delete booking:', data.message);
-							}
-						})
-						.catch(error => {
-							console.error('Error:', error);
-						});
-				});
-			});
+			if (urlParams.has('id') && urlParams.get('view') === 'true') {
+				fetchBookingData(id, $('#applicationInfoContent'), '#viewModal');
+			}
+
+			function completeBooking(id) {
+				const url = new URL(window.location.href);
+				url.searchParams.set('complete', 'true');
+				url.searchParams.set('id', id);
+				window.history.pushState({}, '', url);
+				fetchBookingData(id, $('#completeContent'), '#completeModal');
+			}
+
+			if (urlParams.get('complete') === 'true' && id) {
+				completeBooking(id);
+			}
 		});
 	</script>
 </body>

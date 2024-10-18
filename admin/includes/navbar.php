@@ -109,11 +109,15 @@ $pp = $_SESSION['profile-pic'];
 
 					if (data.notifications && data.notifications.length > 0) {
 						data.notifications.forEach(function(notification) {
+							let style = '';
+							if (notification.is_read === 0) {
+								style = 'style="color:blue;"';
+							}
 							let notificationItem = `
-                            <div class="notification-item">
-                                <a class="url" data-id="${notification.id}" href="${notification.url}">${notification.message}</a>
-                            </div>
-                        `;
+						<div class="notification-item">
+							<a class="url" ${style} data-id="${notification.id}" href="${notification.url}">${notification.message}</a>
+						</div>
+					`;
 							notificationDropdown.append(notificationItem);
 						});
 					} else {
@@ -125,6 +129,7 @@ $pp = $_SESSION['profile-pic'];
 				}
 			});
 		}
+
 
 		fetchNotifications();
 		setInterval(fetchNotifications, 30000);

@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInite54e73fe5d06611dd5dd2a11e93d5200
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'E' => 
         array (
             'Endroid\\QrCode\\' => 15,
@@ -22,6 +26,10 @@ class ComposerStaticInite54e73fe5d06611dd5dd2a11e93d5200
     );
 
     public static $prefixDirsPsr4 = array (
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'Endroid\\QrCode\\' => 
         array (
             0 => __DIR__ . '/..' . '/endroid/qr-code/src',

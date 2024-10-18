@@ -68,35 +68,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             cursor: pointer;
             z-index: 10001;
         }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
     </style>
 </head>
 
@@ -109,7 +80,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <main>
             <div class="head-title">
                 <div class="left">
-                    <h1>Pending</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>
@@ -184,6 +154,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="../assets/js/script.js"></script>
 
     <script>
+        console.log(typeof Swal !== 'undefined' ? 'SweetAlert2 Loaded' : 'SweetAlert2 Not Loaded');
+
         $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
@@ -193,19 +165,16 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 timerProgressBar: true
             });
 
-            // Close the modal when clicking the close button
             $('.close').click(function() {
                 $('#viewModal').fadeOut();
             });
 
-            // Open modal when clicking the view button
             $('.view-btn').click(function(event) {
                 event.preventDefault();
                 const id = $(this).data('id');
                 View(id);
             });
 
-            // Function to show the modal and fetch data
             function View(id) {
                 let url = new URL(window.location.href);
                 url.searchParams.set('view', 'true');
@@ -224,7 +193,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             hour12: true
                         });
 
-                        // Update modal content with fetched data
                         $('#applicationInfoContent').html(`
                     <h1 style="text-align: center;">${data.pending.title}</h1>
                     <img src="../upload/Tour Images/${data.pending.img}" alt="Tour Picture" width="100" class="zoomable-img">
@@ -242,10 +210,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <a class="accept-btn" href="../php/updatePending.php?status=2&tour_id=${data.pending.id}">Decline</a>
                 `);
 
-                        // Show the modal
                         $('#viewModal').fadeIn();
                     } else {
-                        // Show error if unable to fetch data
                         Toast.fire({
                             icon: 'error',
                             title: 'Unable to fetch pending information.'

@@ -1,6 +1,7 @@
 <?php require_once 'include/db_conn.php';
 require_once 'func/func.php';
 session_start();
+
 if (isset($_GET['tour_id'])) {
     $id = $_GET['tour_id'];
     if (validateQR($conn, $id)) {
@@ -189,7 +190,7 @@ if (isset($_GET['tour_id'])) {
 
 <body>
     <div class="modal-content">
-        <?php if (!isset($_SESSION['user_id'])) { ?>
+        <?php if (!isset($_COOKIE['device_id'])) { ?>
             <div id="sign-in-form" class="form-container">
                 <form id="loginForm" method="POST">
                     <h2>Sign In</h2>
@@ -239,22 +240,26 @@ if (isset($_GET['tour_id'])) {
                 <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
             </div>
             <?php } else {
-            if (hasVisitedToday($conn, $id, $_SESSION['user_id'])) { ?>
+                try {
+                    $stmt = $conn ->prepare('SELECT id FROM users WHERE device_id = ?');
+                    $stmt ->execute([$_COOKIE['device_id']]);
+                    $user_id = $stmt->fetchColumn();
+                } catch (PDOException $e) { 
+                    header("Location:index.php");
+                    exit();
+                }
+            if (hasVisitedToday($conn, $id,$user_id)) { ?>
                 <h1>You've already been to <?php echo $title ?> today.</h1>
             <?php } else {
-                if (recordVisit($conn, $id, $_SESSION['user_id'])) {
+                if (recordVisit($conn, $id, $user_id)) {
                     try {
-                        $stmt = $conn->prepare("SELECT name FROM users WHERE id = :id");
-                        $stmt->bindParam(':id', $_SESSION['user_id'], PDO::PARAM_INT);
-                        $stmt->execute();
+                        $stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
+                        $stmt->execute([$user_id]);
                         $user = $stmt->fetchColumn();
                     } catch (PDOException $e) {
                         echo "Error: ". $e->getMessage();
                     }
-                    $message = "$user visits $title";
-                    $url = "dashboard";
-                    $type = "visits";
-                    createNotification($conn, $_SESSION['user_id'], $message, $url, $type);
+                    createNotification($conn, $user_id, $id, "$user visits $title", "dashboard", "visits");
                 } ?>
                 <h1>Thank you for visiting <?php echo $title ?>.</h1>
         <?php }

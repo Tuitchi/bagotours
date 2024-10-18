@@ -1,5 +1,4 @@
 <?php
-include("../include/db_conn.php");
 
 function getAllToursforAdmin($conn)
 {
@@ -40,7 +39,9 @@ function getBookingById($conn, $id)
         b.people AS number_of_people,
         CASE 
             WHEN b.status = 1 THEN 'Approved'
-            WHEN b.status = 2 THEN 'Disapproved'
+            WHEN b.status = 2 THEN 'Drop'
+            WHEN b.status = 3 THEN 'Ongoing'
+            WHEN b.status = 4 THEN 'Completed'
             ELSE 'Pending'
         END AS status
     FROM 
@@ -48,7 +49,7 @@ function getBookingById($conn, $id)
     JOIN 
         tours t ON b.tour_id = t.id
     WHERE 
-        b.user_id = :user_id");
+        b.user_id = :user_id LIMIT 8");
     $stmt->bindParam(":user_id", $id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -99,18 +100,18 @@ function registerExpiry($conn, $user_id)
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     $date = date('Y-m-d');
-    
+
     foreach ($tours as $tour) {
         if ($tour['expiry'] == $date) {
             $deleteStmt = $conn->prepare("DELETE FROM tours WHERE user_id = :user_id AND id = :tour_id");
             $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $deleteStmt->bindParam(':tour_id', $tour['id'], PDO::PARAM_INT);
-            
+
             if ($deleteStmt->execute()) {
                 require_once 'func.php';
-                createNotification($conn, $user_id, $tour['id'], "You can Register as an owner again.", "form.php", "Upgrade cancelled");
+                createNotification($conn, $user_id, $tour['id'], "You can register as an owner again.", "form.php", "Upgrade cancelled");
             }
         }
     }
@@ -154,7 +155,7 @@ function getNotificationsCount($conn)
 // booking
 function isAlreadyBook($conn, $user_id, $tour_id)
 {
-    $stmt = $conn->prepare("SELECT * FROM booking WHERE user_id = :user_id AND tour_id = :tour_id");
+    $stmt = $conn->prepare("SELECT * FROM booking WHERE user_id = :user_id AND tour_id = :tour_id AND status = 1 OR status = 3 or status = 0");
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -167,4 +168,45 @@ function isBookable($conn, $tour_id)
     $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->rowCount() > 0;
+}
+
+function bookApproval($conn, $user_id)
+{
+    $stmt = $conn->prepare("SELECT date_sched FROM booking WHERE user_id = :user_id AND status = 1");
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $sched= $stmt->fetchColumn();
+        
+    if ($sched) {
+        $schedDate = new DateTime($sched);
+        $schedDate->modify('-2 day');
+
+        $today = new DateTime();
+
+        if ($schedDate->format('Y-m-d') === $today->format('Y-m-d')) {
+            return true;
+        }   
+    }
+    return false;
+}
+
+function userValidation($pageRole) {
+    if (isset($_SESSION['user_id'])) {
+        if(!empty($_SESSION['role'])) {
+            if ($_SESSION['role'] !== $pageRole) {
+                session_unset();
+                session_destroy();
+                header("Location: ../index.php");
+                exit;
+            }
+        } else {
+            session_unset();
+            session_destroy();
+            header("Location: ../index.php");
+            exit;
+        }
+    } else {
+        header("Location: ../index.php");
+        exit;
+    }
 }

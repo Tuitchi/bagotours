@@ -40,7 +40,6 @@ try {
         <main>
             <div class="head-title">
                 <div class="left">
-                    <h1>User List</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
                 <a href="#" class="btn-download" data-bs-toggle="modal" data-bs-target="#addUserModal">

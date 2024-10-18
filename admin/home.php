@@ -66,7 +66,6 @@ try {
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Home</h1>
 					<?php include 'includes/breadcrumb.php'; ?>
 				</div>
 			</div>
@@ -82,11 +81,11 @@ try {
 			</div>
 		</main>
 	</section>
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="../assets/js/script.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
+			mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
 			const map = new mapboxgl.Map({
 				container: 'map',

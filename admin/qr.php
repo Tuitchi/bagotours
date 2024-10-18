@@ -156,7 +156,6 @@ $pp = $_SESSION['profile-pic'];
         <main>
             <div class="head-title">
                 <div class="left">
-                    <h1>QR Code</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>

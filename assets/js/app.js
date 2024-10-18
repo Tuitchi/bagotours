@@ -1,87 +1,191 @@
-const sign_in_btn = document.querySelector("#sign-in-btn");
-const sign_up_btn = document.querySelector("#sign-up-btn");
-const container = document.querySelector(".container");
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modal');
+    const signInForm = document.getElementById('sign-in-form');
+    const signUpForm = document.getElementById('sign-up-form');
+    const openModalButtons = document.querySelectorAll('#open-modal');
+    const toSignUpButton = document.getElementById('to-sign-up');
+    const toSignInButton = document.getElementById('to-sign-in');
+    const closeModalButton = document.getElementById('close-modal');
 
-sign_up_btn.addEventListener("click", () => {
-  container.classList.add("sign-up-mode");
-});
+    function clearFormInputs(form) {
+        form.reset();
+    }
 
-sign_in_btn.addEventListener("click", () => {
-  container.classList.remove("sign-up-mode");
-});
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const submitButton = loginForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
 
-document.getElementById('sign-in-form').addEventListener('submit', function(e) {
-  let isValid = true;
+        const formData = new FormData(loginForm);
 
-  const username = document.getElementById('signin-username');
-  const password = document.getElementById('signin-password');
+        $.ajax({
+            url: 'php/login.php',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                const data = JSON.parse(response);
+                document.getElementById('username-error').textContent = '';
+                document.getElementById('username').style.border = '1px solid #ddd';
 
-  // Clear previous errors
-  document.getElementById('signin-username-error').textContent = '';
-  document.getElementById('signin-password-error').textContent = '';
+                document.getElementById('password-error').textContent = '';
+                document.getElementById('password').style.border = '1px solid #ddd';
 
-  // Username validation
-  if (username.value.trim() === '') {
-      document.getElementById('signin-username-error').textContent = 'Username is required.';
-      isValid = false;
-  }
 
-  // Password validation
-  if (password.value.trim() === '') {
-      document.getElementById('signin-password-error').textContent = 'Password is required.';
-      isValid = false;
-  }
+                if (data.success) {
+                    setTimeout(function() {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                } else {
+                    if (data.errors.username) {
+                        document.getElementById('username-error').textContent = data.errors.username;
+                        document.getElementById('username').style.border = '1px solid red';
 
-  if (!isValid) {
-      e.preventDefault();
-  }
-});
+                    }
+                    if (data.errors.password) {
+                        document.getElementById('password-error').textContent = data.errors.password;
+                        document.getElementById('password').style.border = '1px solid red';
 
-document.getElementById('sign-up-form').addEventListener('submit', function(e) {
-  let isValid = true;
+                    }
+                }
+            },
+            error: function() {
+                alert('An error occurred. Please try again.');
+            },
+            complete: function() {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Sign in';
+            }
+        });
+    });
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-  const username = document.getElementById('signup-username');
-  const email = document.getElementById('signup-email');
-  const password = document.getElementById('signup-password');
-  const confirmPassword = document.getElementById('signup-confirm-password');
+        const formData = new FormData(signupForm);
 
-  // Clear previous errors
-  document.getElementById('signup-username-error').textContent = '';
-  document.getElementById('signup-email-error').textContent = '';
-  document.getElementById('signup-password-error').textContent = '';
-  document.getElementById('signup-confirm-password-error').textContent = '';
+        $.ajax({
+            url: 'php/register.php',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {},
+            success: function(response) {
+                let data = JSON.parse(response);
+                document.getElementById('regName-error').textContent = '';
+                document.getElementById('fname').style.border = '1px solid #ddd';
+                document.getElementById('lname').style.border = '1px solid #ddd';
+                document.getElementById('regUsername-error').textContent = '';
+                document.getElementById('signup-username').style.border = '1px solid #ddd';
+                document.getElementById('regEmail-error').textContent = '';
+                document.getElementById('regHome-error').textContent = '';
+                document.getElementById('email').style.border = '1px solid #ddd';
+                document.getElementById('home-address').style.border = '1px solid #ddd';
+                document.getElementById('regPassword-error').textContent = '';
+                document.getElementById('pwd').style.border = '1px solid #ddd';
+                document.getElementById('regconPass-error').textContent = '';
+                document.getElementById('con-pwd').style.border = '1px solid #ddd';
 
-  // Username validation
-  if (username.value.trim() === '') {
-      document.getElementById('signup-username-error').textContent = 'Username is required.';
-      isValid = false;
-  }
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    if (data.errors.name) {
+                        document.getElementById('regName-error').textContent = data.errors.name;
+                        document.getElementById('lname').style.border = '1px solid red';
+                        document.getElementById('fname').style.border = '1px solid red';
+                    }
+                    if (data.errors.uname) {
+                        document.getElementById('regUsername-error').textContent = data.errors.uname;
+                        document.getElementById('signup-username').style.border = '1px solid red';
+                    }
+                    if (data.errors.email) {
+                        document.getElementById('regEmail-error').textContent = data.errors.email;
+                        document.getElementById('email').style.border = '1px solid red';
+                    }
+                    if (data.errors.home) {
+                        document.getElementById('regHome-error').textContent = data.errors.home;
+                        document.getElementById('home-address').style.border = '1px solid red';
+                    }
+                    if (data.errors.pwd) {
+                        document.getElementById('regPassword-error').textContent = data.errors.pwd;
+                        document.getElementById('pwd').style.border = '1px solid red';
+                    }
+                    if (data.errors.confirm_password) {
+                        document.getElementById('regconPass-error').textContent = data.errors.confirm_password;
+                        document.getElementById('con-pwd').style.border = '1px solid red';
+                    }
+                }
+            },
+            error: function() {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
 
-  // Email validation
-  if (email.value.trim() === '') {
-      document.getElementById('signup-email-error').textContent = 'Email is required.';
-      isValid = false;
-  } else if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      document.getElementById('signup-email-error').textContent = 'Enter a valid email address.';
-      isValid = false;
-  }
+    openModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            modal.classList.add('active');
+            signInForm.classList.add('slide-in');
+        });
+    });
 
-  // Password validation
-  if (password.value.trim() === '') {
-      document.getElementById('signup-password-error').textContent = 'Password is required.';
-      isValid = false;
-  }
+    toSignUpButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        signInForm.classList.add('hidden');
+        signUpForm.classList.remove('hidden');
+        signUpForm.classList.add('slide-in');
+        signInForm.classList.remove('slide-in');
 
-  // Confirm password validation
-  if (confirmPassword.value.trim() === '') {
-      document.getElementById('signup-confirm-password-error').textContent = 'Confirm your password.';
-      isValid = false;
-  } else if (password.value !== confirmPassword.value) {
-      document.getElementById('signup-confirm-password-error').textContent = 'Passwords do not match.';
-      isValid = false;
-  }
+        document.getElementById('username-error').textContent = '';
+        document.getElementById('username').style.border = '1px solid #ddd';
+        document.getElementById('password-error').textContent = '';
+        document.getElementById('password').style.border = '1px solid #ddd';
+    });
 
-  if (!isValid) {
-      e.preventDefault();
-  }
+    toSignInButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        signUpForm.classList.add('hidden');
+        signInForm.classList.remove('hidden');
+        signInForm.classList.add('slide-in');
+        signUpForm.classList.remove('slide-in');
+
+
+        document.getElementById('regName-error').textContent = '';
+        document.getElementById('fname').style.border = '1px solid #ddd';
+        document.getElementById('lname').style.border = '1px solid #ddd';
+        document.getElementById('regUsername-error').textContent = '';
+        document.getElementById('signup-username').style.border = '1px solid #ddd';
+        document.getElementById('regEmail-error').textContent = '';
+        document.getElementById('regHome-error').textContent = '';
+        document.getElementById('email').style.border = '1px solid #ddd';
+        document.getElementById('home-address').style.border = '1px solid #ddd';
+        document.getElementById('regPassword-error').textContent = '';
+        document.getElementById('pwd').style.border = '1px solid #ddd';
+        document.getElementById('regconPass-error').textContent = '';
+        document.getElementById('con-pwd').style.border = '1px solid #ddd';
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        modal.classList.remove('active');
+        clearFormInputs(loginForm);
+        clearFormInputs(signupForm);
+
+        document.getElementById('regName-error').textContent = '';
+        document.getElementById('fname').style.border = '1px solid #ddd';
+        document.getElementById('lname').style.border = '1px solid #ddd';
+        document.getElementById('regUsername-error').textContent = '';
+        document.getElementById('signup-username').style.border = '1px solid #ddd';
+        document.getElementById('regEmail-error').textContent = '';
+        document.getElementById('regHome-error').textContent = '';
+        document.getElementById('email').style.border = '1px solid #ddd';
+        document.getElementById('home-address').style.border = '1px solid #ddd';
+        document.getElementById('regPassword-error').textContent = '';
+        document.getElementById('pwd').style.border = '1px solid #ddd';
+        document.getElementById('regconPass-error').textContent = '';
+        document.getElementById('con-pwd').style.border = '1px solid #ddd';
+    });
 });

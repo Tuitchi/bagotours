@@ -1,27 +1,51 @@
-// TOGGLE SIDEBAR
+
+function checkOrientation() {
+  if (window.innerHeight > window.innerWidth) {
+      // Portrait mode
+      document.getElementById('rotate-message').style.display = 'flex';
+  } else {
+      // Landscape mode
+      document.getElementById('rotate-message').style.display = 'none';
+  }
+}
+window.addEventListener('resize', checkOrientation);
+window.onload = checkOrientation;
+
 const menuBar = document.querySelector("#content nav .bx.bx-menu");
 const sidebar = document.getElementById("sidebar");
+
+window.addEventListener("resize", function () {
+  if (window.innerWidth <= 800) {
+    sidebar.classList.add("hide");
+  } else {
+    sidebar.classList.remove("hide");
+  }
+});
 
 menuBar.addEventListener("click", function () {
   sidebar.classList.toggle("hide");
 
   const isHidden = sidebar.classList.contains("hide");
-
   $.ajax({
     url: "/../../php/SideNavHidden.php",
     type: "POST",
     data: {
-      sidebar_hidden: isHidden ? "hide" : ""
+      sidebar_hidden: isHidden ? "hide" : "",
     },
     success: function (response) {
       console.log("Sidebar state saved successfully!");
     },
     error: function (xhr, status, error) {
       console.error("Failed to save sidebar state:", error);
-    }
+    },
   });
 });
 
+if (window.innerWidth <= 800) {
+  sidebar.classList.add("hide");
+} else {
+  sidebar.classList.remove("hide");
+}
 
 const searchIcon = document.getElementById("search-icon");
 const searchContainer = document.querySelector(".search-container");
@@ -67,3 +91,18 @@ window.addEventListener("resize", function () {
     searchForm.classList.remove("show");
   }
 });
+function checkOrientation() {
+  if (window.innerHeight > window.innerWidth) {
+      // Portrait mode
+      document.getElementById('rotate-message').style.display = 'flex';
+  } else {
+      // Landscape mode
+      document.getElementById('rotate-message').style.display = 'none';
+  }
+}
+
+// Add an event listener for when the orientation changes
+window.addEventListener('resize', checkOrientation);
+
+// Run the function on page load to check the initial orientation
+window.onload = checkOrientation;

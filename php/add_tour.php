@@ -45,6 +45,7 @@ try {
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':address', $address);
             $stmt->bindParam(':type', $type);
+            
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':img', $image_name);
             $stmt->bindParam(':bookable', $bookable);

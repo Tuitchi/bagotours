@@ -1,7 +1,9 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
+if (isset($_COOKIE['device_id'])) {
+    unset($_COOKIE['device_id']);
+}
 $errors = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstname = htmlspecialchars(trim($_POST['firstname']));
@@ -12,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uname = htmlspecialchars(trim($_POST['username']));
     $pwd = trim($_POST['pwd']);
     $confirm_password = trim($_POST['con-pwd']);
+    $device_id = md5($email . $uname);
     $role = "user";
     $pp = "default.png";
 
@@ -55,12 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $hashed_password = password_hash($pwd, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture,home_address) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture,home_address, device_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->execute([$name, $email, $uname, $hashed_password, $role, $pp, $home]);
+        $stmt->execute([$name, $email, $uname, $hashed_password, $role, $pp, $home, $device_id]);
 
+        setcookie('device-id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
         $_SESSION['profile-pic'] = $pp;
         $_SESSION['user_id'] = $conn->lastInsertId();
         $_SESSION['ROLE'] = 'user';

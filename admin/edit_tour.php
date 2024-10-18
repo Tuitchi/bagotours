@@ -15,7 +15,6 @@ if (isset($_GET['id'])) {
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>Edit Tours</h1>
             <?php include 'includes/breadcrumb.php'; ?>
         </div>
     </div>

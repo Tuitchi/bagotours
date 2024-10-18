@@ -18,12 +18,16 @@ function createNotification($conn, $userId, $tour_id, $message, $url, $type)
     $stmt->bindParam(':message', $message, PDO::PARAM_STR);
     $stmt->bindParam(':url', $url, PDO::PARAM_STR);
     $stmt->bindParam(':type', $type, PDO::PARAM_STR);
-    $stmt->execute();
+    if ($stmt->execute()) {
+        return "success";
+    } else {
+        return "error";
+    }
 }
 
 function getNotifications($conn, $userId)
 {
-    $stmt = $conn->prepare("SELECT id, message, url FROM notifications WHERE user_id = :user_id ORDER BY created_at DESC");
+    $stmt = $conn->prepare("SELECT id, message, url, is_read  FROM notifications WHERE user_id = :user_id ORDER BY created_at DESC");
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -36,6 +40,13 @@ function getNotificationCount($conn, $user_id)
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result['unread_count'];
+}
+
+function markNotificationAsRead($conn, $notificationId)
+{
+    $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = :notification_id");
+    $stmt->bindParam(':notification_id', $notificationId, PDO::PARAM_INT);
+    $stmt->execute();
 }
 
 // QR Code
@@ -65,7 +76,7 @@ function getQR($conn, $tour_id)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// VISIT
+// VISIT -------------------------------------------------------
 
 function recordVisit($conn, $tourId, $userId)
 {
@@ -102,7 +113,38 @@ function hasVisitedToday($conn, $tourId, $userId)
 
 
 // REVIEW AND RATINGS --------------------------------
+function addReview($conn, $tour_id, $user_id, $rating, $review)
+{
+    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review) VALUES (:tour_id, :user_id, :rating, :review)");
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
+    $stmt->bindParam(':review', $review, PDO::PARAM_STR);
+    if ($stmt->execute()) {
+        $stmtUpdate = $conn->prepare("UPDATE booking SET is_review = 1 WHERE tour_id = :tour_id AND user_id = :user_id");
+        $stmtUpdate->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+        $stmtUpdate->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        if ($stmtUpdate->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
 
+function ReviewAction($conn)
+{
+    $stmt = $conn->prepare("SELECT id FROM booking WHERE status = 4 AND is_review = 0");
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (count($results) > 0) {
+        return $results;
+    } else {
+        return false;
+    }
+}
 function getAllRR($conn, $tour_id)
 {
     $stmt = $conn->prepare("
@@ -115,4 +157,83 @@ function getAllRR($conn, $tour_id)
     $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+// BOOKING_______________________________________________________
+function specificBooking($conn, $user_id)
+{
+    $stmt = $conn->prepare("SELECT t.title, t.id
+                            FROM booking b
+                            JOIN tours t ON b.tour_id = t.id
+                            WHERE b.user_id = :user_id AND b.status = 4
+                            LIMIT 1");
+
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch();
+}
+
+function getBooking($conn, $user_id)
+{
+    $stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.username FROM booking b
+          JOIN tours t ON b.tour_id = t.id
+          JOIN users u ON b.user_id = u.id WHERE t.user_id = :user_id
+          ORDER BY b.date_sched DESC");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function alreadyBook($conn, $user_id, $tour_id)
+{
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM booking WHERE user_id = :user_id AND tour_id = :tour_id AND status = 1");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch()['count'] > 0;
+}
+function checkBooking($conn, int $tour_id)
+{
+    $stmt = $conn->prepare("
+        SELECT u.name AS name, t.title AS title, t.user_id AS owner_id, b.* 
+        FROM booking b 
+        JOIN users u ON u.id = b.user_id 
+        JOIN tours t ON t.id = b.tour_id 
+        WHERE tour_id = :tour_id AND b.status = 1 OR b.status = 3
+    ");
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($bookings as $booking) {
+        $dateSched = new DateTime($booking['date_sched']);
+        $sched = new DateTime($booking['date_sched']);
+        $dateSched->modify('-1 day'); // Check for notifications the day before
+        $today = new DateTime(); // Current date
+
+        // If tomorrow's date matches, notify that the booking is tomorrow
+        if ($dateSched <= $today && $sched > $today) {
+            createNotification(
+                $conn,
+                $booking['owner_id'],
+                $booking['tour_id'],
+                $booking['name'] . " will arrive tomorrow at " . $booking['title'],
+                "../php/phpmailer.php?id=" . $booking['id'],
+                "booking"
+            );
+        }
+        // If the scheduled date is today, notify the owner of today's arrival
+        elseif ($sched <= $today) {
+            createNotification(
+                $conn,
+                $booking['owner_id'],
+                $booking['tour_id'],
+                $booking['name'] . " will arrive today at " . $booking['title'],
+                "booking?complete=true&id=" . $booking['id'],
+                "booking"
+            );
+        }
+    }
 }

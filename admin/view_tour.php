@@ -87,7 +87,6 @@ if (isset($_GET['id'])) {
         <main id="main">
             <div class="head-title">
                 <div class="left">
-                    <h1>View Tours</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>
@@ -109,7 +108,7 @@ if (isset($_GET['id'])) {
             </div>
         </main>
     </section>
-
+    <script src="../assets/js/script.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function loadDoc() {
