@@ -18,7 +18,9 @@ if (isset($_SESSION['user_id'])) {
 
 <body>
     <?php include 'nav/topnav.php' ?>
+   
     <div class="main-container">
+       
         <?php include 'nav/sidenav.php' ?>
         <div class="main">
 
