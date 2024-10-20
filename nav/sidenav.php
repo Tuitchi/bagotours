@@ -4,6 +4,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
 <div class="navcontainer">
     <nav class="nav">
         <div class="nav-upper-options">
+            
             <a href="index" class="nav-option <?php echo $current_page == 'index' ? 'active' : ''; ?>">
                 <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
                     class="nav-img" alt="dashboard">
