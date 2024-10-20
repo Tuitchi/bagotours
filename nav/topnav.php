@@ -33,7 +33,7 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+        z-index: 9999;
         display: none;
     }
     /* Notification button styling */
@@ -77,7 +77,7 @@
     width: 250px; /* Increased width for better spacing */
     padding: 15px;
     margin-top: 10px;
-    z-index: 10; /* Ensure it appears above other elements */
+    z-index: 999; /* Ensure it appears above other elements */
     right: 0; /* Align the notification menu with the notification icon */
 }
 

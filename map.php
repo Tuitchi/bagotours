@@ -43,11 +43,13 @@ if (isset($_GET['id'])) {
     <style>
         /* Add this CSS to your user.css or another appropriate stylesheet */
         .distance-display {
-            display: flex;
-            position:absolute;
+            display: none;
+            position: absolute;
             left: 50%;
-            margin-top: 20px;
+            bottom: 20px;
+            /* Position it 20px from the bottom */
             transform: translateX(-50%);
+            /* Center it horizontally */
             background: rgba(255, 255, 255, 0.8);
             padding: 10px;
             border-radius: 5px;
@@ -55,6 +57,53 @@ if (isset($_GET['id'])) {
             font-family: Arial, sans-serif;
             font-size: 16px;
             z-index: 999;
+        }
+
+
+        .instructions-container {
+            display: none;
+            position: absolute;
+            /* Use absolute positioning */
+            top: 20px;
+            /* Adjust this value to position vertically */
+            left: 20px;
+            /* Adjust this value to position horizontally */
+            background-color: rgba(255, 255, 255, 0.9);
+            /* Semi-transparent background */
+            padding: 10px;
+            /* Padding around the content */
+            border-radius: 8px;
+            /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            /* Slight shadow for depth */
+            z-index: 999;
+            /* Ensure it appears above other elements */
+            max-width: 250px;
+            /* Optional: limit width of instructions */
+            overflow-y: auto;
+            /* Allow scrolling if content is too long */
+            height: 300px;
+            /* Optional: limit height of instructions */
+        }
+
+        /* Additional styles for the step instruction */
+        .step-instruction {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            /* Divider between steps */
+        }
+
+        .step-instruction:last-child {
+            border-bottom: none;
+            /* Remove border for last item */
+        }
+
+        .step-instruction {
+            margin: 5px;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
@@ -68,58 +117,70 @@ if (isset($_GET['id'])) {
                 <h3>Tours Map</h3>
                 <div id="map">
                     <div class="distance-display"></div>
+                    <div class="instructions-container">
+                        <h3>Route Instructions</h3>
+                        <div id="instructions-list"></div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
+        const spotDirection = <?php echo json_encode($spotDirection); ?>;
+        let map, userMarker;
+        let lastBearing = null;
+        const distanceDisplay = document.querySelector('.distance-display');
+        const instructionDisplay = document.querySelector('.instructions-container');
+        let instructionsList;
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
-            const spotDirection = <?php echo json_encode($spotDirection); ?>;
-            let userMarker, map;
-            const distanceDisplay = document.querySelector('.distance-display');
+        const geolocateControl = new mapboxgl.GeolocateControl({
+            positionOptions: { enableHighAccuracy: true },
+            trackUserLocation: true,
+            showUserHeading: true
+        });
 
-            // Check for geolocation support
-            if ('geolocation' in navigator) {
-                navigator.geolocation.watchPosition(successLocation, errorLocation, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                });
-            } else {
-                console.log('Geolocation is not supported by your browser.');
-            }
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(
+                position => {
+                    const userLocation = [position.coords.longitude, position.coords.latitude];
+                    const heading = position.coords.heading; // Get user's heading
 
-            function successLocation(position) {
-                const userLocation = [position.coords.longitude, position.coords.latitude];
-                if (!map) {
-                    setupMap(userLocation);
-                } else {
-                    animateMarkerMovement(userMarker, userMarker.getLngLat(), userLocation);
-                }
+                    if (!map) {
+                        setupMap(userLocation);
+                    } else {
+                        userMarker.setLngLat(userLocation);
 
-                if (spotDirection) {
-                    const destination = [spotDirection.longitude, spotDirection.latitude];
-                    getRoute(userLocation, destination);
-                    const distance = calculateDistance(userLocation, destination);
-                    updateDistanceDisplay(distance);
-                }
-            }
+                        if (heading !== null) {
+                            if (lastBearing !== null) {
+                                const delta = heading - lastBearing;
+                                const smoothBearing = lastBearing + delta * 0.1;
+                                map.setBearing(smoothBearing);
+                            }
 
-            function errorLocation() {
-                const defaultCenter = [122.8313, 10.5338];
-                alert('Unable to get your location, using default location.');
-                setupMap(defaultCenter);
+                            lastBearing = heading; // Update last bearing to the current heading
+                        }
 
-                if (spotDirection) {
-                    const destination = [spotDirection.longitude, spotDirection.latitude];
-                    const distance = calculateDistance(defaultCenter, destination);
-                    updateDistanceDisplay(distance);
-                    getRoute(defaultCenter, destination);
-                }
-            }
+                    }
 
-            function setupMap(center) {
+                    // Update distance and route here
+                    if (spotDirection) {
+                        const destination = [spotDirection.longitude, spotDirection.latitude];
+                        updateDistanceAndRoute(userLocation, destination);
+                    }
+                },
+                () => setupMap([122.8313, 10.5338]),
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            console.log('Geolocation is not supported by your browser.');
+            setupMap([122.8313, 10.5338]);
+        }
+
+
+        function setupMap(center) {
+            if (!map) {
                 map = new mapboxgl.Map({
                     container: 'map',
                     style: 'mapbox://styles/mapbox/streets-v12',
@@ -127,141 +188,196 @@ if (isset($_GET['id'])) {
                     zoom: 11
                 });
 
-                // User marker
-                userMarker = new mapboxgl.Marker().setLngLat(center).addTo(map);
-                const scale = new mapboxgl.ScaleControl({
-                    maxWidth: 80,
-                    unit: 'imperial'
-                });
-                map.addControl(scale);
-
-                scale.setUnit('metric');
+                map.addControl(geolocateControl);
                 map.addControl(new mapboxgl.FullscreenControl());
                 map.addControl(new mapboxgl.NavigationControl());
-                map.addControl(new mapboxgl.GeolocateControl({
-                    positionOptions: { enableHighAccuracy: true },
-                    trackUserLocation: true,
-                    showUserHeading: true
-                }));
-
-                if (spotDirection) {
-                    const destination = [spotDirection.longitude, spotDirection.latitude];
-                    addDestinationMarker(destination, spotDirection.type);
-                    getRoute(center, destination);
-                }
-
-                loadTouristSpots();
             }
 
-            function addDestinationMarker(destination, type) {
-                const destinationMarkerEl = document.createElement('div');
-                destinationMarkerEl.className = 'marker';
-                destinationMarkerEl.style.backgroundImage = `url(assets/icons/${type.split(' ')[0]}.png)`;
-                destinationMarkerEl.style.width = '30px';
-                destinationMarkerEl.style.height = '30px';
-                new mapboxgl.Marker(destinationMarkerEl).setLngLat(destination).addTo(map);
+            if (!userMarker) {
+                userMarker = new mapboxgl.Marker().setLngLat(center).addTo(map);
+            } else {
+                userMarker.setLngLat(center);
             }
 
-            function animateMarkerMovement(marker, start, end, duration = 1000) {
-                let startTime = null;
-                const [startLng, startLat] = [start.lng, start.lat];
-                const [endLng, endLat] = end;
-
-                function step(timestamp) {
-                    if (!startTime) startTime = timestamp;
-                    const elapsed = timestamp - startTime;
-                    const t = Math.min(elapsed / duration, 1);
-                    marker.setLngLat([startLng + (endLng - startLng) * t, startLat + (endLat - startLat) * t]);
-
-                    if (t < 1) requestAnimationFrame(step);
-                }
-
-                requestAnimationFrame(step);
+            if (spotDirection) {
+                map.on('load', () => geolocateControl.trigger());
+                map.setPitch(50);
+                distanceDisplay.style.display = "flex";
+                instructionDisplay.style.display = "block";
+                const destination = [spotDirection.longitude, spotDirection.latitude];
+                addDestinationMarker(destination, spotDirection.type);
+                updateDistanceAndRoute(center, destination);
             }
 
-            function calculateDistance(coord1, coord2) {
-                const R = 6371; // Radius of Earth in kilometers
-                const dLat = toRad(coord2[1] - coord1[1]);
-                const dLon = toRad(coord2[0] - coord1[0]);
-                const a = Math.sin(dLat / 2) ** 2 +
-                    Math.cos(toRad(coord1[1])) * Math.cos(toRad(coord2[1])) * Math.sin(dLon / 2) ** 2;
-                return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))); // distance in km
-            }
+            loadTouristSpots();
+        }
 
-            function toRad(value) {
-                return value * Math.PI / 180;
-            }
+        function addDestinationMarker(destination, type) {
+            const destinationMarkerEl = document.createElement('div');
+            destinationMarkerEl.className = 'marker';
+            destinationMarkerEl.style.backgroundImage = `url(assets/icons/${type.split(' ')[0]}.png)`;
+            destinationMarkerEl.style.width = '30px';
+            destinationMarkerEl.style.height = '30px';
+            new mapboxgl.Marker(destinationMarkerEl).setLngLat(destination).addTo(map);
+        }
 
-            function updateDistanceDisplay(distance) {
+        async function updateDistanceAndRoute(start, end) {
+            const distance = calculateDistance(start, end);
+            updateDistanceDisplay(distance);
+            map.flyTo({ center: start, zoom: 15 });
+            await getRoute(start, end);
+        }
+
+        function calculateDistance(coord1, coord2) {
+            const R = 6371; // Radius of Earth in kilometers
+            const dLat = toRad(coord2[1] - coord1[1]);
+            const dLon = toRad(coord2[0] - coord1[0]);
+            const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(coord1[1])) * Math.cos(toRad(coord2[1])) * Math.sin(dLon / 2) ** 2;
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))); // distance in km
+        }
+
+        function toRad(value) {
+            return value * Math.PI / 180;
+        }
+
+        function updateDistanceDisplay(distance) {
+            if (distance < 1) {
+                // Distance is less than 1 km, show in meters
+                distanceDisplay.textContent = `Distance to destination: ${(distance * 1000).toFixed(0)} meters`;
+            } else {
+                // Distance is 1 km or more, show in kilometers
                 distanceDisplay.textContent = `Distance to destination: ${distance.toFixed(2)} km`;
             }
+        }
 
-            async function getRoute(start, end) {
-                try {
-                    const response = await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        async function getRoute(start, end) {
+            try {
+                const response = await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-                    const json = await response.json();
-                    if (json.routes.length === 0) return console.error('No routes found');
+                const json = await response.json();
+                if (json.routes.length === 0) return console.error('No routes found');
 
-                    const route = json.routes[0].geometry.coordinates;
-                    const geojson = {
-                        type: 'Feature',
-                        geometry: { type: 'LineString', coordinates: route }
-                    };
+                const route = json.routes[0].geometry.coordinates;
+                const steps = json.routes[0].legs[0].steps;
 
-                    if (map.getSource('route')) {
-                        map.getSource('route').setData(geojson);
-                    } else {
-                        map.addLayer({
-                            id: 'route',
-                            type: 'line',
-                            source: { type: 'geojson', data: geojson },
-                            layout: { 'line-join': 'round', 'line-cap': 'round' },
-                            paint: { 'line-color': '#3887be', 'line-width': 5, 'line-opacity': 0.75 }
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error fetching directions:', error);
-                }
-            }
+                const geojson = {
+                    type: 'Feature',
+                    geometry: { type: 'LineString', coordinates: route }
+                };
 
-            function loadTouristSpots() {
-                const touristSpots = <?php echo json_encode($touristSpots); ?>;
-                if (touristSpots.length > 0) {
-                    touristSpots.forEach(({ type, longitude, latitude, img, title, address, id, average_rating }) => {
-                        const markerEl = document.createElement('div');
-                        markerEl.className = 'marker';
-                        markerEl.style.backgroundImage = `url(assets/icons/${type.split(' ')[0]}.png)`;
-                        markerEl.style.width = '30px';
-                        markerEl.style.height = '30px';
-
-                        const marker = new mapboxgl.Marker(markerEl).setLngLat([longitude, latitude]).addTo(map);
-
-                        const popupContent = `
-                            <div class="popup-content" style="border-radius:26px;">
-                                <img src="upload/Tour Images/${img}" alt="${title}" style="width: 100%; height: 80%;">
-                                <h3>${title}</h3>
-                                <p>${address}</p>
-                                <p>⭐ ${(Math.floor(average_rating * 100) / 100).toFixed(1)} / 5</p>
-                            </div>
-                        `;
-
-                        const popup = new mapboxgl.Popup({ closeOnClick: false, offset: 25, closeButton: false })
-                            .setLngLat([longitude, latitude])
-                            .setHTML(popupContent);
-
-                        markerEl.addEventListener('load', () => popup.addTo(map));
-                        markerEl.addEventListener('mouseenter', () => popup.addTo(map));
-                        markerEl.addEventListener('mouseleave', () => popup.remove());
-                        markerEl.addEventListener('click', () => window.location.href = `tour?tours=${id}`);
-                    });
+                if (map.getSource('route')) {
+                    map.getSource('route').setData(geojson);
                 } else {
-                    console.log("No tourist spots found.");
+                    map.addLayer({
+                        id: 'route',
+                        type: 'line',
+                        source: { type: 'geojson', data: geojson },
+                        layout: { 'line-join': 'round', 'line-cap': 'round' },
+                        paint: { 'line-color': '#3887be', 'line-width': 5, 'line-opacity': 0.75 }
+                    });
                 }
+
+                instructionsList = document.getElementById('instructions-list');
+                instructionsList.innerHTML = ''; // Clear previous instructions
+
+                let currentStepIndex = 0; // Track the current step
+                let isSpeaking = false; // Prevent speaking the next instruction until the current one is done
+
+                steps.forEach((step, index) => {
+                    const stepCoords = step.maneuver.location;
+                    const distanceToStep = calculateDistance(start, stepCoords);
+                    const distanceInMeters = distanceToStep * 1000; // Convert to meters
+
+                    // Determine distance text based on value
+                    let distanceText = '';
+                    if (distanceInMeters < 1000) {
+                        distanceText = `${distanceInMeters.toFixed(0)} meters`;
+                    } else {
+                        distanceText = `${(distanceInMeters / 1000).toFixed(2)} km`;
+                    }
+
+                    const instructionText = `${index + 1}: ${step.maneuver.instruction} (Distance: ${distanceText})`;
+
+                    const stepDiv = document.createElement('div');
+                    stepDiv.className = 'step-instruction';
+                    stepDiv.textContent = instructionText;
+                    instructionsList.appendChild(stepDiv);
+                });
+
+                // Function to speak the current instruction
+                function speakInstruction(stepIndex) {
+                    const step = steps[stepIndex];
+                    if (step) {
+                        const utterance = new SpeechSynthesisUtterance(step.maneuver.instruction);
+                        window.speechSynthesis.speak(utterance);
+                        isSpeaking = true; // Set speaking state
+                        utterance.onend = function () {
+                            isSpeaking = false; // Ready to speak the next instruction when needed
+                        };
+                    }
+                }
+
+                // Speech synthesis handling for steps
+                navigator.geolocation.watchPosition(position => {
+                    const userLocation = [position.coords.longitude, position.coords.latitude];
+                    const step = steps[currentStepIndex];
+                    const stepCoords = step.maneuver.location;
+                    const distanceToStep = calculateDistance(userLocation, stepCoords);
+
+                    if (distanceToStep < 0.05 && !isSpeaking) {
+                        // If the user is close to the current step, speak the instruction
+                        speakInstruction(currentStepIndex);
+                    }
+
+                    // Check if the user has completed the current step and is ready for the next one
+                    if (distanceToStep < 0.01 && currentStepIndex < steps.length - 1) {
+                        currentStepIndex++; // Move to the next step
+                        isSpeaking = false; // Reset speaking state for the next instruction
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching directions:', error);
             }
-        </script>
-    </div>
+        }
+
+
+
+        function loadTouristSpots() {
+            const touristSpots = <?php echo json_encode($touristSpots); ?>;
+
+            touristSpots.forEach(spot => {
+                const { type, longitude, latitude, img, title, address, id, average_rating } = spot;
+
+                const markerEl = document.createElement('div');
+                markerEl.className = 'marker';
+                markerEl.style.backgroundImage = `url(assets/icons/${type.split(' ')[0]}.png)`;
+                markerEl.style.width = '30px';
+                markerEl.style.height = '30px';
+
+                const marker = new mapboxgl.Marker(markerEl).setLngLat([longitude, latitude]).addTo(map);
+
+                const popupContent = `
+                <div class="popup-content" style="border-radius:26px;">
+                    <img src="upload/Tour Images/${img}" alt="${title}" style="width: 100%; height: 80%;">
+                    <h3>${title}</h3>
+                    <p>${address}</p>
+                    <p>⭐ ${(Math.floor(average_rating * 100) / 100).toFixed(1)} / 5</p>
+                </div>
+            `;
+
+                const popup = new mapboxgl.Popup({ closeOnClick: false, offset: 25, closeButton: false })
+                    .setLngLat([longitude, latitude])
+                    .setHTML(popupContent);
+
+                markerEl.addEventListener('mouseenter', () => popup.addTo(map));
+                markerEl.addEventListener('mouseleave', () => popup.remove());
+                markerEl.addEventListener('click', () => window.location.href = `tour?tours=${id}`);
+            });
+        }
+    </script>
+
 </body>
 
 </html>

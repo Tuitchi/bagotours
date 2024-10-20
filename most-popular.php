@@ -60,6 +60,7 @@ try {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BagoTours</title>
+    <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="user.css">
 </head>
 
@@ -77,45 +78,47 @@ try {
                 <?php
                 $counter = 1;
                 foreach ($tours as $tour) {
-                    echo "<div class='tourList'>
-                            <img src='upload/Tour Images/".$tour['img']."' alt=''>
-                            <div class='tourDetails'>
-                                <h1>#".$counter++."</h1>
-                                <h3>".$tour['title']."</h3>
-                                <div class='smallDetails'>
-                                    <span>".$tour['type']."</span>
-                                    <span class='rating'>★★★★☆ (".$tour['total_visitors'].")</span>
+                    echo "<a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
+                            <div class='tourList'>
+                                <img src='upload/Tour Images/" . $tour['img'] . "' alt=''>
+                                <div class='tourDetails'>
+                                    <h1>#" . $counter++ . "</h1>
+                                    <h3>" . $tour['title'] . "</h3>
+                                    <div class='smallDetails'>
+                                        <span>" . $tour['type'] . "</span>
+                                        <span class='rating'>★★★★☆ (" . $tour['total_visitors'] . ")</span>
+                                    </div>
                                 </div>
                             </div>
-                          </div>";}?>
+                          </a>";} ?>
             </div>
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>
 
-
+    <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('.option').on('click', function() {
-            $('.option').removeClass('active');
-            $(this).addClass('active');
+        $(document).ready(function () {
+            $('.option').on('click', function () {
+                $('.option').removeClass('active');
+                $(this).addClass('active');
 
-            var timeFilter = $(this).data('filter');
+                var timeFilter = $(this).data('filter');
 
-            $.ajax({
-                url: '',
-                type: 'POST',
-                data: { filter: timeFilter },
-                success: function(response) {
-                    $('#tour-list-container').html($(response).find('#tour-list-container').html());
-                },
-                error: function() {
-                    alert('Error loading tours');
-                }
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: { filter: timeFilter },
+                    success: function (response) {
+                        $('#tour-list-container').html($(response).find('#tour-list-container').html());
+                    },
+                    error: function () {
+                        alert('Error loading tours');
+                    }
+                });
             });
         });
-    });
     </script>
 </body>
 

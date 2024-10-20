@@ -1,7 +1,7 @@
 <div id="modal" class="modal">
     <div class="backdrop"></div>
     <div class="modal-content">
-        <button type="button" class="close-btn" id="close-modal">&times;</button>
+        <button type="button" class="closeBtn" id="close-modal">&times;</button>
         <div id="sign-in-form" class="form-container">
             <form id="loginForm">
                 <h2>Sign In</h2>
