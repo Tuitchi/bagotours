@@ -78,44 +78,45 @@ try {
                 $counter = 1;
                 foreach ($tours as $tour) {
                     echo "<div class='tourList'>
-                            <img src='upload/Tour Images/".$tour['img']."' alt=''>
+                            <img src='upload/Tour Images/" . $tour['img'] . "' alt=''>
                             <div class='tourDetails'>
-                                <h1>#".$counter++."</h1>
-                                <h3>".$tour['title']."</h3>
+                                <h1>#" . $counter++ . "</h1>
+                                <h3>" . $tour['title'] . "</h3>
                                 <div class='smallDetails'>
-                                    <span>".$tour['type']."</span>
-                                    <span class='rating'>★★★★☆ (".$tour['total_visitors'].")</span>
+                                    <span>" . $tour['type'] . "</span>
+                                    <span class='rating'>★★★★☆ (" . $tour['total_visitors'] . ")</span>
                                 </div>
                             </div>
-                          </div>";}?>
+                          </div>";
+                } ?>
             </div>
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>
 
-
+    <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('.option').on('click', function() {
-            $('.option').removeClass('active');
-            $(this).addClass('active');
+        $(document).ready(function () {
+            $('.option').on('click', function () {
+                $('.option').removeClass('active');
+                $(this).addClass('active');
 
-            var timeFilter = $(this).data('filter');
+                var timeFilter = $(this).data('filter');
 
-            $.ajax({
-                url: '',
-                type: 'POST',
-                data: { filter: timeFilter },
-                success: function(response) {
-                    $('#tour-list-container').html($(response).find('#tour-list-container').html());
-                },
-                error: function() {
-                    alert('Error loading tours');
-                }
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: { filter: timeFilter },
+                    success: function (response) {
+                        $('#tour-list-container').html($(response).find('#tour-list-container').html());
+                    },
+                    error: function () {
+                        alert('Error loading tours');
+                    }
+                });
             });
         });
-    });
     </script>
 </body>
 
