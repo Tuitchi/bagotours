@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
 
     $stmt = $conn->prepare("SELECT * FROM tours WHERE id = ?");
-    $stmt->execute([$decrypted_id]); 
+    $stmt->execute([$decrypted_id]);
     $tour = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>

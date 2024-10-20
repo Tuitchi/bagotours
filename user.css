@@ -1007,6 +1007,13 @@ input[type=text]:focus {
 }
 
 @media screen and (max-width: 850px) {
+.tourList {
+  margin-bottom: 0px;
+}
+  .tourList img {
+    width: 100%;
+  }
+
   .navcontainer {
     width: 280px;
     z-index: 9999;
@@ -1089,7 +1096,7 @@ input[type=text]:focus {
 
   .logosec {
     width: 100%;
-    justify-content: space-between;
+    justify-content:flex-start;
   }
 
   .logo {

@@ -187,6 +187,7 @@
         if (empty($user_id)) {
             echo "<button id='open-modal' class='login'>Login</button>";
         } else {
+<<<<<<< Updated upstream
             echo "
             <div class='notification' onclick='toggleNotificationMenu()'>
                 <i class='fa fa-bell'></i>
@@ -213,6 +214,15 @@
             ";
         }
         ?>
+=======
+            echo "<div class='circle'></div>
+            <img src='https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png' class='icn' alt=''>
+            <div class='dp'>
+                <img src='upload/Profile Pictures/".$_SESSION['profile-pic']."'
+                    class='dpicn' alt='dp'>
+            </div>";
+        } ?>
+>>>>>>> Stashed changes
     </div>
 
 </header>
