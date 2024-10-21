@@ -28,19 +28,6 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <h3> Map</h3>
             </a>
             <?php }?>
-            <hr>
-            <div class="nav-option">
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png" class="nav-img"
-                    alt="settings">
-                <h3> Contact Us</h3>
-            </div>
-
-            <a class="nav-option logout" href="php/logout.php">
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png" class="nav-img"
-                    alt="logout">
-                <h3>Logout</h3>
-            </a>
-
         </div>
     </nav>
 </div>

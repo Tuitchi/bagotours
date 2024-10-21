@@ -9,11 +9,22 @@ function getAllToursforAdmin($conn)
 }
 function getAllTours($conn)
 {
-    $sql = "SELECT * FROM tours WHERE status = 1";
+    // Updated SQL query to include average rating and review count
+    $sql = "
+        SELECT t.*, 
+               IFNULL(AVG(r.rating), 0) AS average_rating, 
+               IFNULL(COUNT(r.id), 0) AS review_count 
+        FROM tours t 
+        LEFT JOIN review_rating r ON t.id = r.tour_id 
+        WHERE t.status = 1 
+        GROUP BY t.id
+    ";
+
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function getTourById($conn, $id)
 {
@@ -24,36 +35,45 @@ function getTourById($conn, $id)
 }
 function getTourImageById($conn, $id)
 {
-    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE id = :id");
+    $stmt = $conn->prepare("
+        SELECT 
+            t.img AS combined_image,
+            t.title
+        FROM 
+            tours t
+        WHERE 
+            t.id = :id
+
+        UNION ALL
+
+        SELECT 
+            img.img AS combined_image,
+            t.title
+        FROM 
+            tours_image img 
+        JOIN 
+            tours t ON t.id = img.tour_id
+        WHERE 
+            t.id = :id
+    ");
+
     $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$stmt->execute()) {
+        echo "Error executing query: ";
+        print_r($stmt->errorInfo());
+        return false; // Handle as needed
+    }
+
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all results as an array
+
+    if (!$result) {
+        echo "No results found for ID: $id";
+    }
+
+    return $result; // Return all results
 }
 
-function getBookingById($conn, $id)
-{
-    $stmt = $conn->prepare("SELECT 
-        b.id AS booking_id,
-        t.title AS tour_title,
-        b.date_sched AS date_scheduled,
-        b.people AS number_of_people,
-        CASE 
-            WHEN b.status = 1 THEN 'Approved'
-            WHEN b.status = 2 THEN 'Drop'
-            WHEN b.status = 3 THEN 'Ongoing'
-            WHEN b.status = 4 THEN 'Completed'
-            ELSE 'Pending'
-        END AS status
-    FROM 
-        booking b
-    JOIN 
-        tours t ON b.tour_id = t.id
-    WHERE 
-        b.user_id = :user_id LIMIT 8");
-    $stmt->bindParam(":user_id", $id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 
 function getUserById($conn, $id)
 {
@@ -153,14 +173,27 @@ function getNotificationsCount($conn)
 
 
 // booking
-function isAlreadyBook($conn, $user_id, $tour_id)
+function isAlreadyBooked($conn, $user_id, $tour_id)
 {
-    $stmt = $conn->prepare("SELECT * FROM booking WHERE user_id = :user_id AND tour_id = :tour_id AND status = 1 OR status = 3 or status = 0");
+    // Prepare the SQL statement with proper parentheses to ensure correct logic
+    $stmt = $conn->prepare(
+        "SELECT * FROM booking 
+         WHERE user_id = :user_id 
+         AND tour_id = :tour_id 
+         AND (status = 1 OR status = 3 OR status = 0)"
+    );
+
+    // Bind parameters
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
+
+    // Execute the statement
     $stmt->execute();
+
+    // Return true if there are any matching rows
     return $stmt->rowCount() > 0;
 }
+
 
 function isBookable($conn, $tour_id)
 {
@@ -175,8 +208,8 @@ function bookApproval($conn, $user_id)
     $stmt = $conn->prepare("SELECT date_sched FROM booking WHERE user_id = :user_id AND status = 1");
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $sched= $stmt->fetchColumn();
-        
+    $sched = $stmt->fetchColumn();
+
     if ($sched) {
         $schedDate = new DateTime($sched);
         $schedDate->modify('-2 day');
@@ -185,14 +218,15 @@ function bookApproval($conn, $user_id)
 
         if ($schedDate->format('Y-m-d') === $today->format('Y-m-d')) {
             return true;
-        }   
+        }
     }
     return false;
 }
 
-function userValidation($pageRole) {
+function userValidation($pageRole)
+{
     if (isset($_SESSION['user_id'])) {
-        if(!empty($_SESSION['role'])) {
+        if (!empty($_SESSION['role'])) {
             if ($_SESSION['role'] !== $pageRole) {
                 session_unset();
                 session_destroy();

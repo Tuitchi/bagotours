@@ -18,7 +18,7 @@ WHERE b.id = :id";
 
         if ($stmt->rowCount() > 0) {
             $pending = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($pennding['status'] == 0 || $pennding['status'] == 3) {
+            if ($pending['status'] == 0 || $pending['status'] == 1) {
                 echo json_encode(['success' => true, 'book' => $pending]);
                 exit();
             }

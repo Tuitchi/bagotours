@@ -11,8 +11,8 @@ if (isset($_POST['query'])) {
 
     if (count($result) > 0) {
         foreach ($result as $row) {
-            echo '<a class="dropdown-item" style="font-size:15px;display:flex;align-items:center;gap: 15px;text-decoration:none;" href="tour?tours=' . $row['id'] . '">
-                    <img style="width:40px;height:40px;border-radius: 4px;object-fit: cover;" src="../upload/Tour Images/' . $row['img'] . '">
+            echo '<a class="dropdown-item" style="font-size:15px;display:flex;align-items:center;gap: 15px;text-decoration:none;margin-bottom:5px" href="tour?id=' .base64_encode($row['id'] . $salt) . '">
+                    <img style="width:40px;height:40px;border-radius: 4px;object-fit: cover;" src="upload/Tour Images/' . $row['img'] . '">
                     <div style="display:flex;flex-direction:column;">
                         <h3 style="font-size:14px;margin:0;color:#333;">' . $row['title'] . '</h3>
                         <h5 style="font-size:10px;margin:0;color:#666;text-align: left;">' . $row['type'] . '</h5>

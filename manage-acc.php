@@ -1,250 +1,168 @@
-<?php session_start();
+<?php
+session_start();
 require_once 'func/user_func.php';
 require_once 'func/func.php';
 require_once 'include/db_conn.php';
-
-
 
 $user_id = $_SESSION['user_id'] ?? 0;
 $user = getUserById($conn, $user_id);
 ?>
 
-<head> <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
+    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES); ?>">
     <title>BagoTours</title>
     <link rel="stylesheet" href="user.css">
-    <link rel="stylesheet" href="assets/css/login.css">
-</head>
-<style>
-    .container {
-        display: flex;
-        justify-content: center;
-        margin: 20px auto;
-        max-width: 1200px;
-        width: 750px;
-        background: #fff;
-        border: 1px solid #037d54;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .editUser {
-        flex: 1;
-        max-width: 200px;
-        padding: 20px;
-        border-right: 1px solid #ddd;
-    }
-
-    .editUser ul {
-        padding: 0;
-        list-style: none;
-    }
-
-    .editUser ul li {
-        margin: 10px 0;
-    }
-
-    .editUser ul li a {
-        color: #333;
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-    .editUser ul li a:hover {
-        color: #04AA6D;
-    }
-
-    aside {
-        flex: 3;
-        padding: 20px;
-    }
-
-    aside>div {
-        display: none;
-    }
-
-    .Account {
-        display: block;
-    }
-
-    h3 {
-        margin-top: 0;
-    }
-
-    main input[type="file"],
-    img#profilePreview {
-        margin-top: 10px;
-        margin-left: 25%;
-    }
-
-    .profilepic img {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-right: 20px;
-    }
-
-    form {
-        margin: 20px 0;
-    }
-
-    main input[type="text"],
-    main input[type="tel"],
-    main input[type="password"],
-    main input[type="email"],
-    main select {
-        width: calc(100% - 22px);
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    input[type="submit"],
-    button {
-        background-color: #04AA6D;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    input[type="submit"]:hover,
-    button:hover {
-        background-color: #037d54;
-    }
-
-    .error {
-        color: red;
-        display: none;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    table,
-    th,
-    td {
-        border: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #f4f4f4;
-        padding: 10px;
-    }
-
-    td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    .modal {
-        overflow-y: scroll;
-        display: none;
-        position: absolute;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-        padding-top: 60px;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 500px;
-        border-radius: 8px;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
+    <style>
         .container {
-            flex-direction: column;
-            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 1200px;
+            width: 750px;
+            background: #fff;
+            border: 1px solid #037d54;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .editUser {
-            margin-bottom: 20px;
-            border: none;
+            flex: 1;
+            max-width: 200px;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+
+        .editUser ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        .editUser ul li {
+            margin: 10px 0;
+        }
+
+        .editUser ul li a {
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .editUser ul li a:hover {
+            color: #04AA6D;
         }
 
         aside {
-            max-width: 100%;
+            flex: 3;
+            padding: 20px;
         }
-    }
 
-    @media (max-width: 480px) {
-        .editUser ul li a {
+        aside>div {
+            display: none;
+        }
+
+        .Account {
+            display: block;
+        }
+
+        .profilepic img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        .container input[type="text"],
+        .container input[type="tel"],
+        .container input[type="password"],
+        .container input[type="email"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .container input[type="submit"],
+        .button {
+            text-decoration: none;
+            background-color: #04AA6D;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
             font-size: 16px;
         }
-    }
 
-    .upload-area {
-        width: 95%;
-        height: 200px;
-        border: 2px dashed #04AA6D;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        text-align: center;
-    }
+        .container input[type="submit"]:hover,
+        .button:hover {
+            background-color: #037d54;
+        }
 
-    .upload-area img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+        .error {
+            color: red;
+            display: none;
+        }
 
-    .upload-area:hover {
-        background-color: #f4f4f4;
-    }
+        .modal {
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            padding-top: 60px;
+        }
 
-    #mapboxModal .modal-content {
-        width: 50%;
-        height: 80%;
-        max-width: 80%;
-        max-height: 100%;
-    }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
 
-    #pp-icon {
-        margin-left: -13%;
-        cursor: pointer;
-        background-color: silver;
-        border-radius: 50%;
-    }
-</style>
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .editUser {
+                margin-bottom: 20px;
+                border: none;
+            }
+
+            aside {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
 
 <body>
     <?php include('nav/topnav.php'); ?>
     <div class="main-container">
-
         <?php include('nav/sidenav.php'); ?>
         <div class="main">
             <div class="container">
@@ -253,8 +171,7 @@ $user = getUserById($conn, $user_id);
                     <ul>
                         <li><a href="#" data-section="Account"><i class="fas fa-user"></i> Account</a></li>
                         <li><a href="#" data-section="personalDetails"><i class="fas fa-id-card"></i> Personal
-                                Details</a>
-                        </li>
+                                Details</a></li>
                         <li><a href="#" data-section="changepassword"><i class="fas fa-lock"></i> Change Password</a>
                         </li>
                         <li><a href="#" data-section="notifications"><i class="fas fa-bell"></i> Notifications</a></li>
@@ -264,19 +181,15 @@ $user = getUserById($conn, $user_id);
                 <aside>
                     <div class="Account">
                         <?php if (!empty($user)) { ?>
-                            <img src="../upload/Profile Pictures/<?php echo $user['profile_picture'] ?>"
+                            <img src="upload/Profile Pictures/<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
                                 alt="Profile Preview" style="width:100px;">
-                            <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?>
+                            <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'], ENT_QUOTES); ?></p>
+                            <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?></p>
+                            <p><strong>Email Address:</strong> <?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>
                             </p>
-                            <p><strong>Username:</strong>
-                                <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p><strong>Email
-                                    Address:</strong><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?>
-                            </p>
-                            <p><strong>Home
-                                    Address:</strong><?php echo htmlspecialchars($user['home_address'], ENT_QUOTES, 'UTF-8'); ?>
-                            </p>
-                            <p><strong>Phone:</strong><?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?>
+                            <p><strong>Home Address:</strong>
+                                <?php echo htmlspecialchars($user['home_address'], ENT_QUOTES); ?></p>
+                            <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES); ?>
                             </p>
                         <?php } else { ?>
                             <p>You are not logged in.</p>
@@ -287,17 +200,13 @@ $user = getUserById($conn, $user_id);
                         <form id="changePasswordForm">
                             <label for="oldPassword">Old Password:</label>
                             <input type="password" id="oldPassword" name="oldPassword" required>
-
                             <label for="newPassword">New Password:</label>
                             <input type="password" id="newPassword" name="newPassword" required
                                 onkeyup="checkPasswordStrength()">
                             <div id="passwordStrength" style="color:red"></div>
-
                             <label for="confirmPassword">Confirm Password:</label>
                             <input type="password" id="confirmPassword" name="confirmPassword" required>
-
-                            <span class="error" id="passwordError" style="display: none;">Passwords do not match!</span>
-
+                            <span class="error" id="passwordError">Passwords do not match!</span>
                             <input type="submit" value="Save">
                         </form>
                     </div>
@@ -306,28 +215,27 @@ $user = getUserById($conn, $user_id);
                         <form action="../php/updateAcc.php" method="POST" enctype="multipart/form-data">
                             <div class="profilepic" id="profilePic">
                                 <img id="profilePreview"
-                                    src="../upload/Profile Pictures/<?php echo $user['profile_picture'] ?>"
+                                    src="upload/Profile Pictures/<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
                                     alt="Profile Preview">
                                 <input type="file" id="profilePicture" name="profilePicture">
-                                <label for="profilePicture" id="pp-icon"><i class="fa fa-camera"
-                                        aria-hidden="true"></i></label>
+                                <label for="profilePicture" id="pp-icon"><i class="fa fa-camera"></i></label>
                             </div>
                             <label for="fullName">Full Name:</label>
                             <input type="text" id="fullName" name="fullName"
-                                value="<?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <label for="username">username:</label>
+                                value="<?php echo htmlspecialchars($user['name'], ENT_QUOTES); ?>">
+                            <label for="username">Username:</label>
                             <input type="text" id="username" name="username"
-                                value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?>">
+                                value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>">
                             <label for="email">Email Address:</label>
                             <input type="email" id="email" name="email"
-                                value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?>">
+                                value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>">
                             <label for="phone">Phone:</label>
                             <input type="tel" id="phone" name="phone" maxlength="11" required
                                 pattern="^(09|\+639)\d{9}$" placeholder="e.g. 09123456789"
-                                value="<?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES, 'UTF-8'); ?>">
+                                value="<?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES); ?>">
                             <label for="home-address">Home Address:</label>
                             <input type="text" id="home-address" name="home-address"
-                                value="<?php echo htmlspecialchars($user['home_address'], ENT_QUOTES, 'UTF-8'); ?>">
+                                value="<?php echo htmlspecialchars($user['home_address'], ENT_QUOTES); ?>">
                             <input type="submit" value="Update">
                         </form>
                     </div>
@@ -335,146 +243,100 @@ $user = getUserById($conn, $user_id);
                         <h3>Notification Settings</h3>
                         <form>
                             <div class="notif" style="margin-bottom: 20px;">
-                                <label><input type="checkbox" id="emailNotifications" name="emailNotifications" checked>
-                                    Email Notifications</label>
-                                <label><input type="checkbox" id="smsNotifications" name="smsNotifications"> SMS
-                                    Notifications</label>
-                                <label><input type="checkbox" id="appNotifications" name="appNotifications" checked> App
-                                    Notifications</label>
+                                <label><input type="checkbox">Receive newsletter & offers from email</label>
                             </div>
-                            <input type="submit" value="Save">
+                            <div class="notif">
+                                <label><input type="checkbox">Receive booking reminders</label>
+                            </div>
+                            <div class="notif">
+                                <label><input type="checkbox">Receive notifications on updates</label>
+                            </div>
                         </form>
                     </div>
                     <div class="upgrade">
-                        <h3>Become an Tourist Attraction Owner</h3>
-                        <p>Are you an <strong>Owner</strong> of a Resorts, Beach Resort, Swimming pool or etc.?</p>
-                        <button onclick="showUpgradeModal()">Upgrade</button>
+                        <h3>Upgrade Subscription</h3>
+                        <button id="upgradeButton" class="button">Upgrade Account</button>
                     </div>
                 </aside>
             </div>
         </div>
     </div>
-</body>
 
-<div id="upgradeModal" class="modal">
-    <div class="modal-content">
-        <div class="float-right">
-            <span class="close" onclick="closeUpgradeModal()">&times;</span>
-        </div>
-        <h2>Upgrade Confirmation</h2>
-        <p>Are you sure you want to upgrade your account to Owner?</p>
-        <div class="d-flex justify-content-end">
-            <button class="mr-3 btn btn-success" onclick="confirmUpgrade()">Confirm</button>
-            <button class="btn btn-danger" onclick="closeUpgradeModal()">Cancel</button>
+    <div class="modal" id="upgradeModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upgrade Account</h2>
+            <p>Are you sure to upgrade your account as an <strong>owner.</strong></p>
+            <a href="form" id="upgradeConfirm" class="button">Upgrade</a>
         </div>
     </div>
-</div>
+    </div>
+    <script>document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById("upgradeModal");
+            var btn = document.getElementById("upgradeButton");
+            var span = document.querySelector(".close");
 
+            btn.addEventListener("click", function () {
+                modal.classList.add('active');
+            });
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById("changePasswordForm").addEventListener("submit", function (event) {
-            event.preventDefault();
+            // Close the modal when the "x" button is clicked
+            span.addEventListener("click", function () {
+                modal.classList.remove('active');
+            });
 
-            const oldPassword = document.getElementById("oldPassword").value;
-            const newPassword = document.getElementById("newPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+            // Close the modal when clicking outside of the modal content
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
 
-            const passwordError = document.getElementById("passwordError");
-            if (newPassword !== confirmPassword) {
-                passwordError.style.display = "block";
-                passwordError.innerHTML = "Passwords do not match!";
-                return;
-            } else {
-                passwordError.style.display = "none";
-            }
+            // Optional: Add keypress event to close modal with ESC key
+            window.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    modal.classList.remove('active');
+                }
+            });
 
-            const formData = new FormData();
-            formData.append("oldPassword", oldPassword);
-            formData.append("newPassword", newPassword);
-            formData.append("confirmPassword", confirmPassword);
-
-            fetch("../php/changePass.php", {
-                method: "POST",
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "error") {
-                        passwordError.style.display = "block";
-                        passwordError.innerHTML = data.message;
-                    } else if (data.status === "success") {
-                        alert("Password updated successfully!");
-                        passwordError.style.display = "none";
-                    }
-                })
-                .catch(error => console.error("Error:", error));
         });
-        document.querySelectorAll('.editUser ul li a').forEach(link => {
-            link.addEventListener('click', function (event) {
+        const links = document.querySelectorAll('.editUser a');
+        const sections = document.querySelectorAll('aside > div');
+
+        links.forEach(link => {
+            link.addEventListener('click', (event) => {
                 event.preventDefault();
-                const section = this.getAttribute('data-section');
-                document.querySelectorAll('aside > div').forEach(div => {
-                    div.style.display = 'none';
-                });
-                document.querySelector('.' + section).style.display = 'block';
+                sections.forEach(section => section.style.display = 'none');
+                const target = link.getAttribute('data-section');
+                document.querySelector('.' + target).style.display = 'block';
             });
         });
 
-        function validateForm() {
+        const passwordForm = document.getElementById('changePasswordForm');
+        const passwordError = document.getElementById('passwordError');
+
+        passwordForm.addEventListener('submit', function (e) {
             const newPassword = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorSpan = document.getElementById('passwordError');
+
             if (newPassword !== confirmPassword) {
-                errorSpan.style.display = 'block';
-                return false;
-            } else {
-                errorSpan.style.display = 'none';
-                return true;
+                e.preventDefault();
+                passwordError.style.display = 'block';
             }
-        }
+        });
 
         function checkPasswordStrength() {
-            const newPassword = document.getElementById("newPassword").value;
-            const passwordStrength = document.getElementById("passwordStrength");
+            const newPassword = document.getElementById('newPassword').value;
+            const strength = document.getElementById('passwordStrength');
+            const strongPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
 
-            if (newPassword.length < 6) {
-                passwordStrength.innerHTML = "Weak";
-                passwordStrength.style.color = "red";
-            } else if (newPassword.length >= 6 && newPassword.length < 10) {
-                passwordStrength.innerHTML = "Medium";
-                passwordStrength.style.color = "orange";
+            if (strongPassword.test(newPassword)) {
+                strength.style.color = 'green';
+                strength.textContent = 'Strong';
             } else {
-                passwordStrength.innerHTML = "Strong";
-                passwordStrength.style.color = "green";
+                strength.style.color = 'red';
+                strength.textContent = 'Weak';
             }
         }
-
-        function previewImage(event) {
-            const profilePreview = document.getElementById('profilePreview');
-            const file = event.target.files[0];
-            if (file) {
-                const fileReader = new FileReader();
-                fileReader.onload = function () {
-                    profilePreview.src = fileReader.result;
-                };
-                fileReader.readAsDataURL(file);
-            }
-        }
-
-        document.getElementById('profilePicture').addEventListener('change', previewImage);
-
-    });
-
-    function showUpgradeModal() {
-        document.getElementById('upgradeModal').style.display = 'block';
-    }
-
-    function closeUpgradeModal() {
-        document.getElementById('upgradeModal').style.display = 'none';
-    }
-
-    function confirmUpgrade() {
-        window.location.href = "form.php";
-    }
-</script>
+    </script>
+</body>

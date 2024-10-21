@@ -18,9 +18,9 @@ if (isset($_SESSION['user_id'])) {
 
 <body>
     <?php include 'nav/topnav.php' ?>
-   
+
     <div class="main-container">
-       
+
         <?php include 'nav/sidenav.php' ?>
         <div class="main">
 
@@ -62,78 +62,25 @@ if (isset($_SESSION['user_id'])) {
                 <h2>Trending</h2>
                 <div class="spots">
                     <?php foreach ($tours as $tour) {
+                        // Calculate the star rating based on average rating
+                        $averageRating = round($tour['average_rating']); // Round to the nearest whole number
+                        $fullStars = str_repeat("★", $averageRating); // Full stars
+                        $emptyStars = str_repeat("☆", 5 - $averageRating); // Empty stars
+                        $totalStars = $fullStars . $emptyStars; // Combine stars
+                    
                         echo "<div class='spot'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                        <h3>" . $tour['title'] . "</h3>
-                        <p>" . $tour['type'] . "</p>
-                        <div class='rating'>★★★★☆ <span>(156 reviews)</span>
-                        </div>
-                        </a>
-                    </div>";
-                    } ?>
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='spot'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                        <h3>" . $tour['title'] . "</h3>
-                        <p>" . $tour['type'] . "</p>
-                        <div class='rating'>★★★★☆ <span>(156 reviews)</span>
-                        </div>
-                        </a>
-                    </div>";
+            <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
+                <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . htmlspecialchars($tour['title']) . "'>  
+                <h3>" . htmlspecialchars($tour['title']) . "</h3>
+                <p>" . htmlspecialchars($tour['type']) . "</p>
+                <div class='rating'>" . $totalStars . " <span>(" . htmlspecialchars($tour['review_count']) . " reviews)</span>
+                </div>
+            </a>
+          </div>";
                     } ?>
                 </div>
 
                 <div class="report-container" id="cardContainer">
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
                     <?php foreach ($tours as $tour) {
                         echo "<div class='cards'>
                         <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>

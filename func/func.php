@@ -27,7 +27,7 @@ function createNotification($conn, $userId, $tour_id, $message, $url, $type)
 
 function getNotifications($conn, $userId)
 {
-    $stmt = $conn->prepare("SELECT id, message, url, is_read  FROM notifications WHERE user_id = :user_id ORDER BY created_at DESC");
+    $stmt = $conn->prepare("SELECT id, message, url, is_read, created_at  FROM notifications WHERE user_id = :user_id ORDER BY created_at DESC");
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -181,6 +181,16 @@ function getBooking($conn, $user_id)
           JOIN users u ON b.user_id = u.id WHERE t.user_id = :user_id
           ORDER BY b.date_sched DESC");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+function getBookingbyID($conn, $booking_id)
+{
+    $stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.username FROM booking b
+          JOIN tours t ON b.tour_id = t.id
+          JOIN users u ON b.user_id = u.id WHERE b.id = :id
+          ORDER BY b.date_sched DESC");
+    $stmt->bindParam(':id', $booking_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

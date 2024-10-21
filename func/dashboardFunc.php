@@ -13,7 +13,7 @@ function totalPending ($conn) {
     return $totalPending == 0 ? "" : $totalPending;
 }
 function totalBooking ($conn, $user_id) {
-    $query = "SELECT COUNT(*) AS total_booking FROM booking b JOIN tours t ON b.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND b.status != 4";
+    $query = "SELECT COUNT(*) AS total_booking FROM booking b JOIN tours t ON b.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND b.status != 4 AND b.status != 2 AND b.status != 3";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();

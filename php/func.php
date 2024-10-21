@@ -187,7 +187,7 @@ function getBooking($conn, $user_id)
 
 function alreadyBook($conn, $user_id, $tour_id)
 {
-    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM booking WHERE user_id = :user_id AND tour_id = :tour_id AND status = 1");
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM booking WHERE user_id = :user_id AND tour_id = :tour_id AND status = 0 AND status = 1 AND status = 3");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
     $stmt->execute();

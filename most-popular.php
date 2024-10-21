@@ -6,12 +6,13 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
 
-$time_filter = '30 DAY';
+$time_filter = '1 DAY';
 if (isset($_POST['filter'])) {
     $time_filter = $_POST['filter'];
 }
 
-$sql = "WITH booking_visitors AS (
+$sql = "
+WITH booking_visitors AS (
     SELECT t.id, 
            SUM(b.people) AS total_booking_visitors
     FROM tours t
@@ -33,14 +34,19 @@ SELECT t.id,
        t.img,
        t.type,
        COALESCE(bv.total_booking_visitors, 0) + COALESCE(vv.total_visit_visitors, 0) AS total_visitors,
-       COUNT(DISTINCT b.id) AS total_completed_bookings
+       COUNT(DISTINCT b.id) AS total_completed_bookings,
+       IFNULL(AVG(r.rating), 0) AS average_rating,  -- Average rating
+       IFNULL(COUNT(r.id), 0) AS review_count       -- Review count
 FROM tours t 
 LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
 LEFT JOIN booking_visitors bv ON t.id = bv.id
 LEFT JOIN visit_visitors vv ON t.id = vv.id
+LEFT JOIN review_rating r ON t.id = r.tour_id  -- Join with review_rating table
 WHERE t.status = 1
 GROUP BY t.id, t.title, bv.total_booking_visitors, vv.total_visit_visitors
-ORDER BY total_visitors DESC, total_completed_bookings DESC;";
+ORDER BY total_visitors DESC, total_completed_bookings DESC;
+";
+
 
 try {
     $stmt = $conn->prepare($sql);
@@ -78,20 +84,30 @@ try {
                 <?php
                 $counter = 1;
                 foreach ($tours as $tour) {
+                    // Calculate the star rating based on average rating
+                    $averageRating = round($tour['average_rating']); // Round to the nearest whole number
+                    $fullStars = str_repeat("★", $averageRating); // Full stars
+                    $emptyStars = str_repeat("☆", 5 - $averageRating); // Empty stars
+                    $totalStars = $fullStars . $emptyStars; // Combine stars
+                
                     echo "<a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                            <div class='tourList'>
-                                <img src='upload/Tour Images/" . $tour['img'] . "' alt=''>
-                                <div class='tourDetails'>
-                                    <h1>#" . $counter++ . "</h1>
-                                    <h3>" . $tour['title'] . "</h3>
-                                    <div class='smallDetails'>
-                                        <span>" . $tour['type'] . "</span>
-                                        <span class='rating'>★★★★☆ (" . $tour['total_visitors'] . ")</span>
-                                    </div>
-                                </div>
-                            </div>
-                          </a>";} ?>
+                <div class='tourList'>
+                    <img src='upload/Tour Images/" . htmlspecialchars($tour['img']) . "' alt=''>
+                    <div class='tourDetails'>
+                        <h1>#" . $counter++ . "</h1>
+                        <h3>" . htmlspecialchars($tour['title']) . "</h3>
+                        <div class='smallDetails'>
+                            <span>" . htmlspecialchars($tour['type']) . "</span>
+                            <span class='rating'>" . $totalStars . " (" . htmlspecialchars($tour['review_count']) . " reviews)</span>
+                            <span class='rating'>". htmlspecialchars($tour['total_visitors']) . " Visits</span>
+                        </div>
+                    </div>
+                </div>
+              </a>";
+                }
+                ?>
             </div>
+
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>

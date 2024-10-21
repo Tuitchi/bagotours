@@ -26,204 +26,7 @@ if (isset($_GET['process'])) {
     <link rel="stylesheet" href="user.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-    <style>
-        .main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
 
-        #resortOwnerForm {
-            margin:auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            width: 80vh;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        main input[type="text"],
-        main select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #resortLocation {
-            float: left;
-            width: 70%;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        #resortLoc {
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 15%;
-            float: left;
-            height: 40px;
-            cursor: pointer;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-
-        .upload-area,
-        .tourImages {
-            width: 100%;
-            height: auto;
-            border: 2px dashed #ccc;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .tourImages {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .MainTour {
-            border: 1px solid #ccc;
-            width: 100%;
-            height: 200px;
-        }
-
-        .upload-areaTour {
-            display: flex;
-            border: 1px solid #ccc;
-            width: 32.83%;
-            height: 100px;
-        }
-
-
-        .upload-area:hover {
-            background-color: #f9f9f9;
-        }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        .step-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .prev-btn,
-        .next-btn,
-        input[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .prev-btn:hover,
-        .next-btn:hover,
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-
-        .progress-container {
-            display: flex;
-            margin-bottom: 20px;
-        }
-
-        .progress {
-            flex: 1;
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
-
-        .progress.active {
-            background-color: #28a745;
-            transition: background-color 0.5s ease;
-        }
-
-        .progress:last-child {
-            margin-right: 0;
-        }
-
-        .upload-area img,
-        .tourImages img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modal {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            position: relative;
-            margin: 10% auto;
-            padding: 20px;
-            background-color: white;
-            width: 100vh;
-            height: 85vh;
-        }
-
-        .close-map {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            font-size: 28px;
-            z-index: 100;
-            cursor: pointer;
-        }
-
-        #map {
-            border-radius: 4px;
-            width: 100%;
-            height: 100%;
-        }
-
-        textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: vertical;
-        }
-        .main input[type="text"], .main select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 
 <body>
@@ -296,8 +99,6 @@ if (isset($_GET['process'])) {
                             <div style="clear:both;">
                                 <input type="text" id="resortLocation" name="address" required readonly>
                                 <button id="resortLoc" type="button"><i class="fa fa-map-marker"></i></button>
-                                <input type="hidden" id="tour-latitude" name="latitude">
-                                <input type="hidden" id="tour-longitude" name="longitude"></select>
                                 <select id="barangay" name="barangay" style="width: 44%; float: left;margin-right:10px"
                                     required>
                                     <option value="none" selected disabled hidden>Select a Barangay</option>
@@ -318,6 +119,8 @@ if (isset($_GET['process'])) {
                                 <select id="purok" name="purok" style="width: 44%; float: left;" required>
                                     <option value="none" selected disabled hidden>Select a Purok</option>
                                 </select>
+                                <input type="hidden" id="tour-latitude" name="latitude">
+                                <input type="hidden" id="tour-longitude" name="longitude">
                             </div><br style="clear:both;" />
 
                             <div class="step-buttons">
@@ -329,9 +132,10 @@ if (isset($_GET['process'])) {
                         <div id="mapboxModal" class="modal">
                             <div class="modal-content">
                                 <span class="close-map">&times;</span>
-                                <div id="map"></div>
+                                <div id="map" style="height: 400px;"></div>
                             </div>
                         </div>
+
 
                         <div class="step" id="step4">
                             <h2>Proof of Permits</h2>
@@ -391,19 +195,16 @@ if (isset($_GET['process'])) {
     <script src="assets/js/purok.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const barangaySelect = document.getElementById('barangay');
-            const purokSelect = document.getElementById('purok');
             const steps = document.querySelectorAll(".step");
-            const progressBars = document.querySelectorAll(".progress");
             const nextBtns = document.querySelectorAll(".next-btn");
             const prevBtns = document.querySelectorAll(".prev-btn");
             const mapboxModal = document.getElementById("mapboxModal");
             const btnSetLocation = document.getElementById("resortLoc");
             const closeMapBtn = document.querySelector(".close-map");
             const form = document.getElementById("resortOwnerForm");
+            let marker; // To store the map marker instance
 
             let currentStep = 0;
-            let marker;
 
             // Event Listener for Barangay Select
             barangaySelect.addEventListener('change', function () {
@@ -418,7 +219,6 @@ if (isset($_GET['process'])) {
                 }
             });
 
-            // STEPS
             nextBtns.forEach(btn => btn.addEventListener("click", () => handleStepChange(1)));
             prevBtns.forEach(btn => btn.addEventListener("click", () => handleStepChange(-1)));
 
@@ -451,8 +251,6 @@ if (isset($_GET['process'])) {
                 });
                 return valid;
             }
-
-            // MAP
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
             const map = new mapboxgl.Map({
                 container: "map",
@@ -492,13 +290,11 @@ if (isset($_GET['process'])) {
                 reverseGeocode(lngLat.lng, lngLat.lat);
                 document.getElementById("tour-longitude").value = lngLat.lng;
                 document.getElementById("tour-latitude").value = lngLat.lat;
-                
-                mapboxModal.classList.remove('active');// Hide the modal when a location is selected
+                mapboxModal.style.display = "none";
             });
 
             btnSetLocation.onclick = function () {
-                
-                mapboxModal.classList.add('active');
+                mapboxModal.style.display = "block";
                 setTimeout(() => {
                     map.resize();
                     map.flyTo({
@@ -509,16 +305,16 @@ if (isset($_GET['process'])) {
             };
 
             closeMapBtn.onclick = function () {
-                mapboxModal.classList.remove('active'); // Hide the modal on close
+                mapboxModal.style.display = "none";
             };
 
             window.onclick = function (event) {
                 if (event.target == mapboxModal) {
-                    mapboxModal.classList.remove('active'); // Hide the modal when clicking outside
+                    mapboxModal.style.display = "none";
                 }
             };
 
-            // Remaining functions for form submission, AJAX handling, and image previews
+
             function handleFormSubmit(e) {
                 e.preventDefault();
                 const formData = new FormData(form);
@@ -554,6 +350,7 @@ if (isset($_GET['process'])) {
                 });
             }
 
+
             function handleAjaxError(xhr, status, error) {
                 console.error("There was a problem with the AJAX operation:", error);
                 Swal.fire({
@@ -584,14 +381,19 @@ if (isset($_GET['process'])) {
                     document.getElementById("uploadAreaTour2"),
                     document.getElementById("uploadAreaTour3"),
                 ],
-            }];
+            }
+            ];
 
-            imageUploadAreas.forEach(({ input, area }) => {
+            imageUploadAreas.forEach(({
+                input,
+                area
+            }) => {
                 input.addEventListener("change", () => showMultipleImagePreview(input, area));
             });
 
             function showMultipleImagePreview(input, area) {
                 const files = input.files;
+                console.log(area);
 
                 if (files.length > 3) {
                     alert(`You can only upload up to 3 images.`);
@@ -628,8 +430,8 @@ if (isset($_GET['process'])) {
                     }
                 });
             }
-        });
 
+        });
     </script>
 </body>
 

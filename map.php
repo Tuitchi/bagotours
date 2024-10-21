@@ -4,11 +4,12 @@ include 'func/user_func.php';
 require 'include/db_conn.php';
 
 $user_id = $_SESSION['user_id'] ?? null;
-
 $spotDirection = null;
 
 if (isset($_GET['id'])) {
-    $touristSpots = getTourById($conn, $_GET['id']);
+    $decrypted_id_raw = base64_decode($_GET['id']);
+    $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
+    $touristSpots = getTourById($conn, $decrypted_id);
     if ($touristSpots) {
         $touristSpots['average_rating'] = getAverageRating($conn, $touristSpots['id']);
         $spotDirection = [
@@ -125,6 +126,7 @@ if (isset($_GET['id'])) {
             </div>
         </div>
     </div>
+    <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
@@ -153,18 +155,11 @@ if (isset($_GET['id'])) {
                         userMarker.setLngLat(userLocation);
 
                         if (heading !== null) {
-                            if (lastBearing !== null) {
-                                const delta = heading - lastBearing;
-                                const smoothBearing = lastBearing + delta * 0.1;
-                                map.setBearing(smoothBearing);
-                            }
-
-                            lastBearing = heading; // Update last bearing to the current heading
+                            map.setBearing(heading);
                         }
 
                     }
 
-                    // Update distance and route here
                     if (spotDirection) {
                         const destination = [spotDirection.longitude, spotDirection.latitude];
                         updateDistanceAndRoute(userLocation, destination);
@@ -183,7 +178,7 @@ if (isset($_GET['id'])) {
             if (!map) {
                 map = new mapboxgl.Map({
                     container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v12',
+                    style: 'mapbox://styles/mapbox/navigation-night-v1',
                     center: center,
                     zoom: 11
                 });
@@ -201,7 +196,7 @@ if (isset($_GET['id'])) {
 
             if (spotDirection) {
                 map.on('load', () => geolocateControl.trigger());
-                map.setPitch(50);
+                map.setPitch(70);
                 distanceDisplay.style.display = "flex";
                 instructionDisplay.style.display = "block";
                 const destination = [spotDirection.longitude, spotDirection.latitude];
@@ -275,7 +270,7 @@ if (isset($_GET['id'])) {
                         type: 'line',
                         source: { type: 'geojson', data: geojson },
                         layout: { 'line-join': 'round', 'line-cap': 'round' },
-                        paint: { 'line-color': '#3887be', 'line-width': 5, 'line-opacity': 0.75 }
+                        paint: { 'line-color': '#34f934', 'line-width': 10, 'line-opacity': 0.75 }
                     });
                 }
 
@@ -319,7 +314,6 @@ if (isset($_GET['id'])) {
                     }
                 }
 
-                // Speech synthesis handling for steps
                 navigator.geolocation.watchPosition(position => {
                     const userLocation = [position.coords.longitude, position.coords.latitude];
                     const step = steps[currentStepIndex];
@@ -327,11 +321,9 @@ if (isset($_GET['id'])) {
                     const distanceToStep = calculateDistance(userLocation, stepCoords);
 
                     if (distanceToStep < 0.05 && !isSpeaking) {
-                        // If the user is close to the current step, speak the instruction
                         speakInstruction(currentStepIndex);
                     }
 
-                    // Check if the user has completed the current step and is ready for the next one
                     if (distanceToStep < 0.01 && currentStepIndex < steps.length - 1) {
                         currentStepIndex++; // Move to the next step
                         isSpeaking = false; // Reset speaking state for the next instruction
@@ -373,7 +365,12 @@ if (isset($_GET['id'])) {
 
                 markerEl.addEventListener('mouseenter', () => popup.addTo(map));
                 markerEl.addEventListener('mouseleave', () => popup.remove());
-                markerEl.addEventListener('click', () => window.location.href = `tour?tours=${id}`);
+                markerEl.addEventListener('click', () => {
+                    const salt = '<?php echo $salt; ?>';
+                    const combinedString = id + salt;
+                    const base64Combined = btoa(combinedString);
+                    window.location.href = `tour?id=${base64Combined}`;
+                });
             });
         }
     </script>

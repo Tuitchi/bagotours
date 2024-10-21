@@ -25,7 +25,7 @@ try {
 
         // Execute the update query
         if ($stmt->execute()) {
-            header("Location: ../admin/booking?process=success$id");
+            header("Location: ../admin/booking?process=success");
             exit();
         } else {
             header("Location: ../admin/booking?process=error&message=Failed to update booking status");
