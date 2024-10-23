@@ -1,3 +1,6 @@
 .gitignore
 /vendor/
 /nav
+/admin
+/database
+/user
