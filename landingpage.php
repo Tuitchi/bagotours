@@ -214,16 +214,17 @@
                     <li class="link"><a href="#about">About Us</a></li>
                     <li class="link"><a href="#gallery">Gallery</a></li>
                     <li class="link"><a href="#contact">Contact</a></li>
-                    <li class="link"><button id="open-modal" class="btn">Login</button></li>
+                    <li class="link"><button id="open-modal" class="btn" onclick="window.location.href='index.php';"> Discover More</button></li>
                 </ul>
             </div>
         </nav>
         <div class="section__container header__container">
             <h1>The new way to plan your next adventure</h1>
             <h4>Explore the beautiful Bago City</h4>
-            <button id="open-modal" class="btn">
-                Login <i class="ri-arrow-right-line"></i>
+            <button id="open-modal" class="btn" onclick="window.location.href='index.php';">
+                Discover More <i class="ri-arrow-right-line"></i>
             </button>
+
         </div>
     </header>
 
@@ -240,9 +241,7 @@
                     lifetime with us, as we redefine the art of exploration.
                 </p>
                 <br>
-                <button class="btn">
-                    Read More <i class="ri-arrow-right-line"></i>
-                </button>
+                
             </div>
             <div class="about__image">
                 <img src="assets/about.png" alt="about" />
@@ -382,244 +381,10 @@
     </section>
 
     <!-- Modal Structure -->
-    <div id="modal" class="modal">
-        <div class="backdrop"></div>
-        <div class="modal-content">
-            <button type="button" class="close-btn" id="close-modal">&times;</button>
-            <div id="sign-in-form" class="form-container">
-                <form id="loginForm">
-                    <h2>Sign In</h2>
-                    <label for="username">Username or E-mail</label>
-                    <input id="username" name="username" type="text" placeholder="Email" autocomplete="username" />
-                    <div id="username-error" class="error-message"></div>
-                    <label for="password">Password</label>
-                    <input id="password" name="password" type="password" placeholder="Password" />
-                    <div id="password-error" class="error-message"></div>
-                    <button type="submit" class="btn">Sign in</button>
-                </form>
-                <a href="#" id="forgot-password">Forgot Password?</a>
-                <p>Need an Account? <a href="#" id="to-sign-up">Sign Up</a></p>
-            </div>
-            <div id="sign-up-form" class="form-container hidden">
-                <h2>Sign Up</h2>
-                <form id="signupForm">
-                    <label for="name">Name</label>
-                    <div id="name" class="name">
-                        <input id="fname" name="firstname" type="text" placeholder="First name" style="width: 49%;" autocomplete="first name" />
-                        <input id="lname" name="lastname" type="text" placeholder="Last name" style="width: 49%;" />
-                    </div>
-                    <div id="regName-error" class="error-message"></div>
-
-                    <label for="signup-username">Username</label>
-                    <input id="signup-username" name="username" type="text" placeholder="Username" autocomplete="username" />
-                    <div id="regUsername-error" class="error-message"></div>
-
-                    <label for="email">Email Address</label>
-                    <input id="email" name="email" type="text" placeholder="Email" autocomplete="email" />
-                    <div id="regEmail-error" class="error-message"></div>
-                    
-                    <label for="home-address">Home Address</label>
-                    <input id="home-address" name="home-address" type="text" placeholder="e.g., Barangay, City, Provice, Country" autocomplete="email" />
-                    <div id="regHome-error" class="error-message"></div>
-
-
-                    <label for="pwd">Password</label>
-                    <input id="pwd" name="pwd" type="password" placeholder="Password" />
-                    <div id="regPassword-error" class="error-message"></div>
-
-                    <label for="con-pwd">Confirm Password</label>
-                    <input id="con-pwd" name="con-pwd" id="conPass" type="password" placeholder="Confirm password" />
-                    <div id="regconPass-error" class="error-message"></div>
-
-                    <button type="submit">Sign Up</button>
-                </form>
-                <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
-            </div>
-        </div>
-    </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('modal');
-            const signInForm = document.getElementById('sign-in-form');
-            const signUpForm = document.getElementById('sign-up-form');
-            const openModalButtons = document.querySelectorAll('#open-modal');
-            const toSignUpButton = document.getElementById('to-sign-up');
-            const toSignInButton = document.getElementById('to-sign-in');
-            const closeModalButton = document.getElementById('close-modal');
 
-            function clearFormInputs(form) {
-                form.reset();
-            }
-
-            const loginForm = document.getElementById('loginForm');
-            loginForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const submitButton = loginForm.querySelector('button[type="submit"]');
-                submitButton.disabled = true;
-                submitButton.textContent = 'Logging in...';
-
-                const formData = new FormData(loginForm);
-
-                $.ajax({
-                    url: 'php/login.php',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        const data = JSON.parse(response);
-                        document.getElementById('username-error').textContent = '';
-                        document.getElementById('username').style.border = '1px solid #ddd';
-
-                        document.getElementById('password-error').textContent = '';
-                        document.getElementById('password').style.border = '1px solid #ddd';
-
-
-                        if (data.success) {
-                            setTimeout(function() {
-                                window.location.href = data.redirect;
-                            }, 1500);
-                        } else {
-                            if (data.errors.username) {
-                                document.getElementById('username-error').textContent = data.errors.username;
-                                document.getElementById('username').style.border = '1px solid red';
-
-                            }
-                            if (data.errors.password) {
-                                document.getElementById('password-error').textContent = data.errors.password;
-                                document.getElementById('password').style.border = '1px solid red';
-
-                            }
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred. Please try again.');
-                    },
-                    complete: function() {
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Sign in';
-                    }
-                });
-            });
-            const signupForm = document.getElementById('signupForm');
-            signupForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const formData = new FormData(signupForm);
-                for (let [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
-                $.ajax({
-                    url: 'php/register.php',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    beforeSend: function() {},
-                    success: function(response) {
-                        let data = JSON.parse(response);
-                        document.getElementById('regName-error').textContent = '';
-                        document.getElementById('fname').style.border = '1px solid #ddd';
-                        document.getElementById('lname').style.border = '1px solid #ddd';
-                        document.getElementById('regUsername-error').textContent = '';
-                        document.getElementById('signup-username').style.border = '1px solid #ddd';
-                        document.getElementById('regEmail-error').textContent = '';
-                        document.getElementById('regHome-error').textContent = '';
-                        document.getElementById('email').style.border = '1px solid #ddd';
-                        document.getElementById('home-address').style.border = '1px solid #ddd';
-                        document.getElementById('regPassword-error').textContent = '';
-                        document.getElementById('pwd').style.border = '1px solid #ddd';
-                        document.getElementById('regconPass-error').textContent = '';
-                        document.getElementById('con-pwd').style.border = '1px solid #ddd';
-
-                        if (data.success) {
-                            window.location.href = data.redirect;
-                        } else {
-                            if (data.errors.name) {
-                                document.getElementById('regName-error').textContent = data.errors.name;
-                                document.getElementById('lname').style.border = '1px solid red';
-                                document.getElementById('fname').style.border = '1px solid red';
-                            }
-                            if (data.errors.uname) {
-                                document.getElementById('regUsername-error').textContent = data.errors.uname;
-                                document.getElementById('signup-username').style.border = '1px solid red';
-                            }
-                            if (data.errors.email) {
-                                document.getElementById('regEmail-error').textContent = data.errors.email;
-                                document.getElementById('email').style.border = '1px solid red';
-                            }
-                            if (data.errors.home) {
-                                document.getElementById('regHome-error').textContent = data.errors.home;
-                                document.getElementById('home-address').style.border = '1px solid red';
-                            }
-                            if (data.errors.pwd) {
-                                document.getElementById('regPassword-error').textContent = data.errors.pwd;
-                                document.getElementById('pwd').style.border = '1px solid red';
-                            }
-                            if (data.errors.confirm_password) {
-                                document.getElementById('regconPass-error').textContent = data.errors.confirm_password;
-                                document.getElementById('con-pwd').style.border = '1px solid red';
-                            }
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred. Please try again.');
-                    }
-                });
-            });
-
-            openModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    modal.classList.add('active');
-                    signInForm.classList.add('slide-in');
-                });
-            });
-
-            toSignUpButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                signInForm.classList.add('hidden');
-                signUpForm.classList.remove('hidden');
-                signUpForm.classList.add('slide-in');
-                signInForm.classList.remove('slide-in');
-
-                document.getElementById('username-error').textContent = '';
-                document.getElementById('username').style.border = '1px solid #ddd';
-                document.getElementById('password-error').textContent = '';
-                document.getElementById('password').style.border = '1px solid #ddd';
-            });
-
-            toSignInButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                signUpForm.classList.add('hidden');
-                signInForm.classList.remove('hidden');
-                signInForm.classList.add('slide-in');
-                signUpForm.classList.remove('slide-in');
-
-                document.getElementById('regUsername-error').textContent = '';
-                document.getElementById('regEmail-error').textContent = '';
-                document.getElementById('regPassword-error').textContent = '';
-                document.getElementById('regconPass-error').textContent = '';
-            });
-
-            closeModalButton.addEventListener('click', () => {
-                modal.classList.remove('active');
-                clearFormInputs(loginForm);
-                clearFormInputs(signupForm);
-
-                document.getElementById('username-error').textContent = '';
-                document.getElementById('username').style.border = '1px solid #ddd';
-                document.getElementById('password-error').textContent = '';
-                document.getElementById('password').style.border = '1px solid #ddd';
-
-                document.getElementById('regUsername-error').textContent = '';
-                document.getElementById('regEmail-error').textContent = '';
-                document.getElementById('regPassword-error').textContent = '';
-                document.getElementById('regconPass-error').textContent = '';
-            });
-        });
-    </script>
 
 </body>
 

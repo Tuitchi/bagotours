@@ -246,7 +246,16 @@ nav {
   font-weight: 800;
   font-family: var(--header-font);
   color: var(--secondary-color);
+  
+  /* Glass blur effect */
+  background: rgba(22, 22, 22, 0.6); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Glass blur effect */
+  padding: 10px 20px; /* Add padding for better appearance */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  display: inline-block; /* Wrap content */
 }
+
 
 .discover__card__content p {
   margin-bottom: 2rem;
