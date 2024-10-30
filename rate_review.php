@@ -26,8 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_review'])) {
             $message = "<p>Review submitted successfully!</p>";
             try {
                 $statusStmt = $conn->prepare("update booking SET status = 4 WHERE id = :id");
-                $statusStmt->bindParam(':id', $tour_id, PDO::PARAM_INT);
-                $statusStmt->execute();
+                $statusStmt->bindParam(':id', $_GET['booking_id'], PDO::PARAM_INT);
+                if ($statusStmt->execute()) {
+                    sleep(2);
+
+                    header("Location: booking");
+                    exit();
+                }
             } catch (PDOException $e) {
                 error_log($e->getMessage());
             }
