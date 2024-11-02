@@ -3,7 +3,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
 require_once __DIR__ . '/../../func/dashboardFunc.php';
 $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === 'hide' ? 'hide' : '';
 ?>
-
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <section id="sidebar" class="<?php $sidebarClass ?>">
     <a href="home" class="brand">
         <img src="../assets/icons/websiteIcon.png" alt="" style="width: 60px;">
@@ -16,23 +16,30 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
                 <span class="text">Dashboard</span>
             </a>
         </li>
-        <li class="<?php echo $current_page == 'tours' ? 'active' : ''; ?>">
-            <a href="tours">
-                <i class='bx bxs-map-alt'></i>
-                <span class="text">Tours</span>
+        <li class="<?php echo ($current_page == 'event') ? 'active' : ''; ?>">
+            <a href="event">
+                <i class='bx bxs-party'></i>
+                <span class="text">Event</span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'booking' ? 'active' : ''; ?>">
             <a href="booking">
                 <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
-                <?php if (totalBooking($conn, $user_id) > 0) echo  "<span class='notifCount'>".totalBooking($conn, $user_id)."</span>"?>
-            </a>
-        </li>
-        <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
+                <?php if (totalBooking($conn, $user_id) > 0)
+                    echo "<span class='notifCount'>" . totalBooking($conn, $user_id) . "</span>" ?>
+                </a>
+            </li>
+            <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
             <a href="inq">
                 <i class='bx bxs-message-rounded'></i>
                 <span class="text">Inquiries</span>
+            </a>
+        </li>
+        <li class="<?php echo ($current_page == 'tours') ? 'active' : ''; ?>">
+            <a href="tours">
+                <i class='bx bxs-map-alt'></i>
+                <span class="text">Tours</span>
             </a>
         </li>
         <li class="<?php echo $current_page == 'user' ? 'active' : ''; ?>">
@@ -45,10 +52,11 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
             <a href="pending">
                 <i class='bx bxs-time'></i>
                 <span class="text">Pending</span>
-                <?php if (totalPending($conn) > 0) echo  "<span class='notifCount'>".totalPending($conn)."</span>"?>
-            </a>
-        </li>
-        <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">
+                <?php if (totalPending($conn) > 0)
+                    echo "<span class='notifCount'>" . totalPending($conn) . "</span>" ?>
+                </a>
+            </li>
+            <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">
             <a href="qr">
                 <i class='bx bx-qr'></i>
                 <span class="text">QR Code</span>

@@ -40,7 +40,7 @@
         position: absolute;
         background-color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 8px 0 8px 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
         z-index: 1000;
@@ -50,9 +50,23 @@
 
     .notification-menu {
         width: 600px;
-        height: 80vh;
+        height: auto;
+        max-height: 80vh;
         top: 23px;
         overflow-y: scroll;
+    }
+
+    .notification-menu::-webkit-scrollbar-thumb {
+        background-image:
+            linear-gradient(to bottom, rgb(0, 0, 85), rgb(0, 0, 50));
+    }
+
+    .notification-menu::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .notification-menu::-webkit-scrollbar-track {
+        background-color: #9e9e9eb2;
     }
 
     /* Notification item styling */
@@ -101,6 +115,15 @@
         color: #333;
     }
 
+    @media screen and (max-width:850px) {
+        header.expanded .notification,
+        header.expanded .dp {
+            width: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+    }
+
     .account-menu li:not(:last-child) {
         border-bottom: 1px solid #e9ecef;
     }
@@ -136,14 +159,14 @@
         <div class="logo">BagoTours</div>
     </div>
 
-    <div class="searchbar">
-        <form action="search" method="GET">
-            <input type="text" name="q" id="search" placeholder="Search"><i class='bx bx-search-alt'></i>
-        </form>
-        <div id="dropdown"></div>
-    </div>
 
     <div class="message">
+        <div class="searchbar">
+            <form action="search" method="GET">
+                <input type="text" name="q" id="search" placeholder="Search"><i class='bx bx-search-alt'></i>
+            </form>
+            <div id="dropdown"></div>
+        </div>
         <?php
         if (empty($user_id)) {
             echo "<button id='open-modal' class='login'>Login</button>";
@@ -193,6 +216,36 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    const searchIcon = document.querySelector(".bx-search-alt");
+    const searchContainer = document.querySelector(".searchbar");
+    const searchInput = document.getElementById("search");
+    const header = document.querySelector("header");
+
+    if (window.innerWidth <= 850) {
+        searchIcon.addEventListener("click", (event) => {
+            event.stopPropagation();
+            searchContainer.classList.toggle("expanded");
+            if (searchContainer.classList.contains("expanded")) {
+                header.classList.add("expanded");
+                searchInput.focus();
+            } else {
+                searchInput.blur();
+                setTimeout(() => {
+                    header.classList.remove("expanded");
+                }, 10);
+            }
+        });
+        document.addEventListener("click", (event) => {
+            if (!searchContainer.contains(event.target) && searchContainer.classList.contains("expanded")) {
+                searchContainer.classList.remove("expanded");
+                setTimeout(() => {
+                    header.classList.remove("expanded");
+                }, 10);
+            }
+        });
+    }
+
+
     $(document).ready(function () {
         let debounceTimer;
         $("#search").on("keyup", function () {

@@ -6,7 +6,6 @@ $pageRole = "owner";
 require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
-$id = $_SESSION['tour_id'];
 $tour = getTourById($conn, $id);
 $tourImage = getTourImageById($conn, $id);
 ?>
@@ -88,7 +87,6 @@ $tourImage = getTourImageById($conn, $id);
         <main id="main">
             <div class="head-title">
                 <div class="left">
-                    <h1>View Tours</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>

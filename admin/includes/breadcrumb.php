@@ -36,6 +36,10 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Inquiries', 'url' => 'inq']
     ],
+    'event' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Event', 'url' => 'event']
+    ],
     'pending' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Pending', 'url' => 'pending']
@@ -47,6 +51,11 @@ $breadcrumbs = [
     'tours' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Tours', 'url' => 'tours']
+    ],
+    'add-tour' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Tours', 'url' => 'tours'],
+        ['title' => 'Add Tour', 'url' => 'add-tour']
     ],
     'view_tour' => [
         ['title' => 'Home', 'url' => 'home'],
@@ -71,7 +80,6 @@ $breadcrumbs = [
 $page = basename($_SERVER['PHP_SELF'], '.php');
 $currentBreadcrumbs = $breadcrumbs[$page] ?? $breadcrumbs['home'];
 ?>
-
 <ul class="breadcrumb">
     <?php foreach ($currentBreadcrumbs as $key => $breadcrumb): ?>
         <li>

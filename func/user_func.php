@@ -1,12 +1,28 @@
 <?php
-
-function getAllToursforAdmin($conn)
+function getAllToursforAdmin($conn, $query = null)
 {
-    $sql = "SELECT * FROM tours WHERE status = 1 OR status = 3";
-    $stmt = $conn->prepare($sql);
+    $sql = "SELECT * FROM tours";
+
+    // Prepare the SQL statement
+    if ($query) {
+        // Use prepared statements to prevent SQL injection
+        $sql .= " WHERE title LIKE :search OR address LIKE :search"; // Adjust fields as necessary
+        $stmt = $conn->prepare($sql);
+        $searchTerm = "%" . $query . "%";
+        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+    } else {
+        $stmt = $conn->prepare($sql);
+    }
+
+    // Execute the prepared statement
     $stmt->execute();
+
+    // Fetch all results
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+
 function getAllTours($conn)
 {
     // Updated SQL query to include average rating and review count

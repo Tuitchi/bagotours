@@ -44,7 +44,7 @@ LEFT JOIN visit_visitors vv ON t.id = vv.id
 LEFT JOIN review_rating r ON t.id = r.tour_id  -- Join with review_rating table
 WHERE t.status = 1
 GROUP BY t.id, t.title, bv.total_booking_visitors, vv.total_visit_visitors
-ORDER BY total_visitors DESC, total_completed_bookings DESC;
+ORDER BY total_visitors DESC, total_completed_bookings DESC LIMIT 15;
 ";
 
 

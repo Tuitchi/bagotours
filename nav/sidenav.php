@@ -30,9 +30,14 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             <a href="map" class="nav-option <?php echo $current_page == 'map' ? 'active' : ''; ?>">
                 <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png" class="nav-img"
                     alt="blog">
-                <h3> Map</h3>
+                <h3> Tours Map</h3>
             </a>
             <?php }?>
+        </div>
+        <div class="nav-lower-options">
+            <div class="below">
+                <a href="home"><span>Terms of Service</span></a> - <a href="home"><span>Contact</span></a>
+            </div>
         </div>
     </nav>
 </div>

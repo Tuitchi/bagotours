@@ -5,6 +5,8 @@ if (isset($_SESSION['user_id'])) {
     $stmt = $conn->prepare("SELECT * FROM users WHERE id =?");
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    $user_id = null;
 }
 if (isset($_GET['id'])) {
     $decrypted_id_raw = base64_decode($_GET['id']);
@@ -359,13 +361,6 @@ if (isset($_GET['id'])) {
     <div class="main-container">
         <?php include 'nav/sidenav.php' ?>
         <div class="main">
-            <div class="searchbar2">
-                <input type="text" name="" id="" placeholder="Search">
-                <div class="searchbtn">
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                        class="icn srchicn" alt="search-button">
-                </div>
-            </div>
             <div class="tour-container">
                 <div class="tour-images">
                     <div class="carousel-container">

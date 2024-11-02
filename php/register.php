@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['profile-pic'] = $pp;
         $_SESSION['user_id'] = $conn->lastInsertId();
         $_SESSION['ROLE'] = 'user';
-        echo json_encode(['success' => true, 'redirect' => 'user/home']);
+        echo json_encode(['success' => true, 'redirect' => 'home']);
     } catch (PDOException $e) {
         $errors['register'] = "PDO error: " . $e->getMessage();
         echo json_encode(['success' => false, 'errors' => $errors]);

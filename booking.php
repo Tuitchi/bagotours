@@ -11,6 +11,14 @@ $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$statusOrder = [3, 0, 1, 4, 2];
+
+usort($bookings, function ($a, $b) use ($statusOrder) {
+    $aOrder = array_search($a['status'], $statusOrder);
+    $bOrder = array_search($b['status'], $statusOrder);
+    return $aOrder - $bOrder;
+});
+
 // Initialize counters for each booking status
 $statusCounts = [
     'waiting' => 0,
@@ -42,7 +50,7 @@ foreach ($bookings as $booking) {
     }
 }
 
-$totalBookings = count($bookings); // Total number of bookings
+$totalBookings = count($bookings);
 
 // Cancel booking logic
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) {
@@ -243,23 +251,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
                 <?php } else { ?>
                     <h2>Your Bookings</h2>
                     <div class="btn-container">
-                        <button data-status="0" onclick="filterBookings(0)">Booking Approval
-                            (<?php echo $statusCounts['waiting']; ?>)</button>
-                        <button data-status="1" onclick="filterBookings(1)">Ongoing
-                            (<?php echo $statusCounts['ongoing']; ?>)</button>
-                        <button data-status="3" onclick="filterBookings(3)">To Review
-                            (<?php echo $statusCounts['review']; ?>)</button>
-                        <button data-status="4" onclick="filterBookings(4)">Completed
-                            (<?php echo $statusCounts['completed']; ?>)</button>
-                        <button data-status="all" onclick="filterBookings('all')">View All
-                            (<?php echo $totalBookings; ?>)</button>
+                        <button data-status="0" onclick="filterBookings(0)">Booking Approval (<?php echo $statusCounts['waiting']; ?>)</button>
+                        <button data-status="1" onclick="filterBookings(1)">Ongoing (<?php echo $statusCounts['ongoing']; ?>)</button>
+                        <button data-status="3" onclick="filterBookings(3)">To Review (<?php echo $statusCounts['review']; ?>)</button>
+                        <button data-status="4" onclick="filterBookings(4)">Completed (<?php echo $statusCounts['completed']; ?>)</button>
+                        <button data-status="all" onclick="filterBookings('all')">View All (<?php echo $totalBookings; ?>)</button>
                     </div>
                     <div class="booking-container">
                         <?php foreach ($bookings as $booking) { ?>
-                            <div class="booking-card" data-status="<?php echo $booking['status']; ?>"
-                                data-review="<?php echo $booking['is_review']; ?>">
-                                <img src="upload/Tour Images/<?php echo $booking['img']; ?>"
-                                    alt="<?php echo $booking['title']; ?>">
+                            <div class="booking-card" data-status="<?php echo $booking['status']; ?>" data-review="<?php echo $booking['is_review']; ?>">
+                                <img src="upload/Tour Images/<?php echo $booking['img']; ?>" alt="<?php echo $booking['title']; ?>">
                                 <div class="desc">
                                     <h3><?php echo $booking['title']; ?></h3>
                                     <?php

@@ -195,7 +195,6 @@ $RRs = getAllRR($conn, $id);
         <main>
             <div class="head-title">
                 <div class="left">
-                    <h1>Review</h1>
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>

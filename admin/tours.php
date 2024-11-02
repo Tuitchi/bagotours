@@ -8,8 +8,8 @@ $status = isset($_GET["status"]) ? $_GET["status"] : '';
 $pageRole = "admin";
 require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
-
-$tour = getAllToursforAdmin($conn);
+$query = isset($_GET['search']) ? $_GET['search'] : null;
+$tour = getAllToursforAdmin($conn, $query);
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +28,6 @@ $tour = getAllToursforAdmin($conn);
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <title>BaGoTours. Tours</title>
     <style>
-       
-
         .close:hover,
         .close:focus {
             color: black;
@@ -158,12 +156,13 @@ $tour = getAllToursforAdmin($conn);
         .btn-delete {
             background-color: #dc3545;
         }
+
         .radio {
             width: 25%;
             display: flex;
             gap: 5px;
             cursor: pointer;
-            justify-items: flex-start ;
+            justify-items: flex-start;
         }
     </style>
 </head>
@@ -186,8 +185,11 @@ $tour = getAllToursforAdmin($conn);
                     <div class="head">
                         <h3>Tourist Spot List</h3>
                         <div class="search-container">
-                            <i class='bx bx-search' id="search-icon"></i>
-                            <input type="text" id="search-input" placeholder="Search...">
+                            <form method="GET" class="search-container">
+                                <i class='bx bx-search' id="search-icon"></i>
+                                <input type="text" name="search" id="search-input" placeholder="Search..."
+                                    value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'UTF-8'); ?>">
+                            </form>
                         </div>
                         <i class='bx bx-filter'></i>
                     </div>
@@ -289,8 +291,18 @@ $tour = getAllToursforAdmin($conn);
 
 
     <script src="../assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        $(document).ready(function () {
+            // Handle the search input submission
+            $("#search-input").on("keypress", function (event) {
+                if (event.which === 13) { // Check for Enter key
+                    $(this).closest("form").submit(); // Submit the form
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
             var modal = document.getElementById("addTourModal");
             var btn = document.getElementById("btn-download");
             var closeBtn = document.querySelector(".close");
@@ -319,7 +331,7 @@ $tour = getAllToursforAdmin($conn);
             function resizeMap() {
                 map.resize();
             }
-            map.on('click', function(e) {
+            map.on('click', function (e) {
                 var lngLat = e.lngLat;
                 if (marker) {
                     marker.setLngLat(lngLat);
@@ -332,23 +344,23 @@ $tour = getAllToursforAdmin($conn);
                 document.getElementById('tour-latitude').value = lngLat.lat;
                 mapboxModal.style.display = "none";
             });
-            btn.onclick = function() {
+            btn.onclick = function () {
                 modal.style.display = "block";
             }
-            btnSetLocation.onclick = function() {
+            btnSetLocation.onclick = function () {
                 mapboxModal.style.display = "block";
                 resizeMap();
             }
 
-            closeBtn.onclick = function() {
+            closeBtn.onclick = function () {
                 modal.style.display = "none";
             }
 
-            closeMapBtn.onclick = function() {
+            closeMapBtn.onclick = function () {
                 mapboxModal.style.display = "none";
             }
 
-            window.onclick = function(event) {
+            window.onclick = function (event) {
                 if (event.target == mapboxModal) {
                     mapboxModal.style.display = "none";
                 }

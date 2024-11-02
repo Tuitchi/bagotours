@@ -23,6 +23,16 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
 
 	<title>BaGoTours. Dashboard</title>
+	<style>
+		.box-info li span a {
+			font-size: .7em;
+			bottom: 0;
+        }
+		.box-info li span a:hover {
+			color: #443396;
+			text-decoration: underline;
+        }
+	</style>
 </head>
 
 <body>
@@ -43,24 +53,11 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 					<span class="text">
 						<h3><?php echo totalVisitors($conn, $user_id); ?></h3>
 						<p>Total Visitors</p>
+						<a href="visitor">view all visitors.</a>
 					</span>
 				</li>
 				<li>
-					<i class='bx bxs-calendar-check'></i>
-					<span class="text">
-						<h3><?php echo nonBago($conn, $user_id); ?></h3>
-						<p>Non-Bago City Residence Visitors</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-calendar-check'></i>
-					<span class="text">
-						<h3><?php echo Bago($conn, $user_id); ?></h3>
-						<p>Bago City Visitors</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-group'></i>
+					<i class='bx bxs-star'></i>
 					<span class="text">
 						<h3><?php echo totalStars($conn, $user_id); ?></h3>
 						<p>Stars</p>
@@ -81,8 +78,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 						<h3>Visitors</h3>
 						<div class="filter">
 							<select name="tour" id="tour" required>
-								<option value="" selected disabled hidden>Select an Option</option>
-								<option value="">All</option>
+								<option value="" selected>All</option>
 								<?php require_once '../func/func.php';
 								$tours = getTouristSpots($conn, $user_id);
 								foreach ($tours as $tour) { ?>
@@ -90,8 +86,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 								<?php } ?>
 							</select>
 							<select id="timeFilter">
-								<option value="" selected disabled hidden>Select an Option</option>
-								<option value="">all</option>
+								<option value="" selected>all</option>
 								<option value="daily">Daily</option>
 								<option value="monthly">Monthly</option>
 								<option value="yearly">Yearly</option>

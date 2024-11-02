@@ -114,8 +114,9 @@ if (isset($_GET['id'])) {
     <div class="main-container">
         <?php include 'nav/sidenav.php'; ?>
         <div class="main">
-            <div class="map">
-                <h3>Tours Map</h3>
+            <div class="map"><?php if ($spotDirection == null): ?>
+                    <h3>Tours Map</h3>
+                <?php endif; ?>
                 <div id="map">
                     <div class="distance-display"></div>
                     <div class="instructions-container">
@@ -196,7 +197,6 @@ if (isset($_GET['id'])) {
 
             if (spotDirection) {
                 map.on('load', () => geolocateControl.trigger());
-                map.setPitch(70);
                 distanceDisplay.style.display = "flex";
                 instructionDisplay.style.display = "block";
                 const destination = [spotDirection.longitude, spotDirection.latitude];

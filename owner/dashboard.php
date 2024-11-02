@@ -9,7 +9,6 @@ require_once '../php/accValidation.php';
 
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
-$tour = $_SESSION['tour_id'];
 ?>
 
 <!DOCTYPE html>
