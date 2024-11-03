@@ -52,6 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             $nearbyTours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($nearbyTours as &$tour) {
+                $tour['encoded_id'] = base64_encode($tour['id'] . $salt);
+            }
 
             // Ensure we return an empty array if no tours are found
             header('Content-Type: application/json');
@@ -147,8 +150,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="pagination" id="pagination"></div>
             </div>
         </div>
-        <?php require "include/login-registration.php"; ?>
     </div>
+    <?php require "include/login-registration.php"; ?>
+    <script src="index.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -211,12 +215,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const tourElement = document.createElement('div');
                 tourElement.classList.add('spot');
                 tourElement.innerHTML = `
-                <a href="tour?id=${tour.id}">
-                    <img src="upload/Tour Images/${tour.img}" alt="${tour.title}">
-                    <h3>${tour.title}</h3>
-                    <p>${tour.type}</p>
-                    <div class="rating">${'★'.repeat(Math.round(tour.average_rating)) + '☆'.repeat(5 - Math.round(tour.average_rating))} <span>(${tour.review_count} reviews)</span></div>
-                </a>
+            <a href="tour?id=${tour.encoded_id}">
+                <img src="upload/Tour Images/${tour.img}" alt="${tour.title}">
+                <h3>${tour.title}</h3>
+                <p>${tour.type}</p>
+                <p>Distance: ${tour.distance.toFixed(2)} km</p>
+                <div class="rating">
+                    ${'★'.repeat(Math.round(tour.average_rating)) + '☆'.repeat(5 - Math.round(tour.average_rating))}
+                    <span>(${tour.review_count} reviews)</span>
+                </div>
+            </a>
             `;
                 spotsContainer.appendChild(tourElement);
             });

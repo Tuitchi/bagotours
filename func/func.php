@@ -24,6 +24,18 @@ function createNotification($conn, $userId, $tour_id, $message, $url, $type)
         return "error";
     }
 }
+function createNotificationForAllUsers($conn, $tour_id, $message, $url, $type)
+{
+    // Retrieve all user IDs
+    $stmt = $conn->query("SELECT id FROM users");
+    $userIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    
+    // Loop through each user ID and send the notification
+    foreach ($userIds as $userId) {
+        createNotification($conn, $userId, $tour_id, $message, $url, $type);
+    }
+}
+
 
 function getNotifications($conn, $userId)
 {
@@ -246,4 +258,12 @@ function checkBooking($conn, int $tour_id)
             );
         }
     }
+}
+
+// Event
+function addEventValidator($conn, $event_name) {
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM events WHERE event_name = :event_name");
+    $stmt->bindParam(':event_name', $event_name, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->fetch()['count'] > 0;
 }

@@ -66,8 +66,8 @@ try {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BagoTours</title>
-    <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 
 <body>
@@ -99,7 +99,7 @@ try {
                         <div class='smallDetails'>
                             <span>" . htmlspecialchars($tour['type']) . "</span>
                             <span class='rating'>" . $totalStars . " (" . htmlspecialchars($tour['review_count']) . " reviews)</span>
-                            <span class='rating'>". htmlspecialchars($tour['total_visitors']) . " Visits</span>
+                            <span class='rating'>" . htmlspecialchars($tour['total_visitors']) . " Visits</span>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,6 @@ try {
                 }
                 ?>
             </div>
-
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>

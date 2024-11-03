@@ -49,9 +49,9 @@
     }
 
     .notification-menu {
-        width: 600px;
+        width: 70vw;
         height: auto;
-        max-height: 80vh;
+        max-height: 80vw;
         top: 23px;
         overflow-y: scroll;
     }
@@ -180,11 +180,7 @@
             if (!empty($notif)) {
                 foreach ($notif as $i) {
                     $readClass = $i['is_read'] ? 'read' : 'unread';
-
-                    // Convert the created_at date to the desired format M. D, Y (e.g., Oct. 21, 2024)
                     $formattedDate = date('M. d, Y', strtotime($i['created_at']));
-
-                    // Output the notification with the formatted date
                     echo "<a class='$readClass' href='" . $i['url'] . "' data-id='" . $i['id'] . "'>
                             <p>" . $i['message'] . " <span>" . $formattedDate . "</span></p>
                           </a><hr>";

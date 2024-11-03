@@ -32,6 +32,18 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 			color: #443396;
 			text-decoration: underline;
         }
+		.order {
+			position: relative;
+		}
+		.loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+		}
 	</style>
 </head>
 
@@ -159,40 +171,6 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 				});
 		}
 
-		function tourChart() {
-			// Show the loader
-			const loader = document.querySelector('#ToursChart + .loader');
-			loader.style.display = 'block';
-
-			fetch('assets/tourChart.php')
-				.then(response => response.json())
-				.then(tourData => {
-					loader.style.display = 'none'; // Hide the loader after data is received
-					if (Array.isArray(tourData) && tourData.length > 0) {
-						const data = google.visualization.arrayToDataTable([
-							['Tour Type', 'Count'],
-							...tourData
-						]);
-
-						const options = {
-							title: 'Tours by Type',
-							is3D: true
-						};
-
-						const chart = new google.visualization.PieChart(document.getElementById('ToursChart'));
-						chart.draw(data, options);
-					} else {
-						console.error('No data or invalid data format:', tourData);
-						document.getElementById('ToursChart').innerHTML = '<p>No data available to display.</p>';
-					}
-				})
-				.catch(error => {
-					loader.style.display = 'none'; // Hide the loader even on error
-					console.error('Error fetching data:', error);
-					document.getElementById('ToursChart').innerHTML = '<p>Failed to load chart data.</p>';
-				});
-		}
-
 
 		document.getElementById('tour').addEventListener('change', applyFilters);
 		document.getElementById('timeFilter').addEventListener('change', applyFilters);
@@ -205,10 +183,10 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 		}
 
 		function visitorChart(tourId = null, timeFilter) {
-			const loader = document.querySelector('#visitorChart + .loader'); // Get the loader for the visitor chart
-			loader.style.display = 'block'; // Show the loader
-
-			const url = new URL('/bagotours/admin/assets/visitorChart.php', window.location.origin);
+			const loader = document.querySelector('#visitorChart + .loader');
+			
+			loader.style.display = 'block';
+			const url = new URL('admin/assets/visitorChart.php', window.location.origin);
 			if (tourId) {
 				url.searchParams.append('tour', tourId);
 			}
@@ -217,7 +195,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 			fetch(url)
 				.then(response => response.json())
 				.then(visitorData => {
-					loader.style.display = 'none'; // Hide the loader after data is received
+					loader.style.display = 'none';
 					if (Array.isArray(visitorData) && visitorData.length > 0) {
 						const data = google.visualization.arrayToDataTable([
 							['City Residence', 'Count'],

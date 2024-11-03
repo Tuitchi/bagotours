@@ -3,6 +3,16 @@ require 'include/db_conn.php';
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
+
+try {
+    $stmt = $conn->prepare("SELECT * FROM events WHERE event_date_end >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)");
+    $stmt->execute();
+    $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +24,65 @@ if (isset($_SESSION['user_id'])) {
     <title>BagoTours</title>
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
+    <style>
+        .spots {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+
+        .spots img {
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .spots .spot-details {
+            position: absolute;
+            width: 98%;
+            height: 94%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            color: #fff;
+            border-radius: 10px;
+        }
+
+        .spots .spot-details .lower {
+            position: absolute;
+            bottom: 20px;
+            font-weight: 500;
+        }
+
+        .spots .spot-details .upper {
+            text-align: center;
+        }
+
+        .view {
+            width: 20%;
+            text-align: center;
+            padding: 5px;
+            background-color: #fff;
+            color: black;
+            font-size: 1rem;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .desc {
+            text-align: justify;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,28 +93,18 @@ if (isset($_SESSION['user_id'])) {
         <?php include 'nav/sidenav.php' ?>
         <div class="main">
 
-            <div class="searchbar2">
-                <input type="text" name="" id="" placeholder="Search">
-                <div class="searchbtn">
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                        class="icn srchicn" alt="search-button">
-                </div>
-            </div>
-
             <div class="carousel-container">
                 <button class="prev" onclick="prevSlide()">&#10094;</button>
                 <button class="next" onclick="nextSlide()">&#10095;</button>
                 <div class="carousel-slide">
                     <?php require_once 'func/user_func.php';
-                    $tours = getAllTours($conn);
-                    shuffle($tours);
-                    foreach (array_slice($tours, 0, 3) as $tour) {
+                    foreach (array_slice($events, 0, 3) as $event) {
                         echo "<div class='carousel-item'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>
+                        <a href='view-event?event=" . base64_encode($event['event_code'] . $salt) . "'>
+                        <img src='upload/Event/" . $event['event_image'] . "' alt='" . $event['event_name'] . "'>
                         <div class='carousel-caption'>
-                            <h3>" . $tour['title'] . "</h3>
-                            <p>Type: " . $tour['type'] . "</p>
+                            <h3>" . $event['event_name'] . "</h3>
+                            <p>" . $event['event_type'] . "</p>
                         </div>
                         </a>
                     </div>";
@@ -59,42 +118,46 @@ if (isset($_SESSION['user_id'])) {
                 </div>
             </div>
             <div class="popularspot">
-                <h2>Trending</h2>
-                <div class="spots">
-                    <?php foreach ($tours as $tour) {
-                        // Calculate the star rating based on average rating
-                        $averageRating = round($tour['average_rating']); // Round to the nearest whole number
-                        $fullStars = str_repeat("★", $averageRating); // Full stars
-                        $emptyStars = str_repeat("☆", 5 - $averageRating); // Empty stars
-                        $totalStars = $fullStars . $emptyStars; // Combine stars
-                    
-                        echo "<div class='spot'>
-            <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . htmlspecialchars($tour['title']) . "'>  
-                <h3>" . htmlspecialchars($tour['title']) . "</h3>
-                <p>" . htmlspecialchars($tour['type']) . "</p>
-                <div class='rating'>" . $totalStars . " <span>(" . htmlspecialchars($tour['review_count']) . " reviews)</span>
-                </div>
-            </a>
-          </div>";
-                    } ?>
-                </div>
-
-                <div class="report-container" id="cardContainer">
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
-                    } ?>
-                </div>
-                <div class="pagination" id="pagination"></div>
+                <h2>Discover Events</h2>
+                <?php foreach ($events as $event) { ?>
+                    <a href="view-event?event=<?php echo base64_encode($event['event_code'] . $salt) ?>">
+                        <div class="spots">
+                            <img src="upload/Event/<?php echo $event['event_image'] ?>" alt="">
+                            <div class="spot-details">
+                                <div class="upper">
+                                    <h1><?php echo $event['event_name'] ?></h1>
+                                    <p><strong><?php echo $event['event_type'] ?></strong></p>
+                                </div>
+                                <p class="desc"><?php echo $event['event_description'] ?></p>
+                                <div class="lower">
+                                    <p>📅 <?php echo date('F d, Y', strtotime($event['event_date_start'])) ?> -
+                                        <?php echo date('F d, Y', strtotime($event['event_date_end'])) ?>
+                                    </p>
+                                    <p>📍 <?php echo $event['event_location'] ?></p>
+                                </div>
+                            </div>
+                            <div class="view">click to view</div>
+                        </div>
+                    </a>
+                <?php } ?>
             </div>
         </div>
-        <?php require "include/login-registration.php"; ?>
-        <script src="index.js"></script>
+    </div>
+    <?php require "include/login-registration.php"; ?>
+    <script src="index.js"></script>
+    <script>
+        function getRandomColorWithOpacity() {
+            const r = Math.floor(Math.random() * 128);
+            const g = Math.floor(Math.random() * 128);
+            const b = Math.floor(Math.random() * 128);
+            return `rgba(${r}, ${g}, ${b}, 0.6)`;
+        }
+
+        const spotDetails = document.querySelectorAll('.spot-details');
+        spotDetails.forEach(spot => {
+            spot.style.backgroundColor = getRandomColorWithOpacity();
+        });
+    </script>
 </body>
 
 </html>

@@ -216,12 +216,6 @@ input[type=text]:focus {
   color: #ffffff;
 }
 
-.message {
-  gap: 40px;
-  position: relative;
-  cursor: pointer;
-}
-
 .circle {
   height: 7px;
   width: 7px;
@@ -1141,13 +1135,14 @@ input[type=text]:focus {
     justify-content: flex-start;
   }
 
-  .searchbar.expanded input[type="text"] {
-    width: 90vw;
-  }
-
   .logo {
     font-size: 20px;
   }
+
+  .message {
+    gap: 10px;
+  }
+
 
   .menuicn {
     display: block;
@@ -1191,16 +1186,16 @@ input[type=text]:focus {
     font-size: 10px;
     height: 27px;
   }
-  .logosec{
+
+  .logosec {
     gap: 20px;
     margin: 0;
   }
+
   .logo {
     font-size: 20px;
   }
-  .searchbar.expanded input[type="text"] {
-    width: 90vw;
-  }
+
 
   .report-header {
     height: 60px;
@@ -1217,10 +1212,6 @@ input[type=text]:focus {
     width: 50px;
     font-size: 8px;
     height: 27px;
-  }
-
-  .searchbar.expanded input[type="text"] {
-    width: 40vh;
   }
 
   .report-header {

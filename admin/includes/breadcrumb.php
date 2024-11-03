@@ -40,6 +40,16 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Event', 'url' => 'event']
     ],
+    'add-event' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Event', 'url' => 'event'],
+        ['title' => 'Add Event', 'url' => 'add-event']
+    ],
+    'view-event' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Event', 'url' => 'event'],
+        ['title' => 'View Event', 'url' => 'view-event']
+    ],
     'pending' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Pending', 'url' => 'pending']

@@ -30,7 +30,7 @@ try {
 
 try {
     $stmt = $conn->prepare("
-        SELECT b.id, b.user_id as client, t.id as tour_id, u.id as user_id, u.name 
+        SELECT b.id, b.user_id as client, t.id as tour_id, t.user_id as user_id, t.title as title
         FROM booking b 
         JOIN tours t ON b.tour_id = t.id 
         JOIN users u ON t.user_id = u.id 
@@ -54,9 +54,10 @@ $userStmt = $conn->prepare("SELECT name FROM users WHERE id = :user_id");
             $userStmt->execute();
             $user = $userStmt->fetch();
         
-            if ($checkStmt->fetchColumn() == 0) { // No existing notification found
+            if ($checkStmt->fetchColumn() == 0) {
                 try {
-                    createNotif($conn, $notification['user_id'], $notification['tour_id'], $user['name'] . " will arrive today", "booking?id=".$notification['id']."", "booking");
+                    createNotif($conn, $notification['user_id'], $notification['tour_id'], $user['name'] . " will arrive today at ". $notification['title'], "booking?id=".$notification['id']."", "booking");
+                    createNotif($conn, $notification['client'], $notification['tour_id'],"Your reservation at ". $notification['title']." is scheduled for today. Click me, and I'll direct you there.", "map?id=". base64_encode($notification['tour_id'] . $salt) ."", "booking");
                     error_log("Notification created for user: " . $notification['user_id'] . ", tour: " . $notification['tour_id']);
                 } catch (Exception $e) {
                     error_log("Failed to create notification: " . $e->getMessage());

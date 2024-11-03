@@ -413,14 +413,24 @@ if (isset($_GET['id'])) {
                             </div>
                             <div class="btons">
                                 <?php if (isBookable($conn, $tour['id'])) {
-                                    if (isAlreadyBooked($conn, $user_id, $tour['id'])) {
-                                        echo "<button class='bookbtn' disabled>Already Booked</button>";
+                                    $status = checkBookingStatus($conn, $user_id, $tour['id']);
+
+                                    if ($status) {
+                                
+                                        if ($status['status'] == 0 || $status['status'] == 1) {
+                                            echo "<button class='bookbtn' disabled>Already Booked</button>";
+                                        } elseif ($status['status'] == 3) {
+                                            echo '<button class="bookbtn" id="rate">Rate and Review</button>';
+                                        } else {
+                                            echo '<button class="bookbtn" id="book">Book Now</button>';
+                                        }
                                     } else {
-                                        echo '<button class="bookbtn">Book Now</button>';
+                                        echo '<button class="bookbtn" id="book">Book Now</button>';
                                     }
                                 } ?>
                                 <a href="map?id=<?php echo $_GET['id']; ?>" class="viewbtn">Go Here</a>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -480,12 +490,21 @@ if (isset($_GET['id'])) {
         });
         document.addEventListener('DOMContentLoaded', function () {
             var modal = document.getElementById("bookingModal");
-            var btn = document.querySelector(".bookbtn");
+            var bookbtn = document.getElementById("book");
+            var ratebtn = document.getElementById("rate");
             var span = document.querySelector(".close");
 
-            btn.addEventListener("click", function () {
-                modal.classList.add('active');
-            });
+            if (bookbtn) {
+                bookbtn.addEventListener("click", function () {
+                    modal.classList.add('active');
+                });
+            }
+
+            if (ratebtn) {
+                ratebtn.addEventListener("click", function () {
+                    window.location.href = 'rate_review?booking_id=<?php echo $status['id'] ?>';
+                });
+            }
 
             // Close the modal when the "x" button is clicked
             span.addEventListener("click", function () {

@@ -189,26 +189,25 @@ function getNotificationsCount($conn)
 
 
 // booking
-function isAlreadyBooked($conn, $user_id, $tour_id)
+function checkBookingStatus($conn, $user_id, $tour_id)
 {
-    // Prepare the SQL statement with proper parentheses to ensure correct logic
     $stmt = $conn->prepare(
-        "SELECT * FROM booking 
+        "SELECT status, id FROM booking 
          WHERE user_id = :user_id 
          AND tour_id = :tour_id 
-         AND (status = 1 OR status = 3 OR status = 0)"
+         ORDER BY date_created DESC 
+         LIMIT 1"
     );
 
     // Bind parameters
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
 
-    // Execute the statement
     $stmt->execute();
-
-    // Return true if there are any matching rows
-    return $stmt->rowCount() > 0;
+    return $stmt->fetch(PDO::FETCH_ASSOC); // Fetch a single record
 }
+
+
 
 
 function isBookable($conn, $tour_id)
@@ -219,25 +218,6 @@ function isBookable($conn, $tour_id)
     return $stmt->rowCount() > 0;
 }
 
-function bookApproval($conn, $user_id)
-{
-    $stmt = $conn->prepare("SELECT date_sched FROM booking WHERE user_id = :user_id AND status = 1");
-    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $sched = $stmt->fetchColumn();
-
-    if ($sched) {
-        $schedDate = new DateTime($sched);
-        $schedDate->modify('-2 day');
-
-        $today = new DateTime();
-
-        if ($schedDate->format('Y-m-d') === $today->format('Y-m-d')) {
-            return true;
-        }
-    }
-    return false;
-}
 
 function userValidation($pageRole)
 {
