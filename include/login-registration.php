@@ -46,6 +46,16 @@
             </form>
             <p>Already have an Account? <a href="#" id="to-sign-in">Sign In</a></p>
         </div>
+        <div id="forgot-password-form" class="form-container hidden">
+            <h2>Find your account</h2>
+            <p>Please enter your email or mobile number to search for your account.</p>
+            <form id="forgotForm">
+                <input id="forgotEmail" name="email" type="text" placeholder="Email" autocomplete="email" />
+                <div id="forgotEmail-error" class="error-message"></div>
+                <button type="submit">Find Account</button>
+            </form>
+            <button id="cancel-button">Cancel</button>
+        </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -53,17 +63,72 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('modal');
+        const forgotPassForm = document.getElementById('forgot-password-form');
         const signInForm = document.getElementById('sign-in-form');
         const signUpForm = document.getElementById('sign-up-form');
         const openModalButtons = document.querySelectorAll('#open-modal');
         const toSignUpButton = document.getElementById('to-sign-up');
+        const forgotPassButton = document.getElementById('forgot-password');
         const toSignInButton = document.getElementById('to-sign-in');
+        const cancelButton = document.getElementById('cancel-button');
         const closeModalButton = document.getElementById('close-modal');
+        
 
         function clearFormInputs(form) {
             form.reset();
         }
+        // Forgot Password
+        const forgotForm = document.getElementById('forgotForm');
+        forgotForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const submitButton = forgotForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Searching...';
 
+            const formData = new FormData(forgotForm);
+
+            $.ajax({
+                url: 'php/forgot-password.php',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    const data = JSON.parse(response);
+
+                    document.getElementById('forgotEmail-error').textContent = '';
+                    document.getElementById('forgotEmail').style.border = '1px solid #ddd';
+
+
+                    if (data.success) {
+                        document.getElementById('forgotEmail-error').style.color = 'green';
+                        document.getElementById('forgotEmail-error').textContent = data.message;
+                        document.getElementById('forgotEmail').style.border = '1px solid green';
+                        setTimeout(function () {
+                            modal.classList.remove('active');
+                            clearFormInputs(loginForm);
+                            clearFormInputs(forgotPassForm);
+                            clearFormInputs(signupForm);
+                        }, 3000);
+                    } else {
+                        if (data.errors.email) {
+                            document.getElementById('forgotEmail-error').textContent = data.errors.email;
+                            document.getElementById('forgotEmail').style.border = '1px solid red';
+
+                        }
+                    }
+                },
+                error: function () {
+                    alert('An error occurred. Please try again.');
+                },
+                complete: function () {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Sign in';
+                }
+            });
+        });
+
+        // Login Form
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -114,6 +179,7 @@
                 }
             });
         });
+        // Signup Form
         const signupForm = document.getElementById('signupForm');
         signupForm.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -186,6 +252,29 @@
             });
         });
 
+        cancelButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            forgotPassForm.classList.add('hidden');
+            signInForm.classList.remove('hidden');
+            signInForm.classList.add('slide-in');
+            forgotPassForm.classList.remove('slide-in');
+
+            document.getElementById('forgotEmail-error').textContent = '';
+            document.getElementById('forgotEmail').style.border = '1px solid #ddd';
+        });
+        forgotPassButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            signInForm.classList.add('hidden');
+            forgotPassForm.classList.remove('hidden');
+            forgotPassForm.classList.add('slide-in');
+            signInForm.classList.remove('slide-in');
+
+            document.getElementById('username-error').textContent = '';
+            document.getElementById('username').style.border = '1px solid #ddd';
+            document.getElementById('password-error').textContent = '';
+            document.getElementById('password').style.border = '1px solid #ddd';
+        });
+
         toSignUpButton.addEventListener('click', (event) => {
             event.preventDefault();
             signInForm.classList.add('hidden');
@@ -225,6 +314,7 @@
         closeModalButton.addEventListener('click', () => {
             modal.classList.remove('active');
             clearFormInputs(loginForm);
+            clearFormInputs(forgotForm);
             clearFormInputs(signupForm);
 
             document.getElementById('regName-error').textContent = '';

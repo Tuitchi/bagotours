@@ -82,6 +82,11 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Users', 'url' => 'user']
     ],
+    'visitor' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Dashboard', 'url' => 'dashboard'],
+        ['title' => 'Visitors', 'url' => 'visitor']
+    ],
     'qr' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'QR Code', 'url' => 'qr']

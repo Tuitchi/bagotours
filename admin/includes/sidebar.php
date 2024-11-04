@@ -10,7 +10,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
         <span class="text">BagoTours - Admin</span>
     </a>
     <ul class="side-menu top">
-        <li class="<?php echo $current_page == 'dashboard' ? 'active' : ''; ?>">
+        <li class="<?php echo (in_array($current_page, ['dashboard', 'visitor']))  ? 'active' : ''; ?>">
             <a href="dashboard">
                 <i class='bx bxs-dashboard'></i>
                 <span class="text">Dashboard</span>
@@ -36,7 +36,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
                 <span class="text">Inquiries</span>
             </a>
         </li>
-        <li class="<?php echo ($current_page == 'tours') ? 'active' : ''; ?>">
+        <li class="<?php echo (in_array($current_page, ['tours', 'view_tour', 'add-tour'])) ? 'active' : ''; ?>">
             <a href="tours">
                 <i class='bx bxs-map-alt'></i>
                 <span class="text">Tours</span>

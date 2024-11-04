@@ -113,6 +113,22 @@
 .form-container button:hover {
   background-color: #0056b3;
 }
+.form-container #cancel-button {
+  padding: 12px;
+  background-color: #b4b1b1;
+  margin-top: 15px;
+  color: rgb(16, 16, 16);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 50%;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.form-container #cancel-button:hover {
+  background-color: #656565;
+}
 
 .form-container #forgot-password {
   margin-top: 10px;

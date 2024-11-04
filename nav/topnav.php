@@ -106,16 +106,22 @@
         margin: 0;
     }
 
+    .account-menu a {
+        text-decoration: none;
+        font-weight: 700;
+    }
+
     .account-menu li {
         padding: 10px 15px;
         cursor: pointer;
         transition: background-color 0.3s ease;
         font-family: 'Arial', sans-serif;
         font-size: 14px;
-        color: #333;
+        color: #71a3c1;
     }
 
     @media screen and (max-width:850px) {
+
         header.expanded .notification,
         header.expanded .dp {
             width: 0;
@@ -137,6 +143,20 @@
     .notification a {
         font-size: 15px;
         text-decoration: none;
+    }
+
+    .notification .num {
+        position: absolute;
+        top: -5px;
+        right: 3px;
+        font-weight: 500;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 3px 5px;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
     }
 
     .read {
@@ -171,12 +191,19 @@
         if (empty($user_id)) {
             echo "<button id='open-modal' class='login'>Login</button>";
         } else {
-            echo "
-            <div class='notification' onclick='toggleNotificationMenu()'>
-                <i class='fa fa-bell'></i>
-                <div class='notification-menu' id='notificationMenu'>";
             require_once("func/func.php");
             $notif = getNotifications($conn, $user_id);
+            $unreadNotifications = array_filter($notif, function ($notifItem) {
+                return $notifItem['is_read'] == 0;
+            });
+
+            // Step 2: Count unread notifications
+            $notifCount = count($unreadNotifications);
+            echo "
+            <div class='notification' onclick='toggleNotificationMenu()'>
+                <i class='fa fa-bell'><span id='notification-count' class='num'>$notifCount</span></i>
+                <div class='notification-menu' id='notificationMenu'>";
+
             if (!empty($notif)) {
                 foreach ($notif as $i) {
                     $readClass = $i['is_read'] ? 'read' : 'unread';
@@ -196,10 +223,10 @@
                 <img src='upload/Profile Pictures/" . $_SESSION['profile-pic'] . "' class='dpicn' alt='dp'>
                 <div class='account-menu' id='accountMenu'>
                     <ul>
-                        <li><a href='manage-acc'>Manage Account</a></li>
-                        <li><a href='booking'>Bookings</a></li>
+                        <a href='manage-acc'><li>Manage Account</li></a>
+                        <a href='booking'><li>Bookings</li></a>
                         <li>Settings</li>
-                        <li><a href='php/logout.php'>Logout</a></li>
+                        <a onclick='logout()'><li>Logout</li></a>
                     </ul>
                 </div>
             </div>";
@@ -217,6 +244,22 @@
     const searchInput = document.getElementById("search");
     const header = document.querySelector("header");
 
+    function logout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out of your account.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log me out',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'php/logout.php';
+            }
+        });
+    }
     if (window.innerWidth <= 850) {
         searchIcon.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -302,14 +345,13 @@
         var notificationId = $(this).data('id');
         var url = $(this).attr('href');
 
-        // Send an AJAX request to mark the notification as read
         $.ajax({
-            url: 'php/updateNotificationStatus.php',  // PHP script to handle the update
+            url: 'php/updateNotificationStatus.php',
             method: 'POST',
             data: { id: notificationId },
             success: function (response) {
                 console.log('Notification marked as read');
-                window.location.href = url; // Redirect to the notification's URL
+                window.location.href = url;
             },
             error: function (xhr, status, error) {
                 console.error('Error: ' + error);

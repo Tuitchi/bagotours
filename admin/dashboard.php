@@ -61,7 +61,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 
 			<ul class="box-info">
 				<li>
-					<i class='bx bxs-calendar-check'></i>
+					<i class='bx bxs-user'></i>
 					<span class="text">
 						<h3><?php echo totalVisitors($conn, $user_id); ?></h3>
 						<p>Total Visitors</p>

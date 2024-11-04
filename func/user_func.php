@@ -49,6 +49,13 @@ function getTourById($conn, $id)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+function getEventbyCode($conn, $event_code)
+{
+    $stmt = $conn->prepare("SELECT * FROM events WHERE event_code = :event_code");
+    $stmt->bindParam(":event_code", $event_code, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 function getTourImageById($conn, $id)
 {
     $stmt = $conn->prepare("

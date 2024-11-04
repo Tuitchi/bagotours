@@ -29,7 +29,7 @@ function createNotificationForAllUsers($conn, $tour_id, $message, $url, $type)
     // Retrieve all user IDs
     $stmt = $conn->query("SELECT id FROM users");
     $userIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
-    
+
     // Loop through each user ID and send the notification
     foreach ($userIds as $userId) {
         createNotification($conn, $userId, $tour_id, $message, $url, $type);
@@ -170,7 +170,38 @@ function getAllRR($conn, $tour_id)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function getAverageRatingNew($conn, $tourId)
+{
 
+    // Step 2: Prepare and execute the SQL statement
+    $stmt = $conn->prepare("SELECT AVG(rating) AS average_rating FROM review_rating WHERE tour_id = :tour_id");
+    $stmt->execute(['tour_id' => $tourId]);
+
+    // Step 3: Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if the average_rating is not null
+    if ($result['average_rating'] !== null) {
+        return round($result['average_rating'], 2); // Round to 2 decimal places
+    }
+
+    return 0; // Return 0 if there are no ratings
+}
+function displayRatingStars($averageRating)
+{
+    $stars = "";
+    for ($i = 0; $i < 5; $i++) {
+        if ($i < floor($averageRating)) {
+            $stars .= "<i class='bx bxs-star' ></i>"; // Full star
+        } elseif ($i < ceil($averageRating)) {
+            $stars .= "<i class='bx bxs-star-half'></i>"; // You can replace this with a half star if you want to include half ratings
+            // For half star, you can use a different symbol like "⭐½"
+        } else {
+            $stars .= "<i class='bx bx-star' ></i>"; // Empty star
+        }
+    }
+    return $stars;
+}
 
 // BOOKING_______________________________________________________
 function specificBooking($conn, $user_id)
@@ -261,7 +292,8 @@ function checkBooking($conn, int $tour_id)
 }
 
 // Event
-function addEventValidator($conn, $event_name) {
+function addEventValidator($conn, $event_name)
+{
     $stmt = $conn->prepare("SELECT COUNT(*) as count FROM events WHERE event_name = :event_name");
     $stmt->bindParam(':event_name', $event_name, PDO::PARAM_STR);
     $stmt->execute();

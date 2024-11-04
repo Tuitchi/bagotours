@@ -19,6 +19,19 @@ if (isset($_GET['id'])) {
             'type' => $touristSpots['type']
         ];
     }
+
+} elseif (isset($_GET['event'])) {
+    $decrypted_id_raw = base64_decode($_GET['event']);
+    $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
+    $touristSpots = getEventbyCode($conn, $decrypted_id);
+    if ($touristSpots) {
+        $spotDirection = [
+            'longitude' => $touristSpots['longitude'],
+            'latitude' => $touristSpots['latitude'],
+            'title' => $touristSpots['event_name'],
+            'type' => 'stars'
+        ];
+    }
 } else {
     $touristSpots = getAllTours($conn);
     foreach ($touristSpots as &$spot) {

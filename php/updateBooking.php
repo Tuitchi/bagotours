@@ -18,9 +18,9 @@ try {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         if ($status == 2) {
-            createNotification($conn, $user_id, $tour_id, $tour['title'] . " has accepted your reservation.", "booking", "booking");
-        } else {
             createNotification($conn, $user_id, $tour_id, $tour['title'] . " has declined your reservation.", "booking", "booking");
+        } else {
+            createNotification($conn, $user_id, $tour_id, $tour['title'] . " has accepted your reservation.", "booking", "booking");
         }
 
         // Execute the update query

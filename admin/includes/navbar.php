@@ -43,14 +43,19 @@ $pp = $_SESSION['profile-pic'];
 	.notification-dropdown {
 		position: absolute;
 		top: 40px;
-		right: 0;
-		width: 300px;
+		right: 25px;
+		width: 50vw;
 		background-color: white;
 		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 		border-radius: 8px;
 		display: none;
 		flex-direction: column;
 		overflow: hidden;
+	}
+	@media screen and (max-width: 765px) {
+		.notification-dropdown {
+			width: 80vw;
+		}
 	}
 
 	.notification-dropdown.active {

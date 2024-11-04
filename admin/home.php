@@ -9,32 +9,66 @@ $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
 try {
-    $query = "SELECT id, title, latitude, longitude, type, address, img FROM tours WHERE status = 1";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$query = "SELECT id, title, latitude, longitude, type, address, img FROM tours WHERE status = 1";
+	$stmt = $conn->prepare($query);
+	$stmt->execute();
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $touristSpots = [];
+	$touristSpots = [];
 
-    if ($result) {
-        foreach ($result as $row) {
-            $touristSpots[] = [
-                'id' => $row['id'],
-                'title' => $row['title'],
-                'latitude' => $row['latitude'],
-                'longitude' => $row['longitude'],
-                'type' => $row['type'],
-                'image' => $row['img'],
-                'address' => $row['address']
-            ];
-        }
-    }
+	if ($result) {
+		foreach ($result as $row) {
+			$touristSpots[] = [
+				'id' => $row['id'],
+				'title' => $row['title'],
+				'latitude' => $row['latitude'],
+				'longitude' => $row['longitude'],
+				'type' => $row['type'],
+				'image' => $row['img'],
+				'address' => $row['address']
+			];
+		}
+	}
 
-    $touristSpotsJson = json_encode($touristSpots);
+	$touristSpotsJson = json_encode($touristSpots);
 } catch (PDOException $e) {
-    error_log("Error fetching tours: " . $e->getMessage());
-    $touristSpotsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
+	error_log("Error fetching tours: " . $e->getMessage());
+	$touristSpotsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
 }
+try {
+	$query = "SELECT event_code, event_name, latitude, longitude, event_type, event_image FROM events WHERE status = 'upcoming'";
+	$stmt = $conn->prepare($query);
+	$stmt->execute();
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$events = []; // Initialize an empty array to store events
+
+	// Check if the result set is not empty
+	if ($result) {
+		foreach ($result as $row) {
+			// Create an associative array for each event
+			$events[] = [
+				'event_code' => $row['event_code'],    // Correct mapping of 'event_code'
+				'title' => $row['event_name'],         // Correct mapping of 'event_name'
+				'latitude' => $row['latitude'],        // Correct mapping of 'latitude'
+				'longitude' => $row['longitude'],      // Correct mapping of 'longitude'
+				'type' => $row['event_type'],          // Correct mapping of 'event_type'
+				'image' => $row['event_image'],        // Correct mapping of 'event_image'
+				// If there's an address column, uncomment the line below
+				// 'address' => $row['address']          // Optional, if applicable
+			];
+		}
+	}
+
+	// Encode the array to JSON format
+	$eventsJson = json_encode($events); // Store events in JSON format
+} catch (PDOException $e) {
+	// Log the error message
+	error_log("Error fetching events: " . $e->getMessage());
+	// Return an error message in JSON format
+	$eventsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
+}
+
+
 ?>
 
 
@@ -44,7 +78,7 @@ try {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
+	<link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
 
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
@@ -56,7 +90,7 @@ try {
 	<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 
 	<title>BaGoTours. Home</title>
-	
+
 </head>
 
 <body>
@@ -114,10 +148,10 @@ try {
 				`;
 
 				const popup = new mapboxgl.Popup({
-						closeOnClick: false,
-						offset: 25,
-						closeButton:false
-					})
+					closeOnClick: false,
+					offset: 25,
+					closeButton: false
+				})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {
@@ -131,6 +165,46 @@ try {
 
 				marker.getElement().addEventListener('click', () => {
 					window.location.href = `view_tour?id=${spot.id}`;
+				});
+			});
+			const events = <?php echo $eventsJson; ?>;
+
+			events.forEach(event => {
+				const el = document.createElement('div');
+				el.className = 'marker event';
+				el.style.backgroundImage = `url(../assets/icons/stars.png)`;
+
+				const marker = new mapboxgl.Marker(el)
+					.setLngLat([event.longitude, event.latitude])
+					.addTo(map);
+
+				const popupContent = `
+	<div class="popup-content event">
+		<img src="../upload/Event/${event.image}" alt="${event.title}" class="popup-image">
+		<h3 class="popup-title">${event.title}</h3>
+		<p class="popup-type">${event.type}</p>
+		<a href="#" class="popup-link">Learn More</a>
+	</div>
+`;
+
+				const popup = new mapboxgl.Popup({
+					closeOnClick: false,
+					offset: 25,
+					closeButton: false
+				})
+					.setHTML(popupContent);
+
+				marker.getElement().addEventListener('mouseenter', () => {
+					popup.addTo(map);
+					popup.setLngLat([event.longitude, event.latitude]);
+				});
+
+				marker.getElement().addEventListener('mouseleave', () => {
+					popup.remove();
+				});
+
+				marker.getElement().addEventListener('click', () => {
+					window.location.href = `view-event?event=${event.event_code}`;
 				});
 			});
 		});

@@ -90,8 +90,9 @@ try {
                     $emptyStars = str_repeat("☆", 5 - $averageRating); // Empty stars
                     $totalStars = $fullStars . $emptyStars; // Combine stars
                 
+                    $backgroundImage = "upload/Tour Images/" . htmlspecialchars($tour['img']);
                     echo "<a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                <div class='tourList'>
+                <div class='tourList' data-bg='$backgroundImage'>
                     <img src='upload/Tour Images/" . htmlspecialchars($tour['img']) . "' alt=''>
                     <div class='tourDetails'>
                         <h1>#" . $counter++ . "</h1>
@@ -114,7 +115,35 @@ try {
     <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Function to apply background images to each tourList item
+        function applyBackgroundImages() {
+            // Clear previous background styles
+            $('style[data-index]').remove();
+
+            $('.tourList').each(function (index) {
+                const bgImage = $(this).data('bg');
+                if (bgImage) {
+                    const uniqueClass = `tourList-bg-${index}`;
+                    $(this).addClass(uniqueClass);
+
+                    // Create a new style element for the updated image
+                    const style = document.createElement('style');
+                    style.setAttribute('data-index', index);
+                    style.textContent = `
+                    .${uniqueClass}::before {
+                        background-image: url('${bgImage}');
+                    }
+                `;
+                    document.head.appendChild(style);
+                }
+            });
+        }
+
+        // Initial load of background images
         $(document).ready(function () {
+            applyBackgroundImages();
+
+            // Handle filter buttons to reload content and update backgrounds
             $('.option').on('click', function () {
                 $('.option').removeClass('active');
                 $(this).addClass('active');
@@ -122,11 +151,15 @@ try {
                 var timeFilter = $(this).data('filter');
 
                 $.ajax({
-                    url: '',
+                    url: '', // Use the same page URL to handle the request
                     type: 'POST',
                     data: { filter: timeFilter },
                     success: function (response) {
+                        // Update the tour list container with new content
                         $('#tour-list-container').html($(response).find('#tour-list-container').html());
+
+                        // Reapply background images after content update
+                        applyBackgroundImages();
                     },
                     error: function () {
                         alert('Error loading tours');
@@ -135,6 +168,8 @@ try {
             });
         });
     </script>
+
+
 </body>
 
 </html>

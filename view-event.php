@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require 'include/db_conn.php';
 
@@ -8,25 +8,26 @@ if (isset($_SESSION['user_id'])) {
 
 if (isset($_GET['event'])) {
     $event_code_raw = base64_decode($_GET['event']);
-    $event_code = preg_replace(sprintf('/%s/', $salt), '',  $event_code_raw);
+    $event_code = preg_replace(sprintf('/%s/', $salt), '', $event_code_raw);
 
     try {
         $stmt = $conn->prepare("SELECT * FROM events WHERE event_code = :event_code");
         $stmt->bindParam(':event_code', $event_code);
         $stmt->execute();
-        $event = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch the event details
+        $event = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$event) {
-            header("Location: event"); // Redirect if no event found
+            header("Location: event?status=404");
             exit();
         }
     } catch (PDOException $e) {
-        echo "Error: ". $e->getMessage();
-        header("Location: event");
+        echo "Error: " . $e->getMessage();
+        header("Location: event?status=500");
         exit();
     }
 } else {
-    header("Location: event");
+    header("Location: event?status=404");
+
     exit();
 }
 ?>
@@ -41,17 +42,6 @@ if (isset($_GET['event'])) {
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-
-        .main-container {
-            padding: 20px;
-        }
-
         .event-header {
             text-align: center;
             margin-bottom: 20px;
@@ -109,6 +99,15 @@ if (isset($_GET['event'])) {
             text-decoration: none;
         }
 
+        .back-button.map {
+            background-color: #75ba75;
+            color: white;
+        }
+
+        .back-button.map:hover {
+            background-color: #52aa6f;
+        }
+
         .back-button:hover {
             background-color: #0056b3;
         }
@@ -123,7 +122,8 @@ if (isset($_GET['event'])) {
         <div class="main">
             <div class="event-header">
                 <h1><?php echo htmlspecialchars($event['event_name']); ?></h1>
-                <img class="event-image" src="upload/Event/<?php echo htmlspecialchars($event['event_image']); ?>" alt="<?php echo htmlspecialchars($event['event_name']); ?>">
+                <img class="event-image" src="upload/Event/<?php echo htmlspecialchars($event['event_image']); ?>"
+                    alt="<?php echo htmlspecialchars($event['event_name']); ?>">
             </div>
 
             <div class="event-details">
@@ -131,14 +131,17 @@ if (isset($_GET['event'])) {
                 <p><?php echo nl2br(htmlspecialchars($event['event_description'])); ?></p>
 
                 <div class="event-meta">
-                    <p>📅 <?php echo date('F d, Y', strtotime($event['event_date_start'])) . ' - ' . date('F d, Y', strtotime($event['event_date_end'])); ?></p>
+                    <p>📅
+                        <?php echo date('F d, Y', strtotime($event['event_date_start'])) . ' - ' . date('F d, Y', strtotime($event['event_date_end'])); ?>
+                    </p>
                     <p>📍 <?php echo htmlspecialchars($event['event_location']); ?></p>
                 </div>
 
                 <!-- Optional Fields -->
                 <?php if (!empty($event['registration_deadline']) && $event['registration_deadline'] != '0000-00-00 00:00:00'): ?>
                     <div class="optional">
-                        <strong>Registration Deadline:</strong> <?php echo date('F d, Y', strtotime($event['registration_deadline'])); ?>
+                        <strong>Registration Deadline:</strong>
+                        <?php echo date('F d, Y', strtotime($event['registration_deadline'])); ?>
                     </div>
                 <?php endif; ?>
 
@@ -159,6 +162,7 @@ if (isset($_GET['event'])) {
                         <strong>Sponsor:</strong> <?php echo htmlspecialchars($event['sponsor']); ?>
                     </div>
                 <?php endif; ?>
+                <a href="map?event=<?php echo $_GET['event'] ?>" class="back-button map">Go to Event</a>
             </div>
 
             <a href="event" class="back-button">Back to Events</a>

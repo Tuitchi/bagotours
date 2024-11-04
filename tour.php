@@ -16,6 +16,40 @@ if (isset($_GET['id'])) {
     $stmt->execute([$decrypted_id]);
     $tour = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+require_once 'func/func.php';
+$averageRating = getAverageRatingNew($conn, $decrypted_id);
+$ratingStars = displayRatingStars($averageRating);
+function timeAgo($timestamp)
+{
+    $time_ago = strtotime($timestamp);
+    $current_time = time();
+    $time_difference = $current_time - $time_ago;
+
+    $seconds = $time_difference;
+    $minutes = round($seconds / 60);
+    $hours = round($seconds / 3600);
+    $days = round($seconds / 86400);
+    $weeks = round($seconds / 604800);
+    $months = round($seconds / 2629440); // ~30.44 days
+    $years = round($seconds / 31553280); // ~365.24 days
+
+    // Determine the appropriate time frame and format
+    if ($seconds < 60) {
+        return ($seconds == 1) ? "one second ago" : "$seconds seconds ago";
+    } elseif ($minutes < 60) {
+        return ($minutes == 1) ? "one minute ago" : "$minutes minutes ago";
+    } elseif ($hours < 24) {
+        return ($hours == 1) ? "one hour ago" : "$hours hours ago";
+    } elseif ($days < 7) {
+        return ($days == 1) ? "one day ago" : "$days days ago";
+    } elseif ($weeks < 4) {
+        return ($weeks == 1) ? "one week ago" : "$weeks weeks ago";
+    } elseif ($months < 12) {
+        return ($months == 1) ? "one month ago" : "$months months ago";
+    } else {
+        return ($years == 1) ? "one year ago" : "$years years ago";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -278,6 +312,11 @@ if (isset($_GET['id'])) {
             margin: 0;
         }
 
+        .comment-star .bx {
+            font-size: 15px;
+            color: #f5ce22;
+        }
+
         .comment-text {
             margin: 5px 0;
             font-size: 13px;
@@ -396,7 +435,7 @@ if (isset($_GET['id'])) {
                         <div class="rescont">
                             <h1 class="title"><?php echo $tour['title'] ?></h1>
                             <p>Location: <?php echo $tour['address'] ?></p>
-                            <p class="rating">⭐⭐⭐⭐</p>
+                            <p class="rating"><?php echo $ratingStars; ?></p>
                             <p class="details">
                                 Description: <?php echo $tour['description'] ?>
                             </p>
@@ -416,7 +455,7 @@ if (isset($_GET['id'])) {
                                     $status = checkBookingStatus($conn, $user_id, $tour['id']);
 
                                     if ($status) {
-                                
+
                                         if ($status['status'] == 0 || $status['status'] == 1) {
                                             echo "<button class='bookbtn' disabled>Already Booked</button>";
                                         } elseif ($status['status'] == 3) {
@@ -444,17 +483,48 @@ if (isset($_GET['id'])) {
                     </div>
 
                     <div class="comments-list">
-                        <div class="comment">
-                            <img src="https://via.placeholder.com/40" alt="User Avatar" class="avatar">
-                            <div class="comment-content">
-                                <h4 class="comment-author">John Doe</h4>
-                                <p class="comment-text">This is a sample comment 1.</p>
-                                <div class="comment-actions">
-                                    <span class="comment-time">2 hours ago</span>
-                                    <span class="reply-btn">Reply</span>
+                        <?php
+                        try {
+                            $stmt = $conn->prepare("SELECT rr.*, u.name as name, u.profile_picture as img FROM review_rating rr JOIN users u ON rr.user_id = u.id WHERE tour_id = :tour_id ORDER BY date_created DESC");
+                            $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                            $stmt->execute();
+                            $comments = $stmt->fetchAll();
+                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                        }
+                        foreach ($comments as $comment) {
+                            ?>
+                            <div class="comment">
+                                <img src="upload/Profile Pictures/<?php echo $comment['img'] ?>" alt="User Avatar"
+                                    class="avatar">
+                                <div class="comment-content">
+                                    <h4 class="comment-author"><?php echo $comment['name'] ?></h4>
+                                    <div class="comment-star">
+                                        <?php
+                                        $rating = $comment['rating']; // Example rating
+                                        $starOutput = '';
+
+                                        // Loop to create filled stars
+                                        for ($i = 1; $i <= $rating; $i++) {
+                                            $starOutput .= "<span class='comment-star'><i class='bx bxs-star'></i></span>";
+                                        }
+
+                                        // Loop to create empty stars
+                                        for ($i = $rating + 1; $i <= 5; $i++) {
+                                            $starOutput .= "<span class='comment-star'><i class='bx bx-star'></i></span>";
+                                        }
+
+                                        // Display the stars
+                                        echo $starOutput;
+                                        ?>
+                                    </div>
+                                    <p class="comment-text"><?php echo $comment['review'] ?></p>
+                                    <div class="comment-actions">
+                                        <span class="comment-time"><?php echo timeAgo($comment['date_created']) ?></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php } ?>
 
                         <!-- Add more comments here as needed -->
                     </div>
