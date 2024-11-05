@@ -194,22 +194,54 @@ function timeAgo($timestamp)
             gap: 15px;
             justify-content: center;
         }
-
-        .bookbtn,
         .viewbtn {
-            background-color: #010058af;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    display: inline-block;
+    text-align: center;
+    background-color: #ffffff; /* White background */
+    color: #218838; /* Green text color */
+    padding: 12px 24px;
+    border: 2px solid #218838; /* Green border */
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: none; /* Removes underline */
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .bookbtn:hover,
-        .viewbtn:hover {
-            background-color: #45a049;
-        }
+.viewbtn:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34); /* Green gradient on hover */
+    color: #ffffff; /* White text color on hover */
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.viewbtn:active {
+    transform: translateY(-1px);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+}
+ 
+        .bookbtn {
+    background: linear-gradient(135deg, #005eff, #0200d4);
+    color: #ffffff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bookbtn:hover {
+    background: linear-gradient(135deg, #007bff, #0100b3);
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+
 
         /* Responsive Design */
         @media (min-width: 768px) {
