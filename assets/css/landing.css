@@ -18,7 +18,14 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 /* START */
+#burger {
+  display: none;
+  font-size: xx-large;
+  position: absolute;
+  right: 25px;
+}
 
 /* end */
 .section__container {
@@ -42,14 +49,21 @@
 }
 
 .btn {
+  transition: all 0.1s;
+  font-weight: 500;
   padding: 0.75rem 1.5rem;
   outline: none;
   border: none;
+  letter-spacing:0.2em;
   display: inline-block;
-  font-size: 1rem;
-  color: var(--primary-color);
+  font-size: 0.8rem;
+  color: var(--dark-bg);
   background-color: var(--secondary-color);
   cursor: pointer;
+}
+.btn:hover {
+  color: var(--white);
+  background-color: var(--secondary-color);
 }
 
 
@@ -205,11 +219,9 @@ nav {
 }
 
 .discover {
-  background-image: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
+  background-image: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.05),
+      transparent);
 }
 
 .discover__grid {
@@ -230,13 +242,21 @@ nav {
 
 .discover__image {
   position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.discover__image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .discover__image::after {
   position: absolute;
   content: "";
   width: 100%;
-  height: 50%;
+  height: 300px;
   left: 0;
   bottom: 0;
   background-image: linear-gradient(to top, var(--primary-color), transparent);
@@ -253,14 +273,20 @@ nav {
   font-weight: 800;
   font-family: var(--header-font);
   color: var(--secondary-color);
-  
+
   /* Glass blur effect */
-  background: rgba(22, 22, 22, 0.6); /* Semi-transparent white */
-  backdrop-filter: blur(10px); /* Glass blur effect */
-  padding: 10px 20px; /* Add padding for better appearance */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  display: inline-block; /* Wrap content */
+  background: rgba(22, 22, 22, 0.6);
+  /* Semi-transparent white */
+  backdrop-filter: blur(10px);
+  /* Glass blur effect */
+  padding: 10px 20px;
+  /* Add padding for better appearance */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  display: inline-block;
+  /* Wrap content */
 }
 
 
@@ -276,6 +302,12 @@ nav {
   background-color: transparent;
   border: 1px solid var(--white);
   cursor: pointer;
+}
+.discover__btn:hover {
+
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .blogs__container {
@@ -420,11 +452,9 @@ nav {
 }
 
 .contact {
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
+  background-image: linear-gradient(to top,
+      rgba(255, 255, 255, 0.05),
+      transparent);
 }
 
 .contact__container {
@@ -502,7 +532,6 @@ nav {
 .footer__container p {
   max-width: 600px;
   margin: auto;
-  margin-bottom: 4rem;
 }
 
 .footer__nav {
@@ -531,9 +560,7 @@ nav {
 }
 
 @media (width < 900px) {
-  .link:not(.search) {
-    display: none;
-  }
+
 
   .about__container {
     grid-template-columns: repeat(1, 1fr);
@@ -577,9 +604,42 @@ nav {
     grid-area: 1/1/2/3;
     text-align: center;
   }
-  .hero__container p
-  {
+
+  .hero__container p {
     font-size: 6rem;
+  }
+}
+
+@media (width < 700px) {
+  #burger {
+    color: #f49e09;
+    display: block;
+    position: fixed;
+    z-index: 11;
+  }
+
+  .links {
+    display: none;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    width: 70vw;
+    align-items: center;
+    background-color: var(--light-gray);
+    padding: 1rem;
+    z-index: 10;
+  }
+
+  .nav__links {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column
+  }
+
+  .nav__links a {
+    margin-top: 100px;
+    color: #0a0d14;
   }
 }
 
@@ -628,12 +688,10 @@ nav {
     grid-area: unset;
   }
 }
+
 @media (width < 900px) {
   .btn {
     display: inline-block;
   }
-  .link:not(.search):not(.btn) {
-    display: none;
-  }
-}
 
+}
