@@ -6,6 +6,9 @@
   --secondary-color: #f49e09;
   --extra-light: rgba(255, 255, 255, 0.5);
   --white: #ffffff;
+  --dark-bg: #1a1e28;
+  --light-gray: #f4f4f4;
+  --font-family: "Poppins", sans-serif;
   --max-width: 1200px;
   --header-font: "Lisu Bosa", serif;
 }
@@ -15,7 +18,9 @@
   margin: 0;
   box-sizing: border-box;
 }
+/* START */
 
+/* end */
 .section__container {
   max-width: var(--max-width);
   margin: auto;
@@ -40,11 +45,13 @@
   padding: 0.75rem 1.5rem;
   outline: none;
   border: none;
+  display: inline-block;
   font-size: 1rem;
   color: var(--primary-color);
   background-color: var(--secondary-color);
   cursor: pointer;
 }
+
 
 img {
   width: 100%;
@@ -621,3 +628,12 @@ nav {
     grid-area: unset;
   }
 }
+@media (width < 900px) {
+  .btn {
+    display: inline-block;
+  }
+  .link:not(.search):not(.btn) {
+    display: none;
+  }
+}
+
