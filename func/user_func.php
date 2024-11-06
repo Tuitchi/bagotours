@@ -40,6 +40,47 @@ function getAllTours($conn)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function getAllPopularTours($conn)
+{
+    // Updated SQL query to include average rating and review count
+    $sql = "
+WITH booking_visitors AS (
+    SELECT t.id, 
+           SUM(b.people) AS total_booking_visitors
+    FROM tours t
+    LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
+    GROUP BY t.id
+),
+visit_visitors AS (
+    SELECT t.id, 
+           COUNT(DISTINCT v.id) AS total_visit_visitors
+    FROM tours t
+    LEFT JOIN visit_records v ON t.id = v.tour_id
+    GROUP BY t.id
+)
+
+SELECT t.id, 
+       t.title,
+       t.img,
+       t.type,
+       COALESCE(bv.total_booking_visitors, 0) + COALESCE(vv.total_visit_visitors, 0) AS total_visitors,
+       COUNT(DISTINCT b.id) AS total_completed_bookings,
+       IFNULL(AVG(r.rating), 0) AS average_rating,  -- Average rating
+       IFNULL(COUNT(r.id), 0) AS review_count       -- Review count
+FROM tours t 
+LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
+LEFT JOIN booking_visitors bv ON t.id = bv.id
+LEFT JOIN visit_visitors vv ON t.id = vv.id
+LEFT JOIN review_rating r ON t.id = r.tour_id  -- Join with review_rating table
+WHERE t.status = 1
+GROUP BY t.id, t.title, bv.total_booking_visitors, vv.total_visit_visitors
+ORDER BY total_visitors DESC, total_completed_bookings DESC LIMIT 15;
+";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 function getTourById($conn, $id)

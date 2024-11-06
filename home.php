@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 session_start();
 require 'include/db_conn.php';
 
@@ -115,7 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="popularspot">
                 <h2>Trending</h2>
                 <div class="spots">
-                    <?php foreach ($tours as $tour) {
+                    <?php
+                    $popularTours = getAllPopularTours($conn);
+                    foreach ($popularTours as $tour) {
                         $averageRating = round($tour['average_rating']);
                         $fullStars = str_repeat("★", $averageRating);
                         $emptyStars = str_repeat("☆", 5 - $averageRating);
@@ -134,6 +134,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="popularspot">
                 <h2>Nearby Tours</h2>
+                <div id="loadingCard" style="display: none;">
+                    <p>Loading nearby tours...</p>
+                </div>
                 <div class="spots nearby-spots">
                 </div>
             </div>
@@ -178,6 +181,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function fetchNearbyTours(userLat, userLng) {
             console.log("Fetching nearby tours for coordinates:", userLat, userLng);
 
+            // Show loading card
+            document.getElementById('loadingCard').style.display = 'block';
+
             fetch('home.php', {
                 method: 'POST',
                 headers: {
@@ -193,13 +199,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 })
                 .then(data => {
                     console.log("Nearby tours data:", data);
+
+                    // Hide loading card once data is fetched
+                    document.getElementById('loadingCard').style.display = 'none';
+
                     if (data.error) {
                         console.error("Error from server:", data.error);
                     } else {
                         displayNearbyTours(data);
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    // Hide loading card in case of error
+                    document.getElementById('loadingCard').style.display = 'none';
+                });
         }
 
         function displayNearbyTours(tours) {
@@ -225,10 +240,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span>(${tour.review_count} reviews)</span>
                 </div>
             </a>
-            `;
+        `;
                 spotsContainer.appendChild(tourElement);
             });
         }
+
     </script>
 
 </body>

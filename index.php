@@ -9,167 +9,19 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/landing.css" />
     <title>BagoTours | kapitanbato.</title>
-    <style>
-         /* General Styling */
-         :root {
-            --primary-color: #0a0d14;
-            --secondary-color: #f49e09;
-            --white: #ffffff;
-            --dark-bg: #1a1e28;
-            --light-gray: #f4f4f4;
-            --font-family: "Poppins", sans-serif;
-        }
-
-        /* body {
-            font-family: var(--font-family);
-            color: var(--white);
-            background-color: var(--primary-color);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        } */
-
-        .download-app {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 2rem 1rem;
-            background-color: var(--dark-bg);
-            border-radius: 12px;
-            max-width: 90%;
-            margin: 0 auto;
-            gap: 1rem;
-        }
-
-        .phone-mockup {
-            margin-left: 20px;
-            position: relative;
-            width: 190px;
-            height: 370px;
-            background-color: #333;
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .phone-mockup::before {
-            content: "";
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 6px;
-            background-color: var(--light-gray);
-            border-radius: 3px;
-        }
-
-        .phone-mockup::after {
-            content: "";
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 6px;
-            background-color: var(--light-gray);
-            border-radius: 3px;
-        }
-
-        .app-screenshot {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.3s ease;
-        }
-
-        .phone-mockup:hover .app-screenshot {
-            opacity: 0.3; /* Makes the screenshot dim */
-        }
-
-        /* Logo Image on hover */
-        .phone-mockup .logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px; /* Adjust size as needed */
-            height: 80px; /* Adjust size as needed */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .phone-mockup:hover .logo {
-            opacity: 1; /* Makes the logo visible on hover */
-        }
-
-        /* Blurred background effect */
-        .phone-mockup:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(5px); /* Apply blur effect on hover */
-        }
-
-        .app-info {
-            text-align: left;
-            max-width: 60%;
-        }
-
-        .app-info h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--white);
-            margin-bottom: 0.5rem;
-        }
-
-        .app-info p {
-            font-size: 1rem;
-            color: var(--light-gray);
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-download {
-            padding: 0.8rem 1.2rem;
-            border-radius: 8px;
-            color: var(--white);
-            font-size: 1rem;
-            font-weight: 600;
-            background-color: var(--secondary-color);
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s;
-            text-decoration: none;
-        }
-
-        .btn-download:hover {
-            background-color: #e09108;
-        }
-
-        /* Media Query for Mobile Devices */
-        @media (max-width: 480px) {
-            .download-app {
-                padding: 1.5rem;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .app-info {
-                max-width: 100%;
-                text-align: center;
-            }
-
-            .app-info h2 {
-                font-size: 1.5rem;
-            }
-
-            .app-info p {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.init({
+                appId: "af88be9e-4950-4a9a-8761-ade939447bc3",
+                safari_web_id: "web.onesignal.auto.37e682f0-44ba-408e-8045-bbc89f9e01bb",
+                notifyButton: {
+                    enable: true,
+                },
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -181,8 +33,8 @@
                     <li class="link"><a href="home">Home</a></li>
                     <li class="link"><a href="#about">Download APK</a></li>
                     <li class="link"><a href="#contact">Abouts</a></li>
-                    <li class="link"><button id="open-modal" class="btn" onclick="window.location.href='home';"> Discover More</button></li>
-                    
+                    <li class="link"><button id="open-modal" class="btn" onclick="window.location.href='home';">
+                            Discover More</button></li>
                 </ul>
             </div>
         </nav>
@@ -209,7 +61,7 @@
                     lifetime with us, as we redefine the art of exploration.
                 </p>
                 <br>
-                
+
             </div>
             <div class="about__image">
                 <img src="assets/about.png" alt="about" />
@@ -231,7 +83,9 @@
                     <div class="discover__card__content">
                         <h4>Tan Juan Statue</h4>
                         <p>
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -245,7 +99,9 @@
                     <div class="discover__card__content">
                         <h4>Kipot Twin Falls</h4>
                         <p>
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -259,7 +115,9 @@
                     <div class="discover__card__content">
                         <h4>Rafael Salas Drive</h4>
                         <p>
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <button class="discover__btn">
                             Discover More <i class="ri-arrow-right-line"></i>
@@ -361,7 +219,7 @@
     </section>
 
     <!-- Modal Structure -->
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- <script src="https://unpkg.com/scrollreveal"></script> -->
 
