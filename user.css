@@ -579,7 +579,7 @@ input[type=text]:focus {
 
 .spots {
   margin-bottom: 20px;
-  justify-content: first baseline;
+  justify-content:flex-start;
   display: flex;
   /* Adjusts spacing between items */
   flex-wrap: nowrap;
@@ -1099,7 +1099,7 @@ input[type=text]:focus {
     position: relative;
     display: flex;
     transition: width 0.0s ease-out;
-    width: 40px;
+    width: 0px;
     justify-content: flex-end;
   }
 

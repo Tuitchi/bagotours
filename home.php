@@ -113,14 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="popularspot">
-                <h2>Trending</h2><i></i>
+                <h2>Trending</h2>
                 <div class="spots">
                     <?php foreach ($tours as $tour) {
                         $averageRating = round($tour['average_rating']);
                         $fullStars = str_repeat("★", $averageRating);
                         $emptyStars = str_repeat("☆", 5 - $averageRating);
                         $totalStars = $fullStars . $emptyStars;
-
                         echo "<div class='spot'>
                                 <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
                                     <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . htmlspecialchars($tour['title']) . "'>  
@@ -132,23 +131,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>";
                     } ?>
                 </div>
-
-                <h2>Nearby Tours</h2><i></i>
+            </div>
+            <div class="popularspot">
+                <h2>Nearby Tours</h2>
                 <div class="spots nearby-spots">
                 </div>
+            </div>
 
-                <div class="report-container" id="cardContainer">
-                    <?php foreach ($tours as $tour) {
-                        echo "<div class='cards'>
+            <div class="report-container" id="cardContainer">
+                <?php foreach ($tours as $tour) {
+                    echo "<div class='cards'>
                         <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
                         <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
                             <h2 class='title'>" . $tour['title'] . "</h2>
                         </a>
                     </div>";
-                    } ?>
-                </div>
-                <div class="pagination" id="pagination"></div>
+                } ?>
             </div>
+            <div class="pagination" id="pagination"></div>
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>

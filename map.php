@@ -173,7 +173,6 @@ if (isset($_GET['id'])) {
                         }
 
                     }
-
                     if (spotDirection) {
                         const destination = [spotDirection.longitude, spotDirection.latitude];
                         updateDistanceAndRoute(userLocation, destination);
@@ -215,9 +214,9 @@ if (isset($_GET['id'])) {
                 const destination = [spotDirection.longitude, spotDirection.latitude];
                 addDestinationMarker(destination, spotDirection.type);
                 updateDistanceAndRoute(center, destination);
+            } else {
+                loadTouristSpots();
             }
-
-            loadTouristSpots();
         }
 
         function addDestinationMarker(destination, type) {
@@ -347,8 +346,6 @@ if (isset($_GET['id'])) {
             }
         }
 
-
-
         function loadTouristSpots() {
             const touristSpots = <?php echo json_encode($touristSpots); ?>;
 
@@ -387,7 +384,6 @@ if (isset($_GET['id'])) {
             });
         }
     </script>
-
 </body>
 
 </html>
