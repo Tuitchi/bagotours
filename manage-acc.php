@@ -15,6 +15,7 @@ $user = getUserById($conn, $user_id);
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES); ?>">
     <title>BagoTours</title>
     <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="assets/css/login.css">
     <style>
         .container {
             display: flex;
@@ -270,7 +271,9 @@ $user = getUserById($conn, $user_id);
             <a href="form" id="upgradeConfirm" class="button">Upgrade</a>
         </div>
     </div>
-    </div>
+    </div> 
+    <?php require "include/login-registration.php"; ?>
+    <script src="index.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function () {
             var modal = document.getElementById("upgradeModal");
             var btn = document.getElementById("upgradeButton");
