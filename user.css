@@ -130,9 +130,9 @@ button.option.active {
   border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
-}s
+}
 
-.tourList>img,
+s .tourList>img,
 .tourDetails {
   position: relative;
   z-index: 6;
@@ -190,7 +190,7 @@ input[type=text]:focus {
 
 .searchbar i {
   position: absolute;
-  right: 15px;
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
@@ -579,7 +579,7 @@ input[type=text]:focus {
 
 .spots {
   margin-bottom: 20px;
-  justify-content:flex-start;
+  justify-content: flex-start;
   display: flex;
   /* Adjusts spacing between items */
   flex-wrap: nowrap;
@@ -1006,20 +1006,6 @@ input[type=text]:focus {
   }
 }
 
-@media screen and (max-width: 490px) {
-  .carousel-container {
-    height: 200px;
-  }
-
-  .carousel-caption {
-    font-size: 13px;
-    bottom: 30%;
-  }
-
-  .menuicn {
-    display: block;
-  }
-}
 
 /* Responsive CSS Here */
 @media screen and (max-width: 950px) {
@@ -1122,11 +1108,12 @@ input[type=text]:focus {
 
   .searchbar.expanded input[type="text"] {
     transition: width 0.6s ease-out;
-    width: 90vw;
+    width: 50vw;
     opacity: 1;
   }
 
-  header.expanded .logosec {
+  header.expanded .logosec,
+  header.expanded .login {
     width: 0;
     opacity: 0;
   }
@@ -1144,6 +1131,24 @@ input[type=text]:focus {
 @media screen and (max-width: 490px) {
   .login {
     width: 80px;
+  }
+
+  .searchbar.expanded input[type="text"] {
+    width: 85vw;
+  }
+
+
+  .carousel-container {
+    height: 200px;
+  }
+
+  .carousel-caption {
+    font-size: 13px;
+    bottom: 30%;
+  }
+
+  .menuicn {
+    display: block;
   }
 
   .logosec {

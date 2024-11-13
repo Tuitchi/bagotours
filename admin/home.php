@@ -208,6 +208,27 @@ try {
 				});
 			});
 		});
+		<?php
+        if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {
+            echo "
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                icon: 'success',
+                title: 'Admin access granted. You are now logged in.',
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire();
+            ";
+            unset($_SESSION['loginSuccess']);
+        }
+        ?>
 	</script>
 </body>
 

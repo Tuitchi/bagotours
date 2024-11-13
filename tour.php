@@ -6,7 +6,8 @@ if (isset($_SESSION['user_id'])) {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
-    $user_id = null;
+    header("Location: home?login=true");
+    exit;
 }
 if (isset($_GET['id'])) {
     $decrypted_id_raw = base64_decode($_GET['id']);
@@ -65,7 +66,7 @@ function timeAgo($timestamp)
     <link rel="stylesheet" href="assets/css/login.css">
     <style>
         /* Modal Background */
-        .modal {
+        .modal.booking {
             position: fixed;
             z-index: 999;
             left: 0;
@@ -76,7 +77,7 @@ function timeAgo($timestamp)
         }
 
         /* Modal Content */
-        .modal-content {
+        .modal-content.booking {
             background-color: #fefefe;
             margin: 15% auto;
             padding: 20px;
@@ -194,51 +195,58 @@ function timeAgo($timestamp)
             gap: 15px;
             justify-content: center;
         }
+
         .viewbtn {
-    display: inline-block;
-    text-align: center;
-    background-color: #ffffff; /* White background */
-    color: #218838; /* Green text color */
-    padding: 12px 24px;
-    border: 2px solid #218838; /* Green border */
-    border-radius: 8px;
-    font-size: 1em;
-    font-weight: bold;
-    text-decoration: none; /* Removes underline */
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s, transform 0.2s;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
+            display: inline-block;
+            text-align: center;
+            background-color: #ffffff;
+            /* White background */
+            color: #218838;
+            /* Green text color */
+            padding: 12px 24px;
+            border: 2px solid #218838;
+            /* Green border */
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            text-decoration: none;
+            /* Removes underline */
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, transform 0.2s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.viewbtn:hover {
-    background: linear-gradient(135deg, #218838, #1e7e34); /* Green gradient on hover */
-    color: #ffffff; /* White text color on hover */
-    transform: translateY(-3px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-}
+        .viewbtn:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            /* Green gradient on hover */
+            color: #ffffff;
+            /* White text color on hover */
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
-.viewbtn:active {
-    transform: translateY(-1px);
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
-}
- 
+        .viewbtn:active {
+            transform: translateY(-1px);
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
         .bookbtn {
-    background: linear-gradient(135deg, #005eff, #0200d4);
-    color: #ffffff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
+            background: linear-gradient(135deg, #005eff, #0200d4);
+            color: #ffffff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-.bookbtn:hover {
-    background: linear-gradient(135deg, #007bff, #0100b3);
-    transform: translateY(-3px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
-}
+        .bookbtn:hover {
+            background: linear-gradient(135deg, #007bff, #0100b3);
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
 
 
 
@@ -487,7 +495,6 @@ function timeAgo($timestamp)
                                     $status = checkBookingStatus($conn, $user_id, $tour['id']);
 
                                     if ($status) {
-
                                         if ($status['status'] == 0 || $status['status'] == 1) {
                                             echo "<button class='bookbtn' disabled>Already Booked</button>";
                                         } elseif ($status['status'] == 3) {
@@ -565,23 +572,29 @@ function timeAgo($timestamp)
             </div>
             <!-- comment section -->
         </div>
-        <div id="bookingModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Book Your Tour</h2>
-                <form action="php/booking.php" method="POST">
-                    <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>">
-                    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                    <input type="hidden" name="phone_number" value="<?php echo $user['phone_number']; ?>">
-                    <label for="tour_date">Select Date:</label>
-                    <input type="date" id="tour_date" name="date_sched" required>
-                    <button type="submit" class="book-btn">Confirm Booking</button>
-                </form>
-            </div>
+    </div>
+    <div id="bookingModal" class="modal booking">
+        <div class="modal-content booking">
+            <span class="close">&times;</span>
+            <h2>Book Your Tour</h2>
+            <form action="php/booking.php" method="POST">
+                <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>">
+                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                <input type="hidden" name="phone_number" value="<?php echo $user['phone_number']; ?>">
+                <label for="tour_date">Select Date:</label>
+                <input type="date" id="tour_date" name="date_sched" required>
+                <button type="submit" class="book-btn">Confirm Booking</button>
+            </form>
         </div>
     </div>
-
-
+    <?php require "include/login-registration.php"; ?>
+    <?php
+    if (isset($status['id'])) {
+        $bookingId = $status['id'];
+    } else {
+        $bookingId = ''; // Or handle the error accordingly
+    }
+    ?>
     <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -604,7 +617,7 @@ function timeAgo($timestamp)
 
             if (ratebtn) {
                 ratebtn.addEventListener("click", function () {
-                    window.location.href = 'rate_review?booking_id=<?php echo $status['id'] ?>';
+                    window.location.href = 'rate_review?booking_id=<?php echo $bookingId ?>';
                 });
             }
 
@@ -621,11 +634,7 @@ function timeAgo($timestamp)
             });
 
             // Optional: Add keypress event to close modal with ESC key
-            window.addEventListener("keydown", function (event) {
-                if (event.key === "Escape") {
-                    modal.classList.remove('active');
-                }
-            });
+
 
             const comments = document.querySelectorAll('.comments-list .comment');
             const showMoreButton = document.querySelector('.show-more-btn');

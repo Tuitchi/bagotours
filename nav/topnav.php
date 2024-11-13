@@ -243,6 +243,7 @@
     const searchContainer = document.querySelector(".searchbar");
     const searchInput = document.getElementById("search");
     const header = document.querySelector("header");
+    const searchIconChanger = document.querySelector('.bx bx-search-alt')
 
     function logout() {
         Swal.fire({

@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php require "include/login-registration.php"; ?>
     <script src="index.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             if (navigator.geolocation) {
@@ -244,7 +244,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 spotsContainer.appendChild(tourElement);
             });
         }
-
+        <?php
+        if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {
+            echo "
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                icon: 'success',
+                title: 'As your guide today, I’m happy to inform you that you\'re all set and logged in!',
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire();
+            ";
+            unset($_SESSION['loginSuccess']);
+        }
+        ?>
     </script>
 
 </body>

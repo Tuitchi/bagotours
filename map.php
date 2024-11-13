@@ -2,43 +2,49 @@
 session_start();
 include 'func/user_func.php';
 require 'include/db_conn.php';
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
-$user_id = $_SESSION['user_id'] ?? null;
-$spotDirection = null;
+    $spotDirection = null;
 
-if (isset($_GET['id'])) {
-    $decrypted_id_raw = base64_decode($_GET['id']);
-    $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
-    $touristSpots = getTourById($conn, $decrypted_id);
-    if ($touristSpots) {
-        $touristSpots['average_rating'] = getAverageRating($conn, $touristSpots['id']);
-        $spotDirection = [
-            'longitude' => $touristSpots['longitude'],
-            'latitude' => $touristSpots['latitude'],
-            'title' => $touristSpots['title'],
-            'type' => $touristSpots['type']
-        ];
-    }
+    if (isset($_GET['id'])) {
+        $decrypted_id_raw = base64_decode($_GET['id']);
+        $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
+        $touristSpots = getTourById($conn, $decrypted_id);
+        if ($touristSpots) {
+            $touristSpots['average_rating'] = getAverageRating($conn, $touristSpots['id']);
+            $spotDirection = [
+                'longitude' => $touristSpots['longitude'],
+                'latitude' => $touristSpots['latitude'],
+                'title' => $touristSpots['title'],
+                'type' => $touristSpots['type']
+            ];
+        }
 
-} elseif (isset($_GET['event'])) {
-    $decrypted_id_raw = base64_decode($_GET['event']);
-    $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
-    $touristSpots = getEventbyCode($conn, $decrypted_id);
-    if ($touristSpots) {
-        $spotDirection = [
-            'longitude' => $touristSpots['longitude'],
-            'latitude' => $touristSpots['latitude'],
-            'title' => $touristSpots['event_name'],
-            'type' => 'stars'
-        ];
+    } elseif (isset($_GET['event'])) {
+        $decrypted_id_raw = base64_decode($_GET['event']);
+        $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
+        $touristSpots = getEventbyCode($conn, $decrypted_id);
+        if ($touristSpots) {
+            $spotDirection = [
+                'longitude' => $touristSpots['longitude'],
+                'latitude' => $touristSpots['latitude'],
+                'title' => $touristSpots['event_name'],
+                'type' => 'stars'
+            ];
+        }
+    } else {
+        $touristSpots = getAllTours($conn);
+        foreach ($touristSpots as &$spot) {
+            $spot['average_rating'] = getAverageRating($conn, $spot['id']);
+        }
+        unset($spot);
     }
 } else {
-    $touristSpots = getAllTours($conn);
-    foreach ($touristSpots as &$spot) {
-        $spot['average_rating'] = getAverageRating($conn, $spot['id']);
-    }
-    unset($spot);
+    header('Location: home?login=true');
+    exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -146,10 +152,9 @@ if (isset($_GET['id'])) {
         mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
         const spotDirection = <?php echo json_encode($spotDirection); ?>;
         let map, userMarker;
-        let lastBearing = null;
         const distanceDisplay = document.querySelector('.distance-display');
         const instructionDisplay = document.querySelector('.instructions-container');
-        let instructionsList;
+        let instructionsList, currentStepIndex = 0, isSpeaking = false;
 
         const geolocateControl = new mapboxgl.GeolocateControl({
             positionOptions: { enableHighAccuracy: true },
@@ -161,17 +166,16 @@ if (isset($_GET['id'])) {
             navigator.geolocation.watchPosition(
                 position => {
                     const userLocation = [position.coords.longitude, position.coords.latitude];
-                    const heading = position.coords.heading; // Get user's heading
+                    const heading = position.coords.heading;
 
                     if (!map) {
                         setupMap(userLocation);
                     } else {
-                        userMarker.setLngLat(userLocation);
+                        animateMarker(userMarker, userLocation);
 
                         if (heading !== null) {
                             map.setBearing(heading);
                         }
-
                     }
                     if (spotDirection) {
                         const destination = [spotDirection.longitude, spotDirection.latitude];
@@ -179,13 +183,13 @@ if (isset($_GET['id'])) {
                     }
                 },
                 () => setupMap([122.8313, 10.5338]),
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
             );
         } else {
             console.log('Geolocation is not supported by your browser.');
-            setupMap([122.8313, 10.5338]);
+            alert('Geolocation is not supported by your browser');
+            window.location.href = 'home';
         }
-
 
         function setupMap(center) {
             if (!map) {
@@ -249,13 +253,7 @@ if (isset($_GET['id'])) {
         }
 
         function updateDistanceDisplay(distance) {
-            if (distance < 1) {
-                // Distance is less than 1 km, show in meters
-                distanceDisplay.textContent = `Distance to destination: ${(distance * 1000).toFixed(0)} meters`;
-            } else {
-                // Distance is 1 km or more, show in kilometers
-                distanceDisplay.textContent = `Distance to destination: ${distance.toFixed(2)} km`;
-            }
+            distanceDisplay.textContent = `Distance to destination: ${distance < 1 ? (distance * 1000).toFixed(0) + ' meters' : distance.toFixed(2) + ' km'}`;
         }
 
         async function getRoute(start, end) {
@@ -286,64 +284,40 @@ if (isset($_GET['id'])) {
                     });
                 }
 
-                instructionsList = document.getElementById('instructions-list');
-                instructionsList.innerHTML = ''; // Clear previous instructions
-
-                let currentStepIndex = 0; // Track the current step
-                let isSpeaking = false; // Prevent speaking the next instruction until the current one is done
-
-                steps.forEach((step, index) => {
-                    const stepCoords = step.maneuver.location;
-                    const distanceToStep = calculateDistance(start, stepCoords);
-                    const distanceInMeters = distanceToStep * 1000; // Convert to meters
-
-                    // Determine distance text based on value
-                    let distanceText = '';
-                    if (distanceInMeters < 1000) {
-                        distanceText = `${distanceInMeters.toFixed(0)} meters`;
-                    } else {
-                        distanceText = `${(distanceInMeters / 1000).toFixed(2)} km`;
-                    }
-
-                    const instructionText = `${index + 1}: ${step.maneuver.instruction} (Distance: ${distanceText})`;
-
-                    const stepDiv = document.createElement('div');
-                    stepDiv.className = 'step-instruction';
-                    stepDiv.textContent = instructionText;
-                    instructionsList.appendChild(stepDiv);
-                });
-
-                // Function to speak the current instruction
-                function speakInstruction(stepIndex) {
-                    const step = steps[stepIndex];
-                    if (step) {
-                        const utterance = new SpeechSynthesisUtterance(step.maneuver.instruction);
-                        window.speechSynthesis.speak(utterance);
-                        isSpeaking = true; // Set speaking state
-                        utterance.onend = function () {
-                            isSpeaking = false; // Ready to speak the next instruction when needed
-                        };
-                    }
-                }
-
-                navigator.geolocation.watchPosition(position => {
-                    const userLocation = [position.coords.longitude, position.coords.latitude];
-                    const step = steps[currentStepIndex];
-                    const stepCoords = step.maneuver.location;
-                    const distanceToStep = calculateDistance(userLocation, stepCoords);
-
-                    if (distanceToStep < 0.05 && !isSpeaking) {
-                        speakInstruction(currentStepIndex);
-                    }
-
-                    if (distanceToStep < 0.01 && currentStepIndex < steps.length - 1) {
-                        currentStepIndex++; // Move to the next step
-                        isSpeaking = false; // Reset speaking state for the next instruction
-                    }
-                });
+                displayInstructions(steps, start);
             } catch (error) {
                 console.error('Error fetching directions:', error);
             }
+        }
+
+        function displayInstructions(steps, start) {
+            instructionsList = document.getElementById('instructions-list');
+            instructionsList.innerHTML = '';
+
+            steps.forEach((step, index) => {
+                const distanceToStep = calculateDistance(start, step.maneuver.location) * 1000;
+                const distanceText = distanceToStep < 1000 ? `${distanceToStep.toFixed(0)} meters` : `${(distanceToStep / 1000).toFixed(2)} km`;
+
+                const instructionText = `${index + 1}: ${step.maneuver.instruction} (Distance: ${distanceText})`;
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'step-instruction';
+                stepDiv.textContent = instructionText;
+                instructionsList.appendChild(stepDiv);
+            });
+        }
+
+        function animateMarker(marker, newPosition, duration = 500) {
+            const start = marker.getLngLat();
+            const end = new mapboxgl.LngLat(newPosition[0], newPosition[1]);
+            const startTime = performance.now();
+
+            function animate(time) {
+                const progress = Math.min((time - startTime) / duration, 1);
+                marker.setLngLat([start.lng + (end.lng - start.lng) * progress, start.lat + (end.lat - start.lat) * progress]);
+
+                if (progress < 1) requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
         }
 
         function loadTouristSpots() {
@@ -359,7 +333,6 @@ if (isset($_GET['id'])) {
                 markerEl.style.height = '30px';
 
                 const marker = new mapboxgl.Marker(markerEl).setLngLat([longitude, latitude]).addTo(map);
-
                 const popupContent = `
                 <div class="popup-content" style="border-radius:26px;">
                     <img src="upload/Tour Images/${img}" alt="${title}" style="width: 100%; height: 80%;">
@@ -384,6 +357,7 @@ if (isset($_GET['id'])) {
             });
         }
     </script>
+
 </body>
 
 </html>

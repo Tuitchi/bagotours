@@ -83,6 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         echo json_encode(['success' => true, 'redirect' => $redirect]);
+        $_SESSION['loginSuccess'] = true;
         exit();
     } catch (PDOException $e) {
         $errors['database'] = "Database error: " . $e->getMessage();

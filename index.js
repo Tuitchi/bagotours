@@ -1,4 +1,3 @@
-
 let menuicn = document.querySelector(".menuicn");
 let nav = document.querySelector(".navcontainer");
 
@@ -6,8 +5,6 @@ menuicn.addEventListener("click", (event) => {
   event.stopPropagation();
   nav.classList.toggle("navclose");
 });
-
-
 
 const slide = document.querySelector(".carousel-slide");
 const indicators = document.querySelectorAll(".carousel-indicators div");

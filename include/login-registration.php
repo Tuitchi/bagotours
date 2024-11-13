@@ -5,6 +5,7 @@
         <div id="sign-in-form" class="form-container">
             <form id="loginForm">
                 <h2>Sign In</h2>
+                <p id="login-first" style="display:none; color:red">To begin, you must log in.</p>
                 <input id="username" name="username" type="text" placeholder="Email" autocomplete="username" />
                 <div id="username-error" class="error-message"></div>
                 <input id="password" name="password" type="password" placeholder="Password" />
@@ -66,16 +67,23 @@
         const forgotPassForm = document.getElementById('forgot-password-form');
         const signInForm = document.getElementById('sign-in-form');
         const signUpForm = document.getElementById('sign-up-form');
+        const loginFirst = document.getElementById('login-first');
         const openModalButtons = document.querySelectorAll('#open-modal');
         const toSignUpButton = document.getElementById('to-sign-up');
         const forgotPassButton = document.getElementById('forgot-password');
         const toSignInButton = document.getElementById('to-sign-in');
         const cancelButton = document.getElementById('cancel-button');
         const closeModalButton = document.getElementById('close-modal');
-        
+
 
         function clearFormInputs(form) {
             form.reset();
+        }
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(window.location.search);
+            return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
         // Forgot Password
         const forgotForm = document.getElementById('forgotForm');
@@ -252,6 +260,13 @@
             });
         });
 
+        window.addEventListener('load', function () {
+            if (getUrlParameter('login') === 'true') {
+                loginFirst.style.display = 'block';
+                modal.classList.add('active');
+            }
+        });
+
         cancelButton.addEventListener('click', (event) => {
             event.preventDefault();
             forgotPassForm.classList.add('hidden');
@@ -310,7 +325,28 @@
             document.getElementById('regconPass-error').textContent = '';
             document.getElementById('con-pwd').style.border = '1px solid #ddd';
         });
+        window.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                modal.classList.remove('active');
+                clearFormInputs(loginForm);
+                clearFormInputs(forgotForm);
+                clearFormInputs(signupForm);
 
+                document.getElementById('regName-error').textContent = '';
+                document.getElementById('fname').style.border = '1px solid #ddd';
+                document.getElementById('lname').style.border = '1px solid #ddd';
+                document.getElementById('regUsername-error').textContent = '';
+                document.getElementById('signup-username').style.border = '1px solid #ddd';
+                document.getElementById('regEmail-error').textContent = '';
+                document.getElementById('regHome-error').textContent = '';
+                document.getElementById('email').style.border = '1px solid #ddd';
+                document.getElementById('home-address').style.border = '1px solid #ddd';
+                document.getElementById('regPassword-error').textContent = '';
+                document.getElementById('pwd').style.border = '1px solid #ddd';
+                document.getElementById('regconPass-error').textContent = '';
+                document.getElementById('con-pwd').style.border = '1px solid #ddd';
+            }
+        });
         closeModalButton.addEventListener('click', () => {
             modal.classList.remove('active');
             clearFormInputs(loginForm);
