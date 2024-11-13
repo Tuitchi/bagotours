@@ -3,6 +3,7 @@
 * {
 	margin: 0;
 	padding: 0;
+	font-family: var(--poppins);
 	box-sizing: border-box;
 }
 
@@ -118,10 +119,6 @@ body {
 	justify-content: space-between;
 }
 
-.modal-header {
-	border-bottom: none;
-	padding-bottom: 0;
-}
 
 .modal-title {
 	font-size: 24px;
@@ -271,7 +268,7 @@ body {
 	color: var(--light);
 	background-color: var(--red);
     border-radius: 50%;
-    padding: 3px 8px;
+    padding: 0 8px;
 }
 #sidebar::--webkit-scrollbar {
 	display: none;
@@ -654,24 +651,6 @@ body {
 	font-weight: 500;
 }
 
-#content main .btn-view {
-	height: 30px;
-	padding: 0 10px;
-	border-radius: 10px;
-	background: var(--blue);
-	color: var(--light);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	grid-gap: 10px;
-	font-weight: 500;
-	border: 1px solid #ccc;
-}
-
-#content main .btn-view:hover {
-	cursor: pointer !important;
-	scale: 1.1;
-}
 
 #content main .btn-drop {
 	height: 30px;
@@ -754,27 +733,24 @@ body {
 }
 
 main .btn {
-	height: 20px;
-	width: 50px;
-	border-radius: 6px;
-	color: var(--light);
+	height: 30px;
+	padding: 0 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	grid-gap: 10px;
-	font-size: small;
-	font-weight: 300;
+	font-weight: 500;
 }
 
-main #view {
+main #view:hover {
 	background-color: var(--blue);
 }
 
-main #edit {
+main #edit:hover {
 	background-color: green;
 }
 
-main #delete {
+main #delete:hover {
 	background-color: var(--red);
 }
 
@@ -882,12 +858,12 @@ main #delete {
 #content main .table-data .order table {
 	width: 100%;
 	border-collapse: collapse;
+	text-align: center;
 }
 
 #content main .table-data .order table th {
 	padding-bottom: 12px;
 	font-size: 13px;
-	text-align: center;
 	border-bottom: 1px solid var(--grey);
 }
 

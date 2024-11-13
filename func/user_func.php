@@ -137,7 +137,11 @@ function getTourImageById($conn, $id)
 
     return $result; // Return all results
 }
-
+function getEventByDate($conn) {
+    $stmt = $conn->prepare("SELECT * FROM events WHERE event_date_start > CURDATE()");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 function getUserById($conn, $id)
 {
@@ -157,27 +161,6 @@ function getAverageRating($conn, $tour_id)
     $stmt->execute();
     return $stmt->fetchColumn() ?: 0;
 }
-
-function getTourImages($conn, $tourId)
-{
-    $stmt = $conn->prepare("SELECT * FROM tours_image WHERE tour_id = :tour_id");
-    $stmt->bindParam(":tour_id", $tourId, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function getAllPopular($conn)
-{
-    $stmt = $conn->prepare("SELECT t.id, t.title, t.address, t.type, t.img, COUNT(rr.id) AS rating_count 
-        FROM tours t 
-        INNER JOIN review_rating rr ON t.id = rr.tour_id 
-        GROUP BY t.id 
-        ORDER BY rating_count DESC");
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-// Register Owner
-
 function registerExpiry($conn, $user_id)
 {
     $stmt = $conn->prepare("SELECT expiry, id FROM tours WHERE user_id = :user_id");

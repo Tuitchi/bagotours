@@ -132,12 +132,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     } ?>
                 </div>
             </div>
+            <?php
+            $events = getEventByDate($conn);  // Fetch events only once
+            $eventCount = count($events);
+            ?>
+
+            <div class="popularspot">
+                <?php if ($eventCount > 1): ?>
+                    <h2>Upcoming Events</h2>
+                <?php elseif ($eventCount == 1): ?>
+                    <h2>Upcoming Event</h2>
+                <?php else: ?>
+                    <h2>Upcoming Event</h2>
+                    <div class="spots events">
+                        <p>No upcoming events available.</p>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($eventCount > 0): ?>
+                    <div class="spots events">
+                        <?php foreach ($events as $event): ?>
+                            <div class="spot event">
+                                <a href="tour?id=<?php echo base64_encode($event['event_code'] . $salt); ?>">
+                                    <img src="upload/Event/<?php echo htmlspecialchars($event['event_image']); ?>"
+                                        alt="<?php echo htmlspecialchars($event['event_name']); ?>">
+                                    <h3><?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                    <p><?php echo htmlspecialchars($event['event_type']); ?></p>
+                                    <div class="event-meta">
+                                        <p>📅
+                                            <?php echo date('F d, Y', strtotime($event['event_date_start'])) . ' - ' . date('F d, Y', strtotime($event['event_date_end'])); ?>
+                                        </p>
+                                        <p>📍 <?php echo htmlspecialchars($event['event_location']); ?></p>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
             <div class="popularspot">
                 <h2>Nearby Tours</h2>
                 <div id="loadingCard" style="display: none;">
                     <p>Loading nearby tours...</p>
                 </div>
                 <div class="spots nearby-spots">
+                    <!-- Nearby tours will be loaded here -->
                 </div>
             </div>
 

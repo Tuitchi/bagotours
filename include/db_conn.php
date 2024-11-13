@@ -41,7 +41,6 @@ try {
     if ($stmt->rowCount() > 0) {
         $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($notif as $notification) {
-            error_log("Creating notification for user: " . $notification['user_id'] . ", tour: " . $notification['tour_id']);
             $checkStmt = $conn->prepare("
                 SELECT COUNT(*) FROM notifications 
                 WHERE user_id = :user_id AND tour_id = :tour_id AND DATE(created_at) = CURDATE()

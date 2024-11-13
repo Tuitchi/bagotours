@@ -174,16 +174,7 @@ function specificBooking($conn, $user_id)
     return $stmt->fetch();
 }
 
-function getBooking($conn, $user_id)
-{
-    $stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.username FROM booking b
-          JOIN tours t ON b.tour_id = t.id
-          JOIN users u ON b.user_id = u.id WHERE t.user_id = :user_id
-          ORDER BY b.date_sched DESC");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+
 
 function alreadyBook($conn, $user_id, $tour_id)
 {

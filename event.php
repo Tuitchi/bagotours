@@ -25,6 +25,10 @@ try {
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <style>
+        .carousel-item img {
+            width: 77vw;
+            object-fit: cover;
+        }
         .spots {
             width: 100%;
             height: 300px;
