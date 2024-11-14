@@ -164,10 +164,12 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="main">
             <h2>Search results for "<?php echo $_GET['q'] ?>"</h2>
             <div id="tour-container" class="list-view">
-                <?php foreach ($tours as $tour): ?>
+                <?php foreach ($tours as $tour):
+                    $tour_images = explode(',', $tour['img']);
+                    $main_image = $tour_images[0]; ?>
                     <div class="tour-item">
                         <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
-                            <img src='upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>'
+                            <img src='upload/Tour Images/<?php echo $main_image; ?>'
                                 alt='<?php echo htmlspecialchars($tour['title']); ?>'>
                             <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
                             <p>

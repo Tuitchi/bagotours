@@ -432,6 +432,11 @@ function timeAgo($timestamp)
             width: 80%;
 
         }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -448,10 +453,10 @@ function timeAgo($timestamp)
                         <div class="carousel-slide">
                             <?php
                             require_once 'func/user_func.php';
-                            $tour_images = getTourImageById($conn, $decrypted_id);
+                            $tour_images = explode(',', $tour['img']);
                             foreach ($tour_images as $tour_image) {
                                 echo "<div class='carousel-item'>
-                        <img src='upload/Tour Images/" . $tour_image['combined_image'] . "' alt='" . $tour_image['title'] . "'>
+                        <img src='upload/Tour Images/" . $tour_image . "' alt='" . $tour['title'] . "'>
                       </div>";
                             }
                             ?>

@@ -89,11 +89,13 @@ try {
                     $fullStars = str_repeat("★", $averageRating); // Full stars
                     $emptyStars = str_repeat("☆", 5 - $averageRating); // Empty stars
                     $totalStars = $fullStars . $emptyStars; // Combine stars
-                
-                    $backgroundImage = "upload/Tour Images/" . htmlspecialchars($tour['img']);
+                    $tour_images = explode(',', $tour['img']);
+                    $main_image = $tour_images[0];
+
+                    $backgroundImage = "upload/Tour Images/" . $main_image;
                     echo "<a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
                 <div class='tourList' data-bg='$backgroundImage'>
-                    <img src='upload/Tour Images/" . htmlspecialchars($tour['img']) . "' alt=''>
+                    <img src='upload/Tour Images/" . $main_image . "' alt=''>
                     <div class='tourDetails'>
                         <h1>#" . $counter++ . "</h1>
                         <h3>" . htmlspecialchars($tour['title']) . "</h3>

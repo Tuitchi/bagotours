@@ -87,20 +87,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button class="prev" onclick="prevSlide()">&#10094;</button>
                 <button class="next" onclick="nextSlide()">&#10095;</button>
                 <div class="carousel-slide">
-                    <?php require_once 'func/user_func.php';
+                    <?php
+                    require_once 'func/user_func.php';
                     $tours = getAllTours($conn);
                     shuffle($tours);
+
                     foreach (array_slice($tours, 0, 3) as $tour) {
+                        // Get the main image only (first image in the comma-separated list)
+                        $tour_images = explode(',', $tour['img']);
+                        $main_image = $tour_images[0];
+
                         echo "<div class='carousel-item'>
-                        <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>
-                        <div class='carousel-caption'>
-                            <h3>" . $tour['title'] . "</h3>
-                            <p>Type: " . $tour['type'] . "</p>
-                        </div>
-                        </a>
-                    </div>";
-                    } ?>
+                <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
+                    <img src='upload/Tour Images/" . htmlspecialchars($main_image, ENT_QUOTES, 'UTF-8') . "' alt='" . htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8') . "'>
+                    <div class='carousel-caption'>
+                        <h3>" . htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8') . "</h3>
+                        <p>Type: " . htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8') . "</p>
+                    </div>
+                </a>
+              </div>";
+                    }
+                    ?>
                 </div>
 
                 <div class="carousel-indicators">
@@ -120,9 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $fullStars = str_repeat("★", $averageRating);
                         $emptyStars = str_repeat("☆", 5 - $averageRating);
                         $totalStars = $fullStars . $emptyStars;
+                        $tour_images = explode(',', $tour['img']);
+                        $main_image = $tour_images[0];
                         echo "<div class='spot'>
                                 <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                                    <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . htmlspecialchars($tour['title']) . "'>  
+                                    <img src='upload/Tour Images/" . $main_image . "' alt='" . htmlspecialchars($tour['title']) . "'>  
                                     <h3>" . htmlspecialchars($tour['title']) . "</h3>
                                     <p>" . htmlspecialchars($tour['type']) . "</p>
                                     <div class='rating'>" . $totalStars . " <span>(" . htmlspecialchars($tour['review_count']) . " reviews)</span>
@@ -183,9 +192,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="report-container" id="cardContainer">
                 <?php foreach ($tours as $tour) {
+                    $tour_images = explode(',', $tour['img']);
+                    $main_image = $tour_images[0];
                     echo "<div class='cards'>
                         <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $tour['img'] . "' alt='" . $tour['title'] . "'>  
+                        <img src='upload/Tour Images/" . $main_image . "' alt='" . $tour['title'] . "'>  
                             <h2 class='title'>" . $tour['title'] . "</h2>
                         </a>
                     </div>";
@@ -269,20 +280,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             tours.forEach(tour => {
                 const tourElement = document.createElement('div');
                 tourElement.classList.add('spot');
-                tourElement.innerHTML = `
-            <a href="tour?id=${tour.encoded_id}">
-                <img src="upload/Tour Images/${tour.img}" alt="${tour.title}">
-                <h3>${tour.title}</h3>
-                <p>${tour.type}</p>
-                <p>Distance: ${tour.distance.toFixed(2)} km</p>
-                <div class="rating">
-                    ${'★'.repeat(Math.round(tour.average_rating)) + '☆'.repeat(5 - Math.round(tour.average_rating))}
-                    <span>(${tour.review_count} reviews)</span>
-                </div>
-            </a>
-        `;
+
+                // Extract the main image from the list of images
+                const mainImage = tour.img.split(',')[0];
+
+                tourElement.innerHTML = `<a href="tour?id=${tour.encoded_id}">
+                                            <img src="upload/Tour Images/${mainImage}" alt="${tour.title}">
+                                            <h3>${tour.title}</h3>
+                                            <p>${tour.type}</p>
+                                            <p>Distance: ${tour.distance.toFixed(2)} km</p>
+                                            <div class="rating">
+                                                ${'★'.repeat(Math.round(tour.average_rating)) + '☆'.repeat(5 - Math.round(tour.average_rating))}
+                                                <span>(${tour.review_count} reviews)</span>
+                                            </div>
+                                        </a>`;
+
                 spotsContainer.appendChild(tourElement);
             });
+
         }
         <?php
         if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {

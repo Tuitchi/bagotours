@@ -97,46 +97,6 @@ function getEventbyCode($conn, $event_code)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-function getTourImageById($conn, $id)
-{
-    $stmt = $conn->prepare("
-        SELECT 
-            t.img AS combined_image,
-            t.title
-        FROM 
-            tours t
-        WHERE 
-            t.id = :id
-
-        UNION ALL
-
-        SELECT 
-            img.img AS combined_image,
-            t.title
-        FROM 
-            tours_image img 
-        JOIN 
-            tours t ON t.id = img.tour_id
-        WHERE 
-            t.id = :id
-    ");
-
-    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-
-    if (!$stmt->execute()) {
-        echo "Error executing query: ";
-        print_r($stmt->errorInfo());
-        return false; // Handle as needed
-    }
-
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all results as an array
-
-    if (!$result) {
-        echo "No results found for ID: $id";
-    }
-
-    return $result; // Return all results
-}
 function getEventByDate($conn) {
     $stmt = $conn->prepare("SELECT * FROM events WHERE event_date_start > CURDATE()");
     $stmt->execute();

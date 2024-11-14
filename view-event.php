@@ -83,6 +83,20 @@ if (isset($_GET['event'])) {
             color: #666;
         }
 
+        @media screen and (max-width: 500px) {
+            .event-meta {
+                display: flex;
+                flex-direction: column;
+                margin-top: 10px;
+                font-size: 0.8em;
+                color: #666;
+            }
+
+            .event-header h1 {
+                font-size: 2em;
+            }
+        }
+
         .optional {
             margin-top: 10px;
             font-size: 0.9em;
@@ -130,13 +144,6 @@ if (isset($_GET['event'])) {
                 <h2><?php echo htmlspecialchars($event['event_type']); ?></h2>
                 <p><?php echo nl2br(htmlspecialchars($event['event_description'])); ?></p>
 
-                <div class="event-meta">
-                    <p>📅
-                        <?php echo date('F d, Y', strtotime($event['event_date_start'])) . ' - ' . date('F d, Y', strtotime($event['event_date_end'])); ?>
-                    </p>
-                    <p>📍 <?php echo htmlspecialchars($event['event_location']); ?></p>
-                </div>
-
                 <!-- Optional Fields -->
                 <?php if (!empty($event['registration_deadline']) && $event['registration_deadline'] != '0000-00-00 00:00:00'): ?>
                     <div class="optional">
@@ -147,13 +154,12 @@ if (isset($_GET['event'])) {
 
                 <?php if (!empty($event['organizer_name'])): ?>
                     <div class="optional">
-                        <strong>Organizer:</strong> <?php echo htmlspecialchars($event['organizer_name']); ?>
-                    </div>
-                <?php endif; ?>
+                        <strong>Organizer:</strong> <?php echo htmlspecialchars($event['organizer_name']); ?> -
+                    <?php endif; ?>
 
-                <?php if (!empty($event['organizer_contact'])): ?>
-                    <div class="optional">
-                        <strong>Contact:</strong> <?php echo htmlspecialchars($event['organizer_contact']); ?>
+                    <?php if (!empty($event['organizer_contact'])): ?>
+
+                        <?php echo htmlspecialchars($event['organizer_contact']); ?>
                     </div>
                 <?php endif; ?>
 
@@ -162,6 +168,13 @@ if (isset($_GET['event'])) {
                         <strong>Sponsor:</strong> <?php echo htmlspecialchars($event['sponsor']); ?>
                     </div>
                 <?php endif; ?>
+                <div class="event-meta">
+                    <p>📅
+                        <?php echo date('F d, Y', strtotime($event['event_date_start'])) . ' - ' . date('F d, Y', strtotime($event['event_date_end'])); ?>
+                    </p>
+                    <p>📍 <?php echo htmlspecialchars($event['event_location']); ?></p>
+                </div>
+
                 <a href="map?event=<?php echo $_GET['event'] ?>" class="back-button map">Go to Event</a>
             </div>
 

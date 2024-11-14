@@ -40,29 +40,52 @@ try {
 
     if ($stmt->rowCount() > 0) {
         $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Prepare reusable statements
+        $checkStmt = $conn->prepare("
+            SELECT COUNT(*) FROM notifications 
+            WHERE user_id = :user_id AND tour_id = :tour_id AND DATE(created_at) = CURDATE()
+        ");
+        $userStmt = $conn->prepare("SELECT name FROM users WHERE id = :user_id");
+
         foreach ($notif as $notification) {
-            $checkStmt = $conn->prepare("
-                SELECT COUNT(*) FROM notifications 
-                WHERE user_id = :user_id AND tour_id = :tour_id AND DATE(created_at) = CURDATE()
-            ");
+            // Check if notification already exists
             $checkStmt->bindParam(':user_id', $notification['user_id'], PDO::PARAM_INT);
             $checkStmt->bindParam(':tour_id', $notification['tour_id'], PDO::PARAM_INT);
             $checkStmt->execute();
-$userStmt = $conn->prepare("SELECT name FROM users WHERE id = :user_id");
-            $userStmt->bindParam(':user_id', $notification['client'], PDO::PARAM_INT);
-            $userStmt->execute();
-            $user = $userStmt->fetch();
-        
+
             if ($checkStmt->fetchColumn() == 0) {
+                // Fetch client name once
+                $userStmt->bindParam(':user_id', $notification['client'], PDO::PARAM_INT);
+                $userStmt->execute();
+                $user = $userStmt->fetch();
+
+                // Create notifications
                 try {
-                    createNotif($conn, $notification['user_id'], $notification['tour_id'], $user['name'] . " will arrive today at ". $notification['title'], "booking?id=".$notification['id']."", "booking");
-                    createNotif($conn, $notification['client'], $notification['tour_id'],"Your reservation at ". $notification['title']." is scheduled for today. Click me, and I'll direct you there.", "map?id=". base64_encode($notification['tour_id'] . $salt) ."", "booking");
-                    error_log("Notification created for user: " . $notification['user_id'] . ", tour: " . $notification['tour_id']);
+                    createNotif(
+                        $conn,
+                        $notification['user_id'],
+                        $notification['tour_id'],
+                        "{$user['name']} will arrive today at {$notification['title']}",
+                        "booking?id={$notification['id']}",
+                        "booking"
+                    );
+
+                    createNotif(
+                        $conn,
+                        $notification['client'],
+                        $notification['tour_id'],
+                        "Your reservation at {$notification['title']} is scheduled for today. Click me, and I'll direct you there.",
+                        "map?id=" . base64_encode($notification['tour_id'] . $salt),
+                        "booking"
+                    );
+
+                    error_log("Notification created for user: {$notification['user_id']}, tour: {$notification['tour_id']}");
                 } catch (Exception $e) {
                     error_log("Failed to create notification: " . $e->getMessage());
                 }
             } else {
-                error_log("Notification already exists for user: " . $notification['user_id'] . ", tour: " . $notification['tour_id']);
+                error_log("Notification already exists for user: {$notification['user_id']}, tour: {$notification['tour_id']}");
             }
         }
     } else {
@@ -82,9 +105,6 @@ function createNotif($conn, $userId, $tour_id, $message, $url, $type)
     $stmt->bindParam(':message', $message, PDO::PARAM_STR);
     $stmt->bindParam(':url', $url, PDO::PARAM_STR);
     $stmt->bindParam(':type', $type, PDO::PARAM_STR);
-    if ($stmt->execute()) {
-        return "success";
-    } else {
-        return "error";
-    }
+    return $stmt->execute() ? "success" : "error";
 }
+

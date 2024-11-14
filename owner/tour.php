@@ -7,7 +7,6 @@ require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 $tour = getTourById($conn, $id);
-$tourImage = getTourImageById($conn, $id);
 ?>
 
 <!DOCTYPE html>

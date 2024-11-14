@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../func/dashboardFunc.php';
 $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === 'hide' ? 'hide' : '';
 ?>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<section id="sidebar" class="<?php $sidebarClass ?>">
+<section id="sidebar" class="<?php echo $sidebarClass?>">
     <a href="home" class="brand">
         <img src="../assets/icons/websiteIcon.png" alt="" style="width: 60px;">
         <span class="text">BagoTours - Admin</span>

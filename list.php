@@ -1,23 +1,23 @@
 <?php
 session_start();
-require 'include/db_conn.php'; // Make sure this file establishes a PDO connection
+require 'include/db_conn.php';
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
 
 // Prepare to fetch tours from the database
-$query = "SELECT * FROM tours"; // Modify this to fit your database structure
+$query = "SELECT * FROM tours";
 $stmt = $conn->prepare($query);
 
-// Handle filter submission
-$filter = isset($_POST['filter']) ? $_POST['filter'] : '';
+// Handle type submission
+$type = isset($_POST['filter']) ? $_POST['filter'] : '';
 
-// Apply filter to the query if set
-if ($filter) {
-    $query .= " WHERE category = :filter"; // Adjust as needed based on your database structure
+// Apply type to the query if set
+if ($type) {
+    $query .= " WHERE type = :type";
     $stmt = $conn->prepare($query);
-    $stmt->bindParam(':filter', $filter);
+    $stmt->bindParam(':type', $type);
 }
 
 $stmt->execute();
@@ -169,13 +169,7 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script>
         function toggleView(view) {
             const tourContainer = document.getElementById('tour-container');
-            if (view === 'grid') {
-                tourContainer.classList.remove('list-view');
-                tourContainer.classList.add('grid-view');
-            } else {
-                tourContainer.classList.remove('grid-view');
-                tourContainer.classList.add('list-view');
-            }
+            tourContainer.className = view === 'grid' ? 'grid-view' : 'list-view';
         }
     </script>
 </head>
@@ -190,84 +184,37 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <form method="POST" class="filter-form">
                 <select name="filter" onchange="this.form.submit()">
                     <option value="">All Tours</option>
-                    <option value="adventure" <?php echo $filter === 'adventure' ? 'selected' : ''; ?>>Adventure</option>
-                    <option value="cultural" <?php echo $filter === 'cultural' ? 'selected' : ''; ?>>Cultural</option>
-                    <option value="relaxation" <?php echo $filter === 'relaxation' ? 'selected' : ''; ?>>Relaxation
-                    </option>
+                    <?php
+                    $stmt = $conn->prepare('SELECT DISTINCT type FROM tours');
+                    $stmt->execute();
+                    $types = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                    foreach ($types as $typeOption) {
+                        echo '<option value="' . htmlspecialchars($typeOption) . '"' .
+                            ($type === $typeOption ? ' selected' : '') .
+                            '>' . htmlspecialchars($typeOption) . '</option>';
+                    }
+                    ?>
                 </select>
                 <button type="button" onclick="toggleView('list')">List View</button>
                 <button type="button" onclick="toggleView('grid')">Grid View</button>
             </form>
 
             <div id="tour-container" class="grid-view">
-                <?php foreach ($tours as $tour): ?>
-                    <div class="tour-item cards">
+                <?php foreach ($tours as $tour):
+                    $tour_images = explode(',', $tour['img']);
+                    $main_image = $tour_images[0]; ?>
+                    <div class="tour-item">
                         <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
-                            <img src='upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>'
+                            <img src='upload/Tour Images/<?php echo $main_image; ?>'
                                 alt='<?php echo htmlspecialchars($tour['title']); ?>'>
                             <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
                             <p>
                                 <?php
                                 $description = htmlspecialchars($tour['description']);
-                                $sentences = explode('.', $description); // Split the description by sentences
-                                $preview = implode('.', array_slice($sentences, 0, 2)) . '.'; // Take only the first two sentences
+                                $sentences = explode('.', $description);
+                                $preview = implode('.', array_slice($sentences, 0, 2)) . '.';
                                 echo $preview;
                                 ?>
-
-                            </p>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-                <?php foreach ($tours as $tour): ?>
-                    <div class="tour-item cards">
-                        <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
-                            <img src='upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>'
-                                alt='<?php echo htmlspecialchars($tour['title']); ?>'>
-                            <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
-                            <p>
-                                <?php
-                                $description = htmlspecialchars($tour['description']);
-                                $sentences = explode('.', $description); // Split the description by sentences
-                                $preview = implode('.', array_slice($sentences, 0, 2)) . '.'; // Take only the first two sentences
-                                echo $preview;
-                                ?>
-
-                            </p>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-                <?php foreach ($tours as $tour): ?>
-                    <div class="tour-item cards">
-                        <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
-                            <img src='upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>'
-                                alt='<?php echo htmlspecialchars($tour['title']); ?>'>
-                            <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
-                            <p>
-                                <?php
-                                $description = htmlspecialchars($tour['description']);
-                                $sentences = explode('.', $description); // Split the description by sentences
-                                $preview = implode('.', array_slice($sentences, 0, 2)) . '.'; // Take only the first two sentences
-                                echo $preview;
-                                ?>
-
-                            </p>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-                <?php foreach ($tours as $tour): ?>
-                    <div class="tour-item cards">
-                        <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
-                            <img src='upload/Tour Images/<?php echo htmlspecialchars($tour['img']); ?>'
-                                alt='<?php echo htmlspecialchars($tour['title']); ?>'>
-                            <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
-                            <p>
-                                <?php
-                                $description = htmlspecialchars($tour['description']);
-                                $sentences = explode('.', $description); // Split the description by sentences
-                                $preview = implode('.', array_slice($sentences, 0, 2)) . '.'; // Take only the first two sentences
-                                echo $preview;
-                                ?>
-
                             </p>
                         </a>
                     </div>

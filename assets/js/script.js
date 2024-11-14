@@ -14,20 +14,13 @@ window.onload = checkOrientation;
 const menuBar = document.querySelector("#content nav .bx.bx-menu");
 const sidebar = document.getElementById("sidebar");
 
-window.addEventListener("resize", function () {
-  if (window.innerWidth <= 800) {
-    sidebar.classList.add("hide");
-  } else {
-    sidebar.classList.remove("hide");
-  }
-});
 
 menuBar.addEventListener("click", function () {
   sidebar.classList.toggle("hide");
 
   const isHidden = sidebar.classList.contains("hide");
   $.ajax({
-    url: "/../../php/SideNavHidden.php",
+    url: "../php/SideNavHidden.php",
     type: "POST",
     data: {
       sidebar_hidden: isHidden ? "hide" : "",
@@ -41,11 +34,6 @@ menuBar.addEventListener("click", function () {
   });
 });
 
-if (window.innerWidth <= 800) {
-  sidebar.classList.add("hide");
-} else {
-  sidebar.classList.remove("hide");
-}
 
 const searchIcon = document.getElementById("search-icon");
 const searchContainer = document.querySelector(".search-container");

@@ -36,7 +36,8 @@ try {
             position: relative;
             display: inline-block;
         }
-        .dropdown button{
+
+        .dropdown button {
             color: black;
             padding: 7px 10px;
             border: none;
@@ -45,7 +46,8 @@ try {
             border-radius: 5px;
             width: 120px;
         }
-        .dropdown button:hover{
+
+        .dropdown button:hover {
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         }
 
@@ -57,10 +59,11 @@ try {
             z-index: 1;
             display: none;
         }
+
         .btn {
             padding: 5px 10px;
             border: none;
-            color:black;
+            color: black;
             font-size: 1.1em;
             cursor: pointer;
         }
@@ -200,30 +203,28 @@ try {
                     timer: 3000,
                     timerProgressBar: true
                 });
-                $(document).ready(function () {
-                    $(document).on('click', '#drop', function (event) {
-                        event.preventDefault();
+                $(document).on('click', '#drop', function (event) {
+                    event.preventDefault();
 
-                        // Close any open dropdowns first (optional, to hide others)
-                        $('.actions').not($(this).next('.actions')).hide();
+                    // Close any open dropdowns first (optional, to hide others)
+                    $('.actions').not($(this).next('.actions')).hide();
 
-                        // Toggle the display of the clicked dropdown
-                        const actions = $(this).next('.actions'); // This targets the .actions that comes after the clicked button
+                    // Toggle the display of the clicked dropdown
+                    const actions = $(this).next('.actions'); // This targets the .actions that comes after the clicked button
 
-                        // Check the current state and toggle it
-                        if (actions.css('display') === 'none') {
-                            actions.css('display', 'block');  // Show the dropdown
-                        } else {
-                            actions.css('display', 'none');   // Hide the dropdown
-                        }
-                    });
+                    // Check the current state and toggle it
+                    if (actions.css('display') === 'none') {
+                        actions.css('display', 'block');  // Show the dropdown
+                    } else {
+                        actions.css('display', 'none');   // Hide the dropdown
+                    }
+                });
 
-                    // Close the dropdown when clicking outside of it
-                    $(document).click(function (event) {
-                        if (!$(event.target).closest('.dropdown').length) {
-                            $('.actions').hide(); // Hide all dropdowns if the click is outside of the dropdown
-                        }
-                    });
+                // Close the dropdown when clicking outside of it
+                $(document).click(function (event) {
+                    if (!$(event.target).closest('.dropdown').length) {
+                        $('.actions').hide(); // Hide all dropdowns if the click is outside of the dropdown
+                    }
                 });
                 $(document).on('click', '#view', function (event) {
                     event.preventDefault();

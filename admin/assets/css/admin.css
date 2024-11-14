@@ -178,8 +178,10 @@ body {
 }
 
 .close {
+	position: absolute;
 	color: #aaa;
-	float: right;
+	right: 05px;
+	top: 0;
 	font-size: 28px;
 	font-weight: bold;
 	cursor: pointer;
@@ -187,6 +189,7 @@ body {
 
 .btn-close:hover {
 	color: var(--red);
+
 }
 
 /* Responsive Adjustments */

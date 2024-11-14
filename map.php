@@ -217,7 +217,7 @@ if (isset($_SESSION['user_id'])) {
                 instructionDisplay.style.display = "block";
                 const destination = [spotDirection.longitude, spotDirection.latitude];
                 addDestinationMarker(destination, spotDirection.type);
-                updateDistanceAndRoute(center, destination);
+                updateDistanceAndRoute(center, destination, spotDirection.title);
             } else {
                 loadTouristSpots();
             }
@@ -232,9 +232,9 @@ if (isset($_SESSION['user_id'])) {
             new mapboxgl.Marker(destinationMarkerEl).setLngLat(destination).addTo(map);
         }
 
-        async function updateDistanceAndRoute(start, end) {
+        async function updateDistanceAndRoute(start, end, title) {
             const distance = calculateDistance(start, end);
-            updateDistanceDisplay(distance);
+            updateDistanceDisplay(distance, title);
             map.flyTo({ center: start, zoom: 15 });
             await getRoute(start, end);
         }
@@ -252,8 +252,8 @@ if (isset($_SESSION['user_id'])) {
             return value * Math.PI / 180;
         }
 
-        function updateDistanceDisplay(distance) {
-            distanceDisplay.textContent = `Distance to destination: ${distance < 1 ? (distance * 1000).toFixed(0) + ' meters' : distance.toFixed(2) + ' km'}`;
+        function updateDistanceDisplay(distance, title) {
+            distanceDisplay.textContent = `Distance to ${title} - ${distance < 1 ? (distance * 1000).toFixed(0) + ' meters' : distance.toFixed(2) + ' km'}`;
         }
 
         async function getRoute(start, end) {
@@ -333,9 +333,10 @@ if (isset($_SESSION['user_id'])) {
                 markerEl.style.height = '30px';
 
                 const marker = new mapboxgl.Marker(markerEl).setLngLat([longitude, latitude]).addTo(map);
+                const mainImage = img.split(',')[0];
                 const popupContent = `
                 <div class="popup-content" style="border-radius:26px;">
-                    <img src="upload/Tour Images/${img}" alt="${title}" style="width: 100%; height: 80%;">
+                    <img src="upload/Tour Images/${mainImage}" alt="${title}" style="width: 100%; height: 80%;">
                     <h3>${title}</h3>
                     <p>${address}</p>
                     <p>⭐ ${(Math.floor(average_rating * 100) / 100).toFixed(1)} / 5</p>
