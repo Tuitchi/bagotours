@@ -67,6 +67,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BagoTours</title>
     <link rel="stylesheet" href="user.css">
+    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <link rel="stylesheet" href="assets/css/login.css">
 </head>
 

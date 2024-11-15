@@ -38,6 +38,7 @@ if (isset($_GET['event'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <title><?php echo htmlspecialchars($event['event_name']); ?> - BagoTours</title>
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">

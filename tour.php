@@ -60,6 +60,7 @@ function timeAgo($timestamp)
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BagoTours</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="user.css">

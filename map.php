@@ -58,6 +58,7 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/map.css">
+    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet" />
     <style>
