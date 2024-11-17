@@ -67,12 +67,22 @@ $user = getUserById($conn, $user_id);
         .Account {
             display: block;
         }
-
+        .profilepic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+           
+            position: relative;
+        }
+        .profilepic input[type="file"]{
+            display: none;
+            text-align: center;
+        }
         .profilepic img {
-            width: 200px;
-            height: 200px;
+            width: 100px;
+            height: auto;
             border-radius: 50%;
-            margin-right: 20px;
+            border: 2px solid #04AA6D;
         }
 
         form {
@@ -117,12 +127,12 @@ $user = getUserById($conn, $user_id);
             z-index: 9999;
             width: 100%;
             height: 100%;
-            padding-top: 60px;
+            padding-top: 50px;
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto;
+            margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
@@ -143,19 +153,42 @@ $user = getUserById($conn, $user_id);
             cursor: pointer;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 568px) {
             .container {
                 flex-direction: column;
                 padding: 10px;
-            }
-
+                width: 100%;
+            }```
             .editUser {
-                margin-bottom: 20px;
-                border: none;
+                flex-direction: row; /* Switch to row layout */
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0;
+                max-width: 100%; /* Full width on mobile */
+                border: none; /* Remove border for cleaner mobile design */
             }
 
-            aside {
-                max-width: 100%;
+            .editUser ul {
+                display: flex; /* Flex layout for the list */
+                flex-wrap: wrap; /* Wrap items if needed */
+                /* Space between icons */
+            }
+
+            .editUser ul li {
+                margin: 0; /* Remove margins */
+            }
+
+            .editUser ul li a {
+                font-size: 0; /* Hide text */
+            }
+
+            .editUser ul li a i {
+                font-size: 20px; /* Show only icons */
+                color: #333; /* Icon color */
+            }
+
+            .editUser ul li a:hover i {
+                color: #04AA6D; /* Change icon color on hover */
             }
         }
     </style>
@@ -218,8 +251,8 @@ $user = getUserById($conn, $user_id);
                                 <img id="profilePreview"
                                     src="upload/Profile Pictures/<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
                                     alt="Profile Preview">
-                                <input type="file" id="profilePicture" name="profilePicture">
-                                <label for="profilePicture" id="pp-icon"><i class="fa fa-camera"></i></label>
+                                    <label for="profilePicture" id="pp-icon"><i class="fa fa-camera"></i></label>
+                                    <input type="file" id="profilePicture" name="profilePicture">
                             </div>
                             <label for="fullName">Full Name:</label>
                             <input type="text" id="fullName" name="fullName"
