@@ -201,7 +201,7 @@
         <div class="download-app" ID="download-app">
             <div class="phone-mockup">
                 <img src="assets/mock 1.png" alt="App Screenshot" class="app-screenshot">
-                <img src="assets/LOGO1.png" alt="Logo" class="logo"> <!-- Replace with actual logo -->
+                <img src="assets/icons/websiteIcon.png" alt="Logo" class="logo"> <!-- Replace with actual logo -->
             </div>
             <div class="app-info">
                 <h2>Download Our App</h2>

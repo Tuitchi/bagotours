@@ -24,206 +24,9 @@ if (isset($_GET['process'])) {
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="assets/css/form.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-    <style>
-        .main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
-
-        #resortOwnerForm {
-            margin:auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            width: 80vh;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        main input[type="text"],
-        main select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #resortLocation {
-            float: left;
-            width: 70%;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        #resortLoc {
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 15%;
-            float: left;
-            height: 40px;
-            cursor: pointer;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-
-        .upload-area,
-        .tourImages {
-            width: 100%;
-            height: auto;
-            border: 2px dashed #ccc;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .tourImages {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .MainTour {
-            border: 1px solid #ccc;
-            width: 100%;
-            height: 200px;
-        }
-
-        .upload-areaTour {
-            display: flex;
-            border: 1px solid #ccc;
-            width: 32.83%;
-            height: 100px;
-        }
-
-
-        .upload-area:hover {
-            background-color: #f9f9f9;
-        }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        .step-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .prev-btn,
-        .next-btn,
-        input[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .prev-btn:hover,
-        .next-btn:hover,
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-
-        .progress-container {
-            display: flex;
-            margin-bottom: 20px;
-        }
-
-        .progress {
-            flex: 1;
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
-
-        .progress.active {
-            background-color: #28a745;
-            transition: background-color 0.5s ease;
-        }
-
-        .progress:last-child {
-            margin-right: 0;
-        }
-
-        .upload-area img,
-        .tourImages img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modal {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            position: relative;
-            margin: 10% auto;
-            padding: 20px;
-            background-color: white;
-            width: 100vh;
-            height: 85vh;
-        }
-
-        .close-map {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            font-size: 28px;
-            z-index: 100;
-            cursor: pointer;
-        }
-
-        #map {
-            border-radius: 4px;
-            width: 100%;
-            height: 100%;
-        }
-
-        textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: vertical;
-        }
-        .main input[type="text"], .main select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 
 <body>
@@ -271,16 +74,32 @@ if (isset($_GET['process'])) {
 
                         <div class="step" id="step2">
                             <h2>Tourist Attraction Image</h2>
-                            <label for="img">Image:</label>
                             <p style="font-size:smaller;">Insert your tour image below.</p>
+                            <p id="image-error" style="color: red; display: none;">You can upload a maximum of 5 images.</p>
+                            <p id="image-error" style="color: red; display: none;">Image must have a landscape view (16:10
+                                aspect ratio recommended).
+                            </p>
+                            <div id="upload-notes"
+                                style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; font-size: 14px; color: #555;">
+                                <strong>Notes for Uploading Tour Images:</strong>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Upload a maximum of <strong>5 images</strong>.</li>
+                                    <li>Images should have a <strong>landscape view</strong> (16:10 aspect ratio recommended).
+                                    </li>
+                                    <li>Accepted formats: <strong>JPEG, PNG</strong>.</li>
+                                    <li>Ensure each image size does not exceed <strong>5MB</strong>.</li>
+                                </ul>
+                            </div>
                             <div class="tourImages">
-                                <input type="file" id="fileInputTour" name="img" accept="image/*" required>
-                                <div class="MainTour" id="uploadAreaMainTour"></div>
-                                <input type="file" id="fileInputTours" name="tourImage[]" accept="image/*" multiple required
-                                    style="width: 100%;">
-                                <div class="upload-areaTour" id="uploadAreaTour1"></div>
-                                <div class="upload-areaTour" id="uploadAreaTour2"></div>
-                                <div class="upload-areaTour" id="uploadAreaTour3"></div>
+                                <div class="image-preview-container">
+                                    <div class="main-image">
+                                        <img id="main-image-preview" src="" alt="Main Image Preview">
+                                    </div>
+                                    <div class="thumbnail-images">
+                                        <!-- Thumbnails will be displayed here -->
+                                    </div>
+                                </div>
+                                <input type="file" id="tour-images" name="tour-images[]" accept="image/*" multiple>
                             </div>
 
                             <div class="step-buttons">
@@ -335,22 +154,58 @@ if (isset($_GET['process'])) {
 
                         <div class="step" id="step4">
                             <h2>Proof of Permits</h2>
+                            <div class="permit-container">
+                                <div class="permit">
+                                    <label for="permit1">
+                                        <input type="checkbox" id="permit1" name="proof_permits[]" value="Building Permit">
+                                        Building Permit
+                                    </label>
+                                </div>
+                                <div class="permit">
+                                    <label for="permit2">
+                                        <input type="checkbox" id="permit2" name="proof_permits[]" value="Business Permit">
+                                        Business Permit
+                                    </label>
+                                </div>
+                                <div class="permit">
+                                    <label for="permit3">
+                                        <input type="checkbox" id="permit3" name="proof_permits[]" value="Environmental Compliance Certificate (ECC)">
+                                        Environmental Compliance Certificate (ECC)
+                                    </label>
+                                </div>
+                                <div class="permit">
+                                    <label for="permit4">
+                                        <input type="checkbox" id="permit4" name="proof_permits[]" value="Barangay Clearance">
+                                        Barangay Clearance
+                                    </label>
+                                </div>
+                                <div class="permit">
+                                    <label for="permit5">
+                                        <input type="checkbox" id="permit5" name="proof_permits[]" value="Fire Safety Inspection Certificate">
+                                        Fire Safety Inspection Certificate
+                                    </label>
+                                </div>
+                            </div>
 
-                            <label for="proof">Proof:</label>
-                            <select name="proof" id="proof" required>
-                                <option value="none" selected disabled hidden>Select an Option</option>
-                                <option value="Business permit">Business Permit</option>
-                                <option value="Occupancy permit">Occupancy Permit</option>
-                                <option value="Building Permit">Building Permit</option>
-                                <option value="Mayor's Permit">Mayor's Permit</option>
-                                <option value="Barangay Permit">Barangay Permit</option>
-                            </select>
-
-                            <p style="font-size:smaller;">Insert your proof image below.</p>
+                            <div id="upload-notes"
+                                style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; font-size: 14px; color: #555;">
+                                <strong>Notes for Uploading Proof Documents:</strong>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Ensure the document is clear and legible.</li>
+                                    <li>Acceptable file formats: <strong>PDF, JPEG, PNG</strong>.</li>
+                                    <li>Maximum file size: <strong>5MB per document</strong>.</li>
+                                    <li>Document must be valid and up-to-date.</li>
+                                    <br>
+                                    <strong>Tips:</strong>
+                                    <ul>
+                                        <li>Use a flat, well-lit surface to photograph or scan the document.</li>
+                                        <li>Ensure all edges of the document are visible.</li>
+                                    </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <p style="font-size:smaller;">Insert your proof documents below.</p>
                             <input type="file" id="fileInput" name="proofImage[]" multiple accept="image/*" required>
-                            <div class="upload-area" id="proofUploadArea1"></div>
-                            <div class="upload-area" id="proofUploadArea2"></div>
-                            <div class="upload-area" id="proofUploadArea3"></div>
 
                             <div class="step-buttons">
                                 <button type="button" class="prev-btn">Previous</button>
@@ -387,42 +242,41 @@ if (isset($_GET['process'])) {
             ?>
         </div>
     </div>
+    <script src="https//code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/purok.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const barangaySelect = document.getElementById('barangay');
-            const purokSelect = document.getElementById('purok');
-            const steps = document.querySelectorAll(".step");
-            const progressBars = document.querySelectorAll(".progress");
-            const nextBtns = document.querySelectorAll(".next-btn");
-            const prevBtns = document.querySelectorAll(".prev-btn");
-            const mapboxModal = document.getElementById("mapboxModal");
-            const btnSetLocation = document.getElementById("resortLoc");
-            const closeMapBtn = document.querySelector(".close-map");
-            const form = document.getElementById("resortOwnerForm");
+        $(document).ready(function () {
+            const $barangaySelect = $('#barangay');
+            const $purokSelect = $('#purok');
+            const $steps = $(".step");
+            const $progressBars = $(".progress");
+            const $nextBtns = $(".next-btn");
+            const $prevBtns = $(".prev-btn");
+            const $mapboxModal = $("#mapboxModal");
+            const $btnSetLocation = $("#resortLoc");
+            const $closeMapBtn = $(".close-map");
+            const $form = $("#resortOwnerForm");
 
             let currentStep = 0;
             let marker;
 
-            // Event Listener for Barangay Select
-            barangaySelect.addEventListener('change', function () {
-                const barangay = this.value;
-                purokSelect.innerHTML = '<option value="none" selected disabled hidden>Select a Purok</option>';
+            // Barangay select event
+            $barangaySelect.on('change', function () {
+                const barangay = $(this).val();
+                $purokSelect.html('<option value="none" selected disabled hidden>Select a Purok</option>');
 
                 if (puroksByBarangay[barangay]) {
                     puroksByBarangay[barangay].forEach(purok => {
-                        const option = new Option(purok, purok);
-                        purokSelect.appendChild(option);
+                        $purokSelect.append(new Option(purok, purok));
                     });
                 }
             });
 
-            // STEPS
-            nextBtns.forEach(btn => btn.addEventListener("click", () => handleStepChange(1)));
-            prevBtns.forEach(btn => btn.addEventListener("click", () => handleStepChange(-1)));
-
-            form.addEventListener("submit", handleFormSubmit);
+            // Step navigation
+            $nextBtns.on("click", () => handleStepChange(1));
+            $prevBtns.on("click", () => handleStepChange(-1));
+            $form.on("submit", handleFormSubmit);
 
             function handleStepChange(direction) {
                 if (direction === 1 && !validateStep(currentStep)) return;
@@ -431,28 +285,32 @@ if (isset($_GET['process'])) {
             }
 
             function showStep(stepIndex) {
-                steps.forEach((step, index) => {
-                    step.classList.toggle("active", index === stepIndex);
-                    progressBars[index].classList.toggle("active", index <= stepIndex);
+                $steps.each(function (index) {
+                    $(this).toggleClass("active", index === stepIndex);
+                });
+
+                $progressBars.each(function (index) {
+                    $(this).toggleClass("active", index <= stepIndex);
                 });
             }
 
             function validateStep() {
-                const inputs = steps[currentStep].querySelectorAll("input[required], select[required], textarea[required]");
+                const $inputs = $steps.eq(currentStep).find("input[required], select[required], textarea[required]");
                 let valid = true;
 
-                inputs.forEach(input => {
-                    if (!input.value || input.value === "none") {
+                $inputs.each(function () {
+                    if (!$(this).val() || $(this).val() === "none") {
                         valid = false;
-                        input.style.borderColor = "red";
+                        $(this).css("borderColor", "red");
                     } else {
-                        input.style.borderColor = "";
+                        $(this).css("borderColor", "");
                     }
                 });
+
                 return valid;
             }
 
-            // MAP
+            // Map setup
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
             const map = new mapboxgl.Map({
                 container: "map",
@@ -473,13 +331,12 @@ if (isset($_GET['process'])) {
 
             function reverseGeocode(lng, lat) {
                 const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}`;
-                fetch(url)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const placeName = data.features[0]?.place_name || "Location not found";
-                        document.getElementById("resortLocation").value = placeName;
-                    })
-                    .catch((err) => console.error("Error in reverse geocoding: ", err));
+                $.getJSON(url, function (data) {
+                    const placeName = data.features[0]?.place_name || "Location not found";
+                    $("#resortLocation").val(placeName);
+                }).fail(function (err) {
+                    console.error("Error in reverse geocoding:", err);
+                });
             }
 
             map.on("click", function (e) {
@@ -490,15 +347,13 @@ if (isset($_GET['process'])) {
                     marker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map);
                 }
                 reverseGeocode(lngLat.lng, lngLat.lat);
-                document.getElementById("tour-longitude").value = lngLat.lng;
-                document.getElementById("tour-latitude").value = lngLat.lat;
-                
-                mapboxModal.classList.remove('active');// Hide the modal when a location is selected
+                $("#tour-longitude").val(lngLat.lng);
+                $("#tour-latitude").val(lngLat.lat);
+                $mapboxModal.removeClass('active');
             });
 
-            btnSetLocation.onclick = function () {
-                
-                mapboxModal.classList.add('active');
+            $btnSetLocation.on("click", function () {
+                $mapboxModal.addClass('active');
                 setTimeout(() => {
                     map.resize();
                     map.flyTo({
@@ -506,26 +361,22 @@ if (isset($_GET['process'])) {
                         essential: true,
                     });
                 }, 200);
-            };
+            });
 
-            closeMapBtn.onclick = function () {
-                mapboxModal.classList.remove('active'); // Hide the modal on close
-            };
+            $closeMapBtn.on("click", function () {
+                $mapboxModal.removeClass('active');
+            });
 
-            window.onclick = function (event) {
-                if (event.target == mapboxModal) {
-                    mapboxModal.classList.remove('active'); // Hide the modal when clicking outside
+            $(window).on("click", function (event) {
+                if ($(event.target).is($mapboxModal)) {
+                    $mapboxModal.removeClass('active');
                 }
-            };
+            });
 
-            // Remaining functions for form submission, AJAX handling, and image previews
+            // Form submission
             function handleFormSubmit(e) {
                 e.preventDefault();
-                const formData = new FormData(form);
-                console.log('Form Data:');
-                for (let [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
+                const formData = new FormData($form[0]);
 
                 $.ajax({
                     url: "../php/register_owner.php",
@@ -540,11 +391,12 @@ if (isset($_GET['process'])) {
 
             function handleAjaxSuccess(response) {
                 console.log("Registration Response:", response);
-                let data = JSON.parse(response);
+                const data = JSON.parse(response);
+
                 Swal.fire({
-                    icon: data.success === true ? 'success' : 'error',
-                    title: data.success === true ? 'success' : 'error',
-                    text: data.success === true ? data.message : data.errors,
+                    icon: data.success ? 'success' : 'error',
+                    title: data.success ? 'Success' : 'Error',
+                    text: data.success ? data.message : data.errors,
                     timer: 3000,
                     showConfirmButton: false,
                 }).then(() => {
@@ -555,7 +407,7 @@ if (isset($_GET['process'])) {
             }
 
             function handleAjaxError(xhr, status, error) {
-                console.error("There was a problem with the AJAX operation:", error);
+                console.error("AJAX Error:", error);
                 Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -565,69 +417,69 @@ if (isset($_GET['process'])) {
                 });
             }
 
-            const imageUploadAreas = [{
-                input: document.getElementById("fileInputTour"),
-                area: document.getElementById("uploadAreaMainTour")
-            },
-            {
-                input: document.getElementById("fileInput"),
-                area: [
-                    document.getElementById("proofUploadArea1"),
-                    document.getElementById("proofUploadArea2"),
-                    document.getElementById("proofUploadArea3"),
-                ],
-            },
-            {
-                input: document.getElementById("fileInputTours"),
-                area: [
-                    document.getElementById("uploadAreaTour1"),
-                    document.getElementById("uploadAreaTour2"),
-                    document.getElementById("uploadAreaTour3"),
-                ],
-            }];
+            // Image preview
+            $('#tour-images').on('change', function (event) {
+                const $fileInput = $(this);
+                const files = event.target.files;
 
-            imageUploadAreas.forEach(({ input, area }) => {
-                input.addEventListener("change", () => showMultipleImagePreview(input, area));
-            });
-
-            function showMultipleImagePreview(input, area) {
-                const files = input.files;
-
-                if (files.length > 3) {
-                    alert(`You can only upload up to 3 images.`);
-                    input.value = "";
-                    area.forEach(a => a.innerHTML = "No files chosen");
+                // Check if the number of files exceeds the limit
+                if (files.length > 5) {
+                    $('#image-error').text('You can upload a maximum of 5 images.').show();
+                    $fileInput.val(''); // Clear the input
                     return;
+                } else if (files.length == 0) {
+                    $imagesPreview.hide();
                 }
 
-                if (Array.isArray(area)) {
-                    area.forEach(a => a.innerHTML = "");
-                } else {
-                    area.innerHTML = "";
-                }
+                $('#image-error').hide(); // Hide error if the limit is satisfied
 
-                Array.from(files).forEach((file, index) => {
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                            if (Array.isArray(area)) {
-                                if (index < area.length) {
-                                    area[index].innerHTML = `<img src="${reader.result}" alt="Image Preview">`;
-                                }
-                            } else {
-                                area.innerHTML = `<img src="${reader.result}" alt="Image Preview">`;
+                const $imagesPreview = $('.image-preview-container');
+                const $mainImagePreview = $('#main-image-preview');
+                const $thumbnailContainer = $('.thumbnail-images');
+
+                $imagesPreview.show();
+                $thumbnailContainer.empty();
+                $mainImagePreview.attr('src', '');
+
+                $.each(files, function (index, file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const image = new Image();
+                        image.onload = function () {
+                            const aspectRatio = image.width / image.height;
+
+                            // Validate aspect ratio (16:10 is approximately 1.6)
+                            if (aspectRatio < 1.3) {
+                                $('#image-error').text(`Image ${index + 1} must have a landscape view (16:10 aspect ratio recommended).`).show();
+                                $fileInput.val(''); // Clear the input
+                                $imagesPreview.hide();
+                                return;
+                            }
+
+                            const $img = $('<img>', {
+                                src: e.target.result,
+                                alt: `Image ${index + 1}`,
+                            });
+
+                            $img.on('click', function () {
+                                $mainImagePreview.attr('src', e.target.result);
+                                $('.thumbnail-images img').removeClass('selected');
+                                $img.addClass('selected');
+                            });
+
+                            $thumbnailContainer.append($img);
+
+                            if (index === 0) {
+                                $mainImagePreview.attr('src', e.target.result);
+                                $img.addClass('selected');
                             }
                         };
-                        reader.readAsDataURL(file);
-                    } else {
-                        if (Array.isArray(area)) {
-                            area.forEach(a => a.innerHTML = "No file chosen");
-                        } else {
-                            area.innerHTML = "No file chosen";
-                        }
-                    }
+
+                        image.src = e.target.result; // Set the image source for validation
+                    };
+                    reader.readAsDataURL(file);
                 });
-            }
+            });
         });
 
     </script>
