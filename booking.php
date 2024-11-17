@@ -233,6 +233,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
         .complete {
             background-color: green;
         }
+         /* Mobile-specific styling */
+         @media screen and (max-width: 768px) {
+            .btn-container {
+                flex-direction: column; /* Stack buttons vertically */
+                align-items: stretch; /* Make buttons stretch to full width */
+                gap: 10px; /* Add spacing between buttons */
+                margin-bottom: 15px; /* Adjust bottom margin */
+            }
+
+            .btn-container button {
+                padding: 12px; /* Increase padding for better tap area */
+                font-size: 16px; /* Larger font for readability */
+            }
+
+            .btn-container button.active {
+                background-color: #0056b3; /* Slightly darker for active state */
+            }
+        }
     </style>
 </head>
 
