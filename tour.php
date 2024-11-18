@@ -66,6 +66,141 @@ function timeAgo($timestamp)
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/tour.css">
+    <style>
+        .comment-section {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Comment box styling */
+.comment-box {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; /* Ensure spacing between elements */
+    align-items: flex-start; /* Align to the top */
+}
+
+.input-box {
+    display: flex;
+    flex-direction: row;
+    flex: 1; /* Allow the input to grow and fit */
+    width: 100%; /* Ensure full-width use */
+    box-sizing: border-box; /* Prevent padding from breaking layout */
+}
+
+.input-box #rating {
+    width: 30px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.comment-box .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.input-box .comment-input {
+    display: block; /* Fix any inline behavior */
+    width: 100%; /* Ensure it spans the container */
+    padding: 8px;
+    font-size: 14px; /* Make it readable on smaller screens */
+    box-sizing: border-box; /* Account for padding in the width */
+}
+
+.input-box .comment-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.comment-box .comment-submit-btn {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    width: auto;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comment-box .comment-submit-btn:hover {
+    background-color: #0056b3;
+}
+/* Container styling for dropdown */
+.rating-container {
+    position: relative;
+    max-width: 300px;
+    margin: auto;
+}
+
+/* Dropdown base styles */
+.star {
+   background-image: url(star.png);
+    appearance: none; /* Remove default dropdown */
+    background: linear-gradient(to right, #f7f7f7, #ffffff); /* Subtle gradient */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Smooth corners */
+    padding: 12px 15px; /* Comfortable padding */
+    font-size: 16px; /* Modern font size */
+    color: #444; /* Darker text color */
+    cursor: pointer;
+    width: 100%; /* Responsive width */
+    transition: all 0.3s ease; /* Smooth transition effects */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Add custom arrow for the dropdown */
+.star::after {
+    content: '▼'; /* Unicode arrow */
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #888;
+    pointer-events: none; /* Make sure arrow doesn’t interfere */
+}
+
+/* Hover and Focus States */
+.star:hover {
+    border-color: #007bff; /* Blue border on hover */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Blue glow */
+}
+
+.star:focus {
+    outline: none;
+    border-color: #0056b3; /* Stronger blue on focus */
+    box-shadow: 0 0 10px rgba(0, 86, 179, 0.4); /* Glow effect */
+}
+
+/* Styling for the Options in the Dropdown */
+.star option {
+    background: #fff; /* White background */
+    color: #333; /* Dark text for visibility */
+    font-size: 16px;
+    padding: 10px; /* Padding for spacing */
+}
+
+/* Optional Label Styling */
+.rating-label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+}
+
+    </style>
 </head>
 
 <body>
@@ -160,17 +295,22 @@ function timeAgo($timestamp)
                         <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar"
                             class="avatar">
                         <div class="input-box">
-                            <label for="rating">Rating:</label>
-                            <select id="rating" name="rating">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                            
+                        <div class="rating-container">
+                            <label for="rating" class="rating-label">Rate Us:</label>
+                            <select class="star" id="rating" name="rating">
+                                <option value="1">⭐ 1 Star</option>
+                                <option value="2">⭐⭐ 2 Stars</option>
+                                <option value="3">⭐⭐⭐ 3 Stars</option>
+                                <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
                             </select>
-                            <textarea placeholder="Share your experience..." class="comment-input"></textarea>
                         </div>
-                        <button class="comment-submit-btn">Post</button>
+
+                            <textarea placeholder="Share your experience..." class="comment-input"></textarea>
+                            <button class="comment-submit-btn">Post</button>
+                        </div>
+                       
                     </div>
 
                     <div class="comments-list">
