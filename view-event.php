@@ -38,6 +38,7 @@ if (isset($_GET['event'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <title><?php echo htmlspecialchars($event['event_name']); ?> - BagoTours</title>
     <link rel="stylesheet" href="user.css">
@@ -103,29 +104,71 @@ if (isset($_GET['event'])) {
             font-size: 0.9em;
             color: #666;
         }
+        .btons {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    gap: 10px; /* Space between buttons */
+    justify-content: center; /* Center align buttons */
+    margin: 20px 0;
+}
 
-        .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-        }
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
 
-        .back-button.map {
-            background-color: #75ba75;
-            color: white;
-        }
+.back-button.map {
+    background-color: #2a9df4; /* Primary color for 'Navigate' */
+    color: #fff; /* White text */
+}
 
-        .back-button.map:hover {
-            background-color: #52aa6f;
-        }
+.back-button.map:hover {
+    background-color: #1b7ec1;
+    transform: translateY(-2px); /* Lift effect */
+}
 
-        .back-button:hover {
-            background-color: #0056b3;
-        }
+.back-button {
+    color:#fff;
+    border: 1px solid #333;
+}
+
+.back-button:hover {
+    background-color: #333; /* Secondary color for 'Back to Events' */
+    color: #fff;
+   
+    transform: translateY(-2px);
+}
+
+.back-button i {
+    font-size: 1.2rem; /* Icon size */
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+    .btons {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: stretch; /* Make buttons take full width */
+    }
+
+    .back-button {
+        font-size: 0.9rem; /* Adjust font size for smaller screens */
+        padding: 12px; /* Increase padding for better touch target */
+        box-shadow: none; /* Simplify shadow on mobile */
+    }
+}
+
+
+
     </style>
 </head>
 
@@ -175,11 +218,15 @@ if (isset($_GET['event'])) {
                     </p>
                     <p>📍 <?php echo htmlspecialchars($event['event_location']); ?></p>
                 </div>
-
-                <a href="map?event=<?php echo $_GET['event'] ?>" class="back-button map">Go to Event</a>
-            </div>
-
-            <a href="event" class="back-button">Back to Events</a>
+                <div class="btons">
+                    <a href="map?event=<?php echo $_GET['event'] ?>" class="back-button map">
+                        <i class="fa fa-map-marker-alt"></i> Navigate
+                    </a>
+                    <a href="event" class="back-button">
+                        <i class="fa fa-arrow-left"></i> Back to Events
+                    </a>
+                </div>
+            </div>  
         </div>
     </div>
 

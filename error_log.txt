@@ -602,3 +602,369 @@ Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have
 [24-Nov-2024 12:37:09 Europe/Berlin] Script finished.
 [24-Nov-2024 12:38:09 Europe/Berlin] No bookings found for today or future dates.
 [24-Nov-2024 12:38:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:39:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:39:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:40:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:40:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:41:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:41:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:42:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:42:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:43:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:43:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:44:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:44:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:45:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:45:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:41 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:41 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:43 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:43 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:43 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:43 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:47 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:47 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:47 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:47 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:48 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:48 Europe/Berlin] Script finished.
+[24-Nov-2024 12:46:48 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:46:48 Europe/Berlin] Script finished.
+[24-Nov-2024 12:47:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:47:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:47:18 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:47:18 Europe/Berlin] Script finished.
+[24-Nov-2024 12:47:48 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:47:48 Europe/Berlin] Script finished.
+[24-Nov-2024 12:48:03 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:48:03 Europe/Berlin] Script finished.
+[24-Nov-2024 12:48:03 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:48:03 Europe/Berlin] Script finished.
+[24-Nov-2024 12:48:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:48:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:48:14 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:48:14 Europe/Berlin] Script finished.
+[24-Nov-2024 12:48:33 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:48:33 Europe/Berlin] Script finished.
+[24-Nov-2024 12:49:03 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:49:03 Europe/Berlin] Script finished.
+[24-Nov-2024 12:49:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:49:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:49:33 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:49:33 Europe/Berlin] Script finished.
+[24-Nov-2024 12:50:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:50:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:50:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:50:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:50:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:50:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:51:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:51:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:51:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:51:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:51:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:51:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:52:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:52:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:52:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:52:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:52:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:52:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:53:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:53:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:53:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:53:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:53:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:53:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:54:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:54:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:54:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:54:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:54:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:54:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:55:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:55:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:55:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:55:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:55:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:55:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:56:03 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:56:03 Europe/Berlin] Script finished.
+[24-Nov-2024 12:56:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:56:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:56:33 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:56:33 Europe/Berlin] Script finished.
+[24-Nov-2024 12:57:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:57:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:57:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:57:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:57:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:57:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:58:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:58:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:58:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:58:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:58:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:58:34 Europe/Berlin] Script finished.
+[24-Nov-2024 12:59:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:59:04 Europe/Berlin] Script finished.
+[24-Nov-2024 12:59:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:59:09 Europe/Berlin] Script finished.
+[24-Nov-2024 12:59:33 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 12:59:33 Europe/Berlin] Script finished.
+[24-Nov-2024 13:00:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:00:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:00:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:00:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:00:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:00:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:01:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:01:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:01:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:01:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:01:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:01:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:02:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:02:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:02:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:02:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:02:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:02:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:03:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:03:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:03:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:03:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:03:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:03:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:04:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:04:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:04:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:04:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:04:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:04:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:05:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:05:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:05:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:05:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:05:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:05:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:06:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:06:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:06:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:06:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:06:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:06:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:07:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:07:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:07:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:07:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:07:42 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:07:42 Europe/Berlin] Script finished.
+[24-Nov-2024 13:08:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:08:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:08:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:08:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:08:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:08:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:09:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:09:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:09:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:09:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:09:33 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:09:33 Europe/Berlin] Script finished.
+[24-Nov-2024 13:10:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:10:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:10:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:10:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:10:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:10:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:11:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:11:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:11:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:11:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:11:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:11:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:12:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:12:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:12:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:12:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:12:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:12:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:13:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:13:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:13:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:13:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:13:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:13:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:14:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:14:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:14:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:14:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:14:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:14:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:15:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:15:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:15:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:15:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:15:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:15:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:16:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:16:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:16:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:16:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:16:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:16:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:17:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:17:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:17:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:17:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:17:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:17:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:18:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:18:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:18:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:18:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:18:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:18:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:19:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:19:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:19:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:19:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:19:34 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:19:34 Europe/Berlin] Script finished.
+[24-Nov-2024 13:20:04 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:20:04 Europe/Berlin] Script finished.
+[24-Nov-2024 13:20:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:20:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:21:05 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:21:05 Europe/Berlin] Script finished.
+[24-Nov-2024 13:21:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:21:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:22:06 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:22:06 Europe/Berlin] Script finished.
+[24-Nov-2024 13:22:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:22:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:23:07 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:23:07 Europe/Berlin] Script finished.
+[24-Nov-2024 13:23:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:23:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:24:08 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:24:08 Europe/Berlin] Script finished.
+[24-Nov-2024 13:24:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:24:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:25:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:25:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:25:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:25:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:26:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:26:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:26:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:26:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:27:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:27:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:27:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:27:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:28:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:28:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:28:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:28:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:29:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:29:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:29:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:29:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:29:51 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:29:51 Europe/Berlin] Script finished.
+[24-Nov-2024 13:29:57 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:29:57 Europe/Berlin] Script finished.
+[24-Nov-2024 13:30:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:30:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:30:27 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:30:27 Europe/Berlin] Script finished.
+[24-Nov-2024 13:30:30 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:30:30 Europe/Berlin] Script finished.
+[24-Nov-2024 13:31:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:31:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:31:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:31:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:32:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:32:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:32:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:32:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:33:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:33:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:33:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:33:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:34:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:34:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:34:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:34:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:34:33 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:34:33 Europe/Berlin] Script finished.
+[24-Nov-2024 13:34:57 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:34:57 Europe/Berlin] Script finished.
+[24-Nov-2024 13:35:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:35:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:35:27 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:35:27 Europe/Berlin] Script finished.
+[24-Nov-2024 13:36:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:36:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:36:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:36:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:37:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:37:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:37:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:37:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:38:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:38:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:38:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:38:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:39:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:39:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:39:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:39:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:40:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:40:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:40:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:40:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:41:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:41:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:41:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:41:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:41:35 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:41:35 Europe/Berlin] Script finished.
+[24-Nov-2024 13:41:57 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:41:57 Europe/Berlin] Script finished.
+[24-Nov-2024 13:42:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:42:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:42:27 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:42:27 Europe/Berlin] Script finished.
+[24-Nov-2024 13:43:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:43:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:43:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:43:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:44:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:44:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:44:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:44:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:45:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:45:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:45:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:45:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:46:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:46:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:46:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:46:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:47:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:47:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:47:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:47:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:48:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:48:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:48:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:48:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:49:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:49:09 Europe/Berlin] Script finished.
+[24-Nov-2024 13:49:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 13:49:09 Europe/Berlin] Script finished.

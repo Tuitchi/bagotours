@@ -101,16 +101,45 @@ try {
         }
 
         .view {
-            width: 20%;
-            text-align: center;
-            padding: 5px;
-            background-color: #fff;
-            color: black;
-            font-size: 1rem;
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2a9df4; /* Primary button color */
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 20px; /* Smooth edges */
+    position: absolute;
+    bottom: 10px; /* Spacing from bottom */
+    right: 10px; /* Spacing from right */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Smooth animations */
+}
+
+.view:hover {
+    background-color: #1b7ec1; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.view:active {
+    background-color: #1669a0; /* Even darker shade on active */
+    transform: translateY(0); /* Reset lift effect */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for active state */
+}
+
+.view p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff; /* Ensure text color remains white */
+    text-align: center;
+}
+
+
+
 
         .desc {
             text-align: justify;
@@ -120,6 +149,23 @@ try {
             -webkit-line-clamp: 3;
             line-clamp: 3;
             -webkit-box-orient: vertical;
+        }
+        @media (max-width: 768px) {
+            /* Style for smaller screens */
+            .upper{
+                font-size: 14px;
+            }
+            .desc {
+                -webkit-line-clamp: 2;
+            }
+            .lower{
+                font-size: 12px;
+            }
+            .view {
+                text-align: center;
+                bottom: 0px; /* Adjust spacing from the bottom */
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -164,7 +210,7 @@ try {
                                 <img src="upload/Event/<?php echo $event['event_image'] ?>" alt="">
                                 <div class="spot-details">
                                     <div class="upper">
-                                        <h1><?php echo $event['event_name'] ?></h1>
+                                        <h1 class="eventname"><?php echo $event['event_name'] ?></h1>
                                         <p><strong><?php echo $event['event_type'] ?></strong></p>
                                     </div>
                                     <p class="desc"><?php echo $event['event_description'] ?></p>
@@ -175,7 +221,9 @@ try {
                                         <p>📍 <?php echo $event['event_location'] ?></p>
                                     </div>
                                 </div>
-                                <div class="view">click to view</div>
+                                <div class="view">
+                                    <p>View</p>
+                                </div>
                             </div>
                         </a>
                     <?php } ?>
