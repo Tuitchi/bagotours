@@ -1,0 +1,205 @@
+.title {
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: start;
+    color: #333;
+}
+
+.title p {
+    font-size: .9em;
+    color: #8a8a8a;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #555;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.btn:hover {
+    background-color: #45a049;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 3px rgba(37, 255, 37, 0.7);
+}
+
+.image-preview-container {
+    display: none;
+    margin-top: 20px;
+}
+
+.main-image {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.main-image img {
+    max-width: 400px;
+    /* Adjust as necessary */
+    max-height: 300px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.thumbnail-images {
+    display: flex;
+    gap: 10px;
+    scrollbar-width: none;
+    overflow-x: scroll;
+}
+
+.thumbnail-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.thumbnail-images img:hover {
+    transform: scale(1.1);
+}
+
+.thumbnail-images img.selected {
+    border-color: #007bff;
+    /* Highlight the selected main image */
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.input-group {
+    width: 100%;
+}
+
+.radio-group {
+    display: flex;
+    gap: 30%;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.radio label {
+    font-size: 1.2em;
+    margin-top: 0;
+}
+
+.radio input[type="radio"] {
+    width: 50px;
+    height: 20px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="datetime-local"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.btn-submit {
+    display: block;
+    width: 300px;
+    float: right;
+    padding: 10px;
+    margin-top: 30px;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
+}
+
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #93938b;
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    padding: 0 10px;
+}
+
+/* Divider styling */
+.section-divider {
+    flex-grow: 1;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.section-title span,
+label span {
+    color: #e77173;
+    font-weight: lighter;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.section-title span.opt,
+label span.opt {
+    color: #52aa6f;
+}
+
+.image-preview {
+    display: none;
+    width: 50vw;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}

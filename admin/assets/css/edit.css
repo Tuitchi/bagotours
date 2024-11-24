@@ -1,0 +1,17 @@
+.image-preview-container {
+    display: block;
+}
+.editable {
+    color: green;
+}
+.thumbnail-container {
+    position: relative;
+}
+.thumbnail-container .delete-icon{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+}
