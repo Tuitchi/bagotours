@@ -146,9 +146,8 @@ function getAverageRating($conn, $tour_id)
 
 
 
-function registerStatus($user_id)
+function registerStatus($conn,$user_id)
 {
-    global $conn;
     $stmt = $conn->prepare("SELECT status FROM tours WHERE user_id = ? LIMIT 1");
     $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
     $stmt->execute();

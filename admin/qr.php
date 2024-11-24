@@ -1,15 +1,7 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
-
-
-$pageRole = "admin";
-require_once '../php/accValidation.php';
-
 $user_id = $_SESSION['user_id'];
-$pp = $_SESSION['profile-pic'];
-
 ?>
 
 <!DOCTYPE html>

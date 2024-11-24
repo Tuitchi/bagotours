@@ -1,13 +1,7 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
-
-$pageRole = "admin";
-require_once '../php/accValidation.php';
-
 $user_id = $_SESSION['user_id'];
-$pp = $_SESSION['profile-pic'];
 
 $query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 0 OR tours.status = 2";
 $stmt = $conn->prepare($query);

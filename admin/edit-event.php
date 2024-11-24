@@ -2,11 +2,8 @@
 include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
-
-$pageRole = "admin";
-require_once '../php/accValidation.php';
-
 $user_id = $_SESSION['user_id'];
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $event = getEventbyCode($conn, $id);

@@ -1,4 +1,6 @@
 <?php
+ini_set('log_errors', 1); // Enable error logging
+ini_set('error_log','../error_log.txt'); // Set the error log file path
 
 $DATABASE_HOSTNAME = "localhost";
 $DATABASE_USERNAME = "root";
@@ -27,14 +29,13 @@ try {
 } catch (Exception $e) {
     error_log("General error: " . $e->getMessage());
 }
-
 try {
     $stmt = $conn->prepare("
         SELECT b.id, b.user_id as client, t.id as tour_id, t.user_id as user_id, t.title as title
         FROM booking b 
         JOIN tours t ON b.tour_id = t.id 
         JOIN users u ON t.user_id = u.id 
-        WHERE DATE(date_sched) = CURDATE()
+        WHERE DATE(b.date_sched) = CURDATE()
     ");
     $stmt->execute();
 
@@ -89,7 +90,7 @@ try {
             }
         }
     } else {
-        error_log("No bookings found for today.");
+        error_log("No bookings found for today or future dates.");
     }
 } catch (PDOException $e) {
     error_log('Error: ' . $e->getMessage());
@@ -107,4 +108,3 @@ function createNotif($conn, $userId, $tour_id, $message, $url, $type)
     $stmt->bindParam(':type', $type, PDO::PARAM_STR);
     return $stmt->execute() ? "success" : "error";
 }
-

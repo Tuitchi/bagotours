@@ -1,11 +1,6 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
-
-$pageRole = "admin";
-require_once '../php/accValidation.php';
-
 $user_id = $_SESSION['user_id'];
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
@@ -95,7 +90,6 @@ $users = $stmt->fetchAll();
             font-size: 1.1em;
             cursor: pointer;
         }
-
     </style>
     </head>
 
@@ -225,6 +219,22 @@ $users = $stmt->fetchAll();
 
         <script>
             $(document).ready(function () {
+                $(document).on('click', '#drop', function (event) {
+                    event.preventDefault();
+
+                    // Close any open dropdowns first (optional, to hide others)
+                    $('.actions').not($(this).next('.actions')).hide();
+
+                    // Toggle the display of the clicked dropdown
+                    const actions = $(this).next('.actions'); // This targets the .actions that comes after the clicked button
+
+                    // Check the current state and toggle it
+                    if (actions.css('display') === 'none') {
+                        actions.css('display', 'block');  // Show the dropdown
+                    } else {
+                        actions.css('display', 'none');   // Hide the dropdown
+                    }
+                });
                 const $searchInput = $('#search-input');
                 const $studentTableBody = $('#userTable tbody');
                 const $paginationContainer = $('.pagination');

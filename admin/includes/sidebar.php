@@ -7,7 +7,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
 <section id="sidebar" class="<?php echo $sidebarClass ?>">
     <a href="home" class="brand">
         <img src="../assets/icons/logo.png" alt="" style="width: 60px;">
-        <span class="text">BagoTours - Admin</span>
+        <span class="text">BagoTours</span>
     </a>
     <ul class="side-menu top">
         <li class="<?php echo $current_page == 'home' ? 'active' : ''; ?>">
