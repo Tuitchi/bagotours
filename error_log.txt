@@ -430,3 +430,5 @@ Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have
 [24-Nov-2024 10:49:09 Europe/Berlin] Script finished.
 [24-Nov-2024 10:58:42 Europe/Berlin] No bookings found for today or future dates.
 [24-Nov-2024 10:58:42 Europe/Berlin] Script finished.
+[24-Nov-2024 10:59:09 Europe/Berlin] No bookings found for today or future dates.
+[24-Nov-2024 10:59:09 Europe/Berlin] Script finished.
