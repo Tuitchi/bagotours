@@ -1,5 +1,8 @@
 <?php
 $pp = $_SESSION['profile-pic'];
+
+$pageRole = "admin";
+require_once '../php/accValidation.php';
 ?>
 
 <style>

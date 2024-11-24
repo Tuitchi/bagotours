@@ -2,10 +2,7 @@
 include '../include/db_conn.php';
 session_start();
 
-$pageRole = "admin";
-require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$id = $_POST['id'];
 	$status = $_POST['status'];

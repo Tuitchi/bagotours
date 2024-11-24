@@ -1,13 +1,10 @@
 <?php
 include '../include/db_conn.php';
 include '../func/user_func.php';
-
 session_start();
-$status = isset($_GET["status"]) ? $_GET["status"] : '';
-
-$pageRole = "admin";
-require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
+
+$status = isset($_GET["status"]) ? $_GET["status"] : '';
 $query = isset($_GET['search']) ? $_GET['search'] : null;
 $tour = getAllToursforAdmin($conn, $query);
 ?>

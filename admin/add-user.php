@@ -2,10 +2,7 @@
 include '../include/db_conn.php';
 session_start();
 
-$pageRole = "admin";
-require_once '../php/accValidation.php';
 $user_id = $_SESSION['user_id'];
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $title = htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8');

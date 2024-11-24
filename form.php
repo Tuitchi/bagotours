@@ -6,7 +6,7 @@ $toast = '';
 $user_id = $_SESSION['user_id'];
 
 require_once('func/user_func.php');
-$status = registerStatus($user_id);
+$status = registerStatus($conn,$user_id);
 
 if (isset($_GET['process'])) {
     $toast = $_GET['process'];

@@ -65,8 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
                 $tours = $stmt->fetch(PDO::FETCH_ASSOC);
-                checkBooking($conn, $tours['id']);
-                $_SESSION['tour_id'] = $tours['id'];
             }
         }
 

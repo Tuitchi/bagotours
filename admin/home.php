@@ -1,12 +1,7 @@
 <?php
 session_start();
-
-
-$pageRole = "admin";
-require_once '../php/accValidation.php';
 require_once '../include/db_conn.php';
 $user_id = $_SESSION['user_id'];
-$pp = $_SESSION['profile-pic'];
 
 try {
 	$query = "SELECT id, title, latitude, longitude, type, address, img FROM tours WHERE status = 1";
