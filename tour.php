@@ -140,11 +140,14 @@ function isDuplicateReview($conn, $tour_id, $user_id)
         /* Comment box styling */
         .comment-box {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             gap: 10px;
             /* Ensure spacing between elements */
             align-items: flex-start;
             /* Align to the top */
+        }
+        .rating-container{
+            display: flex
         }
 
         .input-box {
@@ -380,10 +383,10 @@ function isDuplicateReview($conn, $tour_id, $user_id)
                     <h3>Rating and Reviews</h3>
                     <form action="" method="post">
                         <div class="comment-box">
-                            <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar"
-                                class="avatar">
-                            <div class="input-box">
+                            <div class="rating">
                                 <div class="rating-container">
+                                    <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar"
+                                    class="avatar">
                                     <label for="rating" class="rating-label">Rate Us:</label>
                                     <select class="star" id="rating" name="rating">
                                         <option value="1">⭐ 1 Star</option>
@@ -393,6 +396,9 @@ function isDuplicateReview($conn, $tour_id, $user_id)
                                         <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
                                     </select>
                                 </div>
+                            </div>
+                            
+                            <div class="input-box">    
 
                                 <textarea placeholder="Share your experience..." class="comment-input"
                                     name="review"></textarea>
