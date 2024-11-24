@@ -71,15 +71,15 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 				<li>
 					<i class='bx bxs-star'></i>
 					<span class="text">
-						<h3><?php echo totalStars($conn, $user_id); ?></h3>
-						<p>Stars</p>
+						<h3><?php echo averageStars($conn, $user_id); ?> / 5</h3>
+						<p>Total Average Stars</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
 						<h3><?php echo totalTours($conn); ?></h3>
-						<p>Tours</p>
+						<p>Overall Tours</p>
 					</span>
 				</li>
 			</ul>

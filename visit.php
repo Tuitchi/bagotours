@@ -294,9 +294,7 @@ if (isset($_GET['tour_id'])) {
                         document.getElementById('con-pwd').style.border = '1px solid #ddd';
 
                         if (data.success) {
-                            setTimeout(function () {
-                                window.location.href = data.redirect;
-                            }, 1500);
+                            location.reload();
                         } else {
                             if (data.errors.name) {
                                 document.getElementById('regName-error').textContent = data.errors.name;

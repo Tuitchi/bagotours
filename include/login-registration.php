@@ -62,38 +62,37 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/scrollreveal"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const modal = document.getElementById('modal');
-        const forgotPassForm = document.getElementById('forgot-password-form');
-        const signInForm = document.getElementById('sign-in-form');
-        const signUpForm = document.getElementById('sign-up-form');
-        const loginFirst = document.getElementById('login-first');
-        const openModalButtons = document.querySelectorAll('#open-modal');
-        const toSignUpButton = document.getElementById('to-sign-up');
-        const forgotPassButton = document.getElementById('forgot-password');
-        const toSignInButton = document.getElementById('to-sign-in');
-        const cancelButton = document.getElementById('cancel-button');
-        const closeModalButton = document.getElementById('close-modal');
+    $(document).ready(function () {
+        const $modal = $('#modal');
+        const $forgotPassForm = $('#forgot-password-form');
+        const $signInForm = $('#sign-in-form');
+        const $signUpForm = $('#sign-up-form');
+        const $loginFirst = $('#login-first');
+        const $openModalButtons = $('#open-modal');
+        const $toSignUpButton = $('#to-sign-up');
+        const $forgotPassButton = $('#forgot-password');
+        const $toSignInButton = $('#to-sign-in');
+        const $cancelButton = $('#cancel-button');
+        const $closeModalButton = $('#close-modal');
 
-
-        function clearFormInputs(form) {
-            form.reset();
+        function clearFormInputs($form) {
+            $form[0].reset();
         }
+
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
             const results = regex.exec(window.location.search);
             return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
-        // Forgot Password
-        const forgotForm = document.getElementById('forgotForm');
-        forgotForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const submitButton = forgotForm.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Searching...';
 
-            const formData = new FormData(forgotForm);
+        // Forgot Password
+        $('#forgotForm').on('submit', function (event) {
+            event.preventDefault();
+            const $submitButton = $(this).find('button[type="submit"]');
+            $submitButton.prop('disabled', true).text('Searching...');
+
+            const formData = new FormData(this);
 
             $.ajax({
                 url: 'php/forgot-password.php',
@@ -104,47 +103,39 @@
                 success: function (response) {
                     const data = JSON.parse(response);
 
-                    document.getElementById('forgotEmail-error').textContent = '';
-                    document.getElementById('forgotEmail').style.border = '1px solid #ddd';
-
+                    $('#forgotEmail-error').text('').css('color', '').css('border', '');
+                    $('#forgotEmail').css('border', '1px solid #ddd');
 
                     if (data.success) {
-                        document.getElementById('forgotEmail-error').style.color = 'green';
-                        document.getElementById('forgotEmail-error').textContent = data.message;
-                        document.getElementById('forgotEmail').style.border = '1px solid green';
+                        $('#forgotEmail-error').css('color', 'green').text(data.message);
+                        $('#forgotEmail').css('border', '1px solid green');
                         setTimeout(function () {
-                            modal.classList.remove('active');
-                            clearFormInputs(loginForm);
-                            clearFormInputs(forgotPassForm);
-                            clearFormInputs(signupForm);
+                            $modal.removeClass('active');
+                            clearFormInputs($('#loginForm'));
+                            clearFormInputs($forgotPassForm);
+                            clearFormInputs($signUpForm);
                         }, 3000);
-                    } else {
-                        if (data.errors.email) {
-                            document.getElementById('forgotEmail-error').textContent = data.errors.email;
-                            document.getElementById('forgotEmail').style.border = '1px solid red';
-
-                        }
+                    } else if (data.errors.email) {
+                        $('#forgotEmail-error').text(data.errors.email);
+                        $('#forgotEmail').css('border', '1px solid red');
                     }
                 },
                 error: function () {
                     alert('An error occurred. Please try again.');
                 },
                 complete: function () {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Sign in';
-                }
+                    $submitButton.prop('disabled', false).text('Sign in');
+                },
             });
         });
 
         // Login Form
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', function (event) {
+        $('#loginForm').on('submit', function (event) {
             event.preventDefault();
-            const submitButton = loginForm.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Logging in...';
+            const $submitButton = $(this).find('button[type="submit"]');
+            $submitButton.prop('disabled', true).text('Logging in...');
 
-            const formData = new FormData(loginForm);
+            const formData = new FormData(this);
 
             $.ajax({
                 url: 'php/login.php',
@@ -154,27 +145,21 @@
                 processData: false,
                 success: function (response) {
                     const data = JSON.parse(response);
-                    document.getElementById('username-error').textContent = '';
-                    document.getElementById('username').style.border = '1px solid #ddd';
-
-                    document.getElementById('password-error').textContent = '';
-                    document.getElementById('password').style.border = '1px solid #ddd';
-
+                    $('#username-error, #password-error').text('');
+                    $('#username, #password').css('border', '1px solid #ddd');
 
                     if (data.success) {
-                        setTimeout(function () {
+                        setTimeout(() => {
                             window.location.href = data.redirect;
                         }, 1500);
                     } else {
                         if (data.errors.username) {
-                            document.getElementById('username-error').textContent = data.errors.username;
-                            document.getElementById('username').style.border = '1px solid red';
-
+                            $('#username-error').text(data.errors.username);
+                            $('#username').css('border', '1px solid red');
                         }
                         if (data.errors.password) {
-                            document.getElementById('password-error').textContent = data.errors.password;
-                            document.getElementById('password').style.border = '1px solid red';
-
+                            $('#password-error').text(data.errors.password);
+                            $('#password').css('border', '1px solid red');
                         }
                     }
                 },
@@ -182,17 +167,16 @@
                     alert('An error occurred. Please try again.');
                 },
                 complete: function () {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Sign in';
-                }
+                    $submitButton.prop('disabled', false).text('Sign in');
+                },
             });
         });
+
         // Signup Form
-        const signupForm = document.getElementById('signupForm');
-        signupForm.addEventListener('submit', function (event) {
+        $('#signupForm').on('submit', function (event) {
             event.preventDefault();
 
-            const formData = new FormData(signupForm);
+            const formData = new FormData(this);
 
             $.ajax({
                 url: 'php/register.php',
@@ -200,174 +184,97 @@
                 data: formData,
                 contentType: false,
                 processData: false,
-                beforeSend: function () { },
                 success: function (response) {
-                    let data = JSON.parse(response);
-                    document.getElementById('regName-error').textContent = '';
-                    document.getElementById('fname').style.border = '1px solid #ddd';
-                    document.getElementById('lname').style.border = '1px solid #ddd';
-                    document.getElementById('regUsername-error').textContent = '';
-                    document.getElementById('signup-username').style.border = '1px solid #ddd';
-                    document.getElementById('regEmail-error').textContent = '';
-                    document.getElementById('regHome-error').textContent = '';
-                    document.getElementById('email').style.border = '1px solid #ddd';
-                    document.getElementById('home-address').style.border = '1px solid #ddd';
-                    document.getElementById('regPassword-error').textContent = '';
-                    document.getElementById('pwd').style.border = '1px solid #ddd';
-                    document.getElementById('regconPass-error').textContent = '';
-                    document.getElementById('con-pwd').style.border = '1px solid #ddd';
+                    const data = JSON.parse(response);
+                    // Clear all error fields
+                    $('#regName-error, #regUsername-error, #regEmail-error, #regHome-error, #regPassword-error, #regconPass-error').text('');
+                    $('#fname, #lname, #signup-username, #email, #home-address, #pwd, #con-pwd').css('border', '1px solid #ddd');
 
                     if (data.success) {
                         window.location.href = data.redirect;
                     } else {
                         if (data.errors.name) {
-                            document.getElementById('regName-error').textContent = data.errors.name;
-                            document.getElementById('lname').style.border = '1px solid red';
-                            document.getElementById('fname').style.border = '1px solid red';
+                            $('#regName-error').text(data.errors.name);
+                            $('#fname, #lname').css('border', '1px solid red');
                         }
                         if (data.errors.uname) {
-                            document.getElementById('regUsername-error').textContent = data.errors.uname;
-                            document.getElementById('signup-username').style.border = '1px solid red';
+                            $('#regUsername-error').text(data.errors.uname);
+                            $('#signup-username').css('border', '1px solid red');
                         }
                         if (data.errors.email) {
-                            document.getElementById('regEmail-error').textContent = data.errors.email;
-                            document.getElementById('email').style.border = '1px solid red';
+                            $('#regEmail-error').text(data.errors.email);
+                            $('#email').css('border', '1px solid red');
                         }
                         if (data.errors.home) {
-                            document.getElementById('regHome-error').textContent = data.errors.home;
-                            document.getElementById('home-address').style.border = '1px solid red';
+                            $('#regHome-error').text(data.errors.home);
+                            $('#home-address').css('border', '1px solid red');
                         }
                         if (data.errors.pwd) {
-                            document.getElementById('regPassword-error').textContent = data.errors.pwd;
-                            document.getElementById('pwd').style.border = '1px solid red';
+                            $('#regPassword-error').text(data.errors.pwd);
+                            $('#pwd').css('border', '1px solid red');
                         }
                         if (data.errors.confirm_password) {
-                            document.getElementById('regconPass-error').textContent = data.errors.confirm_password;
-                            document.getElementById('con-pwd').style.border = '1px solid red';
+                            $('#regconPass-error').text(data.errors.confirm_password);
+                            $('#con-pwd').css('border', '1px solid red');
                         }
                     }
                 },
                 error: function () {
                     alert('An error occurred. Please try again.');
-                }
+                },
             });
         });
 
-        openModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                modal.classList.add('active');
-                signInForm.classList.add('slide-in');
-            });
-        });
-        <?php if (!isset($_SESSION['user_id'])) { ?>
-            window.addEventListener('load', function () {
-                if (getUrlParameter('login') === 'true') {
-                    loginFirst.style.display = 'block';
-                    modal.classList.add('active');
-                }
-            });
-        <?php } ?>
-
-
-        cancelButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            forgotPassForm.classList.add('hidden');
-            signInForm.classList.remove('hidden');
-            signInForm.classList.add('slide-in');
-            forgotPassForm.classList.remove('slide-in');
-
-            document.getElementById('forgotEmail-error').textContent = '';
-            document.getElementById('forgotEmail').style.border = '1px solid #ddd';
-        });
-        forgotPassButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            signInForm.classList.add('hidden');
-            forgotPassForm.classList.remove('hidden');
-            forgotPassForm.classList.add('slide-in');
-            signInForm.classList.remove('slide-in');
-
-            document.getElementById('username-error').textContent = '';
-            document.getElementById('username').style.border = '1px solid #ddd';
-            document.getElementById('password-error').textContent = '';
-            document.getElementById('password').style.border = '1px solid #ddd';
+        // Button and Modal Handlers
+        $openModalButtons.on('click', function () {
+            $modal.addClass('active');
+            $signInForm.addClass('slide-in');
         });
 
-        toSignUpButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            signInForm.classList.add('hidden');
-            signUpForm.classList.remove('hidden');
-            signUpForm.classList.add('slide-in');
-            signInForm.classList.remove('slide-in');
-
-            document.getElementById('username-error').textContent = '';
-            document.getElementById('username').style.border = '1px solid #ddd';
-            document.getElementById('password-error').textContent = '';
-            document.getElementById('password').style.border = '1px solid #ddd';
+        $cancelButton.on('click', function (e) {
+            e.preventDefault();
+            $forgotPassForm.addClass('hidden').removeClass('slide-in');
+            $signInForm.removeClass('hidden').addClass('slide-in');
         });
 
-        toSignInButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            signUpForm.classList.add('hidden');
-            signInForm.classList.remove('hidden');
-            signInForm.classList.add('slide-in');
-            signUpForm.classList.remove('slide-in');
-
-
-            document.getElementById('regName-error').textContent = '';
-            document.getElementById('fname').style.border = '1px solid #ddd';
-            document.getElementById('lname').style.border = '1px solid #ddd';
-            document.getElementById('regUsername-error').textContent = '';
-            document.getElementById('signup-username').style.border = '1px solid #ddd';
-            document.getElementById('regEmail-error').textContent = '';
-            document.getElementById('regHome-error').textContent = '';
-            document.getElementById('email').style.border = '1px solid #ddd';
-            document.getElementById('home-address').style.border = '1px solid #ddd';
-            document.getElementById('regPassword-error').textContent = '';
-            document.getElementById('pwd').style.border = '1px solid #ddd';
-            document.getElementById('regconPass-error').textContent = '';
-            document.getElementById('con-pwd').style.border = '1px solid #ddd';
+        $forgotPassButton.on('click', function (e) {
+            e.preventDefault();
+            $signInForm.addClass('hidden').removeClass('slide-in');
+            $forgotPassForm.removeClass('hidden').addClass('slide-in');
         });
-        window.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                modal.classList.remove('active');
-                clearFormInputs(loginForm);
-                clearFormInputs(forgotForm);
-                clearFormInputs(signupForm);
 
-                document.getElementById('regName-error').textContent = '';
-                document.getElementById('fname').style.border = '1px solid #ddd';
-                document.getElementById('lname').style.border = '1px solid #ddd';
-                document.getElementById('regUsername-error').textContent = '';
-                document.getElementById('signup-username').style.border = '1px solid #ddd';
-                document.getElementById('regEmail-error').textContent = '';
-                document.getElementById('regHome-error').textContent = '';
-                document.getElementById('email').style.border = '1px solid #ddd';
-                document.getElementById('home-address').style.border = '1px solid #ddd';
-                document.getElementById('regPassword-error').textContent = '';
-                document.getElementById('pwd').style.border = '1px solid #ddd';
-                document.getElementById('regconPass-error').textContent = '';
-                document.getElementById('con-pwd').style.border = '1px solid #ddd';
+        $toSignUpButton.on('click', function (e) {
+            e.preventDefault();
+            $signInForm.addClass('hidden').removeClass('slide-in');
+            $signUpForm.removeClass('hidden').addClass('slide-in');
+        });
+
+        $toSignInButton.on('click', function (e) {
+            e.preventDefault();
+            $signUpForm.addClass('hidden').removeClass('slide-in');
+            $signInForm.removeClass('hidden').addClass('slide-in');
+        });
+
+        $closeModalButton.on('click', function () {
+            $modal.removeClass('active');
+            clearFormInputs($('#loginForm'));
+            clearFormInputs($('#forgotForm'));
+            clearFormInputs($('#signupForm'));
+        });
+
+        $(window).on('keydown', function (e) {
+            if (e.key === 'Escape') {
+                $modal.removeClass('active');
             }
         });
-        closeModalButton.addEventListener('click', () => {
-            modal.classList.remove('active');
-            clearFormInputs(loginForm);
-            clearFormInputs(forgotForm);
-            clearFormInputs(signupForm);
 
-            document.getElementById('regName-error').textContent = '';
-            document.getElementById('fname').style.border = '1px solid #ddd';
-            document.getElementById('lname').style.border = '1px solid #ddd';
-            document.getElementById('regUsername-error').textContent = '';
-            document.getElementById('signup-username').style.border = '1px solid #ddd';
-            document.getElementById('regEmail-error').textContent = '';
-            document.getElementById('regHome-error').textContent = '';
-            document.getElementById('email').style.border = '1px solid #ddd';
-            document.getElementById('home-address').style.border = '1px solid #ddd';
-            document.getElementById('regPassword-error').textContent = '';
-            document.getElementById('pwd').style.border = '1px solid #ddd';
-            document.getElementById('regconPass-error').textContent = '';
-            document.getElementById('con-pwd').style.border = '1px solid #ddd';
-        });
+        // Check for query parameter
+        <?php if (!isset($_SESSION['user_id'])) { ?>
+            if (getUrlParameter('login') === 'true') {
+                $loginFirst.show();
+                $modal.addClass('active');
+            }
+        <?php } ?>
     });
+
 </script>

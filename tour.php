@@ -17,6 +17,55 @@ if (isset($_GET['id'])) {
     $stmt->execute([$decrypted_id]);
     $tour = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $rating = filter_var($_POST['rating'], FILTER_SANITIZE_NUMBER_INT);
+    $review = filter_var($_POST['review'], FILTER_SANITIZE_STRING);
+
+    if (!empty($rating) && !empty($review)) {
+        if ($rating < 1 || $rating > 5) {
+            $_SESSION['errorMessage'] = "Rating must be between 1 and 5 stars.";
+        } else {
+            try {
+                // Check for duplicate reviews
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
+                $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $stmt->execute();
+
+                if ($stmt->fetchColumn() > 0) {
+                    $_SESSION['errorMessage'] = "You have already submitted a review for this tour.";
+                } else {
+                    // Insert the review
+                    $img = ''; // Handle image upload if required
+                    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img, date_created) VALUES (:tour_id, :user_id, :rating, :review, :img, NOW())");
+                    $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                    $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
+                    $stmt->bindParam(':review', $review, PDO::PARAM_STR);
+                    $stmt->bindParam(':img', $img, PDO::PARAM_STR);
+
+                    if ($stmt->execute()) {
+                        $_SESSION['successMessage'] = "Review submitted successfully!";
+                    } else {
+                        $_SESSION['errorMessage'] = "Review submission failed.";
+                    }
+                }
+            } catch (PDOException $e) {
+                error_log("Database error: " . $e->getMessage(), 3, "error_log.txt");
+                $_SESSION['errorMessage'] = "An error occurred while submitting your review.";
+            }
+        }
+    } else {
+        $_SESSION['errorMessage'] = "Please provide both rating and review.";
+    }
+
+    // Redirect to the same page
+    header("Location: " . $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING']);
+    exit;
+}
+
+
+
 require_once 'func/func.php';
 $averageRating = getAverageRatingNew($conn, $decrypted_id);
 $ratingStars = displayRatingStars($averageRating);
@@ -51,6 +100,15 @@ function timeAgo($timestamp)
         return ($years == 1) ? "one year ago" : "$years years ago";
     }
 }
+function isDuplicateReview($conn, $tour_id, $user_id)
+{
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() > 0;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,144 +120,173 @@ function timeAgo($timestamp)
     <title>BagoTours</title>
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/tour.css">
     <style>
         .comment-section {
-    position: relative;
-    width: 100%;
-    margin: auto;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+            position: relative;
+            width: 100%;
+            margin: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-/* Comment box styling */
-.comment-box {
-    display: flex;
-    flex-direction: row;
-    gap: 10px; /* Ensure spacing between elements */
-    align-items: flex-start; /* Align to the top */
-}
+        /* Comment box styling */
+        .comment-box {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            /* Ensure spacing between elements */
+            align-items: flex-start;
+            /* Align to the top */
+        }
 
-.input-box {
-    display: flex;
-    flex-direction: row;
-    flex: 1; /* Allow the input to grow and fit */
-    width: 100%; /* Ensure full-width use */
-    box-sizing: border-box; /* Prevent padding from breaking layout */
-}
+        .input-box {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            /* Allow the input to grow and fit */
+            width: 100%;
+            /* Ensure full-width use */
+            box-sizing: border-box;
+            /* Prevent padding from breaking layout */
+        }
 
-.input-box #rating {
-    width: 30px;
-    height: 30px;
-    background-color: #ccc;
-    border-radius: 50%;
-    cursor: pointer;
-}
+        .input-box #rating {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
 
-.comment-box .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
+        .comment-box .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
 
-.input-box .comment-input {
-    display: block; /* Fix any inline behavior */
-    width: 100%; /* Ensure it spans the container */
-    padding: 8px;
-    font-size: 14px; /* Make it readable on smaller screens */
-    box-sizing: border-box; /* Account for padding in the width */
-}
+        .input-box .comment-input {
+            display: block;
+            /* Fix any inline behavior */
+            width: 100%;
+            /* Ensure it spans the container */
+            padding: 8px;
+            font-size: 14px;
+            /* Make it readable on smaller screens */
+            box-sizing: border-box;
+            /* Account for padding in the width */
+        }
 
-.input-box .comment-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
+        .input-box .comment-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
 
-.comment-box .comment-submit-btn {
-    margin-left: 10px;
-    padding: 8px 12px;
-    background-color: #007bff;
-    width: auto;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        .comment-box .comment-submit-btn {
+            margin-left: 10px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            width: auto;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-.comment-box .comment-submit-btn:hover {
-    background-color: #0056b3;
-}
-/* Container styling for dropdown */
-.rating-container {
-    position: relative;
-    max-width: 300px;
-    margin: auto;
-}
+        .comment-box .comment-submit-btn:hover {
+            background-color: #0056b3;
+        }
 
-/* Dropdown base styles */
-.star {
-   background-image: url(star.png);
-    appearance: none; /* Remove default dropdown */
-    background: linear-gradient(to right, #f7f7f7, #ffffff); /* Subtle gradient */
-    border: 1px solid #ddd; /* Light border */
-    border-radius: 8px; /* Smooth corners */
-    padding: 12px 15px; /* Comfortable padding */
-    font-size: 16px; /* Modern font size */
-    color: #444; /* Darker text color */
-    cursor: pointer;
-    width: 100%; /* Responsive width */
-    transition: all 0.3s ease; /* Smooth transition effects */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
+        /* Container styling for dropdown */
+        .rating-container {
+            position: relative;
+            max-width: 300px;
+            margin: auto;
+        }
 
-/* Add custom arrow for the dropdown */
-.star::after {
-    content: '▼'; /* Unicode arrow */
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    color: #888;
-    pointer-events: none; /* Make sure arrow doesn’t interfere */
-}
+        /* Dropdown base styles */
+        .star {
+            background-image: url(star.png);
+            appearance: none;
+            /* Remove default dropdown */
+            background: linear-gradient(to right, #f7f7f7, #ffffff);
+            /* Subtle gradient */
+            border: 1px solid #ddd;
+            /* Light border */
+            border-radius: 8px;
+            /* Smooth corners */
+            padding: 12px 15px;
+            /* Comfortable padding */
+            font-size: 16px;
+            /* Modern font size */
+            color: #444;
+            /* Darker text color */
+            cursor: pointer;
+            width: 100%;
+            /* Responsive width */
+            transition: all 0.3s ease;
+            /* Smooth transition effects */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
 
-/* Hover and Focus States */
-.star:hover {
-    border-color: #007bff; /* Blue border on hover */
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Blue glow */
-}
+        /* Add custom arrow for the dropdown */
+        .star::after {
+            content: '▼';
+            /* Unicode arrow */
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #888;
+            pointer-events: none;
+            /* Make sure arrow doesn’t interfere */
+        }
 
-.star:focus {
-    outline: none;
-    border-color: #0056b3; /* Stronger blue on focus */
-    box-shadow: 0 0 10px rgba(0, 86, 179, 0.4); /* Glow effect */
-}
+        /* Hover and Focus States */
+        .star:hover {
+            border-color: #007bff;
+            /* Blue border on hover */
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+            /* Blue glow */
+        }
 
-/* Styling for the Options in the Dropdown */
-.star option {
-    background: #fff; /* White background */
-    color: #333; /* Dark text for visibility */
-    font-size: 16px;
-    padding: 10px; /* Padding for spacing */
-}
+        .star:focus {
+            outline: none;
+            border-color: #0056b3;
+            /* Stronger blue on focus */
+            box-shadow: 0 0 10px rgba(0, 86, 179, 0.4);
+            /* Glow effect */
+        }
 
-/* Optional Label Styling */
-.rating-label {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 8px;
-    display: block;
-}
+        /* Styling for the Options in the Dropdown */
+        .star option {
+            background: #fff;
+            /* White background */
+            color: #333;
+            /* Dark text for visibility */
+            font-size: 16px;
+            padding: 10px;
+            /* Padding for spacing */
+        }
 
+        /* Optional Label Styling */
+        .rating-label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
     </style>
 </head>
 
@@ -265,7 +352,7 @@ function timeAgo($timestamp)
                             </div>
                             <p class="rating"><?php echo $ratingStars; ?></p>
                             <h4>About</h4>
-                            <p class="details"><?php echo $tour['description']?></p>
+                            <p class="details"><?php echo $tour['description'] ?></p>
                             <div class="btons">
                                 <?php if (isBookable($conn, $tour['id'])) {
                                     $status = checkBookingStatus($conn, $user_id, $tour['id']);
@@ -291,74 +378,77 @@ function timeAgo($timestamp)
                 <hr>
                 <div class="comment-section">
                     <h3>Rating and Reviews</h3>
-                    <div class="comment-box">
-                        <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar"
-                            class="avatar">
-                        <div class="input-box">
-                            
-                        <div class="rating-container">
-                            <label for="rating" class="rating-label">Rate Us:</label>
-                            <select class="star" id="rating" name="rating">
-                                <option value="1">⭐ 1 Star</option>
-                                <option value="2">⭐⭐ 2 Stars</option>
-                                <option value="3">⭐⭐⭐ 3 Stars</option>
-                                <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-                                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
-                            </select>
+                    <form action="" method="post">
+                        <div class="comment-box">
+                            <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar"
+                                class="avatar">
+                            <div class="input-box">
+                                <div class="rating-container">
+                                    <label for="rating" class="rating-label">Rate Us:</label>
+                                    <select class="star" id="rating" name="rating">
+                                        <option value="1">⭐ 1 Star</option>
+                                        <option value="2">⭐⭐ 2 Stars</option>
+                                        <option value="3">⭐⭐⭐ 3 Stars</option>
+                                        <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                                        <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                                    </select>
+                                </div>
+
+                                <textarea placeholder="Share your experience..." class="comment-input"
+                                    name="review"></textarea>
+                                <button class="comment-submit-btn" type="submit">Post</button>
+                            </div>
+
                         </div>
 
-                            <textarea placeholder="Share your experience..." class="comment-input"></textarea>
-                            <button class="comment-submit-btn">Post</button>
-                        </div>
-                       
-                    </div>
+                        <div class="comments-list">
+                            <?php
+                            try {
+                                $stmt = $conn->prepare("SELECT rr.*, u.name as name, u.profile_picture as img FROM review_rating rr JOIN users u ON rr.user_id = u.id WHERE tour_id = :tour_id ORDER BY date_created DESC");
+                                $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $comments = $stmt->fetchAll();
+                            } catch (PDOException $e) {
+                                echo "Error: " . $e->getMessage();
+                            }
+                            foreach ($comments as $comment) {
+                                ?>
+                                <div class="comment">
+                                    <img src="upload/Profile Pictures/<?php echo $comment['img'] ?>" alt="User Avatar"
+                                        class="avatar">
+                                    <div class="comment-content">
+                                        <h4 class="comment-author"><?php echo $comment['name'] ?></h4>
+                                        <div class="comment-star">
+                                            <?php
+                                            $rating = $comment['rating']; // Example rating
+                                            $starOutput = '';
 
-                    <div class="comments-list">
-                        <?php
-                        try {
-                            $stmt = $conn->prepare("SELECT rr.*, u.name as name, u.profile_picture as img FROM review_rating rr JOIN users u ON rr.user_id = u.id WHERE tour_id = :tour_id ORDER BY date_created DESC");
-                            $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
-                            $stmt->execute();
-                            $comments = $stmt->fetchAll();
-                        } catch (PDOException $e) {
-                            echo "Error: " . $e->getMessage();
-                        }
-                        foreach ($comments as $comment) {
-                            ?>
-                            <div class="comment">
-                                <img src="upload/Profile Pictures/<?php echo $comment['img'] ?>" alt="User Avatar"
-                                    class="avatar">
-                                <div class="comment-content">
-                                    <h4 class="comment-author"><?php echo $comment['name'] ?></h4>
-                                    <div class="comment-star">
-                                        <?php
-                                        $rating = $comment['rating']; // Example rating
-                                        $starOutput = '';
+                                            // Loop to create filled stars
+                                            for ($i = 1; $i <= $rating; $i++) {
+                                                $starOutput .= "<span class='comment-star'><i class='bx bxs-star'></i></span>";
+                                            }
 
-                                        // Loop to create filled stars
-                                        for ($i = 1; $i <= $rating; $i++) {
-                                            $starOutput .= "<span class='comment-star'><i class='bx bxs-star'></i></span>";
-                                        }
+                                            // Loop to create empty stars
+                                            for ($i = $rating + 1; $i <= 5; $i++) {
+                                                $starOutput .= "<span class='comment-star'><i class='bx bx-star'></i></span>";
+                                            }
 
-                                        // Loop to create empty stars
-                                        for ($i = $rating + 1; $i <= 5; $i++) {
-                                            $starOutput .= "<span class='comment-star'><i class='bx bx-star'></i></span>";
-                                        }
-
-                                        // Display the stars
-                                        echo $starOutput;
-                                        ?>
-                                    </div>
-                                    <p class="comment-text"><?php echo $comment['review'] ?></p>
-                                    <div class="comment-actions">
-                                        <span class="comment-time"><?php echo timeAgo($comment['date_created']) ?></span>
+                                            // Display the stars
+                                            echo $starOutput;
+                                            ?>
+                                        </div>
+                                        <p class="comment-text"><?php echo $comment['review'] ?></p>
+                                        <div class="comment-actions">
+                                            <span
+                                                class="comment-time"><?php echo timeAgo($comment['date_created']) ?></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php } ?>
+                            <?php } ?>
 
-                        <!-- Add more comments here as needed -->
-                    </div>
+                            <!-- Add more comments here as needed -->
+                        </div>
+                    </form>
                     <button class="show-more-btn" style="display: none;">Show More</button>
                 </div>
             </div>
@@ -390,6 +480,38 @@ function timeAgo($timestamp)
     <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.on('mouseenter', Swal.stopTimer);
+                toast.on('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        // Check if the PHP session has a success or error message and show the corresponding SweetAlert
+        <?php if (isset($_SESSION['successMessage'])): ?>
+            Toast.fire({
+                icon: 'success',
+                title: '<?php echo $_SESSION['successMessage']; ?>'
+            }).then(() => {
+                // Optionally, reload the page after showing success message
+                window.location.reload();
+            });
+            <?php unset($_SESSION['successMessage']); // Clear session message ?>
+        <?php elseif (isset($_SESSION['errorMessage'])): ?>
+            Toast.fire({
+                icon: 'error',
+                title: '<?php echo $_SESSION['errorMessage']; ?>'
+            }).then(() => {
+                // Optionally, reload the page after showing error message
+                window.location.reload();
+            });
+            <?php unset($_SESSION['errorMessage']); // Clear session message ?>
+        <?php endif; ?>
 
         document.querySelector('.pricing-header').addEventListener('click', function () {
             const pricingContent = document.querySelector('.pricing-content');

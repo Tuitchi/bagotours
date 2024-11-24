@@ -32,31 +32,42 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'dashboard', 'url' => 'dashboard']
     ],
-    'inq' => [
-        ['title' => 'Home', 'url' => 'home'],
-        ['title' => 'Inquiries', 'url' => 'inq']
-    ],
     'setting' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Settings', 'url' => 'setting']
     ],
-    'tour' => [
+    'tours' => [
         ['title' => 'Home', 'url' => 'home'],
-        ['title' => 'Tour', 'url' => 'tour']
+        ['title' => 'Tours', 'url' => 'tours']
+    ],
+    'add-tour' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Tours', 'url' => 'tours'],
+        ['title' => 'Add Tour', 'url' => 'add-tour']
+    ],
+    'view_tour' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Tours', 'url' => 'tours'],
+        ['title' => 'View', 'url' => 'view_tour']
+    ],
+    'edit-tour' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Tours', 'url' => 'tours'],
+        ['title' => 'Edit Tour', 'url' => 'edit-tour']
+    ],
+    'visitor' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Dashboard', 'url' => 'dashboard'],
+        ['title' => 'Visitors', 'url' => 'visitor']
     ],
     'qr' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'QR Code', 'url' => 'qr']
     ],
-    'review' => [
-        ['title' => 'Home', 'url' => 'home'],
-        ['title' => 'Review', 'url' => 'review']
-    ],
 ];
 $page = basename($_SERVER['PHP_SELF'], '.php');
 $currentBreadcrumbs = $breadcrumbs[$page] ?? $breadcrumbs['home'];
 ?>
-
 <ul class="breadcrumb">
     <?php foreach ($currentBreadcrumbs as $key => $breadcrumb): ?>
         <li>

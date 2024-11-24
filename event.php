@@ -26,10 +26,44 @@ try {
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <style>
+        .booking {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .booking h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .booking img {
+            width: 250px;
+            margin: auto;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .booking h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .desc p {
+            margin-bottom: 20px;
+        }
+
         .carousel-item img {
             width: 77vw;
             object-fit: cover;
         }
+
         .spots {
             width: 100%;
             height: 300px;
@@ -97,14 +131,14 @@ try {
 
         <?php include 'nav/sidenav.php' ?>
         <div class="main">
-
-            <div class="carousel-container">
-                <button class="prev" onclick="prevSlide()">&#10094;</button>
-                <button class="next" onclick="nextSlide()">&#10095;</button>
-                <div class="carousel-slide">
-                    <?php require_once 'func/user_func.php';
-                    foreach (array_slice($events, 0, 3) as $event) {
-                        echo "<div class='carousel-item'>
+            <?php if ($events) { ?>
+                <div class="carousel-container">
+                    <button class="prev" onclick="prevSlide()">&#10094;</button>
+                    <button class="next" onclick="nextSlide()">&#10095;</button>
+                    <div class="carousel-slide">
+                        <?php require_once 'func/user_func.php';
+                        foreach (array_slice($events, 0, 3) as $event) {
+                            echo "<div class='carousel-item'>
                         <a href='view-event?event=" . base64_encode($event['event_code'] . $salt) . "'>
                         <img src='upload/Event/" . $event['event_image'] . "' alt='" . $event['event_name'] . "'>
                         <div class='carousel-caption'>
@@ -113,39 +147,48 @@ try {
                         </div>
                         </a>
                     </div>";
-                    } ?>
-                </div>
+                        } ?>
+                    </div>
 
-                <div class="carousel-indicators">
-                    <div class="active" onclick="goToSlide(0)"></div>
-                    <div onclick="goToSlide(1)"></div>
-                    <div onclick="goToSlide(2)"></div>
+                    <div class="carousel-indicators">
+                        <div class="active" onclick="goToSlide(0)"></div>
+                        <div onclick="goToSlide(1)"></div>
+                        <div onclick="goToSlide(2)"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="popularspot">
-                <h2>Discover Events</h2>
-                <?php foreach ($events as $event) { ?>
-                    <a href="view-event?event=<?php echo base64_encode($event['event_code'] . $salt) ?>">
-                        <div class="spots">
-                            <img src="upload/Event/<?php echo $event['event_image'] ?>" alt="">
-                            <div class="spot-details">
-                                <div class="upper">
-                                    <h1><?php echo $event['event_name'] ?></h1>
-                                    <p><strong><?php echo $event['event_type'] ?></strong></p>
+                <div class="popularspot">
+                    <h2>Discover Events</h2>
+                    <?php foreach ($events as $event) { ?>
+                        <a href="view-event?event=<?php echo base64_encode($event['event_code'] . $salt) ?>">
+                            <div class="spots">
+                                <img src="upload/Event/<?php echo $event['event_image'] ?>" alt="">
+                                <div class="spot-details">
+                                    <div class="upper">
+                                        <h1><?php echo $event['event_name'] ?></h1>
+                                        <p><strong><?php echo $event['event_type'] ?></strong></p>
+                                    </div>
+                                    <p class="desc"><?php echo $event['event_description'] ?></p>
+                                    <div class="lower">
+                                        <p>📅 <?php echo date('F d, Y', strtotime($event['event_date_start'])) ?> -
+                                            <?php echo date('F d, Y', strtotime($event['event_date_end'])) ?>
+                                        </p>
+                                        <p>📍 <?php echo $event['event_location'] ?></p>
+                                    </div>
                                 </div>
-                                <p class="desc"><?php echo $event['event_description'] ?></p>
-                                <div class="lower">
-                                    <p>📅 <?php echo date('F d, Y', strtotime($event['event_date_start'])) ?> -
-                                        <?php echo date('F d, Y', strtotime($event['event_date_end'])) ?>
-                                    </p>
-                                    <p>📍 <?php echo $event['event_location'] ?></p>
-                                </div>
+                                <div class="view">click to view</div>
                             </div>
-                            <div class="view">click to view</div>
-                        </div>
-                    </a>
-                <?php } ?>
-            </div>
+                        </a>
+                    <?php } ?>
+                </div>
+            <?php } else { ?>
+                <div class="booking">
+                    <h2>No Event.</h2>
+                    <img src="assets/booking-empty.png" alt="No bookings found" style="max-width: 100%; height: auto;">
+                    <div class="desc">
+                        <p>At this time, there are no events scheduled. Please visit again later for updates.</p>
+                    </div>
+                </div>
+            <?php } ?>
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>

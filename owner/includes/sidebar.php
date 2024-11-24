@@ -1,44 +1,44 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
 require_once __DIR__ . '/../../func/dashboardFunc.php';
-$sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === "hide";
+$sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'] === 'hide' ? 'hide' : '';
 ?>
-
-<section id="sidebar" class="<?php echo $sidebarHidden; ?>">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<section id="sidebar" class="<?php echo $sidebarClass ?>">
     <a href="home" class="brand">
-        <img src="../assets/icons/websiteIcon.png" alt="" style="width: 60px;">
-        <span class="text">BagoTours - Owner</span>
+        <img src="../assets/icons/logo.png" alt="" style="width: 60px;">
+        <span class="text">BagoTours</span>
     </a>
     <ul class="side-menu top">
-        <li class="<?php echo $current_page == 'dashboard' ? 'active' : ''; ?>">
+        <li class="<?php echo $current_page == 'home' ? 'active' : ''; ?>">
+            <a href="home">
+                <i class='bx bxs-home'></i>
+                <span class="text">Home</span>
+            </a>
+        </li>
+        <li class="<?php echo (in_array($current_page, ['dashboard', 'visitor'])) ? 'active' : ''; ?>">
             <a href="dashboard">
                 <i class='bx bxs-dashboard'></i>
                 <span class="text">Dashboard</span>
             </a>
         </li>
-        <li class="<?php echo $current_page == 'tour' ? 'active' : ''; ?>">
-            <a href="tour">
+        <li class="<?php echo (in_array($current_page, ['tours', 'edit-tour', 'add-tour'])) ? 'active' : ''; ?>">
+            <a href="tours">
                 <i class='bx bxs-map-alt'></i>
-                <span class="text">Tour</span>
+                <span class="text">Tours</span>
             </a>
         </li>
+
         <li class="<?php echo $current_page == 'booking' ? 'active' : ''; ?>">
             <a href="booking">
                 <i class='bx bxs-calendar-star'></i>
                 <span class="text">Booking</span>
-                <span class="pending" style="padding-left:50%"><?php echo totalBooking($conn, $user_id) ?></span>
-            </a>
-        </li>
-        <li class="<?php echo $current_page == 'review' ? 'active' : ''; ?>">
-            <a href="review">
-                <i class='bx bxs-message-rounded'></i>
-                <span class="text">Review and Rating</span>
-            </a>
-        </li>
-        <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
-            <a href="inq">
-                <i class='bx bxs-message-rounded'></i>
-                <span class="text">Inquiries</span>
+                <?php
+                $bookingCount = totalBooking($conn, $user_id);
+                if ($bookingCount > 0) {
+                    echo "<span class='notifCount'>" . $bookingCount . "</span>";
+                }
+                ?>
             </a>
         </li>
         <li class="<?php echo $current_page == 'qr' ? 'active' : ''; ?>">
@@ -63,6 +63,7 @@ $sidebarHidden = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden
         </li>
     </ul>
 </section>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmLogout() {

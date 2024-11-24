@@ -158,7 +158,7 @@ $user = getUserById($conn, $user_id);
                 flex-direction: column;
                 padding: 10px;
                 width: 100%;
-            }```
+            }
             .editUser {
                 flex-direction: row; /* Switch to row layout */
                 justify-content: space-between;
@@ -258,10 +258,10 @@ $user = getUserById($conn, $user_id);
                             <input type="text" id="fullName" name="fullName"
                                 value="<?php echo htmlspecialchars($user['name'], ENT_QUOTES); ?>">
                             <label for="username">Username:</label>
-                            <input type="text" id="username" name="username"
+                            <input type="text" id="username" name="username"disabled
                                 value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>">
                             <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email"
+                            <input type="email" id="email" name="email"disabled
                                 value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>">
                             <label for="phone">Phone:</label>
                             <input type="tel" id="phone" name="phone" maxlength="11" required

@@ -4,6 +4,30 @@ require 'include/db_conn.php';
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
+    $date = date('Y-m-d');
+    $stmt = $conn->prepare("SELECT expiry, id FROM tours WHERE user_id = :user_id AND DATE(expiry) >= :current_date");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':current_date', $date, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($tours) {
+        foreach ($tours as $tour) {
+            echo $tour['expiry'] . " = " . $date;
+
+            if ($tour['expiry'] >= $date) {
+                $deleteStmt = $conn->prepare("DELETE FROM tours WHERE user_id = :user_id AND id = :tour_id");
+                $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $deleteStmt->bindParam(':tour_id', $tour['id'], PDO::PARAM_INT);
+
+                if ($deleteStmt->execute()) {
+                    require_once 'func/func.php';
+                    createNotification($conn, $user_id, $tour['id'], "You can register as an owner again.", "form", "Tour Deletion");
+                }
+            }
+        }
+    }
 }
 
 // Handle AJAX request for nearby tours

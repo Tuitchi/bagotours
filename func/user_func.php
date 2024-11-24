@@ -20,6 +20,27 @@ function getAllToursforAdmin($conn, $query = null)
     // Fetch all results
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function getAllToursforOwners($conn, $user_id, $query = null)
+{
+    $sql = "SELECT * FROM tours WHERE user_id = $user_id";
+
+    // Prepare the SQL statement
+    if ($query) {
+        // Use prepared statements to prevent SQL injection
+        $sql .= " AND title LIKE :search OR address LIKE :search"; // Adjust fields as necessary
+        $stmt = $conn->prepare($sql);
+        $searchTerm = "%" . $query . "%";
+        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+    } else {
+        $stmt = $conn->prepare($sql);
+    }
+
+    // Execute the prepared statement
+    $stmt->execute();
+
+    // Fetch all results
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 
@@ -97,7 +118,8 @@ function getEventbyCode($conn, $event_code)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-function getEventByDate($conn) {
+function getEventByDate($conn)
+{
     $stmt = $conn->prepare("SELECT * FROM events WHERE event_date_start > CURDATE()");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -121,28 +143,8 @@ function getAverageRating($conn, $tour_id)
     $stmt->execute();
     return $stmt->fetchColumn() ?: 0;
 }
-function registerExpiry($conn, $user_id)
-{
-    $stmt = $conn->prepare("SELECT expiry, id FROM tours WHERE user_id = :user_id");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $date = date('Y-m-d');
 
-    foreach ($tours as $tour) {
-        if ($tour['expiry'] == $date) {
-            $deleteStmt = $conn->prepare("DELETE FROM tours WHERE user_id = :user_id AND id = :tour_id");
-            $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $deleteStmt->bindParam(':tour_id', $tour['id'], PDO::PARAM_INT);
-
-            if ($deleteStmt->execute()) {
-                require_once 'func.php';
-                createNotification($conn, $user_id, $tour['id'], "You can register as an owner again.", "form.php", "Upgrade cancelled");
-            }
-        }
-    }
-}
 
 function registerStatus($user_id)
 {

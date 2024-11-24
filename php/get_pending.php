@@ -1,14 +1,13 @@
-
-
 <?php
 include '../include/db_conn.php';
 
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
+    // Corrected query with proper parentheses for the OR condition
     $query = "SELECT users.*, tours.* FROM tours 
               JOIN users ON users.id = tours.user_id 
-              WHERE tours.id = :id AND tours.status = 0";
+              WHERE tours.id = :id AND (tours.status = 0 OR tours.status = 2)";
 
     try {
         $stmt = $conn->prepare($query);

@@ -80,6 +80,61 @@ body {
 	opacity: 0.8;
 }
 
+/* PAGINATION */
+.pagination {
+	margin: 5px;
+	display: flex;
+	justify-content: center;
+	background-color: var(--light);
+	/* Ensuring the background is white */
+	padding: 10px;
+	border-radius: 8px;
+	/* Rounded corners for the pagination container */
+}
+
+.pagination a,
+.pagination span {
+	margin: 0 3px;
+	padding: 6px 12px;
+	text-decoration: none;
+	border: 1px solid #444;
+	/* Darker border color */
+	color: #444;
+	/* Dark text color */
+	border-radius: 4px;
+	font-size: 14px;
+	/* Smaller font size */
+	background-color: #f5f5f5;
+	/* Light gray background for inactive buttons */
+}
+
+.pagination .btn {
+	color: #343a40;
+	/* Indicate that the button is not clickable */
+}
+
+.pagination a.active {
+	background-color: #343a40;
+	/* Dark background for active page */
+	color: white;
+	border-color: #343a40;
+	/* Matching border color */
+}
+
+.pagination a:hover {
+	background-color: #ddd;
+	/* Lighter background color when hovered */
+	border-color: #444;
+}
+
+.pagination span {
+	padding: 6px 12px;
+	color: #888;
+	/* Lighter gray for ellipsis */
+	border: none;
+	background-color: transparent;
+	/* No background for ellipsis */
+}
 
 /* MODAL STYLING */
 

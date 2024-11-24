@@ -2,11 +2,19 @@
 include '../include/db_conn.php';
 include '../func/user_func.php';
 session_start();
-$pageRole = "owner";
-require_once '../php/accValidation.php';
+
+
+
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
-$tour = getTourById($conn, $id);
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $tour = getTourById($conn, $id);
+} else {
+    header("Location: tours.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -18,28 +26,20 @@ $tour = getTourById($conn, $id);
     <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="assets/css/owner.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <title>BaGoTours - View Tour</title>
     <style>
         .tour-container {
-            width: 100%;
-            margin: 25px auto;
+            margin-top: 20px;
+            width: 80%;
+            margin: 0 auto;
             padding: 20px;
             background-color: #f9f9f9;
-            border-radius: 15px;
-        }
-        .head {
-            font-size: larger;
-            display: flex;
-            justify-content: space-between;
-        }
-        i {
-            cursor: pointer;
-        }
-        i:hover {
-            color: gray !important;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .tour-container h1 {
@@ -48,14 +48,13 @@ $tour = getTourById($conn, $id);
         }
 
         .tour-container img {
-            margin: 20px;
-            float: left;
-            width: 50%;
+            width: 100%;
             border-radius: 10px;
         }
 
         .tour-container p {
             font-size: 1.2em;
+            margin: 10px 0;
         }
 
         .tour-container .btn-edit,
@@ -89,43 +88,25 @@ $tour = getTourById($conn, $id);
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
             </div>
+            <div id="map" style="height: 400px; width: 80%; margin-top: 20px;"></div>
             <div class="tour-container">
-                <div class="head">
+                <?php if (!empty($tour)) { ?>
                     <h1><?php echo htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                    <i class='bx bx-edit-alt' onclick="loadDoc()"></i>
-                </div>
-                <div class="detail-container">
-                    <?php if (!empty($tour)) { ?>
-                        <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Tour Image">
-                        <p><strong>Address:</strong> <?php echo htmlspecialchars($tour['address'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><strong>Type:</strong> <?php echo htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($tour['description'], ENT_QUOTES, 'UTF-8')); ?></p>
-                        <p><strong>Status:</strong> <?php echo $tour['status'] == 1 ? 'Active' : 'Inactive'; ?></p>
-                    <?php } else { ?>
-                        <p>Tour not found.</p>
-                    <?php } ?>
-                </div>
-                <div id="tour-images">
-                    <h2>Images</h2>
-                    <div class="row">
-                        <?php if (!empty($tourImage)) {
-                            foreach ($tourImage as $img) { ?>
-                                <div class="col-md-3">
-                                    <img src="../upload/Tour Images/<?php echo htmlspecialchars($img['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Tour Image" style="width: 100%; border-radius: 10px;">
-                                </div>
-                            <?php }
-                        } else { ?>
-                            <p>No images found.</p>
-                        <?php } ?>
-                    </div>
-                </div>
-                <div id="map" style="height: 400px; width: 100%; margin-top: 20px;"></div>
-                <button class="btn-edit" type="button" onclick="loadDoc()">Edit</button>
-            </div>
+                    <img src="../upload/Tour Images/<?php echo htmlspecialchars($tour['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Tour Image">
+                    <p><strong>Address:</strong> <?php echo htmlspecialchars($tour['address'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Type:</strong> <?php echo htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($tour['description'], ENT_QUOTES, 'UTF-8')); ?></p>
+                    <p><strong>Status:</strong> <?php echo $tour['status'] == 1 ? 'Active' : 'Inactive'; ?></p>
+                    <button class="btn-edit" type="button" onclick="loadDoc()">Edit</button>
+                    <a href="#" class="btn-delete" data-tour-id="<?php echo $tour['id']; ?>">Delete</a>
+
+                <?php } else { ?>
+                    <p>Tour not found.</p>
+                <?php } ?>
             </div>
         </main>
     </section>
-
+    <script src="../assets/js/script.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function loadDoc() {
@@ -135,10 +116,9 @@ $tour = getTourById($conn, $id);
                     document.getElementById("main").innerHTML = this.responseText;
                 }
             };
-            xhttp.open("GET", "edit_tour.php", true);
+            xhttp.open("GET", "edit_tour?id=<?php echo $tour['id']?>", true);
             xhttp.send();
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY2x6d3pva281MGx6ODJrczJhaTJ4M2RmYyJ9.0sJ2ZGR2xpEza2j370y3rQ';
 
@@ -165,6 +145,47 @@ $tour = getTourById($conn, $id);
             map.scrollZoom.disable();
             map.touchZoomRotate.disable();
             map.rotate.disable();
+        });
+
+        document.querySelector('.btn-delete').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const tourId = this.getAttribute('data-tour-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('../php/delete_tour.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                'tour_id': tourId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            if (data.success) {
+                                Swal.fire('Deleted!', data.message, 'success').then(() => {
+                                    window.location.href = 'tours.php';
+                                });
+                            } else {
+                                Swal.fire('Error!', data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire('Error!', 'An error occurred while deleting the tour.', 'error');
+                        });
+                }
+            });
         });
     </script>
 </body>

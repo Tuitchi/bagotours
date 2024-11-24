@@ -6,7 +6,6 @@ $toast = '';
 $user_id = $_SESSION['user_id'];
 
 require_once('func/user_func.php');
-registerExpiry($conn, $user_id);
 $status = registerStatus($user_id);
 
 if (isset($_GET['process'])) {
@@ -64,6 +63,17 @@ if (isset($_GET['process'])) {
                                 <option value="Swimming Pool">Swimming Pool</option>
                             </select>
 
+                            <label for="bookable">Is booking available?</label>
+                            <div class="radio-group" id="bookable">
+                                <div class="radio-input">
+                                    <input type="radio" id="bookableYes" name="bookable" value="1" required>
+                                    <label for="bookableYes">Yes</label>
+                                </div>
+                                <div class="radio-input">
+                                    <input type="radio" id="bookableNo" name="bookable" value="0" required>
+                                    <label for="bookableNo">No</label>
+                                </div>
+                            </div>
                             <label for="description">Description:</label>
                             <textarea id="description" name="description" rows="4" required></textarea>
 
@@ -75,10 +85,10 @@ if (isset($_GET['process'])) {
                         <div class="step" id="step2">
                             <h2>Tourist Attraction Image</h2>
                             <p style="font-size:smaller;">Insert your tour image below.</p>
-                            <p id="image-error" style="color: red; display: none;">You can upload a maximum of 5 images.</p>
-                            <p id="image-error" style="color: red; display: none;">Image must have a landscape view (16:10
-                                aspect ratio recommended).
+                            <p id="tour-image-error" style="color: red; display: none;">You can upload a maximum of 5 images.
                             </p>
+                            <p id="tour-image-error" style="color: red; display: none;">Image must have a landscape view (16:10
+                                aspect ratio recommended).</p>
                             <div id="upload-notes"
                                 style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; font-size: 14px; color: #555;">
                                 <strong>Notes for Uploading Tour Images:</strong>
@@ -95,11 +105,11 @@ if (isset($_GET['process'])) {
                                     <div class="main-image">
                                         <img id="main-image-preview" src="" alt="Main Image Preview">
                                     </div>
-                                    <div class="thumbnail-images">
+                                    <div class="thumbnail-images tour">
                                         <!-- Thumbnails will be displayed here -->
                                     </div>
                                 </div>
-                                <input type="file" id="tour-images" name="tour-images[]" accept="image/*" multiple>
+                                <input type="file" id="tour-images" name="tour-images[]" accept="image/*" multiple required>
                             </div>
 
                             <div class="step-buttons">
@@ -154,6 +164,9 @@ if (isset($_GET['process'])) {
 
                         <div class="step" id="step4">
                             <h2>Proof of Permits</h2>
+                            <p id="permit-note" style="color: red; font-size: smaller; display: none;">
+                                You can select a maximum of 3 proof documents.
+                            </p>
                             <div class="permit-container">
                                 <div class="permit">
                                     <label for="permit1">
@@ -169,7 +182,8 @@ if (isset($_GET['process'])) {
                                 </div>
                                 <div class="permit">
                                     <label for="permit3">
-                                        <input type="checkbox" id="permit3" name="proof_permits[]" value="Environmental Compliance Certificate (ECC)">
+                                        <input type="checkbox" id="permit3" name="proof_permits[]"
+                                            value="Environmental Compliance Certificate (ECC)">
                                         Environmental Compliance Certificate (ECC)
                                     </label>
                                 </div>
@@ -181,7 +195,8 @@ if (isset($_GET['process'])) {
                                 </div>
                                 <div class="permit">
                                     <label for="permit5">
-                                        <input type="checkbox" id="permit5" name="proof_permits[]" value="Fire Safety Inspection Certificate">
+                                        <input type="checkbox" id="permit5" name="proof_permits[]"
+                                            value="Fire Safety Inspection Certificate">
                                         Fire Safety Inspection Certificate
                                     </label>
                                 </div>
@@ -201,18 +216,29 @@ if (isset($_GET['process'])) {
                                         <li>Use a flat, well-lit surface to photograph or scan the document.</li>
                                         <li>Ensure all edges of the document are visible.</li>
                                     </ul>
-                                    </li>
                                 </ul>
                             </div>
+                            <p id="permit-note" style="color: red; font-size: smaller; display: none;">
+                                Please select at least one proof document.
+                            </p>
                             <p style="font-size:smaller;">Insert your proof documents below.</p>
-                            <input type="file" id="fileInput" name="proofImage[]" multiple accept="image/*" required>
-
+                            <div class="proofImages">
+                                <div class="image-preview-container" id="proof-previews">
+                                    <div class="main-image">
+                                        <img id="main-proof-preview" src="" alt="Main Image Preview">
+                                    </div>
+                                    <div class="thumbnail-images proof"></div>
+                                </div>
+                                <input type="file" id="proof-images" name="proof-images[]" multiple accept="image/*" required>
+                                <p id="proof-image-error" style="color: red; display: none;">
+                                    You can upload a maximum of 0 images.
+                                </p>
+                            </div>
                             <div class="step-buttons">
                                 <button type="button" class="prev-btn">Previous</button>
                                 <input type="submit" value="Submit">
                             </div>
                         </div>
-
                     </form>
                     <?php
                     break;
@@ -225,7 +251,7 @@ if (isset($_GET['process'])) {
                     ?>
                     <p>Your registration has been approved. Are you sure you want to become a <strong>tourist attraction
                             owner?</strong>
-                        <a href="../php/updateUserStatus.php">Click here!</a>
+                        <a href="php/updateUserStatus.php">Click here!</a>
                     </p>
                     <?php
                     break;
@@ -379,7 +405,7 @@ if (isset($_GET['process'])) {
                 const formData = new FormData($form[0]);
 
                 $.ajax({
-                    url: "../php/register_owner.php",
+                    url: "php/register_owner.php",
                     type: "POST",
                     data: formData,
                     processData: false,
@@ -401,7 +427,7 @@ if (isset($_GET['process'])) {
                     showConfirmButton: false,
                 }).then(() => {
                     if (data.success) {
-                        window.location.href = "../user/form?status=success";
+                        location.reload();
                     }
                 });
             }
@@ -418,24 +444,33 @@ if (isset($_GET['process'])) {
             }
 
             // Image preview
+            const maxTouristImageLimit = 5;
+            const maxCheckboxLimit = 3;
+
+            // Function to update checked count dynamically for permits
+            function updateCheckedCount() {
+                return $('.permit input[type="checkbox"]:checked').length;
+            }
+
+            // Handle file input changes for tourist images
             $('#tour-images').on('change', function (event) {
                 const $fileInput = $(this);
                 const files = event.target.files;
 
                 // Check if the number of files exceeds the limit
-                if (files.length > 5) {
-                    $('#image-error').text('You can upload a maximum of 5 images.').show();
+                if (files.length > maxTouristImageLimit) {
+                    $('#tour-image-error').text('You can upload a maximum of 5 images.').show();
                     $fileInput.val(''); // Clear the input
                     return;
-                } else if (files.length == 0) {
-                    $imagesPreview.hide();
+                } else if (files.length === 0) {
+                    $('.image-preview-container').hide();
                 }
 
-                $('#image-error').hide(); // Hide error if the limit is satisfied
+                $('#tour-image-error').hide(); // Hide error if the limit is satisfied
 
                 const $imagesPreview = $('.image-preview-container');
                 const $mainImagePreview = $('#main-image-preview');
-                const $thumbnailContainer = $('.thumbnail-images');
+                const $thumbnailContainer = $('.tour');
 
                 $imagesPreview.show();
                 $thumbnailContainer.empty();
@@ -449,8 +484,8 @@ if (isset($_GET['process'])) {
                             const aspectRatio = image.width / image.height;
 
                             // Validate aspect ratio (16:10 is approximately 1.6)
-                            if (aspectRatio < 1.3) {
-                                $('#image-error').text(`Image ${index + 1} must have a landscape view (16:10 aspect ratio recommended).`).show();
+                            if (aspectRatio < 1.3) {  // Adjusted for 16:10 (aspect ratio > 1.3)
+                                $('#tour-image-error').text(`Image ${index + 1} must have a landscape view (16:10 aspect ratio recommended).`).show();
                                 $fileInput.val(''); // Clear the input
                                 $imagesPreview.hide();
                                 return;
@@ -467,8 +502,10 @@ if (isset($_GET['process'])) {
                                 $img.addClass('selected');
                             });
 
+                            // Append to thumbnail container
                             $thumbnailContainer.append($img);
 
+                            // Set the first image as the main image
                             if (index === 0) {
                                 $mainImagePreview.attr('src', e.target.result);
                                 $img.addClass('selected');
@@ -479,6 +516,81 @@ if (isset($_GET['process'])) {
                     };
                     reader.readAsDataURL(file);
                 });
+            });
+
+            // Handle file input changes for proof images
+            $('#proof-images').on('change', function (event) {
+                const $fileInput = $(this);
+                const files = event.target.files;
+                const $imagesPreview = $('#proof-previews');
+                const $mainImagePreview = $('#main-proof-preview');
+                const $proofContainer = $('.proof');
+
+                const checkedCount = updateCheckedCount();  // Recalculate checked count
+
+                // Check if the number of files exceeds the limit based on checkedCount
+                if (files.length > checkedCount) {
+                    $('#proof-image-error').text(`You can upload a maximum of ${checkedCount} images.`).show();
+                    $imagesPreview.hide();
+                    $fileInput.val(''); // Clear the input
+                    return;
+                } else if (files.length === 0) {
+                    $imagesPreview.hide();
+                }
+
+                $('#proof-image-error').hide(); // Hide error if the limit is satisfied
+
+                // Show preview container
+                $proofContainer.empty();
+                $mainImagePreview.attr('src', '');
+
+                $.each(files, function (index, file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const image = new Image();
+                        image.onload = function () {
+                            const $img = $('<img>', {
+                                src: e.target.result,
+                                alt: `Image ${index + 1}`,
+                            });
+
+                            // Click on thumbnail to set as the main image
+                            $img.on('click', function () {
+                                $mainImagePreview.attr('src', e.target.result);
+                                $('.thumbnail-proofs img').removeClass('selected');
+                                $img.addClass('selected');
+                            });
+
+                            // Append to thumbnail container
+                            $proofContainer.append($img);
+
+                            // Set the first image as the main image
+                            if (index === 0) {
+                                $mainImagePreview.attr('src', e.target.result);
+                                $img.addClass('selected');
+                            }
+                        };
+
+                        image.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                $imagesPreview.show();
+            });
+
+            // Proof of Permits - Limit checkboxes to 3
+            $('.permit input[type="checkbox"]').on('change', function () {
+                const checkedCount = updateCheckedCount();  // Recalculate checked count
+
+                // Check if the number of checked checkboxes exceeds the limit
+                if (checkedCount > maxCheckboxLimit) {
+                    $(this).prop('checked', false); // Uncheck the current checkbox
+                    $('#permit-note').text(`You can select a maximum of ${maxCheckboxLimit} proof documents.`).show();
+                } else {
+                    // Hide the error note if the checked count is within the limit
+                    $('#permit-note').hide();
+                }
             });
         });
 

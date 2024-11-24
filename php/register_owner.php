@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include '../include/db_conn.php';
 session_start();
 
@@ -12,43 +16,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $type = trim($_POST['type']);
     $latitude = trim($_POST['latitude']);
     $longitude = trim($_POST['longitude']);
-    $proofs = $_POST['proof'];
-    $proof_images = $_FILES['proofImage'];
-    $tourImages = $_FILES['tourImage'];
+    $proof_permits = $_POST['proof_permits'];  // proof titles (types)
+    $proof_images = $_FILES['proof-images'];  // proof images (files)
+    $tour_images = $_FILES['tour-images']; 
+    $bookable = $_POST['bookable'];   // tour images (files)
     $status = 0;
 
-    if (empty($title) || empty($address) || empty($description) || empty($type) || empty($latitude) || empty($longitude) || empty($proofs) || empty($proof_images) || empty($tourImages)) {
+    if (empty($title) || empty($address) || empty($description) || empty($type) || empty($latitude) || empty($longitude) || empty($proof_permits) || empty($proof_images) || empty($tour_images)) {
         echo json_encode(['success' => false, 'errors' => "Please fill in all required fields."]);
         exit();
     }
 
-    $img = '';
-    if (isset($_FILES['img']) && $_FILES['img']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = '../upload/Tour Images/';
-        $image = $_FILES['img']['name'];
-        $image_tmp = $_FILES['img']['tmp_name'];
-        $image_name = time() . '_' . basename($image);
-        $image_path = $upload_dir . $image_name;
+    // Process proofs and proof images (combine into comma-separated strings)
+    $proofs_str = implode(",", $proof_permits); // Combine proofs into a comma-separated string
+    $proof_images_filenames = processFiles($proof_images, '../upload/Permits/'); // Process proof images
+    $proof_images_str = implode(",", $proof_images_filenames); // Combine proof image filenames
 
-        if (!is_dir($upload_dir) && !mkdir($upload_dir, 0777, true)) {
-            echo json_encode(['success' => false, 'errors' => 'Failed to create upload directory.']);
-            exit();
-        }
-
-        if (move_uploaded_file($image_tmp, $image_path)) {
-            $img = $image_name;
-        } else {
-            echo json_encode(['success' => false, 'errors' => 'Failed to upload file.']);
-            exit();
-        }
-    } else {
-        echo json_encode(['success' => false, 'errors' => 'File upload error.']);
-        exit();
-    }
+    // Process tour images (combine into comma-separated strings)
+    $tour_images_filenames = processFiles($tour_images, '../upload/Tour Images/'); // Process tour images
+    $tour_images_str = implode(",", $tour_images_filenames); // Combine tour image filenames
 
     try {
-        $sql = "INSERT INTO tours (user_id, title, address, type, description, status, longitude, latitude, img) 
-                VALUES (:user_id, :title, :address, :type, :description, :status, :longitude, :latitude, :img)";
+        // Insert tour details into the database (with proof and image data)
+        $sql = "INSERT INTO tours (user_id, title, address, type, description, status, longitude, latitude, img, proof_title, proof_image, bookable)
+                VALUES (:user_id, :title, :address, :type, :description, :status, :longitude, :latitude, :img, :proof_title, :proof_image, :bookable)";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
             ':user_id' => $user_id,
@@ -59,88 +50,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ':status' => $status,
             ':longitude' => $longitude,
             ':latitude' => $latitude,
-            ':img' => $img
+            ':img' => $tour_images_str,  // Store comma-separated tour image filenames
+            ':proof_title' => $proofs_str,  // Store comma-separated proof titles
+            ':proof_image' => $proof_images_str,  // Store comma-separated proof image filenames
+            ':bookable' => $bookable
         ]);
-
         $tour_id = $conn->lastInsertId();
-
-        echo insertProof($conn, $tour_id, $proofs, $proof_images);
-        echo insertTourImg($conn, $tour_id, $tourImages);
-        if(!empty($errors)) {
-            echo json_encode(['success' => false, 'errors' => $errors]);
-            exit();
-        }
-
         notifyAdmin($conn, $tour_id);
-
         echo json_encode(['success' => true, 'message' => 'You Registered Successfully. Please wait for your acceptance process.']);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'errors' => 'Failed to add tour: ' . $e->getMessage()]);
     }
+
     exit();
 } else {
     echo json_encode(['success' => false, 'errors' => 'Invalid request method.']);
     exit();
 }
 
-// Insert proofs function
-function insertProof($conn, $tour_id, $proofs, $proofImgs,) {
-    foreach ($proofImgs['name'] as $index => $proofimg) {
-        if (isset($proofImgs['name'][$index]) && $proofImgs['error'][$index] === UPLOAD_ERR_OK) {
-            $upload_dir = '../upload/Permits/';
-            $filename = time() . '_' . basename($proofimg);
-            $filepath = $upload_dir . $filename;
+// Helper function to process the file uploads and return the filenames
+function processFiles($files, $upload_dir)
+{
+    $filenames = [];
 
-            if (!is_dir($upload_dir) && !mkdir($upload_dir, 0777, true)) {
-                return $errors['proof']="Failed to create permits directory.";
-            }
-
-            if (move_uploaded_file($proofImgs['tmp_name'][$index], $filepath)) {
-                try {
-                    $sql = "INSERT INTO proof (tour_id, proof, proof_image) VALUES (:tour_id, :proof, :proof_image)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([':tour_id' => $tour_id, ':proof' => $proofs, ':proof_image' => $filename]);
-                } catch (PDOException $e) {
-                    return $errors['proof']="Failed to insert proof: : " . $e->getMessage();
-                }
-            } else {
-                return $errors['proof']="Failed to upload proof image.";
-            }
-        }
-    }
-}
-
-// Insert tour images function
-function insertTourImg($conn, $tour_id, $tourImages) {
-    foreach ($tourImages['name'] as $index => $name) {
-        if (isset($tourImages['name'][$index]) && $tourImages['error'][$index] === UPLOAD_ERR_OK) {
-            $upload_dir = '../upload/Tour Images/';
+    foreach ($files['name'] as $index => $name) {
+        if (isset($files['name'][$index]) && $files['error'][$index] === UPLOAD_ERR_OK) {
             $filename = time() . '_' . basename($name);
             $filepath = $upload_dir . $filename;
 
-            // Create upload directory if it doesn't exist
+            // Create the upload directory if it doesn't exist
             if (!is_dir($upload_dir) && !mkdir($upload_dir, 0777, true)) {
-                return $errors['tour']="Failed to create tour images directory.";
+                return ['error' => "Failed to create upload directory."];
             }
 
-            // Move uploaded tour image
-            if (move_uploaded_file($tourImages['tmp_name'][$index], $filepath)) {
-                try {
-                    $sql = "INSERT INTO tours_image (tour_id, img) VALUES (:tour_id, :img)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([':tour_id' => $tour_id, ':img' => $filename]);
-                } catch (PDOException $e) {
-                    return $errors['tour']="Failed to insert tour images: : " . $e->getMessage();
-                }
+            // Move the uploaded file
+            if (move_uploaded_file($files['tmp_name'][$index], $filepath)) {
+                $filenames[] = $filename; // Add to the filenames array
             } else {
-                return $errors['tour']="Failed to upload tour image.";
+                return ['error' => "Failed to upload image."];
             }
         }
     }
-}
 
-// Notify admin function
-function notifyAdmin($conn, $tour_id) {
+    return $filenames;
+}
+function notifyAdmin($conn, $tour_id)
+{
     try {
         $sql = "SELECT id FROM users WHERE role = 'admin' LIMIT 1";
         $stmt = $conn->prepare($sql);

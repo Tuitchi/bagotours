@@ -127,6 +127,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
             margin-bottom: 20px;
         }
 
+        .booking {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .booking h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .booking img {
+            width: 250px;
+            margin: auto;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .booking h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .desc p {
+            margin-bottom: 20px;
+        }
+
         .desc a {
             background-color: #75ba75;
             padding: 10px 20px;
@@ -233,22 +266,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
         .complete {
             background-color: green;
         }
-         /* Mobile-specific styling */
-         @media screen and (max-width: 768px) {
+
+        /* Mobile-specific styling */
+        @media screen and (max-width: 768px) {
             .btn-container {
-                flex-direction: column; /* Stack buttons vertically */
-                align-items: stretch; /* Make buttons stretch to full width */
-                gap: 10px; /* Add spacing between buttons */
-                margin-bottom: 15px; /* Adjust bottom margin */
+                flex-direction: column;
+                /* Stack buttons vertically */
+                align-items: stretch;
+                /* Make buttons stretch to full width */
+                gap: 10px;
+                /* Add spacing between buttons */
+                margin-bottom: 15px;
+                /* Adjust bottom margin */
             }
 
             .btn-container button {
-                padding: 12px; /* Increase padding for better tap area */
-                font-size: 16px; /* Larger font for readability */
+                padding: 12px;
+                /* Increase padding for better tap area */
+                font-size: 16px;
+                /* Larger font for readability */
             }
 
             .btn-container button.active {
-                background-color: #0056b3; /* Slightly darker for active state */
+                background-color: #0056b3;
+                /* Slightly darker for active state */
             }
         }
     </style>
@@ -270,16 +311,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
                 <?php } else { ?>
                     <h2>Your Bookings</h2>
                     <div class="btn-container">
-                        <button data-status="0" onclick="filterBookings(0)">Booking Approval (<?php echo $statusCounts['waiting']; ?>)</button>
-                        <button data-status="1" onclick="filterBookings(1)">Ongoing (<?php echo $statusCounts['ongoing']; ?>)</button>
-                        <button data-status="3" onclick="filterBookings(3)">To Review (<?php echo $statusCounts['review']; ?>)</button>
-                        <button data-status="4" onclick="filterBookings(4)">Completed (<?php echo $statusCounts['completed']; ?>)</button>
-                        <button data-status="all" onclick="filterBookings('all')">View All (<?php echo $totalBookings; ?>)</button>
+                        <button data-status="0" onclick="filterBookings(0)">Booking Approval
+                            (<?php echo $statusCounts['waiting']; ?>)</button>
+                        <button data-status="1" onclick="filterBookings(1)">Ongoing
+                            (<?php echo $statusCounts['ongoing']; ?>)</button>
+                        <button data-status="3" onclick="filterBookings(3)">To Review
+                            (<?php echo $statusCounts['review']; ?>)</button>
+                        <button data-status="4" onclick="filterBookings(4)">Completed
+                            (<?php echo $statusCounts['completed']; ?>)</button>
+                        <button data-status="all" onclick="filterBookings('all')">View All
+                            (<?php echo $totalBookings; ?>)</button>
                     </div>
                     <div class="booking-container">
                         <?php foreach ($bookings as $booking) { ?>
-                            <div class="booking-card" data-status="<?php echo $booking['status']; ?>" data-review="<?php echo $booking['is_review']; ?>">
-                                <img src="upload/Tour Images/<?php echo $booking['img']; ?>" alt="<?php echo $booking['title']; ?>">
+                            <div class="booking-card" data-status="<?php echo $booking['status']; ?>"
+                                data-review="<?php echo $booking['is_review']; ?>">
+                                <img src="upload/Tour Images/<?php echo $booking['img']; ?>"
+                                    alt="<?php echo $booking['title']; ?>">
                                 <div class="desc">
                                     <h3><?php echo $booking['title']; ?></h3>
                                     <?php

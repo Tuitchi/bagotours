@@ -1,5 +1,7 @@
 <?php
 $pp = $_SESSION['profile-pic'];
+$pageRole = "owner";
+require_once '../php/accValidation.php';
 ?>
 
 <style>
@@ -39,17 +41,27 @@ $pp = $_SESSION['profile-pic'];
 		object-fit: cover;
 	}
 
+	/* Notification Dropdown Styles */
 	.notification-dropdown {
 		position: absolute;
-		top: 40px;
+		top: 50px;
 		right: 0;
-		width: 300px;
+		width: 50vw;
+		max-height: 400px;
 		background-color: white;
 		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 		border-radius: 8px;
 		display: none;
 		flex-direction: column;
-		overflow: hidden;
+		overflow-y: auto;
+		z-index: 9999;
+		padding: 10px;
+	}
+
+	@media screen and (max-width: 765px) {
+		.notification-dropdown {
+			width: 80vw;
+		}
 	}
 
 	.notification-dropdown.active {
@@ -95,51 +107,55 @@ $pp = $_SESSION['profile-pic'];
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-	$(document).ready(function() {
+	$(document).ready(function () {
 		function fetchNotifications() {
 			$.ajax({
 				url: '../php/getNotifCount.php',
 				method: 'POST',
 				dataType: 'json',
-				success: function(data) {
-					console.log(data);
+				success: function (data) {
 					$('#notification-count').text(data.count);
 					let notificationDropdown = $('#notification-dropdown');
 					notificationDropdown.empty();
 
 					if (data.notifications && data.notifications.length > 0) {
-						data.notifications.forEach(function(notification) {
+						data.notifications.forEach(function (notification) {
+							let style = '';
+							if (notification.is_read === 0) {
+								style = 'style="color:blue;"';
+							}
 							let notificationItem = `
-                            <div class="notification-item">
-                                <a class="url" data-id="${notification.id}" href="${notification.url}">${notification.message}</a>
-                            </div>
-                        `;
+						<div class="notification-item">
+							<a class="url" ${style} data-id="${notification.id}" href="${notification.url}">${notification.message}</a>
+						</div>
+					`;
 							notificationDropdown.append(notificationItem);
 						});
 					} else {
 						notificationDropdown.html('<div class="no-notifications">No new notifications</div>');
 					}
 				},
-				error: function() {
+				error: function () {
 					console.error('Error fetching notifications');
 				}
 			});
 		}
 
+
 		fetchNotifications();
 		setInterval(fetchNotifications, 30000);
 
-		$('.notification').click(function(e) {
+		$('.notification').click(function (e) {
 			e.preventDefault();
 			$('#notification-dropdown').toggleClass('active');
 		});
 
-		$(document).click(function(e) {
+		$(document).click(function (e) {
 			if (!$(e.target).closest('.notification').length && !$(e.target).closest('#notification-dropdown').length) {
 				$('#notification-dropdown').removeClass('active');
 			}
 		});
-		$('#notification-dropdown').on('click', '.url', function() {
+		$('#notification-dropdown').on('click', '.url', function () {
 			let notificationId = $(this).data('id');
 
 			$.ajax({
@@ -148,14 +164,14 @@ $pp = $_SESSION['profile-pic'];
 				data: {
 					id: notificationId
 				},
-				success: function(response) {
+				success: function (response) {
 					if (response.success) {
 						fetchNotifications();
 					} else {
 						console.error('Error updating notification status');
 					}
 				},
-				error: function() {
+				error: function () {
 					console.error('Error sending update request');
 				}
 			});

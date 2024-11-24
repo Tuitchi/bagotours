@@ -7,16 +7,44 @@ $pageRole = "admin";
 require_once '../php/accValidation.php';
 
 $user_id = $_SESSION['user_id'];
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
-try {
-    $query = "SELECT * FROM users WHERE id <> :user_id";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die('Error: ' . $e->getMessage());
+// Pagination settings
+$results_per_page = 8;
+$counter = ($page - 1) * $results_per_page + 1;
+$start_from = ($page - 1) * $results_per_page;
+
+// Query for total count with filters
+$count_query = "SELECT COUNT(*) as total FROM users WHERE role != 'admin'";
+$params = [];
+
+if (!empty($search)) {
+    $count_query .= " AND (name LIKE :search OR username LIKE :search OR email LIKE :search)";
+    $params[':search'] = '%' . $search . '%';
 }
+$stmt = $conn->prepare($count_query);
+$stmt->execute($params);
+$count_row = $stmt->fetch();
+$total_records = $count_row['total'];
+
+$total_pages = ceil($total_records / $results_per_page);
+$data_query = "SELECT * FROM users WHERE role != 'admin'";
+$params = [];
+
+if (!empty($search)) {
+    $data_query .= " AND (name LIKE :search OR username LIKE :search OR email LIKE :search)";
+    $params[':search'] = '%' . $search . '%';
+}
+
+$data_query .= " LIMIT $start_from, $results_per_page";
+
+// Prepare and execute the data query
+$stmt = $conn->prepare($data_query);
+$stmt->execute($params);
+
+// Fetch students data
+$users = $stmt->fetchAll();
 ?>
 
 
@@ -67,6 +95,7 @@ try {
             font-size: 1.1em;
             cursor: pointer;
         }
+
     </style>
     </head>
 
@@ -79,9 +108,9 @@ try {
                     <div class="left">
                         <?php include 'includes/breadcrumb.php'; ?>
                     </div>
-                    <a href="#" class="btn-download" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <a href="add-user" class="btn-download">
                         <i class='bx bx-plus'></i>
-                        <span class="text">Add user</span>
+                        <span class="text">Add User</span>
                     </a>
                 </div>
 
@@ -100,6 +129,7 @@ try {
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Username</th>
                                     <th>Email</th>
                                     <th>Type</th>
                                     <th>Date Registered</th>
@@ -107,35 +137,74 @@ try {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                if (!empty($result)) {
-                                    $counter = 1;
-                                    foreach ($result as $row) {
-                                        echo "<tr>
-                <td><strong>" . htmlspecialchars($counter++) . "</strong></td>
-                <td>" . htmlspecialchars($row['name']) . "</td>
-                <td>" . htmlspecialchars($row['email']) . "</td>
-                <td>" . htmlspecialchars($row['role']) . "</td>
-                <td>" . date('M. d, Y', strtotime($row['date_created'])) . "</td>
-                <td>
-                <div class='dropdown'>
-                <button id='drop'>Manage<i class='bx bx-caret-down'></i></button>
-                <div class='actions' style='display:none'>
-                    <a href='#' class='btn' id='view' data-id='" . htmlspecialchars($row['id']) . "'><i class='bx bx-folder'></i>View</a> 
-                    <a href='#' class='btn' id='edit' data-id='" . htmlspecialchars($row['id']) . "'><i class='bx bx-edit-alt'></i>Edit</a>
-                    <a href='#' class='btn' id='delete' data-id='" . htmlspecialchars($row['id']) . "'><i class='bx bx-trash'></i>Delete</a>
-                    </div>
-                </div>
-                </td>
-              </tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='6'>No users found.</td></tr>";
-                                }
-                                ?>
-
+                                <?php if (count($users) > 0): ?>
+                                    <?php foreach ($users as $user): ?>
+                                        <tr>
+                                            <td><?php echo $counter++; ?></td>
+                                            <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['role']); ?></td>
+                                            <td><?php echo date('M. d, Y', strtotime($user['date_created'])); ?></td>
+                                            <td>
+                                                <div class='dropdown'>
+                                                    <button id='drop'>Manage<i class='bx bx-caret-down'></i></button>
+                                                    <div class='actions' style='display:none'>
+                                                        <a href='#' class='btn' id='view' data-id='<?php echo htmlspecialchars($row['
+                                                            id']) ?>'><i class='bx bx-folder'></i>View</a>
+                                                        <a href='#' class='btn' id='edit' data-id='<?php echo htmlspecialchars($row['
+                                                            id']) ?>'><i class='bx bx-edit-alt'></i>Edit</a>
+                                                        <a href='#' class='btn' id='delete' data-id='<?php echo htmlspecialchars($row['
+                                                            id']) ?>'><i class='bx bx-trash'></i>Delete</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan=" 6">No user found.
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
+                        <div class="pagination">
+                            <?php
+                            // Ensure $page is an integer
+                            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
+                            $start_page = max(1, $page - 2);
+                            $end_page = min($total_pages, $page + 2);
+
+                            if ($page > 1): ?>
+                                <a class="btn" href="?page=<?php echo $page - 1; ?>">&laquo; Prev</a>
+                            <?php endif; ?>
+
+                            <?php if ($start_page > 1): ?>
+                                <a href="?page=1">1</a>
+                                <?php if ($start_page > 2): ?>
+                                    <span>...</span>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <?php for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>">
+                                    <?php echo $i; ?>
+                                </a>
+                            <?php endfor; ?>
+
+                            <?php if ($end_page < $total_pages): ?>
+                                <?php if ($end_page < $total_pages - 1): ?>
+                                    <span>...</span>
+                                <?php endif; ?>
+                                <a href="?page=<?php echo $total_pages; ?>"><?php echo $total_pages; ?></a>
+                            <?php endif; ?>
+
+                            <?php if ($page < $total_pages): ?>
+                                <a class="btn" href="?page=<?php echo $page + 1; ?>">Next &raquo;</a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -148,46 +217,6 @@ try {
                 <div id="userInfoContent"></div>
             </div>
         </div>
-        <div id="editUserModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Edit User Information</h2>
-                <div id="editUserContent"></div>
-            </div>
-        </div>
-
-        <div id="addUserModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Add User</h2>
-                <form id="addUserForm">
-                    <div class="form-group">
-                        <label for="userName">Name:</label>
-                        <input type="text" name="userName" id="userName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="userEmail">Email:</label>
-                        <input type="email" name="userEmail" id="userEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="userPassword">Password:</label>
-                        <input type="password" name="userPassword" id="userPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="userRole">Role:</label>
-                        <select name="userRole" id="userRole" required>
-                            <option value="">Select Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="owner">Owner</option>
-                            <option value="user">User</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn-submit">Add User</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
@@ -196,6 +225,57 @@ try {
 
         <script>
             $(document).ready(function () {
+                const $searchInput = $('#search-input');
+                const $studentTableBody = $('#userTable tbody');
+                const $paginationContainer = $('.pagination');
+
+                // Function to fetch filtered data from the server
+                function fetchFilteredData() {
+                    const search = $searchInput.val().trim();
+                    const page = new URLSearchParams(window.location.search).get('page') || 1;
+
+                    const params = new URLSearchParams({
+                        search,
+                        page
+                    });
+
+                    // Fetch filtered data via AJAX
+                    $.ajax({
+                        url: `?${params.toString()}`,
+                        type: 'GET',
+                        success: function (html) {
+                            const $doc = $(html);
+
+                            // Update the table body
+                            const $newTableBody = $doc.find('#userTable tbody');
+                            $studentTableBody.html($newTableBody.html());
+
+                            // Update the pagination
+                            const $newPagination = $doc.find('.pagination');
+                            $paginationContainer.html($newPagination.html());
+                        },
+                        error: function (error) {
+                            console.error('Error fetching data:', error);
+                        }
+                    });
+                }
+
+                // Add event listeners for search and filters
+                $searchInput.on('input', fetchFilteredData);
+                $departmentFilter.on('change', fetchFilteredData);
+                $yearFilter.on('change', fetchFilteredData);
+
+                // Pagination links event listener
+                $paginationContainer.on('click', 'a', function (e) {
+                    e.preventDefault();
+                    const url = new URL($(this).attr('href'));
+                    const page = url.searchParams.get('page');
+                    const params = new URLSearchParams(window.location.search);
+
+                    params.set('page', page);
+                    history.pushState(null, '', `?${params.toString()}`);
+                    fetchFilteredData();
+                });
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -230,11 +310,6 @@ try {
                     event.preventDefault();
                     const userId = $(this).data('id');
                     viewUser(userId);
-                });
-                $(document).on('click', '#edit', function (event) {
-                    event.preventDefault();
-                    const userId = $(this).data('id');
-                    editUser(userId);
                 });
                 $(document).on('click', '#delete', function (event) {
                     event.preventDefault();
@@ -271,53 +346,7 @@ try {
                     });
                 }
 
-                function editUser(userId) {
-                    $.getJSON(`../php/get_user_info.php?id=${userId}`, function (data) {
-                        if (data.success) {
-                            $('#editUserContent').html(`
-                        <form id="editUserForm">
-                            <input type="hidden" name="editUserId" value="${userId}">
-                            <div class="form-group">
-                                <label for="editName">Name</label>
-                                <input type="text" name="editName" id="editName" value="${data.user.name || ''}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editEmail">Email</label>
-                                <input type="email" name="editEmail" id="editEmail" value="${data.user.email || ''}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editPhoneNumber">Phone Number</label>
-                                <input type="text" name="editPhoneNumber" id="editPhoneNumber" value="${data.user.phone_number || ''}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editUsername">Username</label>
-                                <input type="text" name="editUsername" id="editUsername" value="${data.user.username || ''}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editRole">Role</label>
-                                <select name="editRole" id="editRole" required>
-                                    <option value="admin" ${data.user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                                    <option value="owner" ${data.user.role === 'owner' ? 'selected' : ''}>Owner</option>
-                                    <option value="user" ${data.user.role === 'user' ? 'selected' : ''}>User</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn-submit">Save Changes</button>
-                        </form>
-                    `);
-                            $('#editUserModal').show();
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: 'Unable to fetch user information.'
-                            });
-                        }
-                    }).fail(function () {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'There was an error fetching the user information.'
-                        });
-                    });
-                }
+
 
                 function deleteUser(userId) {
                     Swal.fire({

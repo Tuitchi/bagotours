@@ -45,6 +45,11 @@ $breadcrumbs = [
         ['title' => 'Event', 'url' => 'event'],
         ['title' => 'Add Event', 'url' => 'add-event']
     ],
+    'edit-event' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Event', 'url' => 'event'],
+        ['title' => 'Edit Event', 'url' => 'edit-event']
+    ],
     'view-event' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Event', 'url' => 'event'],
@@ -72,11 +77,10 @@ $breadcrumbs = [
         ['title' => 'Tours', 'url' => 'tours'],
         ['title' => 'View', 'url' => 'view_tour']
     ],
-    'edit_tour' => [
+    'edit-tour' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Tours', 'url' => 'tours'],
-        ['title' => 'View', 'url' => 'view_tour'],
-        ['title' => 'Edit', 'url' => 'edit_tour']
+        ['title' => 'Edit Tour', 'url' => 'edit-tour']
     ],
     'user' => [
         ['title' => 'Home', 'url' => 'home'],

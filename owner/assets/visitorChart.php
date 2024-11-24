@@ -1,7 +1,7 @@
 <?php
 include '../../include/db_conn.php';
-
-$id = $_SESSION['tour_id'];
+$user_id = $_SESSION['user_id'];
+$id = isset($_GET['tour']) ? $_GET['tour'] : null;
 $timeFilter = isset($_GET['time']) ? $_GET['time'] : null;
 
 $whereClause = "";
@@ -23,12 +23,13 @@ switch ($timeFilter) {
 }
 
 $query = "SELECT city_residence, COUNT(*) as count
-          FROM visit_records
-          WHERE 1=1" . $whereClause . "
+          FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON u.id = t.user_id
+          WHERE u.id = :user_id" . $whereClause . "
           GROUP BY city_residence";
 
 try {
     $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     
     if ($id) {
         $stmt->bindParam(':tourId', $id, PDO::PARAM_INT);

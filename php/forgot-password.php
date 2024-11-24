@@ -75,13 +75,87 @@ function sendPasswordResetEmail($email, $token)
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset Request';
+
+        // Create the reset link
         $resetLink = "http://bagodigitaltourism.bccbsis.com/recovery?token=$token";
-        $mail->Body = "Click here to reset your password: <a href='$resetLink'>$resetLink</a>";
+
+        // Email Body
+        $mail->Body = "
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                    }
+                    .email-container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        padding: 20px;
+                        background-color: #f9f9f9;
+                    }
+                    .header {
+                        text-align: center;
+                        background-color: #0066cc;
+                        color: #fff;
+                        padding: 10px 0;
+                        border-radius: 8px 8px 0 0;
+                    }
+                    .content {
+                        margin: 20px 0;
+                    }
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        color: #fff;
+                        background-color: #0066cc;
+                        border: none;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        text-align: center;
+                    }
+                    .button:hover {
+                        background-color: #005bb5;
+                    }
+                    .footer {
+                        margin-top: 20px;
+                        font-size: 14px;
+                        color: #666;
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='email-container'>
+                    <div class='header'>
+                        <h1>Password Reset</h1>
+                    </div>
+                    <div class='content'>
+                        <p>Dear User,</p>
+                        <p>You recently requested to reset your password for your BaGoTours account. Click the button below to reset it:</p>
+                        <p style='text-align: center;'>
+                            <a href='$resetLink' class='button'>Reset Password</a>
+                        </p>
+                        <p>If you did not request a password reset, please ignore this email or contact our support team if you have any questions.</p>
+                        <p>Thank you, <br> The BaGoTours Team</p>
+                    </div>
+                    <div class='footer'>
+                        <p>&copy; " . date("Y") . " BaGoTours. All rights reserved.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        ";
 
         return $mail->send();
     } catch (Exception $e) {
         return false;
     }
 }
+
 
 $conn = null;
