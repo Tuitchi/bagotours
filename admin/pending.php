@@ -26,7 +26,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <title>BaGoTours. Pending Upgrades</title>
+    <title>BaGoTours. Pending Tour</title>
     <style>
         /* General Body Styling */
         .modal {
@@ -299,7 +299,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="table-data">
                 <div class="order">
                     <div class="head">
-                        <h3>All Pending Upgrades</h3>
+                        <h3>All Pending Tour</h3>
                         <i class='bx bx-search'></i>
                         <i class='bx bx-filter'></i>
                     </div>

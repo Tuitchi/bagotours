@@ -56,7 +56,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
         <li class="<?php echo $current_page == 'pending' ? 'active' : ''; ?>">
             <a href="pending">
                 <i class='bx bxs-time'></i>
-                <span class="text">Pending Upgrades</span>
+                <span class="text">Pending Tour</span>
                 <?php
                 $pendingCount = totalPending($conn);
                 if ($pendingCount > 0) {
