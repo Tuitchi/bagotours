@@ -221,7 +221,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $main_image = $tour_images[0];
                     echo "<div class='cards'>
                         <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $main_image . "' alt='" . $tour['title'] . "'>  
+                        <img src='upload/Tour Images/" . $main_image . "' alt='" . $tour['title'] . "'>
+                          
                             <h2 class='title'>" . $tour['title'] . "</h2>
                         </a>
                     </div>";
