@@ -181,10 +181,11 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 			const loader = document.querySelector('#visitorChart + .loader');
 			
 			loader.style.display = 'block';
-			const url = new URL('admin/assets/visitorChart.php', window.location.origin);
+			const url = new URL('bagotours/admin/assets/visitorChart.php', window.location.origin);
 			if (tourId) {
 				url.searchParams.append('tour', tourId);
 			}
+			url.searchParams.append('id', <?php echo $user_id; ?>);
 			url.searchParams.append('time', timeFilter);
 
 			fetch(url)

@@ -1,6 +1,6 @@
 <?php
 include '../../include/db_conn.php';
-$user_id = $_SESSION['user_id'];
+$user_id = $_GET['id'];
 $id = isset($_GET['tour']) ? $_GET['tour'] : null;
 $timeFilter = isset($_GET['time']) ? $_GET['time'] : null;
 

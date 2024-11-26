@@ -160,8 +160,8 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <i class='bx bx-search' id="search-icon"></i>
                             <input type="text" id="search-input" placeholder="Search...">
                         </div>
-                        <div class="filter">
-                            <i class='bx bx-filter' id="openFilter"></i>
+                        <div class="filter" id="openFilter">
+                            <i class='bx bx-filter'></i>
 
                             <!-- Hidden Dropdown -->
                             <div id="filterDropdown" class="dropdown-content">
