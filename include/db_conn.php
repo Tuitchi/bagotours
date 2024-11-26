@@ -1,6 +1,6 @@
 <?php
 ini_set('log_errors', 1); // Enable error logging
-ini_set('error_log','../error_log.txt'); // Set the error log file path
+ini_set('error_log', '../error_log.txt'); // Set the error log file path
 
 $DATABASE_HOSTNAME = "localhost";
 $DATABASE_USERNAME = "root";
@@ -85,8 +85,6 @@ try {
                 } catch (Exception $e) {
                     error_log("Failed to create notification: " . $e->getMessage());
                 }
-            } else {
-                error_log("Notification already exists for user: {$notification['user_id']}, tour: {$notification['tour_id']}");
             }
         }
     } else {
@@ -95,8 +93,6 @@ try {
 } catch (PDOException $e) {
     error_log('Error: ' . $e->getMessage());
 }
-
-error_log("Script finished.");
 
 function createNotif($conn, $userId, $tour_id, $message, $url, $type)
 {

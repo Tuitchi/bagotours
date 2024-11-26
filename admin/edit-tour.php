@@ -1,84 +1,101 @@
 <?php
 include '../include/db_conn.php';
 include '../func/user_func.php';
+ini_set('log_errors', 1); // Enable error logging
+ini_set('error_log', '../error_log.txt'); // Set the error log file path
 session_start();
 $user_id = $_SESSION['user_id'];
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
     $tour = getTourById($conn, $id);
 } else {
+    $_SESSION['errorMessage'] = 'Invalid Tour ID';
     header("Location: tours.php");
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Get deleted images from the form
+        // Handling image deletions
         if (!empty($_POST['deleted-images'])) {
-            $deletedImages = explode(',', $_POST['deleted-images']);
-            foreach ($deletedImages as $image) {
-                // Remove image from the img field in the database
-                $tour['img'] = str_replace($image, '', $tour['img']);
-                $tour['img'] = trim($tour['img'], ',');  // Remove any leading/trailing commas
-                // Delete the image from the server file system
-                $imagePath = "../upload/Tour Images/" . $image;
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
+            $deletedImagesArray = explode(',', trim($_POST['deleted-images'], ','));
+            $currentImages = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
+            
+            // Calculate remaining images after deletion
+            $remainingImages = array_diff($currentImages, $deletedImagesArray);
+            error_log ("IMAGE LEFT : " . implode(',', $remainingImages));
+
+            // If no images are left, prevent the deletion and show an error message
+            if (count($remainingImages) > 0) {
+                $updatedImages = implode(',', $remainingImages);
+                
+                // Delete the images from the server
+                foreach ($deletedImagesArray as $image) {
+                    $imagePath = "../upload/Tour Images/" . $image;
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+        
+                // Update the image list in the database
+                $sql = "UPDATE tours SET img = :img WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':img', $updatedImages);
+                $stmt->bindParam(':id', $id);
+                $stmt->execute();
+            } else {
+                $_SESSION['errorMessage'] = 'You cannot delete all the images. At least one image must remain, including the main image.';
+                header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
+                exit();
+            }
+        }
+        
+        
+        // Handling new image uploads
+        if (!empty($_FILES['tour-images']['name'][0])) {
+            $tourImages = $_FILES['tour-images'];
+            $currentImages = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
+        
+            foreach ($tourImages['name'] as $index => $imageName) {
+                $newImageName = time() . "_" . basename($imageName);
+                $targetPath = "../upload/Tour Images/" . $newImageName;
+        
+                if (move_uploaded_file($tourImages['tmp_name'][$index], $targetPath)) {
+                    $currentImages[] = $newImageName;
+                } else {
+                    $_SESSION['errorMessage'] = 'Tour image failed to upload!';
+                    header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
+                    exit();
                 }
             }
-            // Update the tour record in the database with the new image list
-            $updatedImages = $tour['img'];
+        
+            $updatedImages = implode(',', $currentImages);
+        
             $sql = "UPDATE tours SET img = :img WHERE id = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':img', $updatedImages);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
         }
-        if (!empty($_FILES['tour-images']['name'][0])) { // Check if files are uploaded
-            $tourImages = $_FILES['tour-images']; // $_FILES will contain the uploaded images
-            $updatedImages = $tour['img']; // Start with the current images in the database
         
-            // Loop through each uploaded file
-            foreach ($tourImages['name'] as $index => $imageName) {
-                $newImageName = time() . "_" . basename($imageName);
-                $targetPath = "../upload/Tour Images/" . $newImageName;
-        
-                if (move_uploaded_file($tourImages['tmp_name'][$index], $targetPath)) {
-                    $updatedImages .= ',' . $newImageName;
-                } else {               
-                     $_SESSION['errorMessage'] = 'Tour image failed to upload!';
-
-                    return;
-                }
-            }
-        
-            // Update the database with the new list of images
-            $sql = "UPDATE tours SET img = :img WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':img', $updatedImages);
-            $stmt->bindParam(':id', $id);
-            if ($stmt->execute()) {
-            } else {
-                $_SESSION['errorMessage'] = 'Tour image failed to update!';
-            }
-        }
-        
-
-        // Update other tour details (e.g., type, description)
-        if (isset($_POST['type'], $_POST['description'], $_POST['bookable'], $_POST['status'])) {
+        // Update other tour details (type, description, bookable, status)
+        if (isset($_POST['title'], $_POST['type'], $_POST['description'], $_POST['bookable'], $_POST['status'])) {
+            $title = $_POST['title'];
             $type = $_POST['type'];
             $description = $_POST['description'];
             $bookable = $_POST['bookable'];
-            $status= $_POST['status'];
-
-            $sql = "UPDATE tours SET type = :type, description = :description, bookable = :bookable, status= :status WHERE id = :id";
+            $status = $_POST['status'];
+            
+            $sql = "UPDATE tours SET title = :title, type = :type, description = :description, bookable = :bookable, status= :status WHERE id = :id";
             $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':title', $title);
             $stmt->bindParam(':type', $type);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':bookable', $bookable);
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':id', $id);
+            
             if ($stmt->execute()) {
                 $_SESSION['successMessage'] = 'Tour updated successfully!';
             } else {
@@ -88,14 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['errorMessage'] = 'Failed to update tour details.';
         }
 
-        // Redirect or reload page
+        // Redirect after successful update
         header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
         exit();
     } catch (Exception $e) {
         $_SESSION['errorMessage'] = 'An error occurred: ' . $e->getMessage();
+        header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
+        exit();
     }
 }
-
 
 
 ?>
@@ -111,9 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="assets/css/add.css">
     <link rel="stylesheet" href="assets/css/edit.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Mapbox -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <title>BaGoTours. Tours</title>
 </head>
 
@@ -141,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <hr class="section-divider">
                         </div>
                         <label for="image-preview-container">Tour Image</label>
+                        <p>Ensure that the main image appears as the first image.</p>
                         <div class="image-preview-container">
                             <div class="main-image">
                                 <img id="main-image-preview" src="" alt="Main Image Preview">
@@ -166,9 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="form-group">
                             <div class="input-group" style="width:65%">
-                                <label for="title">Tours Name <span>fixed</span></label>
-                                <input type="text" id="title" name="title" disabled
-                                    value="<?php echo $tour['title'] ?>">
+                                <label for="title">Tours Name <span class="editable">editable</span></label>
+                                <input type="text" id="title" name="title" value="<?php echo $tour['title'] ?>">
                             </div>
                             <div class="input-group" style="width:35%">
                                 <label for="type">Tour Type <span class="editable">editable</span></label>

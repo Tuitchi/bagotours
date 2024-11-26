@@ -4,98 +4,26 @@ session_start();
 
 $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['firstname'] . " " . $_POST['lastname'];
+    $gender = $_POST['gender'];
+    $country = $_POST['country'];
+    $province = isset($_POST['province']) ? $_POST['province'] : '';
+    $city = isset($_POST['city']) ? $_POST['city'] : '';
+    $address = $city
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $passwordConfirmation = $_POST['confirm-password'];
+    $profile_picture = $_FILES['profile-picture'];
+    $errors[] = '';
 
-    $title = htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8');
-    $type = htmlspecialchars($_POST['type'], ENT_QUOTES, 'UTF-8');
-    $address = htmlspecialchars($_POST['location'], ENT_QUOTES, 'UTF-8');
-    $description = htmlspecialchars($_POST['description'], ENT_QUOTES, 'UTF-8');
-    $latitude = $_POST['latitude'];
-    $longitude = $_POST['longitude'];
-    $bookable = isset($_POST['bookable']) ? $_POST['bookable'] : 0;
-    if (tourAlreadyExists($conn, $title)) {
-        $errorMessage = "Tour already exist, please fill up a new tour.";
-    } else {
-        $uploaded_images = [];
-        if (isset($_FILES['tour-images']) && !empty($_FILES['tour-images']['name'][0])) {
-            $images = $_FILES['tour-images'];
-            $image_error = false;
-
-            foreach ($images['name'] as $key => $image_name) {
-                $image_tmp_name = $images['tmp_name'][$key];
-                $image_type = $images['type'][$key];
-                $image_size = $images['size'][$key];
-                $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
-
-                // Validate image (Check for allowed types and size)
-                if (!in_array($image_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
-                    $image_error = true;
-                    $error_message = "Invalid image type. Only jpg, jpeg, png, and gif are allowed.";
-                    break;
-                }
-                if ($image_size > 5000000) { // Max size of 5MB
-                    $image_error = true;
-                    $error_message = "Image size exceeds 5MB.";
-                    break;
-                }
-
-                // Generate a unique name for the image
-                $new_image_name = uniqid() . '.' . $image_ext;
-                $target_path = "../upload/Tour Images/" . $new_image_name;
-
-                if (move_uploaded_file($image_tmp_name, $target_path)) {
-                    $uploaded_images[] = $new_image_name; // Store the image name for DB insertion
-                } else {
-                    $image_error = true;
-                    $error_message = "Error uploading image.";
-                    break;
-                }
-            }
-
-            if ($image_error) {
-                echo '<script>alert("' . $error_message . '");</script>';
-            }
-        }
-
-        // If no errors, insert the tour into the database
-        if (!$image_error) {
-            // Convert the array of uploaded images to a comma-separated string for the database
-            $image_paths = implode(',', $uploaded_images);
-
-            // Insert tour details into the database
-            $query = "INSERT INTO tours (title, type, description, address, latitude, longitude, img, bookable, status, user_id) 
-                  VALUES (:title, :type, :description, :address, :latitude, :longitude, :img, :bookable, 1, :user_id)";
-
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':type', $type);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':address', $address);
-            $stmt->bindParam(':latitude', $latitude);
-            $stmt->bindParam(':longitude', $longitude);
-            $stmt->bindParam(':img', $image_paths);
-            $stmt->bindParam(':bookable', $bookable);
-            $stmt->bindParam(':user_id', $user_id);
-
-            if ($stmt->execute()) {
-                $successMessage = "Tour added successfully!";
-            } else {
-                $errorMessage = "Failed to add the tour. Please try again.";
-            }
-        }
+    if (empty($gender) || empty($name) || empty($country) || empty($username) || empty($email) || empty($password) || empty($passwordConfirmation)) {
+        echo "All fields are required.";
     }
-}
 
-function tourAlreadyExists($conn, $title)
-{
-    $query = "SELECT COUNT(*) as count FROM tours WHERE title = :title AND status = 1";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':title', $title);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['count'] > 0;
+
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -126,8 +54,8 @@ function tourAlreadyExists($conn, $title)
         }
 
         .image-preview-container img {
-            width: 100%;
-            height: auto;
+            width: auto;
+            height: 50vh;
             object-fit: cover;
         }
 
@@ -155,7 +83,7 @@ function tourAlreadyExists($conn, $title)
                             details are correct.</p>
                     </div>
 
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="" method="POST">
 
                         <div class="pp">
 
@@ -167,7 +95,7 @@ function tourAlreadyExists($conn, $title)
                             <div class="image-preview-container">
                                 <img src="../upload/Profile Pictures/default.png" alt="">
                             </div>
-                            <input type="file" id="profile-picture" name="profile-picture" accept="image/*" multiple>
+                            <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
                         </div>
 
                         <div class="info-group">
@@ -176,24 +104,20 @@ function tourAlreadyExists($conn, $title)
                                 <h3 class="section-title">User Information</h3>
                                 <hr class="section-divider">
                             </div>
+                            <label for="firstname">Name <span>required</span></label>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <label for="firstname">First Name <span>required</span></label>
-                                    <input type="text" id="firstname" name="firstname" required>
+                                    <input type="text" id="firstname" name="firstname" placeholder="First Name"
+                                        required>
                                 </div>
                                 <div class="input-group">
-                                    <label for="middlename">Middle Name<span class="opt">Optional</span></label>
-                                    <input type="text" id="middlename" name="middlename" required>
-                                </div>
-                                <div class="input-group">
-                                    <label for="lastname">Last Name <span>required</span></label>
-                                    <input type="text" id="lastname" name="lastname" required>
+                                    <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="gender">Gender<span>required</span></label>
-                                    <select name="gender" id="gender" required style="width:50%">
+                                    <select name="gender" id="gender" required style="width:80%">
                                         <option value="" selected disabled>Select Gender</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
@@ -207,30 +131,24 @@ function tourAlreadyExists($conn, $title)
                                         <!-- Auto Generated country throu JS -->
                                     </select>
                                 </div>
-                                <div class="input-group">
+                                <div class="input-group province" style="display:none;">
                                     <label for="province">Province</label>
-                                    <select name="province" id="province" required>
+                                    <select name="province" id="province" required disabled>
                                         <option value="" selected disabled>Select Province</option>
                                         <!-- Auto Generated country throu JS -->
                                     </select>
                                 </div>
-                                <div class="input-group">
-                                    <label for="city">City or Municipality</label>
-                                    <select name="city" id="city" required>
-                                        <option value="" selected disabled>Select City or Municipality</option>
+                                <div class="input-group city" style="display:none;">
+                                    <label for="city">City/Municipality</label>
+                                    <select name="city" id="city" required disabled>
+                                        <option value="" selected disabled>Select City/Municipality</option>
                                         <!-- Auto Generated country throu JS -->
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-group">
-                                    <label for="address">Address<span>required</span></label>
-                                    <input type="text" id="address" name="address">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="username">Username<span>required</span></label>
+                                <div class="input-group" style="width: 50%;">
+                                    <label for="username">Username<span>requed</span></label>
                                     <input type="text" id="username" name="username">
                                 </div>
                                 <div class="input-group">
@@ -243,8 +161,6 @@ function tourAlreadyExists($conn, $title)
                                     <label for="password">Password<span>required</span></label>
                                     <input type="password" id="password" name="password">
                                 </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="input-group">
                                     <label for="confirm-password">Confirm Password<span>required</span></label>
                                     <input type="password" id="confirm-password" name="confirm-password">
@@ -269,104 +185,143 @@ function tourAlreadyExists($conn, $title)
     <script src="../assets/js/script.js"></script>
     <script>
         $(document).ready(function () {
-            $('#country, #province, #city').select2();
-        });
-        // Populate the country select dropdown with countries
-        const countries = [
-            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina",
-            "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
-            "Barbados", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina",
-            "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia",
-            "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China",
-            "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
-            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador",
-            "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
-            "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
-            "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia",
-            "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
-            "Kiribati", "Korea, North", "Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia",
-            "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
-            "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania",
-            "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco",
-            "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua",
-            "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea",
-            "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
-            "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
-            "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore",
-            "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka",
-            "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand",
-            "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine",
-            "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
-            "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-        ];
-
-        const selectElement = document.getElementById('country');
-
-        // Loop through the array and create an option for each country
-        countries.forEach(country => {
-            const option = document.createElement('option');
-            option.value = country;
-            option.textContent = country;
-            selectElement.appendChild(option);
-
-        });
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        <?php if (!empty($successMessage)): ?>
-            Toast.fire({
-                icon: "success",
-                title: "<?php echo $successMessage ?>"
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
             });
-        <?php elseif (!empty($errorMessage)): ?>
-            Toast.fire({
-                icon: "error",
-                title: "<?php echo $errorMessage ?>"
+            // Populate the country select dropdown with countries
+            const countries = ["Philippines"
+            ];
+            const $countryDropdown = $('#country');
+            const $provinceDropdown = $('#province');
+            const $cityDropdown = $('#city');
+
+            countries.forEach(country => {
+                $countryDropdown.append(`<option value="${country}">${country}</option>`);
             });
-        <?php endif; ?>
+            $countryDropdown.on('change', function () {
+                const selectedCountry = $(this).val();
 
+                if (selectedCountry === "Philippines") {
+                    $provinceDropdown.prop('disabled', false);
+                    $cityDropdown.prop('disabled', true);
 
-        $('#tour-images').on('change', function (event) {
-            const files = event.target.files;
-            const $imagesPreview = $('.image-preview-container');
-            const $mainImagePreview = $('#main-image-preview');
-            const $thumbnailContainer = $('.thumbnail-images');
-
-            // Clear existing image previews and thumbnails
-            $imagesPreview.toggle();
-            $thumbnailContainer.empty();
-            $mainImagePreview.attr('src', '');
-
-            $.each(files, function (index, file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const $img = $('<img>', {
-                        src: e.target.result,
-                        alt: `Image ${index + 1}`,
+                    $.ajax({
+                        url: '../php/getProvinces.php',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (provinces) {
+                            $('.input-group.province').css('display', 'block');
+                            $provinceDropdown.html('<option value="" selected disabled>Select Province</option>');
+                            provinces.forEach(province => {
+                                $provinceDropdown.append(`<option value="${province.code}">${province.name}</option>`);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error fetching provinces:", error);
+                        }
                     });
 
-                    $img.on('click', function () {
-                        $mainImagePreview.attr('src', e.target.result);
-                        $('.thumbnail-images img').removeClass('selected');
-                        $img.addClass('selected');
+                } else {
+                    $provinceDropdown.prop('disabled', true).html('<option value="" selected disabled>Select Province</option>');
+                    $cityDropdown.prop('disabled', true).html('<option value="" selected disabled>Select City/Municipality</option>');
+                }
+            });
+
+
+            $provinceDropdown.on('change', function () {
+                const provinceId = $(this).val();
+                console.log('Selected provinceId:', provinceId); // Debugging log
+
+                if (provinceId) {
+                    $cityDropdown.prop('disabled', false); // Enable city dropdown
+
+                    // Fetch cities for the selected province
+                    $.ajax({
+                        url: '../php/getCities.php',
+                        method: 'GET',
+                        data: { provinceId: provinceId },
+                        dataType: 'json',
+                        success: function (cities) {
+                            $('.input-group.city').css('display', 'block');
+
+                            $cityDropdown.html('<option value="" selected disabled>Select City/Municipality</option>');
+                            cities.forEach(city => {
+                                $cityDropdown.append(`<option value="${city.id}">${city.name}</option>`);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            let errorMessage = xhr.responseText ? xhr.responseText : error;
+                            Toast.fire({
+                                icon: 'error',
+                                title: `Error: ${errorMessage}`
+                            });
+                        }
                     });
 
-                    $thumbnailContainer.append($img);
+                } else {
+                    // If no province is selected, disable the city dropdown and reset it
+                    $cityDropdown.prop('disabled', true).html('<option value="" selected disabled>Select City/Municipality</option>');
+                }
+            });
 
-                    if (index === 0) {
-                        $mainImagePreview.attr('src', e.target.result);
-                        $img.addClass('selected');
-                    }
-                };
-                reader.readAsDataURL(file);
+
+
+
+            <?php if (!empty($successMessage)): ?>
+                Toast.fire({
+                    icon: "success",
+                    title: "<?php echo $successMessage ?>"
+                });
+            <?php elseif (!empty($errorMessage)): ?>
+                Toast.fire({
+                    icon: "error",
+                    title: "<?php echo $errorMessage ?>"
+                });
+            <?php endif; ?>
+
+
+            $('#tour-images').on('change', function (event) {
+                const files = event.target.files;
+                const $imagesPreview = $('.image-preview-container');
+                const $mainImagePreview = $('#main-image-preview');
+                const $thumbnailContainer = $('.thumbnail-images');
+
+                // Clear existing image previews and thumbnails
+                $imagesPreview.toggle();
+                $thumbnailContainer.empty();
+                $mainImagePreview.attr('src', '');
+
+                $.each(files, function (index, file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const $img = $('<img>', {
+                            src: e.target.result,
+                            alt: `Image ${index + 1}`,
+                        });
+
+                        $img.on('click', function () {
+                            $mainImagePreview.attr('src', e.target.result);
+                            $('.thumbnail-images img').removeClass('selected');
+                            $img.addClass('selected');
+                        });
+
+                        $thumbnailContainer.append($img);
+
+                        if (index === 0) {
+                            $mainImagePreview.attr('src', e.target.result);
+                            $img.addClass('selected');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
         });
     </script>

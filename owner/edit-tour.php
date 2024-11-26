@@ -13,63 +13,73 @@ if (isset($_GET['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Get deleted images from the form
+        // Handling image deletions
         if (!empty($_POST['deleted-images'])) {
-            $deletedImages = explode(',', $_POST['deleted-images']);
-            foreach ($deletedImages as $image) {
-                // Remove image from the img field in the database
-                $tour['img'] = str_replace($image, '', $tour['img']);
-                $tour['img'] = trim($tour['img'], ',');  // Remove any leading/trailing commas
-                // Delete the image from the server file system
-                $imagePath = "../upload/Tour Images/" . $image;
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
+            $deletedImagesArray = explode(',', trim($_POST['deleted-images'], ','));
+            $currentImages = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
+            
+            // Calculate remaining images after deletion
+            $remainingImages = array_diff($currentImages, $deletedImagesArray);
+            error_log ("IMAGE LEFT : ".$remainingImages);
+            // If no images are left, prevent the deletion and show an error message
+            if (count($remainingImages) > 0) {
+                $updatedImages = implode(',', $remainingImages);
+                
+                // Delete the images from the server
+                foreach ($deletedImagesArray as $image) {
+                    $imagePath = "../upload/Tour Images/" . $image;
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+        
+                // Update the image list in the database
+                $sql = "UPDATE tours SET img = :img WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':img', $updatedImages);
+                $stmt->bindParam(':id', $id);
+                $stmt->execute();
+            } else {
+                $_SESSION['errorMessage'] = 'You cannot delete all the images. At least one image must remain, including the main image.';
+                header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
+                exit();
+            }
+        }
+        
+        
+        // Handling new image uploads
+        if (!empty($_FILES['tour-images']['name'][0])) {
+            $tourImages = $_FILES['tour-images'];
+            $currentImages = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
+        
+            foreach ($tourImages['name'] as $index => $imageName) {
+                $newImageName = time() . "_" . basename($imageName);
+                $targetPath = "../upload/Tour Images/" . $newImageName;
+        
+                if (move_uploaded_file($tourImages['tmp_name'][$index], $targetPath)) {
+                    $currentImages[] = $newImageName;
+                } else {
+                    $_SESSION['errorMessage'] = 'Tour image failed to upload!';
+                    header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
+                    exit();
                 }
             }
-            // Update the tour record in the database with the new image list
-            $updatedImages = $tour['img'];
+        
+            $updatedImages = implode(',', $currentImages);
+        
             $sql = "UPDATE tours SET img = :img WHERE id = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':img', $updatedImages);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
         }
-        if (!empty($_FILES['tour-images']['name'][0])) { // Check if files are uploaded
-            $tourImages = $_FILES['tour-images']; // $_FILES will contain the uploaded images
-            $updatedImages = $tour['img']; // Start with the current images in the database
         
-            // Loop through each uploaded file
-            foreach ($tourImages['name'] as $index => $imageName) {
-                $newImageName = time() . "_" . basename($imageName);
-                $targetPath = "../upload/Tour Images/" . $newImageName;
-        
-                if (move_uploaded_file($tourImages['tmp_name'][$index], $targetPath)) {
-                    $updatedImages .= ',' . $newImageName;
-                } else {               
-                     $_SESSION['errorMessage'] = 'Tour image failed to upload!';
-
-                    return;
-                }
-            }
-        
-            // Update the database with the new list of images
-            $sql = "UPDATE tours SET img = :img WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':img', $updatedImages);
-            $stmt->bindParam(':id', $id);
-            if ($stmt->execute()) {
-            } else {
-                $_SESSION['errorMessage'] = 'Tour image failed to update!';
-            }
-        }
-        
-
-        // Update other tour details (e.g., type, description)
+        // Update other tour details (type, description, bookable, status)
         if (isset($_POST['type'], $_POST['description'], $_POST['bookable'], $_POST['status'])) {
             $type = $_POST['type'];
             $description = $_POST['description'];
             $bookable = $_POST['bookable'];
-            $status= $_POST['status'];
+            $status = $_POST['status'];
 
             $sql = "UPDATE tours SET type = :type, description = :description, bookable = :bookable, status= :status WHERE id = :id";
             $stmt = $conn->prepare($sql);
@@ -78,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':bookable', $bookable);
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':id', $id);
+            
             if ($stmt->execute()) {
                 $_SESSION['successMessage'] = 'Tour updated successfully!';
             } else {
@@ -87,17 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['errorMessage'] = 'Failed to update tour details.';
         }
 
-        // Redirect or reload page
+        // Redirect after successful update
         header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
         exit();
     } catch (Exception $e) {
         $_SESSION['errorMessage'] = 'An error occurred: ' . $e->getMessage();
+        header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
+        exit();
     }
 }
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -110,9 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="assets/css/add.css">
     <link rel="stylesheet" href="assets/css/edit.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Mapbox -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <title>BaGoTours. Tours</title>
 </head>
 
@@ -146,22 +154,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="thumbnail-images">
                                 <?php
-                                $tour_images = explode(",", $tour['img']);
+                                $tour_images = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
                                 foreach ($tour_images as $index => $image):
+                                    $imgSrc = file_exists("../upload/Tour Images/$image") ? "../upload/Tour Images/$image" : "path/to/placeholder.jpg";
                                 ?>
                                     <div class="thumbnail-container">
-                                        <img src="../upload/Tour Images/<?php echo $image; ?>" alt="Tour Image" class="thumbnail-image" data-index="<?php echo $index; ?>" />
+                                        <img src="<?php echo $imgSrc; ?>" alt="Tour Image <?php echo $index + 1; ?>" class="thumbnail-image" data-index="<?php echo $index; ?>" />
                                         <i class="bx bxs-trash delete-icon" data-image="<?php echo $image; ?>" data-index="<?php echo $index; ?>"></i>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
                         </div>
 
+
                         <input type="file" id="tour-images" name="tour-images[]" accept="image/*" multiple>
                         <p id="image-error" style="color: red; display: none;">Image must have a landscape view (16:10 aspect ratio recommended).</p>
 
                         <!-- Hidden input to track deleted images -->
-                        <input type="hidden" id="deleted-images" name="deleted-images" value="">
+
+                        <input type="hidden" id="deleted-images" name="deleted-images">
 
                         <div class="form-group">
                             <div class="input-group" style="width:65%">
@@ -276,43 +287,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Initialize SweetAlert2 toast notifications
     const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.on('mouseenter', Swal.stopTimer);
-            toast.on('mouseleave', Swal.resumeTimer);
-        }
-    });
-
-    // Check if the PHP session has a success or error message and show the corresponding SweetAlert
+    toast: true,
+    position: "top-end",
+    showConfirmButton: true,  // Allows user to close the toast manually
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.on('mouseenter', Swal.stopTimer);  // Stop the timer when mouse hovers over the toast
+        toast.on('mouseleave', Swal.resumeTimer);  // Resume the timer when mouse leaves the toast
+    }
+});
     <?php if (isset($_SESSION['successMessage'])): ?>
         Toast.fire({
             icon: 'success',
             title: '<?php echo $_SESSION['successMessage']; ?>'
-        }).then(() => {
-            // Optionally, reload the page after showing success message
-            window.location.reload();
         });
-        <?php unset($_SESSION['successMessage']); // Clear session message ?>
     <?php elseif (isset($_SESSION['errorMessage'])): ?>
         Toast.fire({
             icon: 'error',
             title: '<?php echo $_SESSION['errorMessage']; ?>'
-        }).then(() => {
-            // Optionally, reload the page after showing error message
-            window.location.reload();
         });
-        <?php unset($_SESSION['errorMessage']); // Clear session message ?>
-    <?php endif; ?>
+        <?php 
+        unset($_SESSION['successMessage']);
+        unset($_SESSION['errorMessage']); 
+        endif; ?>
 
-    $(".delete-icon").on("click", function () {
-        var imageSrc = $(this).data('image');
-        var imageIndex = $(this).data('index');
+    $('.delete-icon').on('click', function() {
+        const image = $(this).data('image');
+        const index = $(this).data('index');
+        const deletedImagesField = $('#deleted-images');
+        let deletedImages = deletedImagesField.val().split(',');
 
-        // Confirm deletion
+        // SweetAlert confirmation
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to undo this!",
@@ -322,29 +327,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Remove the image from the thumbnail list
+                // Proceed with image deletion
+                if (!deletedImages.includes(image)) {
+                    deletedImages.push(image);
+                }
+
+                deletedImagesField.val(deletedImages.join(','));
                 $(this).closest('.thumbnail-container').remove();
 
-                // Mark this image for deletion by adding it to a hidden input field
-                var deletedImages = $('#deleted-images').val();
-                deletedImages = deletedImages ? deletedImages + ',' + imageSrc : imageSrc;
-                $('#deleted-images').val(deletedImages);
+                // Show a success toast after deletion
+                Swal.fire(
+                    'Deleted!',
+                    'The image has been deleted.',
+                    'success'
+                );
             }
         });
     });
+});
 
     // When the form is submitted, ensure deleted images are sent
     $("form").on("submit", function () {
-        var deletedImages = $('#deleted-images').val();
-        if (deletedImages) {
-            // Append the deleted images to the form data
-            $("<input>").attr({
-                type: "hidden",
-                name: "deleted-images",
-                value: deletedImages
-            }).appendTo("form");
-        }
-    });
+    var deletedImages = $('#deleted-images').val();
+    if (deletedImages) {
+        // Clean up leading/trailing commas
+        deletedImages = deletedImages.replace(/^,+|,+$/g, '');
+        $('#deleted-images').val(deletedImages);
+
+        // Append the cleaned-up deleted images to the form data
+        $("<input>").attr({
+            type: "hidden",
+            name: "deleted-images",
+            value: deletedImages
+        }).appendTo("form");
+    }
+});
 let selectedFiles = [];
 
 $('#tour-images').on('change', function (event) {
@@ -378,25 +395,27 @@ $('#tour-images').on('change', function (event) {
 
             // Add click event to the close button to remove the image from the preview
             $closeButton.on('click', function () {
-                // Remove the image from the thumbnail preview
-                $img.remove();
-                $closeButton.remove();
+    // Remove the image from the thumbnail preview
+    $img.remove();
+    $closeButton.remove();
 
-                // Remove the file from the selectedFiles array
-                selectedFiles = selectedFiles.filter((_, i) => i !== index);
+    // Remove the file from the selectedFiles array
+    selectedFiles = selectedFiles.filter((_, i) => i !== index);
 
-                // Update the file input with the remaining selected files
-                const dataTransfer = new DataTransfer();
-                selectedFiles.forEach(file => dataTransfer.items.add(file));
+    // Update the file input with the remaining selected files
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach(file => dataTransfer.items.add(file));
 
-                // Reassign the updated files to the file input
-                $('#tour-images')[0].files = dataTransfer.files;
+    // Reassign the updated files to the file input
+    $('#tour-images')[0].files = dataTransfer.files;
 
-                // Optionally, you can remove the image from the deleted images hidden input
-                const deletedImages = $('#deleted-images').val();
-                let updatedDeletedImages = deletedImages ? deletedImages + ',' + file.name : file.name;
-                $('#deleted-images').val(updatedDeletedImages);
-            });
+    // Optionally, remove the image from the deleted images hidden input
+    let deletedImages = $('#deleted-images').val();
+    if (deletedImages) {
+        let deletedImagesArray = deletedImages.split(',').filter(img => img !== file.name);
+        $('#deleted-images').val(deletedImagesArray.join(','));
+    }
+});
 
             // Append the image and the close button to the thumbnail container
             const $thumbnailWrapper = $('<div>', { class: 'thumbnail-container' });
@@ -413,7 +432,6 @@ $('#tour-images').on('change', function (event) {
     });
 });
 
-});
 
 </script>
 </body>

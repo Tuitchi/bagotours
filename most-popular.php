@@ -6,7 +6,7 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
 
-$time_filter = '1 DAY';
+$time_filter = '1 DAY'; // Default filter
 if (isset($_POST['filter'])) {
     $time_filter = $_POST['filter'];
 }
@@ -27,6 +27,15 @@ visit_visitors AS (
     LEFT JOIN visit_records v ON t.id = v.tour_id
     WHERE v.visit_time >= DATE_SUB(NOW(), INTERVAL $time_filter)
     GROUP BY t.id
+),
+review_data AS (
+    SELECT t.id, 
+           IFNULL(AVG(r.rating), 0) AS average_rating,  -- Average rating
+           IFNULL(COUNT(r.id), 0) AS review_count       -- Review count
+    FROM tours t
+    LEFT JOIN review_rating r ON t.id = r.tour_id
+    WHERE r.date_created >= DATE_SUB(NOW(), INTERVAL $time_filter)  -- Filter reviews within the time frame
+    GROUP BY t.id
 )
 
 SELECT t.id, 
@@ -35,27 +44,68 @@ SELECT t.id,
        t.type,
        COALESCE(bv.total_booking_visitors, 0) + COALESCE(vv.total_visit_visitors, 0) AS total_visitors,
        COUNT(DISTINCT b.id) AS total_completed_bookings,
-       IFNULL(AVG(r.rating), 0) AS average_rating,  -- Average rating
-       IFNULL(COUNT(r.id), 0) AS review_count       -- Review count
-FROM tours t 
+       rd.average_rating,
+       rd.review_count
+FROM tours t
 LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
 LEFT JOIN booking_visitors bv ON t.id = bv.id
 LEFT JOIN visit_visitors vv ON t.id = vv.id
-LEFT JOIN review_rating r ON t.id = r.tour_id  -- Join with review_rating table
+LEFT JOIN review_data rd ON t.id = rd.id
 WHERE t.status = 1
-GROUP BY t.id, t.title, bv.total_booking_visitors, vv.total_visit_visitors
-ORDER BY total_visitors DESC, total_completed_bookings DESC LIMIT 15;
+GROUP BY t.id, rd.average_rating, rd.review_count, bv.total_booking_visitors, vv.total_visit_visitors;
 ";
-
 
 try {
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Find max values and prevent division by zero
+    $max_visitors = max(array_column($tours, 'total_visitors'));
+    $max_bookings = max(array_column($tours, 'total_completed_bookings'));
+    $max_rating = 5; // Assuming rating is out of 5
+    $max_reviews = max(array_column($tours, 'review_count'));
+
+    // Prevent division by zero by checking max values
+    $max_visitors = ($max_visitors > 0) ? $max_visitors : 1;
+    $max_bookings = ($max_bookings > 0) ? $max_bookings : 1;
+    $max_reviews = ($max_reviews > 0) ? $max_reviews : 1;
+
+    $weighted_tours = [];
+    $total_visitors_weight = 0.2;
+    $completed_bookings_weight = 0.3;
+    $rating_weight = 0.3;
+    $review_weight = 0.2;
+
+    foreach ($tours as $tour) {
+        // Normalize the data
+        $normalized_visitors = $tour['total_visitors'] / $max_visitors;
+        $normalized_bookings = $tour['total_completed_bookings'] / $max_bookings;
+        $normalized_rating = $tour['average_rating'] / $max_rating;
+        $normalized_reviews = $tour['review_count'] / $max_reviews;
+
+        // Calculate the weighted score
+        $weighted_score = ($normalized_visitors * $total_visitors_weight) +
+            ($normalized_bookings * $completed_bookings_weight) +
+            ($normalized_rating * $rating_weight) +
+            ($normalized_reviews * $review_weight);
+
+        $tour['weighted_score'] = $weighted_score;
+        $weighted_tours[] = $tour;
+    }
+
+    // Sort by weighted score in descending order
+    usort($weighted_tours, function ($a, $b) {
+        return $b['weighted_score'] <=> $a['weighted_score'];
+    });
+
+    // Limit to top 15 tours
+    $top_tours = array_slice($weighted_tours, 0, 15);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -84,7 +134,7 @@ try {
             <div id="tour-list-container">
                 <?php
                 $counter = 1;
-                foreach ($tours as $tour) {
+                foreach ($top_tours as $tour) {
                     // Calculate the star rating based on average rating
                     $averageRating = round($tour['average_rating']); // Round to the nearest whole number
                     $fullStars = str_repeat("★", $averageRating); // Full stars
