@@ -13,13 +13,16 @@ try {
 
 	if ($result) {
 		foreach ($result as $row) {
+			$image_column = $row['img']; // Example: "image1.jpg,image2.jpg,image3.jpg"
+			$image_array = explode(',', $image_column); // Convert to an array
+
 			$touristSpots[] = [
 				'id' => $row['id'],
 				'title' => $row['title'],
 				'latitude' => $row['latitude'],
 				'longitude' => $row['longitude'],
 				'type' => $row['type'],
-				'image' => $row['img'],
+				'image' => $image_array[0],
 				'address' => $row['address']
 			];
 		}
@@ -48,7 +51,6 @@ try {
 				'longitude' => $row['longitude'],      // Correct mapping of 'longitude'
 				'type' => $row['event_type'],          // Correct mapping of 'event_type'
 				'image' => $row['event_image'],        // Correct mapping of 'event_image'
-				// If there's an address column, uncomment the line below
 				// 'address' => $row['address']          // Optional, if applicable
 			];
 		}
@@ -143,10 +145,10 @@ try {
 				`;
 
 				const popup = new mapboxgl.Popup({
-					closeOnClick: false,
-					offset: 25,
-					closeButton: false
-				})
+						closeOnClick: false,
+						offset: 25,
+						closeButton: false
+					})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {
@@ -183,10 +185,10 @@ try {
 `;
 
 				const popup = new mapboxgl.Popup({
-					closeOnClick: false,
-					offset: 25,
-					closeButton: false
-				})
+						closeOnClick: false,
+						offset: 25,
+						closeButton: false
+					})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {
@@ -204,8 +206,8 @@ try {
 			});
 		});
 		<?php
-        if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {
-            echo "
+		if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {
+			echo "
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -221,9 +223,9 @@ try {
             });
             Toast.fire();
             ";
-            unset($_SESSION['loginSuccess']);
-        }
-        ?>
+			unset($_SESSION['loginSuccess']);
+		}
+		?>
 	</script>
 </body>
 

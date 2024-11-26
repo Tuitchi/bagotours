@@ -3,25 +3,70 @@ include '../include/db_conn.php';
 session_start();
 
 $user_id = $_SESSION['user_id'];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['firstname'] . " " . $_POST['lastname'];
     $gender = $_POST['gender'];
     $country = $_POST['country'];
     $province = isset($_POST['province']) ? $_POST['province'] : '';
     $city = isset($_POST['city']) ? $_POST['city'] : '';
-    $address = $city
+
+    $home_address = trim(
+        ($city ? $city . ', ' : '') .
+            ($province ? $province . ', ' : '') .
+            $country
+    );
+
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $passwordConfirmation = $_POST['confirm-password'];
-    $profile_picture = $_FILES['profile-picture'];
-    $errors[] = '';
+    $profile_picture = 'default.png';
+
+    include '../func/user_func.php';
+    $emailAlreadyUsed = emailAlreadyUsed($conn, $email);
+    $usernameAlreadyUsed = usernameAlreadyUsed($conn, $username);
 
     if (empty($gender) || empty($name) || empty($country) || empty($username) || empty($email) || empty($password) || empty($passwordConfirmation)) {
-        echo "All fields are required.";
+        $errorMessage = "All fields are required.";
+    } elseif ($emailAlreadyUsed) {
+        $errorMessage = "Email already in use.";
+    } elseif ($usernameAlreadyUsed) {
+        $errorMessage = "Username already in use.";
+    } elseif (strlen($password) < 8) {
+        $errorMessage = "Password must be at least 8 characters long.";
+    } elseif ($password !== $passwordConfirmation) {
+        $errorMessage = "Passwords do not match.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errorMessage = "Invalid email format.";
     }
+    if (empty($errorMessage)) {
+        try {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+            $sql = "INSERT INTO users (name, gender, home_address, username, email, password, profile_picture)
+                    VALUES (:name, :gender, :home_address, :username, :email, :password, :profile_picture)";
 
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':gender', $gender);
+            $stmt->bindParam(':home_address', $home_address);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $hashed_password);
+            $stmt->bindParam(':profile_picture', $profile_picture);
+
+            if ($stmt->execute()) {
+                $successMessage = "User successfully created!";
+            } else {
+                $errorMessage = "Database errorMessage: Unable to insert record.";
+            }
+        } catch (PDOException $e) {
+            $errorMessage = "Database errorMessage: " . $e->getMessage();
+        }
+    }
+    
 }
 ?>
 <!DOCTYPE html>
@@ -83,22 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             details are correct.</p>
                     </div>
 
-                    <form action="" method="POST">
+                    <form action="" method="POST" enctype="multipart/form-data">
 
-                        <div class="pp">
 
-                            <div class="section-header">
-                                <hr class="section-divider">
-                                <h3 class="section-title">Profile Picture</h3>
-                                <hr class="section-divider">
-                            </div>
-                            <div class="image-preview-container">
-                                <img src="../upload/Profile Pictures/default.png" alt="">
-                            </div>
-                            <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
-                        </div>
 
-                        <div class="info-group">
+                        <div class="info-group" style="width: 100%;">
                             <div class="section-header">
                                 <hr class="section-divider">
                                 <h3 class="section-title">User Information</h3>
@@ -107,21 +141,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label for="firstname">Name <span>required</span></label>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" placeholder="First Name"
+                                    <input type="text" id="firstname" name="firstname" placeholder="First Name" value="<?php echo isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : ''; ?>"
                                         required>
                                 </div>
                                 <div class="input-group">
-                                    <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
+                                    <input type="text" id="lastname" name="lastname" placeholder="Last Name" value="<?php echo isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : ''; ?>" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-group">
+                                <div class="input-group" style="width: 60%;">
                                     <label for="gender">Gender<span>required</span></label>
-                                    <select name="gender" id="gender" required style="width:80%">
+                                    <select name="gender" id="gender" required>
                                         <option value="" selected disabled>Select Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="other">Other</option>
+                                        <option value="male" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
+                                        <option value="female" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
+                                        <option value="other" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'other') ? 'selected' : ''; ?>>Other</option>
                                     </select>
                                 </div>
                                 <div class="input-group">
@@ -147,23 +181,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-group" style="width: 50%;">
-                                    <label for="username">Username<span>requed</span></label>
-                                    <input type="text" id="username" name="username">
+                                <div class="input-group" style="width: 100%;">
+                                    <label for="username">Username<span>required</span></label>
+                                    <input type="text" id="username" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required>
                                 </div>
+                                <div class="input-group" style="width: 30%;">
+                                    <label for="role">Role<span>required</span></label>
+                                    <select name="role" id="role" required>
+                                        <option value="" selected disabled>Select a Role</option>
+                                        <option value="user" <?php echo (isset($_POST['role']) && $_POST['role'] == 'user') ? 'selected' : ''; ?>>User</option>
+                                        <option value="owner" <?php echo (isset($_POST['role']) && $_POST['role'] == 'owner') ? 'selected' : ''; ?>>Tourist Spot Owner</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="input-group">
                                     <label for="email">Email<span>required</span></label>
-                                    <input type="text" id="email" name="email">
+                                    <input type="text" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="password">Password<span>required</span></label>
-                                    <input type="password" id="password" name="password">
+                                    <input type="password" id="password" name="password" required>
                                 </div>
                                 <div class="input-group">
                                     <label for="confirm-password">Confirm Password<span>required</span></label>
-                                    <input type="password" id="confirm-password" name="confirm-password">
+                                    <input type="password" id="confirm-password" name="confirm-password" required>
                                 </div>
                             </div>
                             <button type="submit" class="btn-submit">Add User</button>
@@ -184,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <script src="../assets/js/script.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -197,7 +241,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             });
             // Populate the country select dropdown with countries
-            const countries = ["Philippines"
+            const countries = [
+                "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+                "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+                "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+                "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)",
+                "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica",
+                "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+                "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
+                "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
+                "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea (North)", "Korea (South)", "Kuwait", "Kyrgyzstan",
+                "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
+                "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova",
+                "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand",
+                "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea",
+                "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
+                "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
+                "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka",
+                "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga",
+                "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+                "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
             ];
             const $countryDropdown = $('#country');
             const $provinceDropdown = $('#province');
@@ -206,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             countries.forEach(country => {
                 $countryDropdown.append(`<option value="${country}">${country}</option>`);
             });
-            $countryDropdown.on('change', function () {
+            $countryDropdown.on('change', function() {
                 const selectedCountry = $(this).val();
 
                 if (selectedCountry === "Philippines") {
@@ -217,14 +280,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         url: '../php/getProvinces.php',
                         method: 'GET',
                         dataType: 'json',
-                        success: function (provinces) {
+                        success: function(provinces) {
                             $('.input-group.province').css('display', 'block');
                             $provinceDropdown.html('<option value="" selected disabled>Select Province</option>');
                             provinces.forEach(province => {
-                                $provinceDropdown.append(`<option value="${province.code}">${province.name}</option>`);
+                                $provinceDropdown.append(`<option value="${province.name}" data-code="${province.code}">${province.name}</option>`);
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.error("Error fetching provinces:", error);
                         }
                     });
@@ -236,9 +299,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             });
 
 
-            $provinceDropdown.on('change', function () {
-                const provinceId = $(this).val();
-                console.log('Selected provinceId:', provinceId); // Debugging log
+            $provinceDropdown.on('change', function() {
+                const provinceName = $(this).val();
+                const provinceId = $(this).find(':selected').data('code');
+                console.log('Selected provinceName:', provinceName);
+                console.log('Selected Province Id:', provinceId);
 
                 if (provinceId) {
                     $cityDropdown.prop('disabled', false); // Enable city dropdown
@@ -247,17 +312,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $.ajax({
                         url: '../php/getCities.php',
                         method: 'GET',
-                        data: { provinceId: provinceId },
+                        data: {
+                            provinceId: provinceId
+                        },
                         dataType: 'json',
-                        success: function (cities) {
+                        success: function(cities) {
                             $('.input-group.city').css('display', 'block');
 
                             $cityDropdown.html('<option value="" selected disabled>Select City/Municipality</option>');
                             cities.forEach(city => {
-                                $cityDropdown.append(`<option value="${city.id}">${city.name}</option>`);
+                                $cityDropdown.append(`<option value="${city.name}">${city.name}</option>`);
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             let errorMessage = xhr.responseText ? xhr.responseText : error;
                             Toast.fire({
                                 icon: 'error',
@@ -272,9 +339,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             });
 
-
-
-
             <?php if (!empty($successMessage)): ?>
                 Toast.fire({
                     icon: "success",
@@ -288,7 +352,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
 
 
-            $('#tour-images').on('change', function (event) {
+            $('#tour-images').on('change', function(event) {
                 const files = event.target.files;
                 const $imagesPreview = $('.image-preview-container');
                 const $mainImagePreview = $('#main-image-preview');
@@ -299,15 +363,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $thumbnailContainer.empty();
                 $mainImagePreview.attr('src', '');
 
-                $.each(files, function (index, file) {
+                $.each(files, function(index, file) {
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         const $img = $('<img>', {
                             src: e.target.result,
                             alt: `Image ${index + 1}`,
                         });
 
-                        $img.on('click', function () {
+                        $img.on('click', function() {
                             $mainImagePreview.attr('src', e.target.result);
                             $('.thumbnail-images img').removeClass('selected');
                             $img.addClass('selected');

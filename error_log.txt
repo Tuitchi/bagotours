@@ -323,3 +323,295 @@
 [26-Nov-2024 10:18:41 Europe/Berlin] No bookings found for today or future dates.
 [26-Nov-2024 11:52:31 Europe/Berlin] No bookings found for today or future dates.
 [26-Nov-2024 11:52:41 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:03:47 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:11 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:13 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:14 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:15 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:19 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:19 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:22 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:22 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:23 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:23 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 12:10:23 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:24 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:24 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:27 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:27 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:29 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:10:30 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:11:00 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:11:30 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:12:00 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:12:30 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:13:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:13:30 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:14:00 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:14:30 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:15:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:16:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:17:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:18:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:19:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:20:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:21:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:22:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:23:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:24:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:24:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:24:36 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:24:36 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:24:37 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:24:38 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:08 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:12 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:13 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:40 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:40 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:57 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:57 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:59 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:59 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:25:59 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:00 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:00 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:08 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:08 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:38 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:26:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:27:04 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:27:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:27:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:28:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:28:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:28:37 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:28:37 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:28:37 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:29:07 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:29:37 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:30:07 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:30:37 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:31:07 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:32:08 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:33:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:33:37 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:34:07 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:35:08 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:35:31 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:35:31 Europe/Berlin] PHP Warning:  Undefined variable $_FILE in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:35:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:35:31 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:35:48 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:35:48 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:35:49 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:36:19 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:36:49 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:37:19 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:37:49 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:38:19 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:39:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:40:03 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:40:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:40:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:40:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:41:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:41:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:42:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:43:06 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:44:07 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:45:08 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:45:59 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:46:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:46:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:46:40 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:46:40 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:46:40 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:47:11 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:47:41 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:48:11 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:48:41 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:49:42 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:49:48 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:49:48 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:49:48 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:04 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:04 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:50:04 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:18 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:18 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 12:50:18 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:20 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:20 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:28 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:28 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:50:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:51:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:51:35 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:52:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:52:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:52:09 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:52:39 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:52:46 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:52:47 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:53:17 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:53:47 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:54:17 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:54:47 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:55:48 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:56:49 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:57:50 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:58:51 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 12:59:52 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:00:53 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:01:54 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:02:55 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:03:56 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:04:57 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:05:58 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:06:59 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:08:00 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:09:01 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:10:02 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:11:03 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:12:04 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:13:05 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:14:06 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:15:07 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:15:17 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 13:15:47 Europe/Berlin] No bookings found for today or future dates.
+[26-Nov-2024 14:01:25 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 14:02:41 Europe/Berlin] PHP Warning:  unlink(../upload/QRcodes/Buenos Aires Mountain Resort.png): No such file or directory in C:\xampp\htdocs\bagotours\php\deleteQR.php on line 23
+[26-Nov-2024 14:02:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "Endroid\QrCode\Writer\PngWriter" not found in C:\xampp\htdocs\bagotours\php\generateQR.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\generateQR.php on line 36
+[26-Nov-2024 14:02:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "Endroid\QrCode\Writer\PngWriter" not found in C:\xampp\htdocs\bagotours\php\generateQR.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\generateQR.php on line 36
+[26-Nov-2024 14:02:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "Endroid\QrCode\Writer\PngWriter" not found in C:\xampp\htdocs\bagotours\php\generateQR.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\generateQR.php on line 36
+[26-Nov-2024 14:02:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "Endroid\QrCode\Writer\PngWriter" not found in C:\xampp\htdocs\bagotours\php\generateQR.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\generateQR.php on line 36
+[26-Nov-2024 14:47:19 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "Endroid\QrCode\Writer\PngWriter" not found in C:\xampp\htdocs\bagotours\php\generateQR.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\generateQR.php on line 36
+[26-Nov-2024 14:50:28 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "Endroid\QrCode\Writer\PngWriter" not found in C:\xampp\htdocs\bagotours\php\generateQR.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\generateQR.php on line 36
+[26-Nov-2024 14:56:33 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 14:56:38 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:01:44 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:05:03 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:05:06 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:05:10 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:05:17 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:05:26 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:06:01 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:06:06 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:06:08 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:10:24 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 15:10:24 Europe/Berlin] PHP Warning:  Undefined variable $uname in C:\xampp\htdocs\bagotours\admin\add-user.php on line 29
+[26-Nov-2024 15:10:45 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 15:10:49 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 15:11:50 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 15:11:55 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 15:12:36 Europe/Berlin] PHP Warning:  Undefined array key "profile-picture" in C:\xampp\htdocs\bagotours\admin\add-user.php on line 25
+[26-Nov-2024 15:13:10 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:14:58 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:19:28 Europe/Berlin] PHP Warning:  Undefined variable $error in C:\xampp\htdocs\bagotours\admin\add-user.php on line 72
+[26-Nov-2024 15:20:37 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:20:39 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:20:42 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:20:57 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:21:40 Europe/Berlin] PHP Warning:  Undefined variable $emailAlreadyUsedil in C:\xampp\htdocs\bagotours\admin\add-user.php on line 32
+[26-Nov-2024 15:31:48 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[26-Nov-2024 15:31:49 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:31:49 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:31:49 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:31:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:31:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:31:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:31:53 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:31:53 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:31:53 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:32:46 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:32:46 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:32:46 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:32:50 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:32:50 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:32:50 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:32:50 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:32:50 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:32:50 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:32:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:32:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:32:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:32:56 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:32:56 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:32:56 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:33:17 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:33:17 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:33:17 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:33:29 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:33:29 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:33:29 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:33:32 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:33:32 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:33:32 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:33:32 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:33:32 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:33:32 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:33:33 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:33:33 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:33:33 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:36:19 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:36:19 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:36:19 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:36:20 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:36:20 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:36:20 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:36:21 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:36:21 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:36:21 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:38:20 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:38:20 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:38:20 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:38:59 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:38:59 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:38:59 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:39:17 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 266
+[26-Nov-2024 15:39:17 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:39:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:39:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:39:51 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:40:16 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:40:16 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:40:16 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 248
+[26-Nov-2024 15:40:30 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 267
+[26-Nov-2024 15:40:30 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 268
+[26-Nov-2024 15:40:30 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 269
+[26-Nov-2024 15:42:53 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 245
+[26-Nov-2024 15:42:53 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:42:53 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:43:08 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 242
+[26-Nov-2024 15:43:08 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 243
+[26-Nov-2024 15:43:08 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 244
+[26-Nov-2024 15:43:21 Europe/Berlin] PHP Warning:  Undefined variable $selectedCountry in C:\xampp\htdocs\bagotours\admin\add-user.php on line 245
+[26-Nov-2024 15:43:21 Europe/Berlin] PHP Warning:  Undefined variable $selectedProvince in C:\xampp\htdocs\bagotours\admin\add-user.php on line 246
+[26-Nov-2024 15:43:21 Europe/Berlin] PHP Warning:  Undefined variable $selectedCity in C:\xampp\htdocs\bagotours\admin\add-user.php on line 247
+[26-Nov-2024 15:51:00 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313

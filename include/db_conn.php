@@ -87,8 +87,6 @@ try {
                 }
             }
         }
-    } else {
-        error_log("No bookings found for today or future dates.");
     }
 } catch (PDOException $e) {
     error_log('Error: ' . $e->getMessage());

@@ -1,6 +1,0 @@
-[24-Nov-2024 08:53:08 Europe/Berlin] Notification already exists for user: 11, tour: 1
-[24-Nov-2024 08:53:08 Europe/Berlin] Script finished.
-[24-Nov-2024 08:53:10 Europe/Berlin] Notification already exists for user: 11, tour: 1
-[24-Nov-2024 08:53:10 Europe/Berlin] Script finished.
-[24-Nov-2024 08:55:18 Europe/Berlin] Notification already exists for user: 11, tour: 1
-[24-Nov-2024 08:55:18 Europe/Berlin] Script finished.
