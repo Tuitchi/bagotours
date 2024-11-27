@@ -6,12 +6,13 @@ if (isset($_GET['tour_id'])) {
     $id = $_GET['tour_id'];
     if (validateQR($conn, $id)) {
         try {
-            $query = "SELECT title FROM tours WHERE id = :tour_id";
+            $query = "SELECT title, user_id as admin FROM tours WHERE id = :tour_id";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':tour_id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $title = $row['title'];
+            $admin = $row['admin'];
         } catch (PDOException $e) {
             die('Error: ' . $e->getMessage());
         }
@@ -131,7 +132,7 @@ if (isset($_GET['tour_id'])) {
                     } catch (PDOException $e) {
                         echo "Error: " . $e->getMessage();
                     }
-                    createNotification($conn, $user_id, $id, "$user visits $title", "dashboard", "visits");
+                    createNotification($conn, $admin, $id, "$user visits $title", "dashboard", "visits");
                 } ?>
                 <h1>Thank you for visiting <?php echo $title ?>.</h1>
             <?php }

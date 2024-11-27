@@ -53,6 +53,116 @@ $users = $stmt->fetchAll();
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <title>BaGoTours. Users</title>
 <style>
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        overflow: auto;
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 600px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Close button */
+    .close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* User Info Card */
+    .user-info-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+    .user-info-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-picture-container {
+        margin-right: 20px;
+    }
+
+    .profile-picture {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ddd;
+    }
+
+    .user-name-info {
+        font-size: 1.2em;
+    }
+
+    .user-info-card h3 {
+        margin: 0;
+        font-size: 1.5em;
+        color: #333;
+    }
+
+    .user-info-card .role {
+        font-weight: bold;
+        color: #555;
+    }
+
+    /* User Details */
+    .user-details {
+        font-size: 1em;
+        line-height: 1.8em;
+        color: #555;
+    }
+
+    .user-details p {
+        margin: 8px 0;
+    }
+
+    .user-details strong {
+        font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .user-info-card {
+            padding: 15px;
+        }
+
+        .modal-content {
+            width: 90%;
+        }
+    }
+
     .dropdown {
         position: relative;
         display: inline-block;
@@ -145,9 +255,7 @@ $users = $stmt->fetchAll();
                                                     <a href='#' class='btn' id='view'
                                                         data-id='<?php echo htmlspecialchars($user['id']) ?>'><i
                                                             class='bx bx-folder'></i>View</a>
-                                                    <a href='#' class='btn' id='edit'
-                                                        data-id='<?php echo htmlspecialchars($user['id']) ?>'><i
-                                                            class='bx bx-edit-alt'></i>Edit</a>
+                                                    <a href='edit-user?id=<?php echo htmlspecialchars($user['id']) ?>' class='btn' id='edit'><i class='bx bx-edit-alt'></i>Edit</a>
                                                     <a href='#' class='btn' id='delete'
                                                         data-id='<?php echo htmlspecialchars($user['id']) ?>'><i
                                                             class='bx bx-trash'></i>Delete</a>
@@ -316,16 +424,20 @@ $users = $stmt->fetchAll();
                 $.getJSON(`../php/get_user_info.php?id=${userId}`, function (data) {
                     if (data.success) {
                         $('#userInfoContent').html(`
-                            <p style="text-align: center;">
-                                <img src="../upload/Profile Pictures/${data.user.profile_picture}" alt="Profile Picture" width="100" height="100">
-                            </p>
-                            <p><strong>Name:</strong> ${data.user.name || 'N/A'}</p>
-                            <p><strong>Username:</strong> ${data.user.username || 'N/A'}</p>
-                            <p><strong>Email:</strong> ${data.user.email || 'N/A'}</p>
-                            <p><strong>Phone Number:</strong> ${data.user.phone_number || 'N/A'}</p>
-                            <p><strong>Role:</strong> ${data.user.role || 'N/A'}</p>
-                            <p><strong>Date Created:</strong> ${data.user.date_created || 'N/A'}</p>
-                        `);
+                <div class="user-info">
+                    <div class="profile-picture">
+                        <img src="../upload/Profile Pictures/${data.user.profile_picture}" alt="Profile Picture" width="95" height="95">
+                    </div>
+                    <div class="user-details">
+                        <p><strong>Name:</strong> ${data.user.name || 'N/A'}</p>
+                        <p><strong>Username:</strong> ${data.user.username || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${data.user.email || 'N/A'}</p>
+                        <p><strong>Phone Number:</strong> ${data.user.phone_number || 'N/A'}</p>
+                        <p><strong>Role:</strong> ${data.user.role || 'N/A'}</p>
+                        <p><strong>Date Created:</strong> ${data.user.date_created || 'N/A'}</p>
+                    </div>
+                </div>
+            `);
                         $('#viewUserModal').show();
                     } else {
                         Toast.fire({
@@ -340,6 +452,7 @@ $users = $stmt->fetchAll();
                     });
                 });
             }
+
 
 
 
@@ -377,66 +490,7 @@ $users = $stmt->fetchAll();
                     }
                 });
             }
-            $('#addUserForm').submit(function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url: '../php/admin/addUser.php',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            $('#addUserModal').hide();
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message
-                            });
-                            $('#userTableContainer').load(location.href + ' #userTableContainer > *');
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message
-                            });
-                        }
-                    },
-                    error: function () {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'There was an error processing the request.'
-                        });
-                    }
-                });
-            });
-            $(document).on('submit', '#editUserForm', function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url: '../php/admin/editUser.php',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            $('#editUserModal').hide();
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message
-                            });
-                            $('#userTableContainer').load(location.href + ' #userTableContainer > *');
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message
-                            });
-                        }
-                    },
-                    error: function () {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'There was an error processing the request.'
-                        });
-                    }
-                });
-            });
+
             $(window).click(function (event) {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();

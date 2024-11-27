@@ -146,7 +146,8 @@ function isDuplicateReview($conn, $tour_id, $user_id)
             align-items: flex-start;
             /* Align to the top */
         }
-        .rating-container{
+
+        .rating-container {
             display: flex
         }
 
@@ -191,6 +192,18 @@ function isDuplicateReview($conn, $tour_id, $user_id)
         .input-box .comment-input:focus {
             border-color: #007bff;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .comment-actions .edit:hover {
+            color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-actions .delete:hover {
+            color: red;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .comment-box .comment-submit-btn {
@@ -385,76 +398,113 @@ function isDuplicateReview($conn, $tour_id, $user_id)
                         <div class="comment-box">
                             <div class="rating">
                                 <div class="rating-container">
-                                    <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar"
-                                    class="avatar">
+                                    <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>"
+                                        alt="User Avatar" class="avatar">
                                     <label for="rating" class="rating-label">Rate Us:</label>
                                     <select class="star" id="rating" name="rating">
+                                        <option value="5">⭐ 5 Stars</option>
+                                        <option value="4">⭐ 4 Stars</option>
+                                        <option value="3">⭐ 3 Stars</option>
+                                        <option value="2">⭐ 2 Stars</option>
                                         <option value="1">⭐ 1 Star</option>
-                                        <option value="2">⭐⭐ 2 Stars</option>
-                                        <option value="3">⭐⭐⭐ 3 Stars</option>
-                                        <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-                                        <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                            <div class="input-box">    
+
+                            <div class="input-box">
 
                                 <textarea placeholder="Share your experience..." class="comment-input"
                                     name="review"></textarea>
                                 <button class="comment-submit-btn" type="submit">Post</button>
                             </div>
-
-                        </div>
-
-                        <div class="comments-list">
-                            <?php
-                            try {
-                                $stmt = $conn->prepare("SELECT rr.*, u.name as name, u.profile_picture as img FROM review_rating rr JOIN users u ON rr.user_id = u.id WHERE tour_id = :tour_id ORDER BY date_created DESC");
-                                $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
-                                $stmt->execute();
-                                $comments = $stmt->fetchAll();
-                            } catch (PDOException $e) {
-                                echo "Error: " . $e->getMessage();
-                            }
-                            foreach ($comments as $comment) {
-                                ?>
-                                <div class="comment">
-                                    <img src="upload/Profile Pictures/<?php echo $comment['img'] ?>" alt="User Avatar"
-                                        class="avatar">
-                                    <div class="comment-content">
-                                        <h4 class="comment-author"><?php echo $comment['name'] ?></h4>
-                                        <div class="comment-star">
-                                            <?php
-                                            $rating = $comment['rating']; // Example rating
-                                            $starOutput = '';
-
-                                            // Loop to create filled stars
-                                            for ($i = 1; $i <= $rating; $i++) {
-                                                $starOutput .= "<span class='comment-star'><i class='bx bxs-star'></i></span>";
-                                            }
-
-                                            // Loop to create empty stars
-                                            for ($i = $rating + 1; $i <= 5; $i++) {
-                                                $starOutput .= "<span class='comment-star'><i class='bx bx-star'></i></span>";
-                                            }
-
-                                            // Display the stars
-                                            echo $starOutput;
-                                            ?>
-                                        </div>
-                                        <p class="comment-text"><?php echo $comment['review'] ?></p>
-                                        <div class="comment-actions">
-                                            <span
-                                                class="comment-time"><?php echo timeAgo($comment['date_created']) ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php } ?>
-
-                            <!-- Add more comments here as needed -->
                         </div>
                     </form>
+                    <div class="comments-list">
+                        <?php
+                        try {
+                            $stmt = $conn->prepare("SELECT rr.*, u.name AS name, u.profile_picture AS img 
+                                FROM review_rating rr 
+                                JOIN users u ON rr.user_id = u.id 
+                                WHERE tour_id = :tour_id 
+                                ORDER BY date_created DESC");
+                            $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                            $stmt->execute();
+                            $comments = $stmt->fetchAll();
+
+                            $userComment = [];
+                            $otherComments = [];
+
+                            foreach ($comments as $comment) {
+                                if ($comment['user_id'] == $user_id) {
+                                    $userComment[] = $comment;
+                                } else {
+                                    $otherComments[] = $comment;
+                                }
+                            }
+                            $comments = array_merge($userComment, $otherComments);
+                        } catch (PDOException $e) {
+                            error_log("Error fetching comments: " . $e->getMessage());
+                        }
+                        ?>
+
+                        <?php foreach ($comments as $comment):
+                            $isUserComment = ($comment['user_id'] == $user_id); ?>
+                            <div class="comment" id="comment-<?php echo $comment['id']; ?>">
+                                <img src="upload/Profile Pictures/<?php echo $comment['img']; ?>" alt="User Avatar"
+                                    class="avatar">
+                                <div class="comment-content">
+                                    <h4 class="comment-author"><?php echo htmlspecialchars($comment['name']); ?></h4>
+                                    <div class="comment-star">
+                                        <?php
+                                        $rating = $comment['rating'];
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            echo $i <= $rating
+                                                ? "<span class='comment-star'><i class='bx bxs-star'></i></span>"
+                                                : "<span class='comment-star'><i class='bx bx-star'></i></span>";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="comment-text">
+                                        <p id="text-<?php echo $comment['id']; ?>">
+                                            <?php echo htmlspecialchars($comment['review']); ?>
+                                        </p>
+
+                                        <?php if ($isUserComment): ?>
+                                            <form id="edit-form-<?php echo $comment['id']; ?>" class="edit-form"
+                                                style="display: none;">
+                                                <textarea id="edit-text-<?php echo $comment['id']; ?>" class="comment-input"
+                                                    style="width:100%"><?php echo htmlspecialchars($comment['review']); ?></textarea>
+                                                <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>" />
+                                                <button type="submit" class="comment-submit-btn"
+                                                    data-comment-id="<?php echo $comment['id']; ?>">
+                                                    <i class="bx bxs-send"></i> Save
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="comment-actions">
+                                        <span class="comment-time">
+                                            <?php
+                                            // Check if 'date_updated' is null, and determine the appropriate timestamp
+                                            $timestamp = $comment['date_updated'] ?: $comment['date_created'];
+                                            $status = $comment['date_updated'] ? "edited" : "";
+                                            echo timeAgo($timestamp) . " " . $status;
+                                            ?>
+                                        </span>
+                                        <?php if ($isUserComment): ?>
+                                            <a class="edit" id="edit-btn-<?php echo $comment['id']; ?>" href="#">Edit</a>
+                                            <a class="delete" href="#" id="delete-btn-<?php echo $comment['id']; ?>">Delete</a>
+                                            <div class="cancel-btn hide" id="cancel-btn-<?php echo $comment['id']; ?>">
+                                                <p>Press ESC to</p>
+                                                <a class="cancel" href="#">Cancel</a>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                     <button class="show-more-btn" style="display: none;">Show More</button>
                 </div>
             </div>
@@ -468,7 +518,6 @@ function isDuplicateReview($conn, $tour_id, $user_id)
             <form action="php/booking.php" method="POST">
                 <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>">
                 <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                <input type="hidden" name="phone_number" value="<?php echo $user['phone_number']; ?>">
                 <label for="tour_date">Select Date:</label>
                 <input type="date" id="tour_date" name="date_sched" required>
                 <button type="submit" class="book-btn">Confirm Booking</button>
@@ -486,117 +535,206 @@ function isDuplicateReview($conn, $tour_id, $user_id)
     <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.on('mouseenter', Swal.stopTimer);
-                toast.on('mouseleave', Swal.resumeTimer);
+        $(document).ready(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.on('mouseenter', Swal.stopTimer);
+                    toast.on('mouseleave', Swal.resumeTimer);
+                }
+            });
+            $('.edit').on('click', function (e) {
+                e.preventDefault();
+                const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
+                toggleEdit(commentId); // Call the toggleEdit function
+            });
+
+            // Delete comment
+            $('.delete').on('click', function (e) {
+                e.preventDefault();
+                const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
+                deleteComment(commentId); // Call the deleteComment function
+            });
+
+            // Cancel edit
+            $('.cancel').on('click', function (e) {
+                e.preventDefault();
+                const commentId = $(this).closest('.cancel-btn').attr('id').split('-')[2]; // Extract comment ID
+                cancelEdit(commentId); // Call the cancelEdit function
+            });
+            // Toggle edit form visibility
+            function toggleEdit(commentId) {
+                const $textElement = $(`#text-${commentId}`);
+                const $editForm = $(`#edit-form-${commentId}`);
+                const $editBtn = $(`#edit-btn-${commentId}`);
+                const $deleteBtn = $(`#delete-btn-${commentId}`);
+                const $cancelBtn = $(`#cancel-btn-${commentId}`);
+
+                // Cancel the edit
+                function cancelEdit() {
+                    $editForm.hide();
+                    $textElement.show();
+                    $editBtn.show();
+                    $deleteBtn.show();
+                    $cancelBtn.addClass('hide');
+                }
+
+                if ($editForm.is(':hidden')) {
+                    $editForm.show();
+                    $textElement.hide();
+                    $editBtn.hide();
+                    $deleteBtn.hide();
+                    $cancelBtn.removeClass('hide');
+
+                    $(document).on('keydown.escape', function (event) {
+                        if (event.key === 'Escape') {
+                            cancelEdit();
+                            $(document).off('keydown.escape');
+                        }
+                    });
+                } else {
+                    cancelEdit();
+                }
             }
-        });
 
-        // Check if the PHP session has a success or error message and show the corresponding SweetAlert
-        <?php if (isset($_SESSION['successMessage'])): ?>
-            Toast.fire({
-                icon: 'success',
-                title: '<?php echo $_SESSION['successMessage']; ?>'
-            }).then(() => {
-                // Optionally, reload the page after showing success message
-                window.location.reload();
-            });
-            <?php unset($_SESSION['successMessage']); // Clear session message ?>
-        <?php elseif (isset($_SESSION['errorMessage'])): ?>
-            Toast.fire({
-                icon: 'error',
-                title: '<?php echo $_SESSION['errorMessage']; ?>'
-            }).then(() => {
-                // Optionally, reload the page after showing error message
-                window.location.reload();
-            });
-            <?php unset($_SESSION['errorMessage']); // Clear session message ?>
-        <?php endif; ?>
+            // Handle form submission via AJAX
+            $('.edit-form').on('submit', function (event) {
+                event.preventDefault();
 
-        document.querySelector('.pricing-header').addEventListener('click', function () {
-            const pricingContent = document.querySelector('.pricing-content');
-            pricingContent.style.display = pricingContent.style.display === 'none' || pricingContent.style.display === '' ? 'block' : 'none';
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            var modal = document.getElementById("bookingModal");
-            var bookbtn = document.getElementById("book");
-            var ratebtn = document.getElementById("rate");
-            var span = document.querySelector(".close");
+                const $form = $(this);
+                const commentId = $form.find('input[name="comment_id"]').val();
+                const reviewText = $form.find('textarea').val().trim();
 
-            if (bookbtn) {
-                bookbtn.addEventListener("click", function () {
-                    modal.classList.add('active');
+                $.ajax({
+                    url: 'php/edit_comment.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { comment_id: commentId, review: reviewText },
+                    success: function (data) {
+                        if (data.success) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Your review has been successfully updated.'
+                            })
+                            $(`#text-${commentId}`).text(data.updatedReview);
+                            $(`#comment-${commentId}`).find('.comment-text').show();
+                            toggleEdit(commentId);
+                        } else {
+                            alert('Error updating the comment.');
+                        }
+                    },
+                    error: function () {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'An error occurred while saving the comment'
+                        })
+                    }
                 });
-            }
-
-            if (ratebtn) {
-                ratebtn.addEventListener("click", function () {
-                    window.location.href = 'rate_review?booking_id=<?php echo $bookingId ?>';
-                });
-            }
-
-            // Close the modal when the "x" button is clicked
-            span.addEventListener("click", function () {
-                modal.classList.remove('active');
             });
 
-            // Close the modal when clicking outside of the modal content
-            window.addEventListener("click", function (event) {
-                if (event.target === modal) {
-                    modal.classList.remove('active');
+            // Delete comment action
+            window.deleteComment = function (commentId) {
+                if (!confirm('Are you sure you want to delete this comment?')) return;
+
+                $.ajax({
+                    url: 'php/delete_comment.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { comment_id: commentId },
+                    success: function (data) {
+                        if (data.success) {
+                            $(`#comment-${commentId}`).remove();
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Your review has been successfully deleted.'
+                            })
+                        } else {
+                            alert('Error deleting the comment.');
+                        }
+                    },
+                    error: function () {
+                        alert('Error deleting the comment.');
+                    }
+                });
+            };
+
+            // SweetAlert Toast Notification
+
+
+            <?php if (isset($_SESSION['successMessage'])): ?>
+                Toast.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['successMessage']; ?>'
+                })
+                <?php unset($_SESSION['successMessage']); ?>
+            <?php elseif (isset($_SESSION['errorMessage'])): ?>
+                Toast.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['errorMessage']; ?>'
+                })
+                <?php unset($_SESSION['errorMessage']); ?>
+            <?php endif; ?>
+
+            // Toggle pricing section visibility
+            $('.pricing-header').on('click', function () {
+                $('.pricing-content').toggle();
+            });
+
+            // Modal handling for booking and rating
+            const modal = $("#bookingModal");
+            const $bookbtn = $("#book");
+            const $ratebtn = $("#rate");
+            const span = $(".close");
+
+            $bookbtn.on("click", function () {
+                modal.addClass('active');
+            });
+
+            $ratebtn.on("click", function () {
+                window.location.href = 'rate_review?booking_id=<?php echo $bookingId ?>';
+            });
+
+            span.on("click", function () {
+                modal.removeClass('active');
+            });
+
+            $(window).on("click", function (event) {
+                if ($(event.target).is(modal)) {
+                    modal.removeClass('active');
                 }
             });
 
-            // Optional: Add keypress event to close modal with ESC key
-
-
-            const comments = document.querySelectorAll('.comments-list .comment');
-            const showMoreButton = document.querySelector('.show-more-btn');
+            // Handle comments show more/less functionality
+            const $comments = $('.comments-list .comment');
+            const $showMoreButton = $('.show-more-btn');
             let commentsPerPage = 5;
-            let isExpanded = false; // Track whether all comments are shown
+            let isExpanded = false;
 
             function updateCommentDisplay() {
-                comments.forEach((comment, index) => {
-                    if (index < commentsPerPage || isExpanded) {
-                        comment.style.display = 'flex'; // Show visible comments
-                    } else {
-                        comment.style.display = 'none'; // Hide others
-                    }
+                $comments.each(function (index, comment) {
+                    $(comment).toggle(index < commentsPerPage || isExpanded);
                 });
 
-                // Update button text
-                showMoreButton.textContent = isExpanded ? 'Show Less' : 'Show More';
-
-                // Show or hide button based on comment count
-                if (!isExpanded && comments.length <= commentsPerPage) {
-                    showMoreButton.style.display = 'none'; // Hide button if not needed
-                } else {
-                    showMoreButton.style.display = 'block'; // Show button otherwise
-                }
+                $showMoreButton.text(isExpanded ? 'Show Less' : 'Show More');
+                $showMoreButton.toggle($comments.length > commentsPerPage);
             }
 
-            if (comments.length > 0) {
-                updateCommentDisplay(); // Initialize display
-
-                showMoreButton.addEventListener('click', function () {
-                    if (isExpanded) {
-                        commentsPerPage = 5; // Reset to initial comments count
-                    } else {
-                        commentsPerPage = comments.length; // Show all comments
-                    }
-                    isExpanded = !isExpanded; // Toggle expanded state
-                    updateCommentDisplay(); // Update display
+            if ($comments.length > 0) {
+                updateCommentDisplay();
+                $showMoreButton.on('click', function () {
+                    isExpanded = !isExpanded;
+                    commentsPerPage = isExpanded ? $comments.length : 5;
+                    updateCommentDisplay();
                 });
             } else {
-                showMoreButton.style.display = 'none'; // Hide button if no comments
+                $showMoreButton.hide();
             }
 
+            // Initialize the Mapbox map
             mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
             const map = new mapboxgl.Map({
@@ -607,14 +745,16 @@ function isDuplicateReview($conn, $tour_id, $user_id)
                 interactive: false
             });
 
-            const markerElement = document.createElement('div');
-            markerElement.className = 'marker';
-            markerElement.style.backgroundImage = 'url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " ")); ?>.png)';
-            markerElement.style.backgroundSize = 'contain';
-            markerElement.style.width = '30px';
-            markerElement.style.height = '30px';
+            const markerElement = $('<div></div>')
+                .addClass('marker')
+                .css({
+                    backgroundImage: `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " ")); ?>.png)`,
+                    backgroundSize: 'contain',
+                    width: '30px',
+                    height: '30px'
+                });
 
-            const marker = new mapboxgl.Marker(markerElement)
+            new mapboxgl.Marker(markerElement)
                 .setLngLat([<?php echo htmlspecialchars($tour['longitude']); ?>, <?php echo htmlspecialchars($tour['latitude']); ?>])
                 .addTo(map);
 

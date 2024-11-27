@@ -208,7 +208,6 @@ $user = getUserById($conn, $user_id);
                                 Details</a></li>
                         <li><a href="#" data-section="changepassword"><i class="fas fa-lock"></i> Change Password</a>
                         </li>
-                        <li><a href="#" data-section="notifications"><i class="fas fa-bell"></i> Notifications</a></li>
                         <li><a href="#" data-section="upgrade"><i class="fas fa-arrow-up"></i> Upgrade</a></li>
                     </ul>
                 </div>
@@ -273,20 +272,7 @@ $user = getUserById($conn, $user_id);
                             <input type="submit" value="Update">
                         </form>
                     </div>
-                    <div class="notifications">
-                        <h3>Notification Settings</h3>
-                        <form>
-                            <div class="notif" style="margin-bottom: 20px;">
-                                <label><input type="checkbox">Receive newsletter & offers from email</label>
-                            </div>
-                            <div class="notif">
-                                <label><input type="checkbox">Receive booking reminders</label>
-                            </div>
-                            <div class="notif">
-                                <label><input type="checkbox">Receive notifications on updates</label>
-                            </div>
-                        </form>
-                    </div>
+                    
                     <div class="upgrade">
                         <h3>Upgrade Subscription</h3>
                         <button id="upgradeButton" class="button">Upgrade Account</button>

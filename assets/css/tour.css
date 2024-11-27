@@ -267,6 +267,16 @@
     font-size: 13px;
     color: #333;
 }
+.comment-text form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.comment-text textarea {
+    padding: 5px;
+}
 
 .comment-actions {
     font-size: 12px;
@@ -274,14 +284,18 @@
     display: flex;
     gap: 15px;
 }
-
-.comment-actions .reply-btn {
-    cursor: pointer;
+.comment-actions .cancel{
+    color: #0056b3;
+}
+.comment-actions .cancel:hover{
     color: #007bff;
 }
-
-.comment-actions .reply-btn:hover {
-    text-decoration: underline;
+.comment-actions .hide{
+    display: none !important;
+}
+.comment-actions .cancel-btn{
+    display: flex;
+    gap: 3px;
 }
 
 /* Show More button styling */

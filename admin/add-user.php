@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     );
 
     $username = $_POST['username'];
+    $role = $_POST['role'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $passwordConfirmation = $_POST['confirm-password'];
@@ -44,14 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO users (name, gender, home_address, username, email, password, profile_picture)
-                    VALUES (:name, :gender, :home_address, :username, :email, :password, :profile_picture)";
+            $sql = "INSERT INTO users (name, gender, home_address, role, username, email, password, profile_picture)
+                    VALUES (:name, :gender, :home_address, :role, :username, :email, :password, :profile_picture)";
 
             $stmt = $conn->prepare($sql);
 
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':gender', $gender);
             $stmt->bindParam(':home_address', $home_address);
+            $stmt->bindParam(':role', $role);
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':password', $hashed_password);
