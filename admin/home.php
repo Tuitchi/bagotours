@@ -86,7 +86,7 @@ try {
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 	<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 
-	<title>BaGoTours. Home</title>
+	<title>BaGoTours || Home</title>
 
 </head>
 

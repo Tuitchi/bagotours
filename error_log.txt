@@ -9,3 +9,316 @@
 [28-Nov-2024 18:03:15 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 111
 [28-Nov-2024 18:03:25 Europe/Berlin] PHP Warning:  Undefined variable $user in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 112
 [28-Nov-2024 18:03:25 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 112
+[29-Nov-2024 15:53:14 Europe/Berlin] PHP Warning:  Undefined variable $username in C:\xampp\htdocs\bagotours\php\updateAcc.php on line 56
+[29-Nov-2024 15:53:14 Europe/Berlin] PHP Warning:  Undefined variable $email in C:\xampp\htdocs\bagotours\php\updateAcc.php on line 56
+[29-Nov-2024 15:53:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in C:\xampp\htdocs\bagotours\php\updateAcc.php:56
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\updateAcc.php(56): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\updateAcc.php on line 56
+[29-Nov-2024 16:02:17 Europe/Berlin] PHP Warning:  Undefined variable $username in C:\xampp\htdocs\bagotours\php\updateAcc.php on line 56
+[29-Nov-2024 16:02:17 Europe/Berlin] PHP Warning:  Undefined variable $email in C:\xampp\htdocs\bagotours\php\updateAcc.php on line 56
+[29-Nov-2024 16:02:17 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in C:\xampp\htdocs\bagotours\php\updateAcc.php:56
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\updateAcc.php(56): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\updateAcc.php on line 56
+[29-Nov-2024 19:47:35 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 19:47:40 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:17 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:17 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:23 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:23 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[29-Nov-2024 20:14:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:30 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:30 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:34 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:35 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:15:04 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:15:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:15:16 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:15:46 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:15:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:15:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:16:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:16:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:16:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:16:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:16:56 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:17:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:17:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:17:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:17:46 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:17:46 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:18:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:18:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:18:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:19:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:19:17 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:19:17 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:19:47 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:20:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:20:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:20:25 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:20:25 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:20:55 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:21:25 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:21:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:21:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:21:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:21:59 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:22:00 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:22:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:22:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:22:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:22:52 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:22:52 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:23:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:23:52 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:24:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:24:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:24:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:24:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:24:56 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:25:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:25:56 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:26:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:26:56 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:27:26 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:27:37 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:27:37 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:28:07 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:28:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:28:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:29:08 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:29:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:30:08 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:30:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:31:08 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:31:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:32:08 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:32:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:33:08 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:33:38 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:33:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:33:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:34:12 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:34:12 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:34:42 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:35:12 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:35:31 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:35:31 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:35:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:35:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:36:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:36:43 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:36:43 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:37:13 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:37:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:37:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:37:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:38:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:38:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:39:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:39:50 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:39:50 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:20 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:43 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:43 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:44 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:44 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:44 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:40:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:41:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:41:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:42:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:42:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:43:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:43:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:44:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:44:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:45:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:45:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:46:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:46:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:47:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:47:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:48:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:48:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:49:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:49:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:50:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:50:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:51:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:51:45 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:51:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:51:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:52:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:52:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:53:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:53:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:54:27 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:54:57 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:55:04 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:55:04 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:55:34 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:56:04 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:56:23 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:56:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:56:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:57:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:57:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:58:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:58:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:59:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:59:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:00:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:00:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:01:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:01:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:02:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:02:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:03:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:03:54 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:04:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:04:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:04:34 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:05:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:05:33 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:06:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:06:33 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:07:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:07:33 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:08:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:08:33 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:09:03 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:09:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:09:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:09:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:10:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:10:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:11:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:11:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:12:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:12:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:13:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:13:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:14:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:14:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:15:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:15:51 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:16:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:16:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:16:28 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 180
+[29-Nov-2024 21:16:28 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php:180
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 180
+[29-Nov-2024 21:16:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:16:46 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 191
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 191
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 192
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 193
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "capacity" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 194
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "total_units" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 195
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "description" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 196
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 196
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "fee_type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 197
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "amount" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 198
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 200
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 200
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 201
+[29-Nov-2024 21:16:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 201
+[29-Nov-2024 21:16:46 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:17:16 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:17:46 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:17:50 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 193
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 194
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "capacity" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 195
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "total_units" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 196
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "description" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 197
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 197
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "fee_type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 198
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "amount" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 199
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 201
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 201
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 202
+[29-Nov-2024 21:17:50 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 202
+[29-Nov-2024 21:17:50 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:18:06 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 193
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 194
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "capacity" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 195
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "total_units" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 196
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "description" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 197
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 197
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "fee_type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 198
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "amount" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 199
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 201
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 201
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 202
+[29-Nov-2024 21:18:06 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 202
+[29-Nov-2024 21:18:07 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:18:37 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:19:07 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:19:37 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:19:42 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 190
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 191
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "capacity" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 192
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "total_units" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 193
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "description" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 194
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 194
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "fee_type" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 195
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "amount" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 196
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 198
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 198
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 199
+[29-Nov-2024 21:19:42 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 199
+[29-Nov-2024 21:19:42 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:20:12 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:20:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:20:28 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:20:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:21:24 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:21:25 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:21:55 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:22:25 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:22:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:22:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:23:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:23:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:24:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:24:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:25:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:25:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:26:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:26:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:27:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:27:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:28:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:28:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:29:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:29:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:30:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:30:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:31:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:31:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:32:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:32:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:33:18 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:33:48 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:34:18 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
+[29-Nov-2024 21:34:48 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
+[29-Nov-2024 21:35:18 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115

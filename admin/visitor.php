@@ -112,7 +112,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/visitor.css">
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <title>BaGoTours. Visitor Records</title>
+    <title>BaGoTours || Visitor Records</title>
 </head>
 
 <body>

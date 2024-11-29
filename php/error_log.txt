@@ -1,0 +1,9 @@
+[29-Nov-2024 21:04:21 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:04:21 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\php\accommodation-fees\add-entranceFees.php on line 19
+[29-Nov-2024 21:04:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\php\accommodation-fees\add-entranceFees.php:19
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\accommodation-fees\add-entranceFees.php on line 19
+[29-Nov-2024 21:04:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:21:17 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 21:22:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'

@@ -111,7 +111,7 @@ function tourAlreadyExists($conn, $title)
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
-    <title>BaGoTours. Tours</title>
+    <title>BaGoTours || Add Tour</title>
 </head>
 
 <body>

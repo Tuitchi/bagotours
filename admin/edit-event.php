@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-bottom: 20px;
         }
     </style>
-    <title>BaGoTours || Add Event</title>
+    <title>BaGoTours || Edit Event</title>
 </head>
 
 <body>

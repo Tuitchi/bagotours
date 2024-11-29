@@ -35,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($stmt->fetchColumn() > 0) {
                     $_SESSION['errorMessage'] = "You have already submitted a review for this tour.";
                 } else {
-                    // Insert the review
                     $img = ''; // Handle image upload if required
                     $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img, date_created) VALUES (:tour_id, :user_id, :rating, :review, :img, NOW())");
                     $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
@@ -64,50 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 
-
-
 require_once 'func/func.php';
 $averageRating = getAverageRatingNew($conn, $decrypted_id);
 $ratingStars = displayRatingStars($averageRating);
-function timeAgo($timestamp)
-{
-    $time_ago = strtotime($timestamp);
-    $current_time = time();
-    $time_difference = $current_time - $time_ago;
 
-    $seconds = $time_difference;
-    $minutes = round($seconds / 60);
-    $hours = round($seconds / 3600);
-    $days = round($seconds / 86400);
-    $weeks = round($seconds / 604800);
-    $months = round($seconds / 2629440); // ~30.44 days
-    $years = round($seconds / 31553280); // ~365.24 days
-
-    // Determine the appropriate time frame and format
-    if ($seconds < 60) {
-        return ($seconds == 1) ? "one second ago" : "$seconds seconds ago";
-    } elseif ($minutes < 60) {
-        return ($minutes == 1) ? "one minute ago" : "$minutes minutes ago";
-    } elseif ($hours < 24) {
-        return ($hours == 1) ? "one hour ago" : "$hours hours ago";
-    } elseif ($days < 7) {
-        return ($days == 1) ? "one day ago" : "$days days ago";
-    } elseif ($weeks < 4) {
-        return ($weeks == 1) ? "one week ago" : "$weeks weeks ago";
-    } elseif ($months < 12) {
-        return ($months == 1) ? "one month ago" : "$months months ago";
-    } else {
-        return ($years == 1) ? "one year ago" : "$years years ago";
-    }
-}
-function isDuplicateReview($conn, $tour_id, $user_id)
-{
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
-    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchColumn() > 0;
-}
 
 ?>
 <!DOCTYPE html>
@@ -125,185 +84,6 @@ function isDuplicateReview($conn, $tour_id, $user_id)
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/tour.css">
-    <style>
-        .comment-section {
-            position: relative;
-            width: 100%;
-            margin: auto;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Comment box styling */
-        .comment-box {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            /* Ensure spacing between elements */
-            align-items: flex-start;
-            /* Align to the top */
-        }
-
-        .rating-container {
-            display: flex
-        }
-
-        .input-box {
-            display: flex;
-            flex-direction: row;
-            flex: 1;
-            /* Allow the input to grow and fit */
-            width: 100%;
-            /* Ensure full-width use */
-            box-sizing: border-box;
-            /* Prevent padding from breaking layout */
-        }
-
-        .input-box #rating {
-            width: 30px;
-            height: 30px;
-            background-color: #ccc;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .comment-box .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .input-box .comment-input {
-            display: block;
-            /* Fix any inline behavior */
-            width: 100%;
-            /* Ensure it spans the container */
-            padding: 8px;
-            font-size: 14px;
-            /* Make it readable on smaller screens */
-            box-sizing: border-box;
-            /* Account for padding in the width */
-        }
-
-        .input-box .comment-input:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
-        .comment-actions .edit:hover {
-            color: #007bff;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .comment-actions .delete:hover {
-            color: red;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .comment-box .comment-submit-btn {
-            margin-left: 10px;
-            padding: 8px 12px;
-            background-color: #007bff;
-            width: auto;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .comment-box .comment-submit-btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* Container styling for dropdown */
-        .rating-container {
-            position: relative;
-            max-width: 300px;
-            margin: auto;
-        }
-
-        /* Dropdown base styles */
-        .star {
-            background-image: url(star.png);
-            appearance: none;
-            /* Remove default dropdown */
-            background: linear-gradient(to right, #f7f7f7, #ffffff);
-            /* Subtle gradient */
-            border: 1px solid #ddd;
-            /* Light border */
-            border-radius: 8px;
-            /* Smooth corners */
-            padding: 12px 15px;
-            /* Comfortable padding */
-            font-size: 16px;
-            /* Modern font size */
-            color: #444;
-            /* Darker text color */
-            cursor: pointer;
-            width: 100%;
-            /* Responsive width */
-            transition: all 0.3s ease;
-            /* Smooth transition effects */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            /* Subtle shadow for depth */
-        }
-
-        /* Add custom arrow for the dropdown */
-        .star::after {
-            content: '▼';
-            /* Unicode arrow */
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-            color: #888;
-            pointer-events: none;
-            /* Make sure arrow doesn’t interfere */
-        }
-
-        /* Hover and Focus States */
-        .star:hover {
-            border-color: #007bff;
-            /* Blue border on hover */
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-            /* Blue glow */
-        }
-
-        .star:focus {
-            outline: none;
-            border-color: #0056b3;
-            /* Stronger blue on focus */
-            box-shadow: 0 0 10px rgba(0, 86, 179, 0.4);
-            /* Glow effect */
-        }
-
-        /* Styling for the Options in the Dropdown */
-        .star option {
-            background: #fff;
-            /* White background */
-            color: #333;
-            /* Dark text for visibility */
-            font-size: 16px;
-            padding: 10px;
-            /* Padding for spacing */
-        }
-
-        /* Optional Label Styling */
-        .rating-label {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 8px;
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
@@ -485,7 +265,6 @@ function isDuplicateReview($conn, $tour_id, $user_id)
                                     <div class="comment-actions">
                                         <span class="comment-time">
                                             <?php
-                                            // Check if 'date_updated' is null, and determine the appropriate timestamp
                                             $timestamp = $comment['date_updated'] ?: $comment['date_created'];
                                             $status = $comment['date_updated'] ? "edited" : "";
                                             echo timeAgo($timestamp) . " " . $status;

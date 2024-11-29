@@ -17,7 +17,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 	<link rel="stylesheet" href="assets/css/admin.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
 
-	<title>BaGoTours. Dashboard</title>
+	<title>BaGoTours || Dashboard</title>
 	<style>
 		.box-info li span a {
 			font-size: .7em;

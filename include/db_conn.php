@@ -81,15 +81,15 @@ try {
                         "booking"
                     );
 
-                    error_log("Notification created for user: {$notification['user_id']}, tour: {$notification['tour_id']}");
+                    log_error_with_location("Notification created for user: {$notification['user_id']}, tour: {$notification['tour_id']}");
                 } catch (Exception $e) {
-                    error_log("Failed to create notification: " . $e->getMessage());
+                    log_error_with_location("Failed to create notification: " . $e->getMessage());
                 }
             }
         }
     }
 } catch (PDOException $e) {
-    error_log('Error: ' . $e->getMessage());
+    log_error_with_location('Error: ' . $e->getMessage());
 }
 
 function createNotif($conn, $userId, $tour_id, $message, $url, $type)
@@ -101,4 +101,16 @@ function createNotif($conn, $userId, $tour_id, $message, $url, $type)
     $stmt->bindParam(':url', $url, PDO::PARAM_STR);
     $stmt->bindParam(':type', $type, PDO::PARAM_STR);
     return $stmt->execute() ? "success" : "error";
+}
+function log_error_with_location($message)
+{
+    // Get the current file and line where this function is called
+    $file = __FILE__;    // Get the current file path
+    $line = __LINE__;    // Get the current line number
+
+    // Format the error message with file and line number
+    $formatted_message = "[" . date("Y-m-d H:i:s") . "] Error in file $file on line $line: $message" . PHP_EOL;
+
+    // Log the message to the PHP error log
+    error_log($formatted_message, 3, '/path/to/your/error.log'); // specify your log file location here
 }

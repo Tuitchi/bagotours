@@ -299,3 +299,45 @@ function addEventValidator($conn, $event_name)
     $stmt->execute();
     return $stmt->fetch()['count'] > 0;
 }
+
+// TOUR FUNCTIONS
+
+function timeAgo($timestamp)
+{
+    $time_ago = strtotime($timestamp);
+    $current_time = time();
+    $time_difference = $current_time - $time_ago;
+
+    $seconds = $time_difference;
+    $minutes = round($seconds / 60);
+    $hours = round($seconds / 3600);
+    $days = round($seconds / 86400);
+    $weeks = round($seconds / 604800);
+    $months = round($seconds / 2629440); // ~30.44 days
+    $years = round($seconds / 31553280); // ~365.24 days
+
+    // Determine the appropriate time frame and format
+    if ($seconds < 60) {
+        return ($seconds == 1) ? "one second ago" : "$seconds seconds ago";
+    } elseif ($minutes < 60) {
+        return ($minutes == 1) ? "one minute ago" : "$minutes minutes ago";
+    } elseif ($hours < 24) {
+        return ($hours == 1) ? "one hour ago" : "$hours hours ago";
+    } elseif ($days < 7) {
+        return ($days == 1) ? "one day ago" : "$days days ago";
+    } elseif ($weeks < 4) {
+        return ($weeks == 1) ? "one week ago" : "$weeks weeks ago";
+    } elseif ($months < 12) {
+        return ($months == 1) ? "one month ago" : "$months months ago";
+    } else {
+        return ($years == 1) ? "one year ago" : "$years years ago";
+    }
+}
+function isDuplicateReview($conn, $tour_id, $user_id)
+{
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() > 0;
+}

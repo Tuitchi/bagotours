@@ -135,11 +135,10 @@ try {
                 <?php
                 $counter = 1;
                 foreach ($top_tours as $tour) {
-                    // Calculate the star rating based on average rating
-                    $averageRating = round($tour['average_rating']); // Round to the nearest whole number
-                    $fullStars = str_repeat("★", $averageRating); // Full stars
-                    $emptyStars = str_repeat("☆", 5 - $averageRating); // Empty stars
-                    $totalStars = $fullStars . $emptyStars; // Combine stars
+                    $averageRating = isset($tour['average_rating']) && $tour['average_rating'] !== null ? round($tour['average_rating']) : 0;
+                    $fullStars = str_repeat("★", $averageRating);
+                    $emptyStars = str_repeat("☆", 5 - $averageRating);
+                    $totalStars = $fullStars . $emptyStars;
                     $tour_images = explode(',', $tour['img']);
                     $main_image = $tour_images[0];
 
@@ -152,7 +151,7 @@ try {
                         <h3>" . htmlspecialchars($tour['title']) . "</h3>
                         <div class='smallDetails'>
                             <span>" . htmlspecialchars($tour['type']) . "</span>
-                            <span class='rating'>" . $totalStars . " (" . htmlspecialchars($tour['review_count']) . " reviews)</span>
+                            <span class='rating'>" . $totalStars . " (" . ($tour['review_count']) . " reviews)</span>
                             <span class='rating'>" . htmlspecialchars($tour['total_visitors']) . " Visits</span>
                         </div>
                     </div>
@@ -173,7 +172,7 @@ try {
             // Clear previous background styles
             $('style[data-index]').remove();
 
-            $('.tourList').each(function (index) {
+            $('.tourList').each(function(index) {
                 const bgImage = $(this).data('bg');
                 if (bgImage) {
                     const uniqueClass = `tourList-bg-${index}`;
@@ -193,11 +192,11 @@ try {
         }
 
         // Initial load of background images
-        $(document).ready(function () {
+        $(document).ready(function() {
             applyBackgroundImages();
 
             // Handle filter buttons to reload content and update backgrounds
-            $('.option').on('click', function () {
+            $('.option').on('click', function() {
                 $('.option').removeClass('active');
                 $(this).addClass('active');
 
@@ -206,15 +205,17 @@ try {
                 $.ajax({
                     url: '', // Use the same page URL to handle the request
                     type: 'POST',
-                    data: { filter: timeFilter },
-                    success: function (response) {
+                    data: {
+                        filter: timeFilter
+                    },
+                    success: function(response) {
                         // Update the tour list container with new content
                         $('#tour-list-container').html($(response).find('#tour-list-container').html());
 
                         // Reapply background images after content update
                         applyBackgroundImages();
                     },
-                    error: function () {
+                    error: function() {
                         alert('Error loading tours');
                     }
                 });

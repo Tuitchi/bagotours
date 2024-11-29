@@ -51,7 +51,7 @@ $users = $stmt->fetchAll();
 <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="assets/css/admin.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<title>BaGoTours. Users</title>
+<title>BaGoTours || Users</title>
 <style>
     /* Modal Styling */
     .modal {

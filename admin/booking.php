@@ -73,7 +73,7 @@ function getStatusButton($row)
 	<link rel="icon" href="../assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
 	<link rel="stylesheet" href="assets/css/admin.css">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<title>BaGoTours | Bookings</title>
+	<title>BaGoTours || Booking</title>
 	<style>
 		/* CSS adjustments */
 		.table-container {

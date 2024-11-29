@@ -1,0 +1,2 @@
+[29-Nov-2024 20:14:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[29-Nov-2024 20:14:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'

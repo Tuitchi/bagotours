@@ -20,7 +20,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <title>BaGoTours. Pending Tour</title>
+    <title>BaGoTours || Pending Tour</title>
     <style>
         /* General Body Styling */
         .modal {

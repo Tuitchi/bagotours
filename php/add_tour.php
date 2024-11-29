@@ -45,7 +45,7 @@ try {
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':address', $address);
             $stmt->bindParam(':type', $type);
-            
+
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':img', $image_name);
             $stmt->bindParam(':bookable', $bookable);
@@ -66,7 +66,7 @@ try {
     } else {
         throw new Exception('Invalid request method.');
     }
-} catch (Exception $e) {
+} catch (PDOException $e) {
     header("Location: ../admin/tours?status=error");
     exit();
 }
