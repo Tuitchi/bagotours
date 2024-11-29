@@ -3,3 +3,9 @@
 [27-Nov-2024 18:18:16 Europe/Berlin] PHP Warning:  Attempt to read property "comment_id" on null in C:\xampp\htdocs\bagotours\php\delete_comment.php on line 5
 [27-Nov-2024 18:59:40 Europe/Berlin] Error preparing statement: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`visit_records`, CONSTRAINT `visit_records_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`))
 [27-Nov-2024 19:00:30 Europe/Berlin] Error preparing statement: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`visit_records`, CONSTRAINT `visit_records_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`))
+[28-Nov-2024 18:01:33 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 5
+[28-Nov-2024 18:03:15 Europe/Berlin] PHP Warning:  Undefined variable $user_id in C:\xampp\htdocs\bagotours\admin\includes\sidebar.php on line 49
+[28-Nov-2024 18:03:15 Europe/Berlin] PHP Warning:  Undefined variable $user in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 111
+[28-Nov-2024 18:03:15 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 111
+[28-Nov-2024 18:03:25 Europe/Berlin] PHP Warning:  Undefined variable $user in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 112
+[28-Nov-2024 18:03:25 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 112

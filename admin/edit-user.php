@@ -1,8 +1,14 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
 $user_id = $_SESSION['user_id'];
+
+if (isset($_GET['id'])) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
+    $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['firstname'] . " " . $_POST['lastname'];
@@ -109,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="table-data">
                 <div class="order">
                     <div class="title">
-                        <h2>Create a New User</h2>
+                        <h2>Edit User - <?php echo $user['name']?></h2>
                         <p>Fill in the required information below to create a new user account. Please make sure all
                             details are correct.</p>
                     </div>
