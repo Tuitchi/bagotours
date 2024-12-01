@@ -351,6 +351,9 @@ $tour = getAllToursforAdmin($conn, $query);
                                             <a href="edit-tour?id=<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"
                                                 class="btn" id="edit">
                                                 <i class="bx bx-edit-alt"></i>Edit</a>
+                                            <a href="accommodation-fees-management?id=<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                class="btn" id="edit">
+                                                <i class='bx bx-dollar-circle'></i>Pricing</a>
                                             <a href="#" class="btn" id="delete"
                                                 data-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"><i
                                                     class="bx bx-trash"></i>Delete</a>
@@ -380,9 +383,9 @@ $tour = getAllToursforAdmin($conn, $query);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Handle the search input submission
-            $("#search-input").on("keypress", function (event) {
+            $("#search-input").on("keypress", function(event) {
                 if (event.which === 13) { // Check for Enter key
                     $(this).closest("form").submit(); // Submit the form
                 }
@@ -394,12 +397,12 @@ $tour = getAllToursforAdmin($conn, $query);
                 timer: 3000,
                 timerProgressBar: true
             });
-            $(document).on('click', '#delete', function (event) {
+            $(document).on('click', '#delete', function(event) {
                 event.preventDefault();
                 const id = $(this).data('id');
                 Delete(id);
             });
-            $(document).on('click', '#drop', function (event) {
+            $(document).on('click', '#drop', function(event) {
                 event.preventDefault();
 
                 // Close any open dropdowns first (optional, to hide others)
@@ -410,25 +413,26 @@ $tour = getAllToursforAdmin($conn, $query);
 
                 // Check the current state and toggle it
                 if (actions.css('display') === 'none') {
-                    actions.css('display', 'block');  // Show the dropdown
+                    actions.css('display', 'block'); // Show the dropdown
                 } else {
-                    actions.css('display', 'none');   // Hide the dropdown
+                    actions.css('display', 'none'); // Hide the dropdown
                 }
             });
 
             // Close the dropdown when clicking outside of it
-            $(document).click(function (event) {
+            $(document).click(function(event) {
                 if (!$(event.target).closest('.dropdown').length) {
                     $('.actions').hide();
                 }
             });
-            $(document).on('click', '#view', function (event) {
+            $(document).on('click', '#view', function(event) {
                 event.preventDefault();
                 const id = $(this).data('id');
                 View(id);
             });
+
             function View(tourId) {
-                $.getJSON(`../php/get_tour_info.php?id=${tourId}`, function (data) {
+                $.getJSON(`../php/get_tour_info.php?id=${tourId}`, function(data) {
                     if (data.success) {
                         const images = data.tour.img.split(',');
                         let carouselItems = '';
@@ -471,14 +475,14 @@ $tour = getAllToursforAdmin($conn, $query);
                 </div>
                 <button type="button" class="btn-close" onclick=Close()>Close</button>
             `);
-                        $('#viewModal').show();
+                        $('#viewModal').css('display', 'flex');
                     } else {
                         Toast.fire({
                             icon: 'error',
                             title: 'Unable to fetch tour information.'
                         });
                     }
-                }).fail(function () {
+                }).fail(function() {
                     Toast.fire({
                         icon: 'error',
                         title: 'There was an error fetching the tour information.'
@@ -487,6 +491,7 @@ $tour = getAllToursforAdmin($conn, $query);
             }
 
             let currentSlide = 0;
+
             function showSlide(index) {
                 const slides = document.querySelectorAll('.carousel-slide');
                 const indicators = document.querySelectorAll('.indicator');
@@ -507,7 +512,7 @@ $tour = getAllToursforAdmin($conn, $query);
                 showSlide((currentSlide - 1 + slides.length) % slides.length);
             }
 
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('indicator')) {
                     showSlide(parseInt(e.target.getAttribute('data-slide')));
                 }
@@ -528,7 +533,7 @@ $tour = getAllToursforAdmin($conn, $query);
                             url: `../php/delete_tour.php?id=${tourId}`,
                             type: 'POST',
                             dataType: 'json',
-                            success: function (response) {
+                            success: function(response) {
                                 if (response.success) {
                                     Toast.fire({
                                         icon: 'success',
@@ -542,7 +547,7 @@ $tour = getAllToursforAdmin($conn, $query);
                                     });
                                 }
                             },
-                            error: function (xhr, status, error) {
+                            error: function(xhr, status, error) {
                                 Toast.fire({
                                     icon: 'error',
                                     title: 'An error occurred. Please try again.'
@@ -553,7 +558,7 @@ $tour = getAllToursforAdmin($conn, $query);
                     }
                 });
             }
-            window.Close = function () {
+            window.Close = function() {
                 document.querySelector('.modal').style.display = 'none';
             };
 

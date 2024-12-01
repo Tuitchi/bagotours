@@ -82,6 +82,11 @@ $breadcrumbs = [
         ['title' => 'Tours', 'url' => 'tours'],
         ['title' => 'Edit Tour', 'url' => 'edit-tour']
     ],
+    'accommodation-fees-management' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Tours', 'url' => 'tours'],
+        ['title' => 'Pricing Management', 'url' => 'accommodation-fees-management']
+    ],
     'user' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Users', 'url' => 'user']

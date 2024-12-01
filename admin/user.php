@@ -53,29 +53,6 @@ $users = $stmt->fetchAll();
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <title>BaGoTours || Users</title>
 <style>
-    /* Modal Styling */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 9999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-        overflow: auto;
-        padding-top: 60px;
-    }
-
-    .modal-content {
-        background-color: #fff;
-        margin: 5% auto;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 600px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
     /* Close button */
     .close {
         color: #aaa;
@@ -327,8 +304,8 @@ $users = $stmt->fetchAll();
     <script src="../assets/js/script.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $(document).on('click', '#drop', function (event) {
+        $(document).ready(function() {
+            $(document).on('click', '#drop', function(event) {
                 event.preventDefault();
 
                 // Close any open dropdowns first (optional, to hide others)
@@ -339,14 +316,14 @@ $users = $stmt->fetchAll();
 
                 // Check the current state and toggle it
                 if (actions.css('display') === 'none') {
-                    actions.css('display', 'block');  // Show the dropdown
+                    actions.css('display', 'block'); // Show the dropdown
                 } else {
-                    actions.css('display', 'none');   // Hide the dropdown
+                    actions.css('display', 'none'); // Hide the dropdown
                 }
             });
 
             // Close the dropdown when clicking outside of it
-            $(document).click(function (event) {
+            $(document).click(function(event) {
                 if (!$(event.target).closest('.dropdown').length) {
                     $('.actions').hide(); // Hide all dropdowns if the click is outside of the dropdown
                 }
@@ -367,9 +344,9 @@ $users = $stmt->fetchAll();
 
                 // Fetch filtered data via AJAX
                 $.ajax({
-                    url: `?${params.toString()}`,  // Adjusted URL to include search and page
+                    url: `?${params.toString()}`, // Adjusted URL to include search and page
                     type: 'GET',
-                    success: function (html) {
+                    success: function(html) {
                         const $doc = $(html);
 
                         // Update the table body
@@ -380,7 +357,7 @@ $users = $stmt->fetchAll();
                         const $newPagination = $doc.find('.pagination');
                         $paginationContainer.html($newPagination.html());
                     },
-                    error: function (error) {
+                    error: function(error) {
                         console.error('Error fetching data:', error);
                     }
                 });
@@ -391,7 +368,7 @@ $users = $stmt->fetchAll();
             $searchInput.on('input', fetchFilteredData);
 
             // Pagination links event listener
-            $paginationContainer.on('click', 'a', function (e) {
+            $paginationContainer.on('click', 'a', function(e) {
                 e.preventDefault();
                 const url = new URL($(this).attr('href'));
                 const page = url.searchParams.get('page');
@@ -409,19 +386,19 @@ $users = $stmt->fetchAll();
                 timerProgressBar: true
             });
 
-            $(document).on('click', '#view', function (event) {
+            $(document).on('click', '#view', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 viewUser(userId);
             });
-            $(document).on('click', '#delete', function (event) {
+            $(document).on('click', '#delete', function(event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 deleteUser(userId);
             });
 
             function viewUser(userId) {
-                $.getJSON(`../php/get_user_info.php?id=${userId}`, function (data) {
+                $.getJSON(`../php/get_user_info.php?id=${userId}`, function(data) {
                     if (data.success) {
                         $('#userInfoContent').html(`
                 <div class="user-info">
@@ -438,14 +415,15 @@ $users = $stmt->fetchAll();
                     </div>
                 </div>
             `);
-                        $('#viewUserModal').show();
+                        $('.modal').css('display', 'flex');
+
                     } else {
                         Toast.fire({
                             icon: 'error',
                             title: 'Unable to fetch user information.'
                         });
                     }
-                }).fail(function () {
+                }).fail(function() {
                     Toast.fire({
                         icon: 'error',
                         title: 'There was an error fetching the user information.'
@@ -472,7 +450,7 @@ $users = $stmt->fetchAll();
                             type: 'POST',
                             data: $(this).serialize(),
                             dataType: 'json',
-                            success: function (response) {
+                            success: function(response) {
                                 if (response.success) {
                                     Toast.fire({
                                         icon: 'success',
@@ -491,13 +469,13 @@ $users = $stmt->fetchAll();
                 });
             }
 
-            $(window).click(function (event) {
+            $(window).click(function(event) {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();
                 }
             });
 
-            $('.close').click(function () {
+            $('.close').click(function() {
                 $(this).closest('.modal').hide();
             });
         });

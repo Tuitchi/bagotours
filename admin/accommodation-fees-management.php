@@ -2,6 +2,7 @@
 include '../include/db_conn.php';
 
 if (isset($_GET['id'])) {
+    $tour_id = $_GET['id'];
 } else {
     header("Location: tours.php");
     exit();
@@ -153,30 +154,29 @@ $user_id = $_SESSION['user_id'];
                             <?php
                             // SQL query to combine accommodations and fees
                             $query = "SELECT 
-    id, 
-    name AS item_name, 
-    type, 
-    capacity, 
-    total_units, 
-    description, 
-    cost AS amount
-FROM accommodations
-UNION
-SELECT 
-    id, 
-    fee_type AS item_name, 
-    NULL AS type, 
-    NULL AS capacity, 
-    NULL AS total_units, 
-    description, 
-    amount
-FROM fees
-ORDER BY id ASC;
-";
+                                        id, 
+                                        name AS item_name, 
+                                        type, 
+                                        capacity, 
+                                        total_units, 
+                                        description, 
+                                        cost AS amount
+                                    FROM accommodations WHERE tour_id = :tour_id
+                                    UNION
+                                    SELECT 
+                                        id, 
+                                        fee_type AS item_name, 
+                                        NULL AS type, 
+                                        NULL AS capacity, 
+                                        NULL AS total_units, 
+                                        description, 
+                                        amount
+                                    FROM fees WHERE tour_id = :tour_id
+                                    ORDER BY id ASC;
+                                    ";
                             try {
                                 $stmt = $conn->prepare($query);
-                                $stmt->execute();
-
+                                $stmt->execute([':tour_id' => $tour_id]);
                                 // Fetch all rows
                                 $rows = $stmt->fetchAll();
                             } catch (PDOException $e) {

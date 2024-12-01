@@ -37,7 +37,7 @@ function getBooking($conn, $user_id)
 	$stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.name, u.email, u.phone_number FROM booking b
           JOIN tours t ON b.tour_id = t.id
           JOIN users u ON b.user_id = u.id WHERE t.user_id = :user_id
-          ORDER BY b.date_sched DESC");
+          ORDER BY b.start_date DESC");
 	$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 	$stmt->execute();
 	return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -321,7 +321,7 @@ function getStatusButton($row)
 									<th>#</th>
 									<th>User</th>
 									<th>Tour</th>
-									<th>Arrival Date</th>
+									<th>Date Scheduled</th>
 									<th>People</th>
 									<th>Phone # / Email</th>
 									<th>Status</th>
@@ -335,7 +335,7 @@ function getStatusButton($row)
 											<td><?php echo $counter++; ?></td>
 											<td><?php echo htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); ?></td>
 											<td><?php echo htmlspecialchars($row['tour_title'], ENT_QUOTES, 'UTF-8'); ?></td>
-											<td><?php echo htmlspecialchars($row['date_sched'], ENT_QUOTES, 'UTF-8'); ?></td>
+											<td><?php echo htmlspecialchars($row['start_date'], ENT_QUOTES, 'UTF-8') . " - " . htmlspecialchars($row['end_date'], ENT_QUOTES, 'UTF-8') ?></td>
 											<td><?php echo ($row['people'] == 0) ? 'N/A' : htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?>
 											</td>
 											<td><?php echo htmlspecialchars($row['phone_number'], ENT_QUOTES, 'UTF-8'); ?> -

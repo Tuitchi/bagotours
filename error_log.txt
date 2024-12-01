@@ -322,3 +322,329 @@ Stack trace:
 [29-Nov-2024 21:34:18 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
 [29-Nov-2024 21:34:48 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
 [29-Nov-2024 21:35:18 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
+[29-Nov-2024 21:35:49 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
+[29-Nov-2024 21:36:19 Europe/Berlin] PHP Warning:  error_log(/path/to/your/error.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\include\db_conn.php on line 115
+[2024-12-01 01:35:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:14] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:18] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:19] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:19] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:00:22 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'order clause' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[2024-12-01 02:00:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:25] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:25] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:26] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:26] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:30] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:00:30 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:00:30] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:31] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:31] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:00:32 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:00:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:00:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:00:36 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:00:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:01:02 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:01:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:17] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:01:17 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:01:17] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:49] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:01:49 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:01:49] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:51] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:51] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:57] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:01:57] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:02:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:02:07 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:02:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:02:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:02:14] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:02:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:03:08] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:03:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:03:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:03:59 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:03:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:04:05 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:04:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:08] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:04:08 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:04:08] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:04:09 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:04:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:04:13 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:04:14] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:04:16 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:04:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:04:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:05:28 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:05:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:49] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:05:55 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:05:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:05:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:06:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:06:11 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:06:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:06:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:06:41] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:07:02 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:07:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:07:02 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:07:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:07:03 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:07:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:17] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:19] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:19] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:23] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:31] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:44] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:07:44 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:07:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:53] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:54] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:07:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:26] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:08:51] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:17] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:18] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:23] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:09:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:09:34 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'order clause' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[2024-12-01 02:13:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:13:32 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'order clause' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[2024-12-01 02:13:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:13:34 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'order clause' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[2024-12-01 02:13:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:13:39 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'order clause' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[2024-12-01 02:13:54] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:13:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:14:08] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:14:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:14:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:15:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:15:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:16:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:17:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:31] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:18:32 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:18:33] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:35] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:35] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:18:35 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:18:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:41] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:44] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:18:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:23] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:19:23 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:19:23] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:35] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:35] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:19:38 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:19:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:19:39 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:19:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:19:42 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:19:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:44] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:44] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:19:47 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:19:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:19:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:20:18] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:20:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:21:18] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:21:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:22:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:22:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:22:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:22:01 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:22:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:22:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:22:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:22:33] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:19] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:19] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:23:24 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:23:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:23:39 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:23:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:41] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:41] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:23:43 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:23:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:23:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:23:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:23:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[01-Dec-2024 02:24:02 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[2024-12-01 02:24:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 02:24:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'

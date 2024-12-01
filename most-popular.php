@@ -17,7 +17,7 @@ WITH booking_visitors AS (
            SUM(b.people) AS total_booking_visitors
     FROM tours t
     LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
-    WHERE b.date_sched >= DATE_SUB(NOW(), INTERVAL $time_filter)
+    WHERE b.start_date >= DATE_SUB(NOW(), INTERVAL $time_filter)
     GROUP BY t.id
 ),
 visit_visitors AS (

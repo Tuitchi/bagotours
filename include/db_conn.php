@@ -112,5 +112,5 @@ function log_error_with_location($message)
     $formatted_message = "[" . date("Y-m-d H:i:s") . "] Error in file $file on line $line: $message" . PHP_EOL;
 
     // Log the message to the PHP error log
-    error_log($formatted_message, 3, '/path/to/your/error.log'); // specify your log file location here
+    error_log($formatted_message, 3, '../error_log.txt');
 }

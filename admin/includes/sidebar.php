@@ -28,7 +28,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
                 <span class="text">Events</span>
             </a>
         </li>
-        <li class="<?php echo (in_array($current_page, ['tours', 'edit-tour', 'add-tour'])) ? 'active' : ''; ?>">
+        <li class="<?php echo (in_array($current_page, ['tours', 'edit-tour', 'add-tour', 'accommodation-fees-management'])) ? 'active' : ''; ?>">
             <a href="tours">
                 <i class='bx bxs-map-alt'></i>
                 <span class="text">Tours</span>
