@@ -190,12 +190,15 @@ $user_id = $_SESSION['user_id'];
                                         <td><?= $row['item_name'] ? htmlspecialchars($row['item_name']) : 'N/A' ?></td>
                                         <td><?= $row['type'] ? htmlspecialchars($row['type']) : 'N/A' ?></td>
                                         <td><?= $row['capacity'] !== null ? htmlspecialchars($row['capacity']) : 'N/A' ?></td>
-                                        <td><?= $row['total_units'] !== null ? htmlspecialchars($row['total_units']) : 'N/A' ?></td>
+                                        <td><?= $row['total_units'] !== null ? htmlspecialchars($row['total_units']) : 'N/A' ?>
+                                        </td>
                                         <td><?= htmlspecialchars($row['description']) ?></td>
                                         <td><?= $row['amount'] !== null ? htmlspecialchars($row['amount']) : 'N/A' ?></td>
                                         <td>
-                                            <a href="edit.php?id=<?= htmlspecialchars($row['id']) ?>"><i class="bx bx-edit"></i></a>
-                                            <a href="delete.php?id=<?= htmlspecialchars($row['id']) ?>"><i class="bx bx-trash"></i></a>
+                                            <a href="edit.php?id=<?= htmlspecialchars($row['id']) ?>"><i
+                                                    class="bx bx-edit"></i></a>
+                                            <a href="delete.php?id=<?= htmlspecialchars($row['id']) ?>"><i
+                                                    class="bx bx-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -216,11 +219,11 @@ $user_id = $_SESSION['user_id'];
     <script src="../assets/js/jquery-3.7.1.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.order.table')
 
             function handleFormSubmit(formId, actionUrl, successMessage) {
-                $(`#${formId}`).on('submit', function(event) {
+                $(`#${formId}`).on('submit', function (event) {
                     event.preventDefault();
 
                     let formData = new FormData(this);
@@ -231,12 +234,12 @@ $user_id = $_SESSION['user_id'];
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response) {
+                        success: function (response) {
                             Swal.fire('Success!', successMessage, 'success');
                             $(`#${formId}`)[0].reset();
                             $('.order.table')
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             Swal.fire('Error!', `Something went wrong: ${xhr.responseText}`, 'error');
                         }
                     });

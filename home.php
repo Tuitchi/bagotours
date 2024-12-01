@@ -2,7 +2,13 @@
 session_start();
 require 'include/db_conn.php';
 
+
+
 if (isset($_SESSION['user_id'])) {
+    if ($_SESSION['role'] == 'admin') {
+        header("Location: admin");
+        exit();
+    }
     $user_id = $_SESSION['user_id'];
     $date = date('Y-m-d');
     $stmt = $conn->prepare("SELECT expiry, id FROM tours WHERE user_id = :user_id AND DATE(expiry) >= :current_date");
