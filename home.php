@@ -262,12 +262,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             document.getElementById('loadingCard').style.display = 'block';
 
             fetch('home.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ action: 'get_nearby_tours', userLat: userLat, userLng: userLng })
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'get_nearby_tours',
+                        userLat: userLat,
+                        userLng: userLng
+                    })
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok: ' + response.statusText);
@@ -326,7 +330,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
         <?php
-        if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {
+        if (isset($_SESSION['downgrade']) && $_SESSION['downgrade'] == true) {
+            echo "
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Your account has been downgraded to a standard user by the admin.',
+                    text: 'If you believe this is a mistake, please contact the admin for clarification.',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                ";
+            unset($_SESSION['downgrade']);
+        } elseif (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {
             echo "
             const Toast = Swal.mixin({
                 toast: true,

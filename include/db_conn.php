@@ -35,7 +35,7 @@ try {
         FROM booking b 
         JOIN tours t ON b.tour_id = t.id 
         JOIN users u ON t.user_id = u.id 
-        WHERE DATE(b.date_sched) = CURDATE()
+        WHERE DATE(b.start_date) = CURDATE()
     ");
     $stmt->execute();
 

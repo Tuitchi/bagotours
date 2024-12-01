@@ -1,21 +1,28 @@
 <?php
 session_start();
-
-
-
 require_once '../include/db_conn.php';
+
+// Validate session variables
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['profile-pic'])) {
+	header('Location: ../login');
+	exit();
+}
+
 $user_id = $_SESSION['user_id'];
 $pp = $_SESSION['profile-pic'];
 
 try {
-	$query = "SELECT id, title, latitude, longitude, type, address, img FROM tours WHERE status = 1 AND user_id = $user_id";
+	// Secure query with placeholders
+	$query = "SELECT id, title, latitude, longitude, type, address, img 
+              FROM tours 
+              WHERE status = 1 AND user_id = :user_id";
 	$stmt = $conn->prepare($query);
-	$stmt->execute();
-	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$stmt->execute([':user_id' => $user_id]);
 
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$touristSpots = [];
 
-	if ($result) {
+	if (!empty($result)) {
 		foreach ($result as $row) {
 			$touristSpots[] = [
 				'id' => $row['id'],
@@ -27,14 +34,24 @@ try {
 				'address' => $row['address']
 			];
 		}
+	} else {
+		// Update role if no tours exist
+		$updateStmt = $conn->prepare("UPDATE users SET role = 'user' WHERE id = :user_id");
+		$updateStmt->execute([':user_id' => $user_id]);
+		header('Location: ../home');
+		$_SESSION['downgrade'] = true;
+		exit();
 	}
 
+	// Encode results as JSON
 	$touristSpotsJson = json_encode($touristSpots);
 } catch (PDOException $e) {
+	// Log error and return JSON error message
 	error_log("Error fetching tours: " . $e->getMessage());
 	$touristSpotsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -113,10 +130,10 @@ try {
 				`;
 
 				const popup = new mapboxgl.Popup({
-					closeOnClick: false,
-					offset: 25,
-					closeButton: false
-				})
+						closeOnClick: false,
+						offset: 25,
+						closeButton: false
+					})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {

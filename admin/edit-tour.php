@@ -256,7 +256,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             </div>
                         </div>
-                        <a href="accommodation-fees-management?id=<?php echo $id ?>">Add Accommodation and Fees</a>
                         <input type="hidden" id="latitude" name="latitude" value="<?php echo $tour['latitude'] ?>">
                         <input type="hidden" id="longitude" name="longitude" value="<?php echo $tour['longitude'] ?>">
                         <button type="submit" class="btn-submit">Save Edit</button>
