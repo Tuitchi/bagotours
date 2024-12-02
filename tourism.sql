@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2024 at 02:24 PM
+-- Generation Time: Dec 02, 2024 at 04:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,8 +32,7 @@ CREATE TABLE `accommodations` (
   `tour_id` int(50) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `type` varchar(100) NOT NULL,
-  `cost` decimal(10,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   `capacity` int(11) NOT NULL,
   `total_units` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -42,9 +41,8 @@ CREATE TABLE `accommodations` (
 -- Dumping data for table `accommodations`
 --
 
-INSERT INTO `accommodations` (`id`, `tour_id`, `name`, `description`, `type`, `cost`, `capacity`, `total_units`) VALUES
-(1, 1, 'Large Cottage', '20 per cottage.', 'Cottage', 0.00, 20, 10),
-(2, 1, 'Large', 'Capable of 50 person per Large Cottage\r\n', 'Cottage', 0.00, 50, 4);
+INSERT INTO `accommodations` (`id`, `tour_id`, `name`, `description`, `amount`, `capacity`, `total_units`) VALUES
+(4, 1, 'Restroom', 'Good for 4 pax', 100.00, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -116,7 +114,7 @@ CREATE TABLE `events` (
 CREATE TABLE `fees` (
   `id` int(11) NOT NULL,
   `tour_id` int(11) DEFAULT NULL,
-  `fee_type` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -127,8 +125,8 @@ CREATE TABLE `fees` (
 -- Dumping data for table `fees`
 --
 
-INSERT INTO `fees` (`id`, `tour_id`, `fee_type`, `amount`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Entrance Fee', 30.00, 'Per Head', '2024-11-29 20:04:58', '2024-11-29 20:04:58');
+INSERT INTO `fees` (`id`, `tour_id`, `name`, `amount`, `description`, `created_at`, `updated_at`) VALUES
+(2, 1, 'Entrance Fee', 30.00, 'Per Pax', '2024-12-02 14:34:22', '2024-12-02 14:34:22');
 
 -- --------------------------------------------------------
 
@@ -460,7 +458,7 @@ ALTER TABLE `visit_records`
 -- AUTO_INCREMENT for table `accommodations`
 --
 ALTER TABLE `accommodations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `booking`
@@ -478,7 +476,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `fees`
 --
 ALTER TABLE `fees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `inquiry`
