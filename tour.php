@@ -66,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 require_once 'func/func.php';
 $averageRating = getAverageRatingNew($conn, $decrypted_id);
 $ratingStars = displayRatingStars($averageRating);
+$pricingTours = getPricingForTour($conn, 1);
 
 
 ?>
@@ -129,21 +130,21 @@ $ratingStars = displayRatingStars($averageRating);
                             <div class="pricing-container">
                                 <h3 class="pricing-header">Price <i class='bx bx-caret-down'></i></h3>
                                 <div class="pricing-content">
-                                    <div class="pricing">
-                                        <h4>Entrance</h4>
-                                        -
-                                        <h5>P100/pax</h5>
-                                    </div>
-                                    <div class="pricing">
-                                        <h4>Entrance</h4>
-                                        -
-                                        <h5>P100/pax</h5>
-                                    </div>
-                                    <div class="pricing">
-                                        <h4>Entrance</h4>
-                                        -
-                                        <h5>P100/pax</h5>
-                                    </div>
+                                    <?php if (!empty($pricingTours)): ?>
+                                        <?php foreach ($pricingTours as $pricing): ?>
+                                            <div class="pricing">
+                                                <h4><?php echo htmlspecialchars($pricing['item_name']); ?></h4>
+                                                -
+                                                <h5>
+                                                ₱<?php echo htmlspecialchars($pricing['amount'])." ".htmlspecialchars($pricing['description']); ?>
+                                                </h5>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <div class="pricing">
+                                            <h5>No pricing details available.</h5>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <p class="rating"><?php echo $ratingStars; ?></p>

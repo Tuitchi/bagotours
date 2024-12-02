@@ -341,3 +341,32 @@ function isDuplicateReview($conn, $tour_id, $user_id)
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
+
+function getPricingForTour($conn, $tour_id)
+{
+    if (empty($tour_id)) {
+        error_log("Error: tour_id is empty.");
+        return null;
+    }
+    $stmt = $conn->prepare("
+        SELECT 
+            id, 
+            name AS item_name, 
+            capacity, 
+            description, 
+            cost AS amount
+        FROM accommodations 
+        WHERE tour_id = :tour_id
+        UNION
+        SELECT 
+            id, 
+            fee_type AS item_name, 
+            NULL AS capacity, 
+            description, 
+            amount
+        FROM fees 
+        WHERE tour_id = :tour_id;
+    ");
+    $stmt->execute([':tour_id' => $tour_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

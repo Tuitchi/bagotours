@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <img src='upload/Tour Images/" . htmlspecialchars($main_image, ENT_QUOTES, 'UTF-8') . "' alt='" . htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8') . "'>
                     <div class='carousel-caption'>
                         <h3>" . htmlspecialchars($tour['title'], ENT_QUOTES, 'UTF-8') . "</h3>
-                        <p>Type: " . htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8') . "</p>
+                        <p>" . htmlspecialchars($tour['type'], ENT_QUOTES, 'UTF-8') . "</p>
                     </div>
                 </a>
               </div>";

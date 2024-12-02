@@ -23,14 +23,14 @@ if (isset($_SESSION['user_id'])) {
                 exit();
             }
         } else {
-            header("Location: ../user/form?error=Execution Failed");
+            header("Location: ../form?error=Execution Failed");
             exit();
         }
     } else {
-        header("Location: ../user/form?error=Statement Preparation Failed");
+        header("Location: ../form?error=Statement Preparation Failed");
         exit();
     }
 } else {
-    header("Location: ../user/form?error=No User ID");
+    header("Location: ../form?error=No User ID");
     exit();
 }

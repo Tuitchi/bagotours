@@ -7,3 +7,5 @@ Stack trace:
 [29-Nov-2024 21:04:58 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
 [29-Nov-2024 21:21:17 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
 [29-Nov-2024 21:22:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'where clause'
+[2024-12-01 15:31:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
+[2024-12-01 15:36:27] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'

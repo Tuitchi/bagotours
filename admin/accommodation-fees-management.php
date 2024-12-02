@@ -24,6 +24,33 @@ $user_id = $_SESSION['user_id'];
     <link rel="stylesheet" href="assets/css/add.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>BaGoTours || Tour Management</title>
+    <style>
+        td button {
+            font-size: 1.2rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        td button:hover {
+            color: white;
+            background-color: green;
+        }
+
+        td .cancel {
+            font-size: 1.2rem;
+        }
+
+        td .cancel:hover {
+            color: white;
+            background-color: red;
+        }
+
+        .table table tbody td input {
+
+            font-size: 0.7rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -108,20 +135,21 @@ $user_id = $_SESSION['user_id'];
                                 <input type="text" id="name" name="name" required>
                             </div>
                             <div class="input-group" style="width:35%">
-                                <label for="type">Type <span>required</span></label>
-                                <input type="text" id="type" name="type" required>
+                                <label for="amount">Amount <span>required</span></label>
+                                <input type="number" id="amount" name="amount" required min="0">
                             </div>
                         </div>
                         <div class="form-group" style="float: left;">
-                            <div class="input-group" style="width:30%">
+                            <div class="input-group">
                                 <label for="capacity">Capacity <span>required</span></label>
                                 <input type="number" id="capacity" name="capacity" required min="1">
                             </div>
-                            <div class="input-group" style="width:30%">
+                            <div class="input-group">
                                 <label for="total_units">Total Units <span>required</span></label>
                                 <input type="number" id="total_units" name="total_units" required min="1">
                             </div>
                         </div>
+
                         <div class="form-group" style="width: 100%;">
                             <div class="input-group">
                                 <label for="description">Description <span>required</span></label>
@@ -141,12 +169,11 @@ $user_id = $_SESSION['user_id'];
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Item Name</th>
-                                <th>Type</th>
+                                <th>Name</th>
                                 <th>Capacity</th>
                                 <th>Total Units</th>
-                                <th>Description</th>
                                 <th>Amount</th>
+                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -156,7 +183,6 @@ $user_id = $_SESSION['user_id'];
                             $query = "SELECT 
                                         id, 
                                         name AS item_name, 
-                                        type, 
                                         capacity, 
                                         total_units, 
                                         description, 
@@ -166,7 +192,6 @@ $user_id = $_SESSION['user_id'];
                                     SELECT 
                                         id, 
                                         fee_type AS item_name, 
-                                        NULL AS type, 
                                         NULL AS capacity, 
                                         NULL AS total_units, 
                                         description, 
@@ -182,23 +207,69 @@ $user_id = $_SESSION['user_id'];
                             } catch (PDOException $e) {
                                 die("Error: " . $e->getMessage());
                             }
+                            // Track the row being edited using a GET parameter
+                            $edit_id = isset($_GET['edit_id']) ? intval($_GET['edit_id']) : null;
+
                             $counter = 1;
                             if (!empty($rows)): ?>
                                 <?php foreach ($rows as $row): ?>
                                     <tr>
-                                        <td><?= $counter ?></td>
-                                        <td><?= $row['item_name'] ? htmlspecialchars($row['item_name']) : 'N/A' ?></td>
-                                        <td><?= $row['type'] ? htmlspecialchars($row['type']) : 'N/A' ?></td>
-                                        <td><?= $row['capacity'] !== null ? htmlspecialchars($row['capacity']) : 'N/A' ?></td>
-                                        <td><?= $row['total_units'] !== null ? htmlspecialchars($row['total_units']) : 'N/A' ?>
-                                        </td>
-                                        <td><?= htmlspecialchars($row['description']) ?></td>
-                                        <td><?= $row['amount'] !== null ? htmlspecialchars($row['amount']) : 'N/A' ?></td>
+                                        <td><?= $counter++ ?></td>
                                         <td>
-                                            <a href="edit.php?id=<?= htmlspecialchars($row['id']) ?>"><i
-                                                    class="bx bx-edit"></i></a>
-                                            <a href="delete.php?id=<?= htmlspecialchars($row['id']) ?>"><i
-                                                    class="bx bx-trash"></i></a>
+                                            <?php if ($edit_id === $row['id']): ?>
+                                                <form method="POST" action="update_pricing.php">
+                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                                                    <input type="text" name="item_name"
+                                                        value="<?= htmlspecialchars($row['item_name']) ?>">
+                                                <?php else: ?>
+                                                    <?= htmlspecialchars($row['item_name']) ?>
+                                                <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($edit_id === $row['id']): ?>
+                                                <input type="text" name="capacity"
+                                                    value="<?= $row['capacity'] !== null ? htmlspecialchars($row['capacity']) : '' ?>">
+                                            <?php else: ?>
+                                                <?= $row['capacity'] !== null ? htmlspecialchars($row['capacity']) : 'N/A' ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($edit_id === $row['id']): ?>
+                                                <input type="text" name="total_units"
+                                                    value="<?= $row['total_units'] !== null ? htmlspecialchars($row['total_units']) : '' ?>">
+                                            <?php else: ?>
+                                                <?= $row['total_units'] !== null ? htmlspecialchars($row['total_units']) : 'N/A' ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($edit_id === $row['id']): ?>
+                                                <input type="text" name="amount"
+                                                    value="<?= $row['amount'] !== null ? htmlspecialchars($row['amount']) : '' ?>">
+                                            <?php else: ?>
+                                                ₱<?= $row['amount'] !== null ? htmlspecialchars($row['amount']) : 'N/A' ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($edit_id === $row['id']): ?>
+                                                <input type="text" name="description"
+                                                    value="<?= htmlspecialchars($row['description']) ?>">
+                                            <?php else: ?>
+                                                <?= htmlspecialchars($row['description']) ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($edit_id === $row['id']): ?>
+                                                <button type="submit"><i class="bx bx-check"></i></button>
+                                                <a class="cancel" href="accommodation-fees-management?id=<?= $tour_id ?>"><i
+                                                        class="bx bx-x"></i></a>
+                                                </form>
+                                            <?php else: ?>
+                                                <a
+                                                    href="accommodation-fees-management?id=<?= $tour_id ?>&edit_id=<?= htmlspecialchars($row['id']) ?>"><i
+                                                        class="bx bx-edit"></i></a>
+                                                <a href="delete.php?id=<?= htmlspecialchars($row['id']) ?>"><i
+                                                        class="bx bx-trash"></i></a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -208,6 +279,7 @@ $user_id = $_SESSION['user_id'];
                                 </tr>
                             <?php endif; ?>
                         </tbody>
+
 
                     </table>
                 </div>
@@ -237,7 +309,7 @@ $user_id = $_SESSION['user_id'];
                         success: function (response) {
                             Swal.fire('Success!', successMessage, 'success');
                             $(`#${formId}`)[0].reset();
-                            $('.order.table')
+                            $('.order.table').load(window.location.href + ' .order.table');
                         },
                         error: function (xhr, status, error) {
                             Swal.fire('Error!', `Something went wrong: ${xhr.responseText}`, 'error');
