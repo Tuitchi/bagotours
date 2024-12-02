@@ -79,9 +79,9 @@ $pricingTours = getPricingForTour($conn, 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BagoTours</title>
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/tour.css">
@@ -136,7 +136,7 @@ $pricingTours = getPricingForTour($conn, 1);
                                                 <h4><?php echo htmlspecialchars($pricing['item_name']); ?></h4>
                                                 -
                                                 <h5>
-                                                ₱<?php echo htmlspecialchars($pricing['amount'])." ".htmlspecialchars($pricing['description']); ?>
+                                                    ₱<?php echo htmlspecialchars($pricing['amount']) . " " . htmlspecialchars($pricing['description']); ?>
                                                 </h5>
                                             </div>
                                         <?php endforeach; ?>
@@ -313,9 +313,40 @@ $pricingTours = getPricingForTour($conn, 1);
     }
     ?>
     <script src="index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
+            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
+
+            // Initialize map
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/light-v11',
+                center: [<?php echo $longitude; ?>, <?php echo $latitude; ?>],
+                zoom: 15,
+                interactive: false
+            });
+
+            // Create marker element
+            const markerElement = document.createElement('div');
+            markerElement.className = 'marker';
+            markerElement.style.backgroundImage = `url(assets/icons/<?php echo $tourType; ?>.png)`;
+            markerElement.style.backgroundSize = 'contain';
+            markerElement.style.width = '30px';
+            markerElement.style.height = '30px';
+
+            // Add marker to the map
+            new mapboxgl.Marker(markerElement)
+                .setLngLat([<?php echo $longitude; ?>, <?php echo $latitude; ?>])
+                .addTo(map);
+
+            // Disable map interactions
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.touchZoomRotate.disable();
+            map.rotate.disable();
+
+
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -327,21 +358,21 @@ $pricingTours = getPricingForTour($conn, 1);
                     toast.on('mouseleave', Swal.resumeTimer);
                 }
             });
-            $('.edit').on('click', function (e) {
+            $('.edit').on('click', function(e) {
                 e.preventDefault();
                 const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
                 toggleEdit(commentId); // Call the toggleEdit function
             });
 
             // Delete comment
-            $('.delete').on('click', function (e) {
+            $('.delete').on('click', function(e) {
                 e.preventDefault();
                 const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
                 deleteComment(commentId); // Call the deleteComment function
             });
 
             // Cancel edit
-            $('.cancel').on('click', function (e) {
+            $('.cancel').on('click', function(e) {
                 e.preventDefault();
                 const commentId = $(this).closest('.cancel-btn').attr('id').split('-')[2]; // Extract comment ID
                 cancelEdit(commentId); // Call the cancelEdit function
@@ -370,7 +401,7 @@ $pricingTours = getPricingForTour($conn, 1);
                     $deleteBtn.hide();
                     $cancelBtn.removeClass('hide');
 
-                    $(document).on('keydown.escape', function (event) {
+                    $(document).on('keydown.escape', function(event) {
                         if (event.key === 'Escape') {
                             cancelEdit();
                             $(document).off('keydown.escape');
@@ -382,7 +413,7 @@ $pricingTours = getPricingForTour($conn, 1);
             }
 
             // Handle form submission via AJAX
-            $('.edit-form').on('submit', function (event) {
+            $('.edit-form').on('submit', function(event) {
                 event.preventDefault();
 
                 const $form = $(this);
@@ -393,8 +424,11 @@ $pricingTours = getPricingForTour($conn, 1);
                     url: 'php/edit_comment.php',
                     type: 'POST',
                     dataType: 'json',
-                    data: { comment_id: commentId, review: reviewText },
-                    success: function (data) {
+                    data: {
+                        comment_id: commentId,
+                        review: reviewText
+                    },
+                    success: function(data) {
                         if (data.success) {
                             Toast.fire({
                                 icon: 'success',
@@ -407,7 +441,7 @@ $pricingTours = getPricingForTour($conn, 1);
                             alert('Error updating the comment.');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Toast.fire({
                             icon: 'error',
                             title: 'An error occurred while saving the comment'
@@ -417,15 +451,17 @@ $pricingTours = getPricingForTour($conn, 1);
             });
 
             // Delete comment action
-            window.deleteComment = function (commentId) {
+            window.deleteComment = function(commentId) {
                 if (!confirm('Are you sure you want to delete this comment?')) return;
 
                 $.ajax({
                     url: 'php/delete_comment.php',
                     type: 'POST',
                     dataType: 'json',
-                    data: { comment_id: commentId },
-                    success: function (data) {
+                    data: {
+                        comment_id: commentId
+                    },
+                    success: function(data) {
                         if (data.success) {
                             $(`#comment-${commentId}`).remove();
                             Toast.fire({
@@ -436,7 +472,7 @@ $pricingTours = getPricingForTour($conn, 1);
                             alert('Error deleting the comment.');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('Error deleting the comment.');
                     }
                 });
@@ -460,7 +496,7 @@ $pricingTours = getPricingForTour($conn, 1);
             <?php endif; ?>
 
             // Toggle pricing section visibility
-            $('.pricing-header').on('click', function () {
+            $('.pricing-header').on('click', function() {
                 $('.pricing-content').toggle();
             });
 
@@ -470,19 +506,19 @@ $pricingTours = getPricingForTour($conn, 1);
             const $ratebtn = $("#rate");
             const span = $(".close");
 
-            $bookbtn.on("click", function () {
+            $bookbtn.on("click", function() {
                 modal.addClass('active');
             });
 
-            $ratebtn.on("click", function () {
+            $ratebtn.on("click", function() {
                 window.location.href = 'rate_review?booking_id=<?php echo $bookingId ?>';
             });
 
-            span.on("click", function () {
+            span.on("click", function() {
                 modal.removeClass('active');
             });
 
-            $(window).on("click", function (event) {
+            $(window).on("click", function(event) {
                 if ($(event.target).is(modal)) {
                     modal.removeClass('active');
                 }
@@ -495,7 +531,7 @@ $pricingTours = getPricingForTour($conn, 1);
             let isExpanded = false;
 
             function updateCommentDisplay() {
-                $comments.each(function (index, comment) {
+                $comments.each(function(index, comment) {
                     $(comment).toggle(index < commentsPerPage || isExpanded);
                 });
 
@@ -505,7 +541,7 @@ $pricingTours = getPricingForTour($conn, 1);
 
             if ($comments.length > 0) {
                 updateCommentDisplay();
-                $showMoreButton.on('click', function () {
+                $showMoreButton.on('click', function() {
                     isExpanded = !isExpanded;
                     commentsPerPage = isExpanded ? $comments.length : 5;
                     updateCommentDisplay();
@@ -515,35 +551,8 @@ $pricingTours = getPricingForTour($conn, 1);
             }
 
             // Initialize the Mapbox map
-            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v11',
-                center: [<?php echo htmlspecialchars($tour['longitude']); ?>, <?php echo htmlspecialchars($tour['latitude']); ?>],
-                zoom: 15,
-                interactive: false
-            });
-
-            const markerElement = $('<div></div>')
-                .addClass('marker')
-                .css({
-                    backgroundImage: `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " ")); ?>.png)`,
-                    backgroundSize: 'contain',
-                    width: '30px',
-                    height: '30px'
-                });
-
-            new mapboxgl.Marker(markerElement)
-                .setLngLat([<?php echo htmlspecialchars($tour['longitude']); ?>, <?php echo htmlspecialchars($tour['latitude']); ?>])
-                .addTo(map);
-
-            map.dragPan.disable();
-            map.scrollZoom.disable();
-            map.touchZoomRotate.disable();
-            map.rotate.disable();
         });
-
     </script>
 </body>
 

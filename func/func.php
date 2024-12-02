@@ -352,16 +352,14 @@ function getPricingForTour($conn, $tour_id)
         SELECT 
             id, 
             name AS item_name, 
-            capacity, 
             description, 
-            cost AS amount
+            amount
         FROM accommodations 
         WHERE tour_id = :tour_id
         UNION
         SELECT 
             id, 
-            fee_type AS item_name, 
-            NULL AS capacity, 
+            name AS item_name, 
             description, 
             amount
         FROM fees 

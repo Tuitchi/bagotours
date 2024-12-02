@@ -20,7 +20,6 @@ if (isset($_SESSION['user_id'])) {
                 'type' => $touristSpots['type']
             ];
         }
-
     } elseif (isset($_GET['event'])) {
         $decrypted_id_raw = base64_decode($_GET['event']);
         $decrypted_id = preg_replace(sprintf('/%s/', $salt), '', $decrypted_id_raw);
@@ -59,10 +58,9 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/map.css">
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
     <style>
-        /* Add this CSS to your user.css or another appropriate stylesheet */
         .distance-display {
             display: none;
             position: absolute;
@@ -148,17 +146,20 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
     <script src="index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
         const spotDirection = <?php echo json_encode($spotDirection); ?>;
         let map, userMarker;
         const distanceDisplay = document.querySelector('.distance-display');
         const instructionDisplay = document.querySelector('.instructions-container');
-        let instructionsList, currentStepIndex = 0, isSpeaking = false;
+        let instructionsList, currentStepIndex = 0,
+            isSpeaking = false;
 
         const geolocateControl = new mapboxgl.GeolocateControl({
-            positionOptions: { enableHighAccuracy: true },
+            positionOptions: {
+                enableHighAccuracy: true
+            },
             trackUserLocation: true,
             showUserHeading: true
         });
@@ -183,8 +184,11 @@ if (isset($_SESSION['user_id'])) {
                         updateDistanceAndRoute(userLocation, destination);
                     }
                 },
-                () => setupMap([122.8313, 10.5338]),
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                () => setupMap([122.8313, 10.5338]), {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
             );
         } else {
             console.log('Geolocation is not supported by your browser.');
@@ -236,7 +240,10 @@ if (isset($_SESSION['user_id'])) {
         async function updateDistanceAndRoute(start, end, title) {
             const distance = calculateDistance(start, end);
             updateDistanceDisplay(distance, title);
-            map.flyTo({ center: start, zoom: 15 });
+            map.flyTo({
+                center: start,
+                zoom: 15
+            });
             await getRoute(start, end);
         }
 
@@ -270,7 +277,10 @@ if (isset($_SESSION['user_id'])) {
 
                 const geojson = {
                     type: 'Feature',
-                    geometry: { type: 'LineString', coordinates: route }
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: route
+                    }
                 };
 
                 if (map.getSource('route')) {
@@ -279,9 +289,19 @@ if (isset($_SESSION['user_id'])) {
                     map.addLayer({
                         id: 'route',
                         type: 'line',
-                        source: { type: 'geojson', data: geojson },
-                        layout: { 'line-join': 'round', 'line-cap': 'round' },
-                        paint: { 'line-color': '#34f934', 'line-width': 10, 'line-opacity': 0.75 }
+                        source: {
+                            type: 'geojson',
+                            data: geojson
+                        },
+                        layout: {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        paint: {
+                            'line-color': '#34f934',
+                            'line-width': 10,
+                            'line-opacity': 0.75
+                        }
                     });
                 }
 
@@ -325,7 +345,16 @@ if (isset($_SESSION['user_id'])) {
             const touristSpots = <?php echo json_encode($touristSpots); ?>;
 
             touristSpots.forEach(spot => {
-                const { type, longitude, latitude, img, title, address, id, average_rating } = spot;
+                const {
+                    type,
+                    longitude,
+                    latitude,
+                    img,
+                    title,
+                    address,
+                    id,
+                    average_rating
+                } = spot;
 
                 const markerEl = document.createElement('div');
                 markerEl.className = 'marker';
@@ -344,7 +373,11 @@ if (isset($_SESSION['user_id'])) {
                 </div>
             `;
 
-                const popup = new mapboxgl.Popup({ closeOnClick: false, offset: 25, closeButton: false })
+                const popup = new mapboxgl.Popup({
+                        closeOnClick: false,
+                        offset: 25,
+                        closeButton: false
+                    })
                     .setLngLat([longitude, latitude])
                     .setHTML(popupContent);
 

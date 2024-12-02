@@ -151,3 +151,41 @@ Stack trace:
 [2024-12-01 15:47:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
 [2024-12-01 15:47:24] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
 [2024-12-01 15:47:25] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
+[02-Dec-2024 15:15:12 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 316
+[02-Dec-2024 15:15:12 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 316
+[02-Dec-2024 15:16:04 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list' in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php:298
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php(298): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 298
+[02-Dec-2024 15:16:24 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 314
+[02-Dec-2024 15:16:24 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 314
+[02-Dec-2024 15:16:24 Europe/Berlin] PHP Warning:  Undefined array key "capacity" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 322
+[02-Dec-2024 15:16:24 Europe/Berlin] PHP Warning:  Undefined array key "total_units" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 330
+[02-Dec-2024 15:16:33 Europe/Berlin] PHP Warning:  Undefined array key "capacity" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 322
+[02-Dec-2024 15:16:33 Europe/Berlin] PHP Warning:  Undefined array key "total_units" in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 330
+[02-Dec-2024 15:47:51 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[02-Dec-2024 15:49:18 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[02-Dec-2024 15:51:25 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\bagotours\admin\tours.php on line 313
+[02-Dec-2024 15:56:10 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:10 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:11 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:11 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:24 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:24 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:24 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:24 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:25 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:26 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:26 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:44 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:45 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[02-Dec-2024 15:56:45 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364

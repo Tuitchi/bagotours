@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tour_id = $_POST['tour_id'];
     $description = $_POST['description'];
     $amount = $_POST['amount'];
-    $fee_type = "Entrance Fee";
+    $name = "Entrance Fee";
 
     // Validate inputs
     if (empty($tour_id) || empty($description) || empty($amount)) {
@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         // Prepare and execute the SQL statement
-        $stmt = $conn->prepare("INSERT INTO fees (tour_id, fee_type, description, amount) VALUES (:tour_id, :fee_type, :description, :amount)");
+        $stmt = $conn->prepare("INSERT INTO fees (tour_id, name, description, amount) VALUES (:tour_id, :name, :description, :amount)");
         $stmt->bindParam(':tour_id', $tour_id);
-        $stmt->bindParam(':fee_type', $fee_type);
+        $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':amount', $amount);
 
