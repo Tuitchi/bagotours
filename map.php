@@ -124,6 +124,39 @@ if (isset($_SESSION['user_id'])) {
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
+        .loader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            pointer-events: none;
+            /* Ensure the loader doesn't block map interactions */
+        }
+
+        .loader::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 6px solid #ddd;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -132,10 +165,13 @@ if (isset($_SESSION['user_id'])) {
     <div class="main-container">
         <?php include 'nav/sidenav.php'; ?>
         <div class="main">
+
             <div class="map"><?php if ($spotDirection == null): ?>
                     <h3>Tours Map</h3>
                 <?php endif; ?>
+
                 <div id="map">
+                    <div id="loader" class="loader"></div>
                     <div class="distance-display"></div>
                     <div class="instructions-container">
                         <h3>Route Instructions</h3>
@@ -185,10 +221,10 @@ if (isset($_SESSION['user_id'])) {
                     }
                 },
                 () => setupMap([122.8313, 10.5338]), {
-                    enableHighAccuracy: true,
-                    timeout: 5000,
-                    maximumAge: 0
-                }
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            }
             );
         } else {
             console.log('Geolocation is not supported by your browser.');
@@ -208,6 +244,14 @@ if (isset($_SESSION['user_id'])) {
                 map.addControl(geolocateControl);
                 map.addControl(new mapboxgl.FullscreenControl());
                 map.addControl(new mapboxgl.NavigationControl());
+
+                map.on('load', () => {
+                    const loader = document.getElementById('loader');
+                    if (loader) loader.style.display = 'none';
+                    if (spotDirection) {
+                        geolocateControl.trigger();
+                    }
+                });
             }
 
             if (!userMarker) {
@@ -374,10 +418,10 @@ if (isset($_SESSION['user_id'])) {
             `;
 
                 const popup = new mapboxgl.Popup({
-                        closeOnClick: false,
-                        offset: 25,
-                        closeButton: false
-                    })
+                    closeOnClick: false,
+                    offset: 25,
+                    closeButton: false
+                })
                     .setLngLat([longitude, latitude])
                     .setHTML(popupContent);
 

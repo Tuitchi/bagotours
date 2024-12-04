@@ -73,8 +73,8 @@
 .resdetails {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin: 10px;
+    gap: 5px;
+    margin: 5px;
 }
 
 .map {
@@ -95,9 +95,7 @@
     flex-direction: column;
     align-items: center;
     background-color: #f8f8f8;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px;
 }
 
 .rescont .title {
@@ -107,7 +105,6 @@
 
 .rescont .desc {
     font-size: 0.8rem;
-    margin: 0;
 }
 .rescont .desc .bxs-map {
     font-size: 1rem;
@@ -115,7 +112,6 @@
 
 .rescont h4 {
     margin-top: 10px;
-    
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;

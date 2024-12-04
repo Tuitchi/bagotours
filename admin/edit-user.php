@@ -8,57 +8,52 @@ if (isset($_GET['id'])) {
     $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $email = $user['email'];
 }
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['firstname'] . " " . $_POST['lastname'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
     $gender = $_POST['gender'];
-    $username = $_POST['username'];
     $role = $_POST['role'];
-    $email = $_POST['email'];
-    $active = $_POST['active'];
+    $status = $_POST['status'];
 
-    include '../func/user_func.php';
-    $emailAlreadyUsed = emailAlreadyUsed($conn, $email);
-    $usernameAlreadyUsed = usernameAlreadyUsed($conn, $username);
-
-    if (empty($gender) || empty($name) || empty($username) || empty($email) || empty($role)) {
-        $errorMessage = "All fields are required.";
-    } elseif ($emailAlreadyUsed) {
-        $errorMessage = "Email already in use.";
-    } elseif ($usernameAlreadyUsed) {
-        $errorMessage = "Username already in use.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errorMessage = "Invalid email format.";
-    }
-    if (empty($errorMessage)) {
+    if (empty($gender) || empty($firstname) || empty($lastname) || empty($role)) {
+        $_SESSION['errorMessage'] = "All fields are required.";
+    } else {
         try {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            $sql = "INSERT INTO users (name, gender, home_address, role, username, email, password, profile_picture)
-                    VALUES (:name, :gender, :home_address, :role, :username, :email, :password, :profile_picture)";
-
+            $sql = "UPDATE users 
+                    SET firstname = :firstname, 
+                        lastname = :lastname, 
+                        gender = :gender, 
+                        role = :role, 
+                        status = :status
+                    WHERE id = :id";  // Using id as the identifier
+            
+            // Prepare the statement
             $stmt = $conn->prepare($sql);
-
-            $stmt->bindParam(':name', $name);
+            
+            // Bind the parameters
+            $stmt->bindParam(':firstname', $firstname);
+            $stmt->bindParam(':lastname', $lastname);
             $stmt->bindParam(':gender', $gender);
-            $stmt->bindParam(':home_address', $home_address);
             $stmt->bindParam(':role', $role);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $hashed_password);
-            $stmt->bindParam(':profile_picture', $profile_picture);
+            $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT); // Binding the id parameter properly
 
+            // Execute the statement
             if ($stmt->execute()) {
-                $successMessage = "User successfully created!";
+                $_SESSION['successMessage'] = "User successfully updated!";
+                echo "<script>
+                        window.location.href = window.location.href;
+                      </script>";
+                exit();
             } else {
-                $errorMessage = "Database errorMessage: Unable to insert record.";
+                $_SESSION['errorMessage'] = "Database error: Unable to update record.";
             }
         } catch (PDOException $e) {
-            $errorMessage = "Database errorMessage: " . $e->getMessage();
+            $_SESSION['errorMessage'] = "Database error: " . $e->getMessage();
         }
     }
-    
 }
 ?>
 <!DOCTYPE html>
@@ -115,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="table-data">
                 <div class="order">
                     <div class="title">
-                        <h2>Edit User - <?php echo $user['name']?></h2>
+                        <h2>Edit User - <?php echo $user['firstname'] . " " . $user['lastname'] ?></h2>
                         <p>Fill in the required information below to create a new user account. Please make sure all
                             details are correct.</p>
                     </div>
@@ -133,11 +128,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label for="firstname">Name <span>required</span></label>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" placeholder="First Name" value="<?php echo isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : ''; ?>"
+                                    <input type="text" id="firstname" name="firstname" placeholder="First Name"
+                                        value="<?php echo isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : $user['firstname']; ?>"
                                         required>
                                 </div>
                                 <div class="input-group">
-                                    <input type="text" id="lastname" name="lastname" placeholder="Last Name" value="<?php echo isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : ''; ?>" required>
+                                    <input type="text" id="lastname" name="lastname" placeholder="Last Name"
+                                        value="<?php echo isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : $user['lastname']; ?>"
+                                        required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -145,64 +143,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <label for="gender">Gender<span>required</span></label>
                                     <select name="gender" id="gender" required>
                                         <option value="" selected disabled>Select Gender</option>
-                                        <option value="male" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
-                                        <option value="female" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
-                                        <option value="other" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'other') ? 'selected' : ''; ?>>Other</option>
+                                        <option value="male" <?php echo (isset($user['gender']) && $user['gender'] == 'male') || (isset($_POST['gender']) && $_POST['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
+                                        <option value="female" <?php echo (isset($user['gender']) && $user['gender'] == 'female') || (isset($_POST['gender']) && $_POST['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
+                                        <option value="male" <?php echo (isset($user['gender']) && $user['gender'] == 'other') || (isset($_POST['gender']) && $_POST['gender'] == 'other') ? 'selected' : ''; ?>>Other</option>
                                     </select>
                                 </div>
+
                                 <div class="input-group">
-                                    <label for="country">Country<span>required</span></label>
-                                    <select name="country" id="country" required>
-                                        <option value="" selected disabled>Select Country</option>
-                                        <!-- Auto Generated country throu JS -->
-                                    </select>
+                                    <label for="country">Address<span>Fixed</span></label>
+                                    <input type="text" id="address"
+                                        value="<?php echo $user['home_address']; ?>" disabled>
                                 </div>
-                                <div class="input-group province" style="display:none;">
-                                    <label for="province">Province</label>
-                                    <select name="province" id="province" required disabled>
-                                        <option value="" selected disabled>Select Province</option>
-                                        <!-- Auto Generated country throu JS -->
-                                    </select>
-                                </div>
-                                <div class="input-group city" style="display:none;">
-                                    <label for="city">City/Municipality</label>
-                                    <select name="city" id="city" required disabled>
-                                        <option value="" selected disabled>Select City/Municipality</option>
-                                        <!-- Auto Generated country throu JS -->
-                                    </select>
-                                </div>
+
                             </div>
                             <div class="form-group">
                                 <div class="input-group" style="width: 100%;">
-                                    <label for="username">Username<span>required</span></label>
-                                    <input type="text" id="username" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required>
+                                    <label for="username">Username<span>Fixed</span></label>
+                                    <input type="text" id="username" name="username"
+                                        value="<?php echo $user['username']; ?>" disabled>
                                 </div>
                                 <div class="input-group" style="width: 30%;">
                                     <label for="role">Role<span>required</span></label>
                                     <select name="role" id="role" required>
                                         <option value="" selected disabled>Select a Role</option>
-                                        <option value="user" <?php echo (isset($_POST['role']) && $_POST['role'] == 'user') ? 'selected' : ''; ?>>User</option>
-                                        <option value="owner" <?php echo (isset($_POST['role']) && $_POST['role'] == 'owner') ? 'selected' : ''; ?>>Tourist Spot Owner</option>
+                                        <option value="user" <?php echo ((isset($user['role']) && $user['role'] == 'user') || (isset($_POST['role']) && $_POST['role'] == 'user')) ? 'selected' : ''; ?>>
+                                            User</option>
+                                        <option value="owner" <?php echo ((isset($user['role']) && $user['role'] == 'owner') || (isset($_POST['role']) && $_POST['role'] == 'owner')) ? 'selected' : ''; ?>>Tourist Spot Owner</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <label for="email">Email<span>required</span></label>
-                                    <input type="text" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                                    <label for="email">Email<span>Fixed</span></label>
+                                    <input type="text" id="email" name="email"
+                                        value="<?php echo $user['email']; ?>"
+                                        disabled>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="password">Password<span>required</span></label>
-                                    <input type="password" id="password" name="password" required>
+                            <div class="input-group">
+                            <label for="status">Status <span class="editable">editable</span></label>
+                            <div class="radio-group">
+                                <div class="radio">
+                                    <input
+                                        type="radio"
+                                        id="status-yes"
+                                        name="status"
+                                        value="1"
+                                        <?php echo ($user['status'] == 1) ? 'checked' : ''; ?>>
+                                    <label for="status-yes">Active</label>
                                 </div>
-                                <div class="input-group">
-                                    <label for="confirm-password">Confirm Password<span>required</span></label>
-                                    <input type="password" id="confirm-password" name="confirm-password" required>
+                                <div class="radio">
+                                    <input
+                                        type="radio"
+                                        id="status-no"
+                                        name="status"
+                                        value="0"
+                                        <?php echo ($user['status'] == 0) ? 'checked' : ''; ?>>
+                                    <label for="status-no">Inactive</label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn-submit">Add User</button>
+
+                        </div>
+                            <button type="submit" class="btn-submit">Save Edit</button>
                         </div>
                     </form>
                 </div>
@@ -220,131 +222,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <script src="../assets/js/script.js"></script>
     <script>
-        $(document).ready(function() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
+         $(document).ready(function () {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        // Display success or error messages only if they are not empty
+        <?php if (!empty($_SESSION['successMessage'])): ?>
+            Toast.fire({
+                icon: "success",
+                title: "<?php echo htmlspecialchars($_SESSION['successMessage'], ENT_QUOTES, 'UTF-8'); ?>"
             });
-            // Populate the country select dropdown with countries
-            const countries = [
-                "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
-                "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
-                "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
-                "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)",
-                "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica",
-                "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
-                "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
-                "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
-                "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea (North)", "Korea (South)", "Kuwait", "Kyrgyzstan",
-                "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
-                "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova",
-                "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand",
-                "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea",
-                "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
-                "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
-                "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka",
-                "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga",
-                "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
-                "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-            ];
-            const $countryDropdown = $('#country');
-            const $provinceDropdown = $('#province');
-            const $cityDropdown = $('#city');
-
-            countries.forEach(country => {
-                $countryDropdown.append(`<option value="${country}">${country}</option>`);
+            // Clear the session message after displaying
+            <?php unset($_SESSION['successMessage']); ?>
+        <?php elseif (!empty($_SESSION['errorMessage'])): ?>
+            Toast.fire({
+                icon: "error",
+                title: "<?php echo htmlspecialchars($_SESSION['errorMessage'], ENT_QUOTES, 'UTF-8'); ?>"
             });
-            $countryDropdown.on('change', function() {
-                const selectedCountry = $(this).val();
-
-                if (selectedCountry === "Philippines") {
-                    $provinceDropdown.prop('disabled', false);
-                    $cityDropdown.prop('disabled', true);
-
-                    $.ajax({
-                        url: '../php/getProvinces.php',
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function(provinces) {
-                            $('.input-group.province').css('display', 'block');
-                            $provinceDropdown.html('<option value="" selected disabled>Select Province</option>');
-                            provinces.forEach(province => {
-                                $provinceDropdown.append(`<option value="${province.name}" data-code="${province.code}">${province.name}</option>`);
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error fetching provinces:", error);
-                        }
-                    });
-
-                } else {
-                    $provinceDropdown.prop('disabled', true).html('<option value="" selected disabled>Select Province</option>');
-                    $cityDropdown.prop('disabled', true).html('<option value="" selected disabled>Select City/Municipality</option>');
-                }
-            });
+            // Clear the session message after displaying
+            <?php unset($_SESSION['errorMessage']); ?>
+        <?php endif; ?>
 
 
-            $provinceDropdown.on('change', function() {
-                const provinceName = $(this).val();
-                const provinceId = $(this).find(':selected').data('code');
-                console.log('Selected provinceName:', provinceName);
-                console.log('Selected Province Id:', provinceId);
-
-                if (provinceId) {
-                    $cityDropdown.prop('disabled', false); // Enable city dropdown
-
-                    // Fetch cities for the selected province
-                    $.ajax({
-                        url: '../php/getCities.php',
-                        method: 'GET',
-                        data: {
-                            provinceId: provinceId
-                        },
-                        dataType: 'json',
-                        success: function(cities) {
-                            $('.input-group.city').css('display', 'block');
-
-                            $cityDropdown.html('<option value="" selected disabled>Select City/Municipality</option>');
-                            cities.forEach(city => {
-                                $cityDropdown.append(`<option value="${city.name}">${city.name}</option>`);
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            let errorMessage = xhr.responseText ? xhr.responseText : error;
-                            Toast.fire({
-                                icon: 'error',
-                                title: `Error: ${errorMessage}`
-                            });
-                        }
-                    });
-
-                } else {
-                    // If no province is selected, disable the city dropdown and reset it
-                    $cityDropdown.prop('disabled', true).html('<option value="" selected disabled>Select City/Municipality</option>');
-                }
-            });
-
-            <?php if (!empty($successMessage)): ?>
-                Toast.fire({
-                    icon: "success",
-                    title: "<?php echo $successMessage ?>"
-                });
-            <?php elseif (!empty($errorMessage)): ?>
-                Toast.fire({
-                    icon: "error",
-                    title: "<?php echo $errorMessage ?>"
-                });
-            <?php endif; ?>
-
-
-            $('#tour-images').on('change', function(event) {
+            $('#tour-images').on('change', function (event) {
                 const files = event.target.files;
                 const $imagesPreview = $('.image-preview-container');
                 const $mainImagePreview = $('#main-image-preview');
@@ -355,15 +264,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $thumbnailContainer.empty();
                 $mainImagePreview.attr('src', '');
 
-                $.each(files, function(index, file) {
+                $.each(files, function (index, file) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         const $img = $('<img>', {
                             src: e.target.result,
                             alt: `Image ${index + 1}`,
                         });
 
-                        $img.on('click', function() {
+                        $img.on('click', function () {
                             $mainImagePreview.attr('src', e.target.result);
                             $('.thumbnail-images img').removeClass('selected');
                             $img.addClass('selected');

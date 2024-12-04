@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     
-                    $user_stmt = $conn->prepare("SELECT name FROM users WHERE id = :user_id");
+                    $user_stmt = $conn->prepare("SELECT CONCAT(firstname, ' ', lastname) AS name FROM users WHERE id = :user_id");
+
                     $user_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                     $user_stmt->execute();
                     $name = $user_stmt->fetchColumn();

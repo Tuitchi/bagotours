@@ -91,6 +91,16 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Users', 'url' => 'user']
     ],
+    'add-user' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Users', 'url' => 'user'],
+        ['title' => 'Add', 'url' => 'add-user']
+    ],
+    'edit-user' => [
+        ['title' => 'Home', 'url' => 'home'],
+        ['title' => 'Users', 'url' => 'user'],
+        ['title' => 'Edit', 'url' => 'edit-user']
+    ],
     'visitor' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Dashboard', 'url' => 'dashboard'],

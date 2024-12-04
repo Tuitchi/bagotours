@@ -148,11 +148,11 @@ function ReviewAction($conn)
 function getAllRR($conn, $tour_id)
 {
     $stmt = $conn->prepare("
-        SELECT AVG(rr.rating) AS average_rating, rr.review, u.name 
+        SELECT AVG(rr.rating) AS average_rating, rr.review, CONCAT(firstname, ' ', lastname) AS name 
         FROM review_rating rr 
         JOIN users u ON rr.user_id = u.id 
         WHERE rr.tour_id = :tour_id
-        GROUP BY rr.review, u.name
+        GROUP BY rr.review, name
     ");
     $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -187,7 +187,7 @@ function alreadyBook($conn, $user_id, $tour_id)
 function checkBooking($conn, int $tour_id)
 {
     $stmt = $conn->prepare("
-        SELECT u.name AS name, t.title AS title, t.user_id AS owner_id, b.* 
+        SELECT CONCAT(firstname, ' ', lastname) AS name, t.title AS title, t.user_id AS owner_id, b.* 
         FROM booking b 
         JOIN users u ON u.id = b.user_id 
         JOIN tours t ON t.id = b.tour_id 

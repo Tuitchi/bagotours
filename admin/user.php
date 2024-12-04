@@ -15,7 +15,7 @@ $count_query = "SELECT COUNT(*) as total FROM users WHERE role != 'admin'";
 $params = [];
 
 if (!empty($search)) {
-    $count_query .= " AND (name LIKE :search OR username LIKE :search OR email LIKE :search)";
+    $count_query .= " AND (firstname LIKE :search OR lastname LIKE :search OR username LIKE :search OR email LIKE :search)";
     $params[':search'] = '%' . $search . '%';
 }
 $stmt = $conn->prepare($count_query);
@@ -28,7 +28,7 @@ $data_query = "SELECT * FROM users WHERE role != 'admin'";
 $params = [];
 
 if (!empty($search)) {
-    $data_query .= " AND (name LIKE :search OR username LIKE :search OR email LIKE :search)";
+    $data_query .= " AND (firstname LIKE :search OR lastname LIKE :search OR username LIKE :search OR email LIKE :search)";
     $params[':search'] = '%' . $search . '%';
 }
 
@@ -220,7 +220,7 @@ $users = $stmt->fetchAll();
                                 <?php foreach ($users as $user): ?>
                                     <tr>
                                         <td><?php echo $counter++; ?></td>
-                                        <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($user['firstname']) . " " . $user['lastname']; ?></td>
                                         <td><?php echo htmlspecialchars($user['username']); ?></td>
                                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                                         <td><?php echo htmlspecialchars($user['role']); ?></td>
@@ -232,7 +232,8 @@ $users = $stmt->fetchAll();
                                                     <a href='#' class='btn' id='view'
                                                         data-id='<?php echo htmlspecialchars($user['id']) ?>'><i
                                                             class='bx bx-folder'></i>View</a>
-                                                    <a href='edit-user?id=<?php echo htmlspecialchars($user['id']) ?>' class='btn' id='edit'><i class='bx bx-edit-alt'></i>Edit</a>
+                                                    <a href='edit-user?id=<?php echo htmlspecialchars($user['id']) ?>'
+                                                        class='btn' id='edit'><i class='bx bx-edit-alt'></i>Edit</a>
                                                     <a href='#' class='btn' id='delete'
                                                         data-id='<?php echo htmlspecialchars($user['id']) ?>'><i
                                                             class='bx bx-trash'></i>Delete</a>
@@ -304,14 +305,11 @@ $users = $stmt->fetchAll();
     <script src="../assets/js/script.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $(document).on('click', '#drop', function(event) {
+        $(document).ready(function () {
+            $(document).on('click', '#drop', function (event) {
                 event.preventDefault();
-
-                // Close any open dropdowns first (optional, to hide others)
                 $('.actions').not($(this).next('.actions')).hide();
 
-                // Toggle the display of the clicked dropdown
                 const actions = $(this).next('.actions'); // This targets the .actions that comes after the clicked button
 
                 // Check the current state and toggle it
@@ -323,7 +321,7 @@ $users = $stmt->fetchAll();
             });
 
             // Close the dropdown when clicking outside of it
-            $(document).click(function(event) {
+            $(document).click(function (event) {
                 if (!$(event.target).closest('.dropdown').length) {
                     $('.actions').hide(); // Hide all dropdowns if the click is outside of the dropdown
                 }
@@ -342,11 +340,10 @@ $users = $stmt->fetchAll();
                     page
                 });
 
-                // Fetch filtered data via AJAX
                 $.ajax({
-                    url: `?${params.toString()}`, // Adjusted URL to include search and page
+                    url: `?${params.toString()}`,
                     type: 'GET',
-                    success: function(html) {
+                    success: function (html) {
                         const $doc = $(html);
 
                         // Update the table body
@@ -357,7 +354,7 @@ $users = $stmt->fetchAll();
                         const $newPagination = $doc.find('.pagination');
                         $paginationContainer.html($newPagination.html());
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.error('Error fetching data:', error);
                     }
                 });
@@ -367,17 +364,31 @@ $users = $stmt->fetchAll();
             // Add event listeners for search and filters
             $searchInput.on('input', fetchFilteredData);
 
-            // Pagination links event listener
-            $paginationContainer.on('click', 'a', function(e) {
+            $paginationContainer.on('click', 'a', function (e) {
                 e.preventDefault();
-                const url = new URL($(this).attr('href'));
+
+                let href = $(this).attr('href');
+
+                // If the href is relative (e.g., ?page=2), add the current location as the base URL
+                if (!href.startsWith('http://') && !href.startsWith('https://')) {
+                    href = window.location.origin + window.location.pathname + href;
+                }
+
+                // Create the URL object
+                const url = new URL(href);
                 const page = url.searchParams.get('page');
                 const params = new URLSearchParams(window.location.search);
 
+                // Set the page in the URL search parameters
                 params.set('page', page);
+
+                // Update the browser's address bar without reloading
                 history.pushState(null, '', `?${params.toString()}`);
+
+                // Fetch filtered data based on the current search and page
                 fetchFilteredData();
             });
+
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -386,19 +397,19 @@ $users = $stmt->fetchAll();
                 timerProgressBar: true
             });
 
-            $(document).on('click', '#view', function(event) {
+            $(document).on('click', '#view', function (event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 viewUser(userId);
             });
-            $(document).on('click', '#delete', function(event) {
+            $(document).on('click', '#delete', function (event) {
                 event.preventDefault();
                 const userId = $(this).data('id');
                 deleteUser(userId);
             });
 
             function viewUser(userId) {
-                $.getJSON(`../php/get_user_info.php?id=${userId}`, function(data) {
+                $.getJSON(`../php/get_user_info.php?id=${userId}`, function (data) {
                     if (data.success) {
                         $('#userInfoContent').html(`
                 <div class="user-info">
@@ -423,16 +434,13 @@ $users = $stmt->fetchAll();
                             title: 'Unable to fetch user information.'
                         });
                     }
-                }).fail(function() {
+                }).fail(function () {
                     Toast.fire({
                         icon: 'error',
                         title: 'There was an error fetching the user information.'
                     });
                 });
             }
-
-
-
 
             function deleteUser(userId) {
                 Swal.fire({
@@ -450,7 +458,7 @@ $users = $stmt->fetchAll();
                             type: 'POST',
                             data: $(this).serialize(),
                             dataType: 'json',
-                            success: function(response) {
+                            success: function (response) {
                                 if (response.success) {
                                     Toast.fire({
                                         icon: 'success',
@@ -469,13 +477,13 @@ $users = $stmt->fetchAll();
                 });
             }
 
-            $(window).click(function(event) {
+            $(window).click(function (event) {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();
                 }
             });
 
-            $('.close').click(function() {
+            $('.close').click(function () {
                 $(this).closest('.modal').hide();
             });
         });

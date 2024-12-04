@@ -5,7 +5,8 @@ session_start();
 $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['firstname'] . " " . $_POST['lastname'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
     $gender = $_POST['gender'];
     $country = $_POST['country'];
     $province = isset($_POST['province']) ? $_POST['province'] : '';
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $emailAlreadyUsed = emailAlreadyUsed($conn, $email);
     $usernameAlreadyUsed = usernameAlreadyUsed($conn, $username);
 
-    if (empty($gender) || empty($name) || empty($country) || empty($username) || empty($email) || empty($password) || empty($passwordConfirmation)) {
+    if (empty($gender) || empty($firstname) || empty($lastname) || empty($country) || empty($username) || empty($email) || empty($password) || empty($passwordConfirmation)) {
         $errorMessage = "All fields are required.";
     } elseif ($emailAlreadyUsed) {
         $errorMessage = "Email already in use.";
@@ -45,12 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO users (name, gender, home_address, role, username, email, password, profile_picture)
-                    VALUES (:name, :gender, :home_address, :role, :username, :email, :password, :profile_picture)";
+            $sql = "INSERT INTO users (firstname, lastname, gender, home_address, role, username, email, password, profile_picture)
+                    VALUES (:firstname, :lastname, :gender, :home_address, :role, :username, :email, :password, :profile_picture)";
 
             $stmt = $conn->prepare($sql);
 
-            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':firstname', $firstname);
+            $stmt->bindParam(':lastname', $lastname);
             $stmt->bindParam(':gender', $gender);
             $stmt->bindParam(':home_address', $home_address);
             $stmt->bindParam(':role', $role);

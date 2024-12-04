@@ -34,7 +34,7 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
                 <span class="text">Tours</span>
             </a>
         </li>
-        <li class="<?php echo $current_page == 'user' ? 'active' : ''; ?>">
+        <li class="<?php echo (in_array($current_page, ['user', 'edit-user', 'add-user'])) ? 'active' : ''; ?>">
             <a href="user">
                 <i class='bx bxs-user'></i>
                 <span class="text">Users</span>

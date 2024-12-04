@@ -34,7 +34,7 @@ usort($result, function ($a, $b) use ($statusOrder) {
 });
 function getBooking($conn, $user_id)
 {
-	$stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.name, u.email, u.phone_number FROM booking b
+	$stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.firstname, u.lastname, u.email, u.phone_number FROM booking b
           JOIN tours t ON b.tour_id = t.id
           JOIN users u ON b.user_id = u.id WHERE t.user_id = :user_id
           ORDER BY b.start_date DESC");
@@ -333,7 +333,7 @@ function getStatusButton($row)
 									<?php foreach ($result as $row): ?>
 										<tr>
 											<td><?php echo $counter++; ?></td>
-											<td><?php echo htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+											<td><?php echo htmlspecialchars($row['firstname'], ENT_QUOTES, 'UTF-8') ." ". $row['lastname']; ?></td>
 											<td><?php echo htmlspecialchars($row['tour_title'], ENT_QUOTES, 'UTF-8'); ?></td>
 											<td><?php echo htmlspecialchars($row['start_date'], ENT_QUOTES, 'UTF-8') . " - " . htmlspecialchars($row['end_date'], ENT_QUOTES, 'UTF-8') ?></td>
 											<td><?php echo ($row['people'] == 0) ? 'N/A' : htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?>

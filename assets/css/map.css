@@ -2,6 +2,7 @@
   width: 100%;
   height: calc(100vh - 160px);
   border-radius: 10px;
+  position: relative;
 }
 
 .marker {

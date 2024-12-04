@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($stmt->fetchColumn() > 0) {
                     $_SESSION['errorMessage'] = "You have already submitted a review for this tour.";
                 } else {
+                    // Insert the review
                     $img = ''; // Handle image upload if required
                     $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img, date_created) VALUES (:tour_id, :user_id, :rating, :review, :img, NOW())");
                     $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
@@ -63,11 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 
+
+
 require_once 'func/func.php';
 $averageRating = getAverageRatingNew($conn, $decrypted_id);
 $ratingStars = displayRatingStars($averageRating);
-$pricingTours = getPricingForTour($conn, 1);
-
 
 ?>
 <!DOCTYPE html>
@@ -79,12 +80,192 @@ $pricingTours = getPricingForTour($conn, 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BagoTours</title>
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/tour.css">
+    <style>
+        .comment-section {
+            position: relative;
+            width: 100%;
+            margin: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Comment box styling */
+        .comment-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Ensure spacing between elements */
+            align-items: flex-start;
+            /* Align to the top */
+        }
+
+        .rating-container {
+            display: flex
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            /* Allow the input to grow and fit */
+            width: 100%;
+            /* Ensure full-width use */
+            box-sizing: border-box;
+            /* Prevent padding from breaking layout */
+        }
+
+        .input-box #rating {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .comment-box .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .input-box .comment-input {
+            display: block;
+            /* Fix any inline behavior */
+            width: 100%;
+            /* Ensure it spans the container */
+            padding: 8px;
+            font-size: 14px;
+            /* Make it readable on smaller screens */
+            box-sizing: border-box;
+            /* Account for padding in the width */
+        }
+
+        .input-box .comment-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .comment-actions .edit:hover {
+            color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-actions .delete:hover {
+            color: red;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-box .comment-submit-btn {
+            margin-left: 10px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            width: auto;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-box .comment-submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Container styling for dropdown */
+        .rating-container {
+            position: relative;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        /* Dropdown base styles */
+        .star {
+            background-image: url(star.png);
+            appearance: none;
+            /* Remove default dropdown */
+            background: linear-gradient(to right, #f7f7f7, #ffffff);
+            /* Subtle gradient */
+            border: 1px solid #ddd;
+            /* Light border */
+            border-radius: 8px;
+            /* Smooth corners */
+            padding: 12px 15px;
+            /* Comfortable padding */
+            font-size: 16px;
+            /* Modern font size */
+            color: #444;
+            /* Darker text color */
+            cursor: pointer;
+            width: 100%;
+            /* Responsive width */
+            transition: all 0.3s ease;
+            /* Smooth transition effects */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
+
+        /* Add custom arrow for the dropdown */
+        .star::after {
+            content: '▼';
+            /* Unicode arrow */
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #888;
+            pointer-events: none;
+            /* Make sure arrow doesn’t interfere */
+        }
+
+        /* Hover and Focus States */
+        .star:hover {
+            border-color: #007bff;
+            /* Blue border on hover */
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+            /* Blue glow */
+        }
+
+        .star:focus {
+            outline: none;
+            border-color: #0056b3;
+            /* Stronger blue on focus */
+            box-shadow: 0 0 10px rgba(0, 86, 179, 0.4);
+            /* Glow effect */
+        }
+
+        /* Styling for the Options in the Dropdown */
+        .star option {
+            background: #fff;
+            /* White background */
+            color: #333;
+            /* Dark text for visibility */
+            font-size: 16px;
+            padding: 10px;
+            /* Padding for spacing */
+        }
+
+        /* Optional Label Styling */
+        .rating-label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
@@ -130,21 +311,21 @@ $pricingTours = getPricingForTour($conn, 1);
                             <div class="pricing-container">
                                 <h3 class="pricing-header">Price <i class='bx bx-caret-down'></i></h3>
                                 <div class="pricing-content">
-                                    <?php if (!empty($pricingTours)): ?>
-                                        <?php foreach ($pricingTours as $pricing): ?>
-                                            <div class="pricing">
-                                                <h4><?php echo htmlspecialchars($pricing['item_name']); ?></h4>
-                                                -
-                                                <h5>
-                                                    ₱<?php echo htmlspecialchars($pricing['amount']) . " " . htmlspecialchars($pricing['description']); ?>
-                                                </h5>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <div class="pricing">
-                                            <h5>No pricing details available.</h5>
-                                        </div>
-                                    <?php endif; ?>
+                                    <div class="pricing">
+                                        <h4>Entrance</h4>
+                                        -
+                                        <h5>P100/pax</h5>
+                                    </div>
+                                    <div class="pricing">
+                                        <h4>Entrance</h4>
+                                        -
+                                        <h5>P100/pax</h5>
+                                    </div>
+                                    <div class="pricing">
+                                        <h4>Entrance</h4>
+                                        -
+                                        <h5>P100/pax</h5>
+                                    </div>
                                 </div>
                             </div>
                             <p class="rating"><?php echo $ratingStars; ?></p>
@@ -203,7 +384,7 @@ $pricingTours = getPricingForTour($conn, 1);
                     <div class="comments-list">
                         <?php
                         try {
-                            $stmt = $conn->prepare("SELECT rr.*, u.name AS name, u.profile_picture AS img 
+                            $stmt = $conn->prepare("SELECT rr.*, CONCAT(firstname, ' ', lastname) as name, u.profile_picture AS img 
                                 FROM review_rating rr 
                                 JOIN users u ON rr.user_id = u.id 
                                 WHERE tour_id = :tour_id 
@@ -266,6 +447,7 @@ $pricingTours = getPricingForTour($conn, 1);
                                     <div class="comment-actions">
                                         <span class="comment-time">
                                             <?php
+                                            // Check if 'date_updated' is null, and determine the appropriate timestamp
                                             $timestamp = $comment['date_updated'] ?: $comment['date_created'];
                                             $status = $comment['date_updated'] ? "edited" : "";
                                             echo timeAgo($timestamp) . " " . $status;
@@ -313,40 +495,10 @@ $pricingTours = getPricingForTour($conn, 1);
     }
     ?>
     <script src="index.js"></script>
-    <script src="assets/js/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
-
-            // Initialize map
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v11',
-                center: [<?php echo $longitude; ?>, <?php echo $latitude; ?>],
-                zoom: 15,
-                interactive: false
-            });
-
-            // Create marker element
-            const markerElement = document.createElement('div');
-            markerElement.className = 'marker';
-            markerElement.style.backgroundImage = `url(assets/icons/<?php echo $tourType; ?>.png)`;
-            markerElement.style.backgroundSize = 'contain';
-            markerElement.style.width = '30px';
-            markerElement.style.height = '30px';
-
-            // Add marker to the map
-            new mapboxgl.Marker(markerElement)
-                .setLngLat([<?php echo $longitude; ?>, <?php echo $latitude; ?>])
-                .addTo(map);
-
-            // Disable map interactions
-            map.dragPan.disable();
-            map.scrollZoom.disable();
-            map.touchZoomRotate.disable();
-            map.rotate.disable();
-
-
+        $(document).ready(function () {
+            // Initialize SweetAlert Toast
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -358,25 +510,28 @@ $pricingTours = getPricingForTour($conn, 1);
                     toast.on('mouseleave', Swal.resumeTimer);
                 }
             });
-            $('.edit').on('click', function(e) {
+
+            // Edit button functionality
+            $('.edit').on('click', function (e) {
                 e.preventDefault();
                 const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
-                toggleEdit(commentId); // Call the toggleEdit function
+                toggleEdit(commentId);
             });
 
-            // Delete comment
-            $('.delete').on('click', function(e) {
+            // Delete comment functionality
+            $('.delete').on('click', function (e) {
                 e.preventDefault();
                 const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
-                deleteComment(commentId); // Call the deleteComment function
+                deleteComment(commentId);
             });
 
-            // Cancel edit
-            $('.cancel').on('click', function(e) {
+            // Cancel edit functionality
+            $('.cancel').on('click', function (e) {
                 e.preventDefault();
                 const commentId = $(this).closest('.cancel-btn').attr('id').split('-')[2]; // Extract comment ID
-                cancelEdit(commentId); // Call the cancelEdit function
+                cancelEdit(commentId);
             });
+
             // Toggle edit form visibility
             function toggleEdit(commentId) {
                 const $textElement = $(`#text-${commentId}`);
@@ -401,7 +556,7 @@ $pricingTours = getPricingForTour($conn, 1);
                     $deleteBtn.hide();
                     $cancelBtn.removeClass('hide');
 
-                    $(document).on('keydown.escape', function(event) {
+                    $(document).on('keydown.escape', function (event) {
                         if (event.key === 'Escape') {
                             cancelEdit();
                             $(document).off('keydown.escape');
@@ -413,7 +568,7 @@ $pricingTours = getPricingForTour($conn, 1);
             }
 
             // Handle form submission via AJAX
-            $('.edit-form').on('submit', function(event) {
+            $('.edit-form').on('submit', function (event) {
                 event.preventDefault();
 
                 const $form = $(this);
@@ -424,16 +579,13 @@ $pricingTours = getPricingForTour($conn, 1);
                     url: 'php/edit_comment.php',
                     type: 'POST',
                     dataType: 'json',
-                    data: {
-                        comment_id: commentId,
-                        review: reviewText
-                    },
-                    success: function(data) {
+                    data: { comment_id: commentId, review: reviewText },
+                    success: function (data) {
                         if (data.success) {
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Your review has been successfully updated.'
-                            })
+                            });
                             $(`#text-${commentId}`).text(data.updatedReview);
                             $(`#comment-${commentId}`).find('.comment-text').show();
                             toggleEdit(commentId);
@@ -441,62 +593,58 @@ $pricingTours = getPricingForTour($conn, 1);
                             alert('Error updating the comment.');
                         }
                     },
-                    error: function() {
+                    error: function () {
                         Toast.fire({
                             icon: 'error',
                             title: 'An error occurred while saving the comment'
-                        })
+                        });
                     }
                 });
             });
 
             // Delete comment action
-            window.deleteComment = function(commentId) {
+            window.deleteComment = function (commentId) {
                 if (!confirm('Are you sure you want to delete this comment?')) return;
 
                 $.ajax({
                     url: 'php/delete_comment.php',
                     type: 'POST',
                     dataType: 'json',
-                    data: {
-                        comment_id: commentId
-                    },
-                    success: function(data) {
+                    data: { comment_id: commentId },
+                    success: function (data) {
                         if (data.success) {
                             $(`#comment-${commentId}`).remove();
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Your review has been successfully deleted.'
-                            })
+                            });
                         } else {
                             alert('Error deleting the comment.');
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert('Error deleting the comment.');
                     }
                 });
             };
 
-            // SweetAlert Toast Notification
-
-
+            // SweetAlert Toast Notifications for session messages
             <?php if (isset($_SESSION['successMessage'])): ?>
                 Toast.fire({
                     icon: 'success',
                     title: '<?php echo $_SESSION['successMessage']; ?>'
-                })
+                });
                 <?php unset($_SESSION['successMessage']); ?>
             <?php elseif (isset($_SESSION['errorMessage'])): ?>
                 Toast.fire({
                     icon: 'error',
                     title: '<?php echo $_SESSION['errorMessage']; ?>'
-                })
+                });
                 <?php unset($_SESSION['errorMessage']); ?>
             <?php endif; ?>
 
             // Toggle pricing section visibility
-            $('.pricing-header').on('click', function() {
+            $('.pricing-header').on('click', function () {
                 $('.pricing-content').toggle();
             });
 
@@ -506,19 +654,19 @@ $pricingTours = getPricingForTour($conn, 1);
             const $ratebtn = $("#rate");
             const span = $(".close");
 
-            $bookbtn.on("click", function() {
+            $bookbtn.on("click", function () {
                 modal.addClass('active');
             });
 
-            $ratebtn.on("click", function() {
+            $ratebtn.on("click", function () {
                 window.location.href = 'rate_review?booking_id=<?php echo $bookingId ?>';
             });
 
-            span.on("click", function() {
+            span.on("click", function () {
                 modal.removeClass('active');
             });
 
-            $(window).on("click", function(event) {
+            $(window).on("click", function (event) {
                 if ($(event.target).is(modal)) {
                     modal.removeClass('active');
                 }
@@ -531,7 +679,7 @@ $pricingTours = getPricingForTour($conn, 1);
             let isExpanded = false;
 
             function updateCommentDisplay() {
-                $comments.each(function(index, comment) {
+                $comments.each(function (index, comment) {
                     $(comment).toggle(index < commentsPerPage || isExpanded);
                 });
 
@@ -541,7 +689,7 @@ $pricingTours = getPricingForTour($conn, 1);
 
             if ($comments.length > 0) {
                 updateCommentDisplay();
-                $showMoreButton.on('click', function() {
+                $showMoreButton.on('click', function () {
                     isExpanded = !isExpanded;
                     commentsPerPage = isExpanded ? $comments.length : 5;
                     updateCommentDisplay();
@@ -550,10 +698,36 @@ $pricingTours = getPricingForTour($conn, 1);
                 $showMoreButton.hide();
             }
 
-            // Initialize the Mapbox map
+            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
+
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/navigation-night-v1',
+                center: [<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>],
+                zoom: 15,
+                interactive: false
+            });
+
+            const markerEl = document.createElement('div');
+            markerEl.className = 'marker';
+            markerEl.style.backgroundImage = `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " "), ENT_QUOTES); ?>.png)`;
+            markerEl.style.width = '50px';
+            markerEl.style.height = '50px';
+            markerEl.style.backgroundSize = 'contain';
+
+
+            const marker = new mapboxgl.Marker(markerEl)
+                .setLngLat([<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>])
+                .addTo(map);
+
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.touchZoomRotate.disable();
+            map.rotate.disable();
 
         });
     </script>
+
 </body>
 
 </html>

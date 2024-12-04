@@ -189,3 +189,521 @@ Stack trace:
 [02-Dec-2024 15:56:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
 [02-Dec-2024 15:56:45 Europe/Berlin] PHP Warning:  Undefined variable $_ in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
 [02-Dec-2024 15:56:45 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\accommodation-fees-management.php on line 364
+[04-Dec-2024 14:12:17 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 118
+[04-Dec-2024 14:30:26 Europe/Berlin] PHP Warning:  Undefined array key "address" in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 12
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:36:44 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:19 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 14:37:22 Europe/Berlin] PHP Warning:  Undefined variable $tour in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 219
+[04-Dec-2024 14:37:22 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 219
+[04-Dec-2024 14:37:22 Europe/Berlin] PHP Warning:  Undefined variable $tour in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 228
+[04-Dec-2024 14:37:22 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 228
+[04-Dec-2024 14:37:35 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 219
+[04-Dec-2024 14:37:35 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\bagotours\admin\edit-user.php on line 228
+[04-Dec-2024 15:02:38 Europe/Berlin] PDO error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[04-Dec-2024 15:02:38 Europe/Berlin] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\bagotours\include\db_conn.php on line 33
+[04-Dec-2024 15:02:38 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\include\db_conn.php:33
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\getNotifCount.php(3): require()
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\include\db_conn.php on line 33
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:05:52 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:07:58 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:15:10 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\admin\user.php on line 223
+[04-Dec-2024 15:16:01 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:02 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:02 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:02 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:03 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:03 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:16:07 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:03 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:04 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:43:06 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 15:46:39 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:255
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:48:11 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:255
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:49:19 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:255
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:49:25 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:255
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:51:37 Europe/Berlin] PHP Warning:  Undefined variable $start_page in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:51:37 Europe/Berlin] PHP Warning:  Undefined variable $end_page in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:51:37 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:258
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 258
+[04-Dec-2024 15:51:57 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:52:20 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:52:53 Europe/Berlin] PHP Warning:  Undefined variable $start_page in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:52:53 Europe/Berlin] PHP Warning:  Undefined variable $end_page in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:52:53 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:265
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 265
+[04-Dec-2024 15:55:23 Europe/Berlin] PHP Warning:  Undefined variable $start_page in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:55:23 Europe/Berlin] PHP Warning:  Undefined variable $end_page in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:55:23 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:265
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 265
+[04-Dec-2024 15:56:15 Europe/Berlin] PHP Warning:  Undefined variable $end_page in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:56:15 Europe/Berlin] PHP Warning:  Undefined variable $start_page in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:56:15 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:259
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 259
+[04-Dec-2024 15:56:17 Europe/Berlin] PHP Warning:  Undefined variable $end_page in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:56:17 Europe/Berlin] PHP Warning:  Undefined variable $start_page in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:56:17 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:259
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 259
+[04-Dec-2024 15:56:46 Europe/Berlin] PHP Warning:  Undefined variable $start_page in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:56:46 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: min(): Argument #1 ($value) must be of type array, int given in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(256): min(-2)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:57:09 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:57:24 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:58:45 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:58:47 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:58:50 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:58:55 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:58:58 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:59:31 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:255
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 15:59:45 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 15:59:50 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:256
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 256
+[04-Dec-2024 16:00:29 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:257
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 257
+[04-Dec-2024 16:00:50 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:257
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 257
+[04-Dec-2024 16:00:55 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + int in C:\xampp\htdocs\bagotours\admin\user.php:258
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 258
+[04-Dec-2024 16:01:15 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - string in C:\xampp\htdocs\bagotours\admin\user.php:257
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 257
+[04-Dec-2024 16:01:46 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - string in C:\xampp\htdocs\bagotours\admin\user.php:257
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 257
+[04-Dec-2024 16:02:07 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - string in C:\xampp\htdocs\bagotours\admin\user.php:257
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 257
+[04-Dec-2024 16:02:24 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + int in C:\xampp\htdocs\bagotours\admin\user.php:258
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 258
+[04-Dec-2024 16:02:31 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + int in C:\xampp\htdocs\bagotours\admin\user.php:258
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 258
+[04-Dec-2024 16:02:35 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + int in C:\xampp\htdocs\bagotours\admin\user.php:258
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 258
+[04-Dec-2024 16:02:41 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:02:44 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:02:48 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:02:53 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:03:08 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:05:30 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:164
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 164
+[04-Dec-2024 16:05:44 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:05:45 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:05:46 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:262
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 262
+[04-Dec-2024 16:05:56 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string - int in C:\xampp\htdocs\bagotours\admin\user.php:255
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 255
+[04-Dec-2024 16:06:21 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:06:21 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:06:21 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:06:21 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:06:22 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:25 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:25 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:26 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:26 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:27 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:27 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:27 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:27 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:08:27 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:12 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:12 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:12 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:12 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:12 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:13 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:13 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:22
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(22): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 22
+[04-Dec-2024 16:23:48 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:39
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(39): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 39
+[04-Dec-2024 16:23:48 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:39
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(39): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 39
+[04-Dec-2024 16:23:48 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:39
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(39): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 39
+[04-Dec-2024 16:23:48 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\user.php:39
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\user.php(39): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\user.php on line 39
+[04-Dec-2024 16:32:52 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[04-Dec-2024 16:32:56 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list' in C:\xampp\htdocs\bagotours\admin\booking.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\booking.php(42): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42

@@ -10,7 +10,8 @@ if (!isset($_SESSION["user_id"])) {
 $user_id = $_SESSION["user_id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fullName = isset($_POST['fullName']) ? trim($_POST['fullName']) : '';
+    $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
+    $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
     $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
     $home_address = isset($_POST['home-address']) ? trim($_POST['home-address']) : '';
 
@@ -52,8 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     unset($_SESSION['profile-pic']);
     $_SESSION['profile-pic'] = $profile_picture;
 
-    $stmt = $conn->prepare("UPDATE users SET name = ?, phone_number = ?, profile_picture = ?,home_address = ? WHERE id = ?");
-    if ($stmt->execute([$fullName, $phone, $profile_picture,$home_address, $user_id])) {
+    $stmt = $conn->prepare("UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, profile_picture = ?,home_address = ? WHERE id = ?");
+    if ($stmt->execute([$firstname, $lastname, $phone, $profile_picture, $home_address, $user_id])) {
         $_SESSION['status'] = 'success';
         header("Location: ../manage-acc");
         exit();
