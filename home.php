@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             <?php
-            $events = getEventByDate($conn);  // Fetch events only once
+            $events = getEventByDate($conn);
             $eventCount = count($events);
             ?>
 
@@ -263,8 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         function fetchNearbyTours(userLat, userLng) {
             console.log("Fetching nearby tours for coordinates:", userLat, userLng);
-
-            // Show loading card
+s
             document.getElementById('loadingCard').style.display = 'block';
 
             fetch('home.php', {
