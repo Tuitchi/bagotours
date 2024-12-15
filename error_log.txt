@@ -707,3 +707,5 @@ Stack trace:
 #1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
 #2 {main}
   thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[2024-12-14 07:58:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
+[2024-12-14 07:59:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
