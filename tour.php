@@ -427,7 +427,7 @@ $ratingStars = displayRatingStars($averageRating);
                                         ?>
                                     </div>
                                     <div class="comment-text">
-                                        <p id="text-<?php echo $comment['id']; ?>">
+                                        <p class="comment" id="text-<?php echo $comment['id']; ?>">
                                             <?php echo htmlspecialchars($comment['review']); ?>
                                         </p>
 

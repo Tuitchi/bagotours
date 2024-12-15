@@ -1043,6 +1043,10 @@ input[type=text]:focus {
 }
 
 @media screen and (max-width: 850px) {
+  .comment {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
   .tourList {
     margin-bottom: 0px;
   }
