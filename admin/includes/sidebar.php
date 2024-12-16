@@ -71,12 +71,6 @@ $sidebarClass = isset($_SESSION['sidebar_hidden']) && $_SESSION['sidebar_hidden'
                 <span class="text">QR Code</span>
             </a>
         </li>
-        <li class="<?php echo $current_page == 'inq' ? 'active' : ''; ?>">
-            <a href="inq">
-                <i class='bx bxs-message-rounded'></i>
-                <span class="text">Inquiries</span>
-            </a>
-        </li>
     </ul>
     <ul class="side-menu">
         <li class="<?php echo $current_page == 'setting' ? 'active' : ''; ?>">

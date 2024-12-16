@@ -32,10 +32,6 @@ $breadcrumbs = [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'dashboard', 'url' => 'dashboard']
     ],
-    'inq' => [
-        ['title' => 'Home', 'url' => 'home'],
-        ['title' => 'Inquiries', 'url' => 'inq']
-    ],
     'event' => [
         ['title' => 'Home', 'url' => 'home'],
         ['title' => 'Event', 'url' => 'event']

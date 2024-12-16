@@ -4,22 +4,22 @@ require '../func/func.php';
 
 $id = isset($_GET["tour_id"]) ? intval($_GET["tour_id"]) : 0;
 $user_id = isset($_GET["user_id"]) ? intval($_GET["user_id"]) : 0;
-$status = isset($_GET["status"]) ? intval($_GET["status"]) : 0;
+$status = $_GET['status'];
 
-if ($status == 2) {
+if ($status == 'Rejected') {
     $currentDate = date('Y-m-d');
     $newDate = date('Y-m-d', strtotime('+7 days'));
     $stmt = $conn->prepare("UPDATE tours SET status = :status, expiry = :expiry WHERE id = :id");
     $stmt->bindParam(':expiry', $newDate);
-    $message = "Tour cancelled by admin";
+    $message = "Your application has rejected by admin - try again next 7 days.";
     $type = "Upgrade Cancelled";
 } else {
     $stmt = $conn->prepare("UPDATE tours SET status = :status WHERE id = :id");
-    $message = "Tour approved by admin";
+    $message = "Your tourist attraction has approved and you're an owner now - Congratulations!";
     $type = "Upgrade Approved";
 }
 
-$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+$stmt->bindParam(':status', $status, PDO::PARAM_STR);
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
 if ($stmt->execute()) {

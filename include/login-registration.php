@@ -1,11 +1,79 @@
+<?php
+require_once 'vendor/autoload.php';
+
+$redirectUri = 'http://localhost/bagotours/home';
+$client = new Google_Client();
+$client->setClientId($clientID);
+$client->setClientSecret($clientSecret);
+$client->setRedirectUri($redirectUri);
+$client->addScope("email");
+$client->addScope("profile");
+$loginUrl = $client->createAuthUrl(); // If user is already logged in, redirect to home page 
+if (isset($_GET['code'])) {
+    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+    $client->setAccessToken($token['access_token']);
+    $google_oauth = new Google_Service_Oauth2($client);
+    $google_account_info = $google_oauth->userinfo->get();
+    $email = $google_account_info->email;
+    $firstname = $google_account_info->given_name;
+    $lastname = $google_account_info->family_name;
+    $profile_picture = $google_account_info->picture;
+    $existingUser = getUserByEmail($conn, $email);
+    if ($existingUser) {
+        $_SESSION['user_id'] = $existingUser['id'];
+        $_SESSION['role'] = $existingUser['role'];
+        $_SESSION['profile-pic'] = $existingUser['profile_picture'];
+        $device_id = $existingUser['device_id'];
+        if (empty($existingUser['device_id'])) {
+            $device_id = md5($email . $existingUser['username']);
+            $stmt = $conn->prepare("UPDATE users SET device_id = ? WHERE email=?");
+            $stmt->execute([$device_id, $email]);
+        }
+        setcookie('device_id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
+        if ($_SESSION['role'] == 'user') {
+            echo "<script>window.location.replace(window.location.pathname);</script>";
+        } elseif ($_SESSION['role'] == 'owner') {
+            echo "<script>window.location.replace('owner/home');</script>";
+        } elseif ($_SESSION['role'] == 'admin') {
+            echo "<script>window.location.replace('admin/home');</script>";
+        }
+        exit;
+    } else {
+        $newUserId = createUser($conn, $email, $firstname, $lastname, $profile_picture);
+        $_SESSION['user_id'] = $newUserId;
+        $_SESSION['email'] = $email;
+        $_SESSION['role'] = "user";
+        $_SESSION['profile-pic'] = $profile_picture;
+        if (empty($existingUser['device_id'])) {
+            $device_id = md5($email . $existingUser['username']);
+            $stmt = $conn->prepare("UPDATE users SET device_id = ? WHERE email=?");
+            $stmt->execute([$device_id, $email]);
+        }
+        setcookie('device_id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
+        echo "<script>window.location.replace(window.location.pathname);</script>";
+        exit;
+    }
+}
+?>
+
 <div id="modal" class="modal">
     <div class="backdrop"></div>
     <div class="modal-content">
         <button type="button" class="closeBtn" id="close-modal">&times;</button>
-        <div id="sign-in-form" class="form-container">
+        <div id="sign-in-form" class="form-container" width="80%">
             <form id="loginForm">
                 <h2>Sign In</h2>
                 <p id="login-first" style="display:none; color:red">To begin, you must log in.</p>
+                <center>
+                    <a href="<?php echo $client->createAuthUrl() ?>"><img src="assets/sign-in.png" width="100%">
+                    </a>
+                </center>
+
+                <div class="section-header">
+                    <hr class="section-divider">
+                    <h3 class="section-title">or</h3>
+                    <hr class="section-divider">
+                </div>
                 <input id="username" name="username" type="text" placeholder="Email" autocomplete="username" />
                 <div id="username-error" class="error-message"></div>
                 <input id="password" name="password" type="password" placeholder="Password" />
@@ -14,34 +82,45 @@
             </form>
             <a href="#" id="forgot-password">Forgot Password?</a>
             <p>Need an Account? <a href="#" id="to-sign-up">Sign Up</a></p>
+
         </div>
         <div id="sign-up-form" class="form-container hidden">
             <h2>Sign Up</h2>
             <form id="signupForm">
-                <div id="name" class="name">
-                    <input id="fname" name="firstname" type="text" placeholder="First name"
-                        style="width: 49%;min-width:auto" autocomplete="first name" />
-                    <input id="lname" name="lastname" type="text" placeholder="Last name"
-                        style="width: 49%;min-width:auto" />
+                <center>
+                    <a href="<?php echo $client->createAuthUrl() ?>"><img src="assets/sign-up.png" width="100%">
+                    </a>
+                </center>
+
+                <div class="section-header">
+                    <hr class="section-divider">
+                    <h3 class="section-title">or</h3>
+                    <hr class="section-divider">
                 </div>
-                <div id="regName-error" class="error-message"></div>
-
-                <input id="signup-username" name="username" type="text" placeholder="Username"
-                    autocomplete="username" />
-                <div id="regUsername-error" class="error-message"></div>
-
                 <input id="email" name="email" type="text" placeholder="Email" autocomplete="email" />
                 <div id="regEmail-error" class="error-message"></div>
+                <div class="name">
+                    <select name="country" id="country" required>
+                        <option value="" selected disabled>Select Country</option>
+                        <!-- Auto Generated country throu JS -->
+                    </select>
+                    <select name="province" id="province" required disabled>
+                        <option value="" selected disabled>Select Province</option>
 
-                <input id="home-address" name="home-address" type="text" placeholder="Home Address" />
-                <div id="regHome-error" class="error-message"></div>
+                        <!-- Auto Generated country throu JS -->
+                    </select>
+                    <select name="city" id="city" required disabled>
+                        <option value="" selected disabled>Select City/Municipality</option>
 
-
+                        <!-- Auto Generated country throu JS -->
+                    </select>
+                </div>
                 <input id="pwd" name="pwd" type="password" placeholder="Password" />
                 <div id="regPassword-error" class="error-message"></div>
 
                 <input id="con-pwd" name="con-pwd" id="conPass" type="password" placeholder="Confirm password" />
-                <div id="regconPass-error" class="error-message"></div>
+                <div id="conPass-error" class="error-message"></div>
+
 
                 <button type="submit">Sign Up</button>
             </form>
@@ -59,8 +138,12 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/scrollreveal"></script>
+<script src="assets/js/country.js"></script>
+<script> function handleCredentialResponse(response) { // Process the response 
+        console.log("Encoded JWT ID token: " + response.credential); // Send token to server for verification 
+    } 
+</script>
 <script>
     $(document).ready(function () {
         const $modal = $('#modal');
@@ -132,9 +215,9 @@
         // Login Form
         $('#loginForm').on('submit', function (event) {
             event.preventDefault();
-            const $submitButton = $(this).find('button[type="submit"]');
-            $submitButton.prop('disabled', true).text('Logging in...');
-
+            const submitButton = $(this).find('button[type="submit"]');
+            const originalText = submitButton.html();
+            submitButton.html('<span class="spinner"></span> Logging in...').prop('disabled', true);
             const formData = new FormData(this);
 
             $.ajax({
@@ -158,15 +241,15 @@
                             $('#username').css('border', '1px solid red');
                         }
                         if (data.errors.password) {
+                            $('#username').css('border', '1px solid red');
                             $('#password-error').text(data.errors.password);
                             $('#password').css('border', '1px solid red');
                         }
+                        submitButton.prop('disabled', false).text('Sign in');
                     }
                 },
                 error: function () {
                     alert('An error occurred. Please try again.');
-                },
-                complete: function () {
                     $submitButton.prop('disabled', false).text('Sign in');
                 },
             });
@@ -177,6 +260,11 @@
             event.preventDefault();
 
             const formData = new FormData(this);
+            const submitButton = $(this).find('button[type="submit"]'); // Target the submit button
+            const originalText = submitButton.html(); // Store the original button text
+
+            // Show loading spinner or text and disable the button
+            submitButton.html('<span class="spinner"></span> Signing up...').prop('disabled', true);
 
             $.ajax({
                 url: 'php/register.php',
@@ -186,36 +274,30 @@
                 processData: false,
                 success: function (response) {
                     const data = JSON.parse(response);
-                    // Clear all error fields
-                    $('#regName-error, #regUsername-error, #regEmail-error, #regHome-error, #regPassword-error, #regconPass-error').text('');
-                    $('#fname, #lname, #signup-username, #email, #home-address, #pwd, #con-pwd').css('border', '1px solid #ddd');
+                    ['#regEmail-error', '#regPassword-error', '#conPass-error', '#country-error'].forEach(id => $(id).text(''));
+                    ['#email', '#pwd', '#con-pwd', '#country'].forEach(id => $(id).css('border', '1px solid #ddd'));
 
                     if (data.success) {
-                        window.location.href = data.redirect;
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 1500);
                     } else {
-                        if (data.errors.name) {
-                            $('#regName-error').text(data.errors.name);
-                            $('#fname, #lname').css('border', '1px solid red');
-                        }
-                        if (data.errors.uname) {
-                            $('#regUsername-error').text(data.errors.uname);
-                            $('#signup-username').css('border', '1px solid red');
-                        }
+                        submitButton.html(originalText).prop('disabled', false);
                         if (data.errors.email) {
                             $('#regEmail-error').text(data.errors.email);
                             $('#email').css('border', '1px solid red');
                         }
-                        if (data.errors.home) {
-                            $('#regHome-error').text(data.errors.home);
-                            $('#home-address').css('border', '1px solid red');
-                        }
-                        if (data.errors.pwd) {
-                            $('#regPassword-error').text(data.errors.pwd);
+                        if (data.errors.password) {
+                            $('#regPassword-error').text(data.errors.password);
                             $('#pwd').css('border', '1px solid red');
                         }
                         if (data.errors.confirm_password) {
-                            $('#regconPass-error').text(data.errors.confirm_password);
+                            $('#conPass-error').text(data.errors.confirm_password);
                             $('#con-pwd').css('border', '1px solid red');
+                        }
+                        if (data.errors.country) {
+                            $('#country-error').text(data.errors.country);
+                            $('#country').css('border', '1px solid red');
                         }
                     }
                 },

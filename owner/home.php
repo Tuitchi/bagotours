@@ -1,57 +1,74 @@
 <?php
 session_start();
 require_once '../include/db_conn.php';
-
-// Validate session variables
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['profile-pic'])) {
-	header('Location: ../login');
-	exit();
-}
-
 $user_id = $_SESSION['user_id'];
-$pp = $_SESSION['profile-pic'];
 
 try {
-	// Secure query with placeholders
-	$query = "SELECT id, title, latitude, longitude, type, address, img 
-              FROM tours 
-              WHERE status = 1 AND user_id = :user_id";
+	$query = "SELECT id, title, latitude, longitude, type, address, img, status FROM tours WHERE status NOT IN ('Pending', 'Rejected', 'Confirmed', '') AND user_id = :user_id";
 	$stmt = $conn->prepare($query);
-	$stmt->execute([':user_id' => $user_id]);
-
+	$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 	$touristSpots = [];
 
-	if (!empty($result)) {
+	if ($result) {
 		foreach ($result as $row) {
+			$image_column = $row['img']; // Example: "image1.jpg,image2.jpg,image3.jpg"
+			$image_array = explode(',', $image_column); // Convert to an array
+
 			$touristSpots[] = [
 				'id' => $row['id'],
 				'title' => $row['title'],
 				'latitude' => $row['latitude'],
 				'longitude' => $row['longitude'],
 				'type' => $row['type'],
-				'image' => $row['img'],
-				'address' => $row['address']
+				'image' => $image_array[0],
+				'address' => $row['address'],
+				'status' => $row['status']
 			];
 		}
-	} else {
-		// Update role if no tours exist
-		$updateStmt = $conn->prepare("UPDATE users SET role = 'user' WHERE id = :user_id");
-		$updateStmt->execute([':user_id' => $user_id]);
-		header('Location: ../home');
-		$_SESSION['downgrade'] = true;
-		exit();
 	}
 
-	// Encode results as JSON
 	$touristSpotsJson = json_encode($touristSpots);
 } catch (PDOException $e) {
-	// Log error and return JSON error message
 	error_log("Error fetching tours: " . $e->getMessage());
 	$touristSpotsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
 }
-?>
+try {
+	$query = "SELECT event_code, event_name, latitude, longitude, event_type, event_image FROM events WHERE status = 'upcoming'";
+	$stmt = $conn->prepare($query);
+	$stmt->execute();
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$events = []; // Initialize an empty array to store events
 
+	// Check if the result set is not empty
+	if ($result) {
+		foreach ($result as $row) {
+			// Create an associative array for each event
+			$events[] = [
+				'event_code' => $row['event_code'],    // Correct mapping of 'event_code'
+				'title' => $row['event_name'],         // Correct mapping of 'event_name'
+				'latitude' => $row['latitude'],        // Correct mapping of 'latitude'
+				'longitude' => $row['longitude'],      // Correct mapping of 'longitude'
+				'type' => $row['event_type'],          // Correct mapping of 'event_type'
+				'image' => $row['event_image'],        // Correct mapping of 'event_image'
+				// 'address' => $row['address']          // Optional, if applicable
+			];
+		}
+	}
+
+	// Encode the array to JSON format
+	$eventsJson = json_encode($events); // Store events in JSON format
+} catch (PDOException $e) {
+	// Log the error message
+	error_log("Error fetching events: " . $e->getMessage());
+	// Return an error message in JSON format
+	$eventsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
+}
+
+
+?>
 
 
 <!DOCTYPE html>
@@ -67,11 +84,11 @@ try {
 	<!-- My CSS -->
 	<link rel="stylesheet" href="assets/css/admin.css">
 	<link rel="stylesheet" href="../assets/css/map.css">
+	<link rel="stylesheet" href="../assets/css/mapbox-gl.css">
 	<!-- Mapbox -->
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
-	<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 
-	<title>BaGoTours. Home</title>
+	<title>BaGoTours || Home</title>
 
 </head>
 
@@ -97,8 +114,8 @@ try {
 			</div>
 		</main>
 	</section>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="../assets/js/script.js"></script>
+	<script src="../assets/js/jquery-3.7.1.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
 			mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
@@ -123,17 +140,18 @@ try {
 
 				const popupContent = `
 					<div class="popup-content">
-						<img src="../upload/Tour Images/${spot.image}" alt="${spot.name}">
+					<img src="../upload/Tour Images/${spot.image}" alt="${spot.name}">
+						<p>${spot.status}</p>
 						<h3>${spot.title}</h3>
 						<p>${spot.address}</p>
 					</div>
 				`;
 
 				const popup = new mapboxgl.Popup({
-						closeOnClick: false,
-						offset: 25,
-						closeButton: false
-					})
+					closeOnClick: false,
+					offset: 25,
+					closeButton: false
+				})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {
@@ -147,6 +165,46 @@ try {
 
 				marker.getElement().addEventListener('click', () => {
 					window.location.href = `view_tour?id=${spot.id}`;
+				});
+			});
+			const events = <?php echo $eventsJson; ?>;
+
+			events.forEach(event => {
+				const el = document.createElement('div');
+				el.className = 'marker event';
+				el.style.backgroundImage = `url(../assets/icons/stars.png)`;
+
+				const marker = new mapboxgl.Marker(el)
+					.setLngLat([event.longitude, event.latitude])
+					.addTo(map);
+
+				const popupContent = `
+	<div class="popup-content event">
+		<img src="../upload/Event/${event.image}" alt="${event.title}" class="popup-image">
+		<h3 class="popup-title">${event.title}</h3>
+		<p class="popup-type">${event.type}</p>
+		<a href="#" class="popup-link">Learn More</a>
+	</div>
+`;
+
+				const popup = new mapboxgl.Popup({
+					closeOnClick: false,
+					offset: 25,
+					closeButton: false
+				})
+					.setHTML(popupContent);
+
+				marker.getElement().addEventListener('mouseenter', () => {
+					popup.addTo(map);
+					popup.setLngLat([event.longitude, event.latitude]);
+				});
+
+				marker.getElement().addEventListener('mouseleave', () => {
+					popup.remove();
+				});
+
+				marker.getElement().addEventListener('click', () => {
+					window.location.href = `view-event?event=${event.event_code}`;
 				});
 			});
 		});

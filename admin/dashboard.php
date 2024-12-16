@@ -22,22 +22,25 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 		.box-info li span a {
 			font-size: .7em;
 			bottom: 0;
-        }
+		}
+
 		.box-info li span a:hover {
 			color: #443396;
 			text-decoration: underline;
-        }
+		}
+
 		.order {
 			position: relative;
 		}
+
 		.loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999;
 		}
 	</style>
 </head>
@@ -52,6 +55,9 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 				<div class="left">
 					<?php include 'includes/breadcrumb.php'; ?>
 				</div>
+				<a class="btn-download" id="btn-download" href="add-tour">
+                    <i class='bx bxs-printer'></i>Print Data
+                </a>
 			</div>
 
 			<ul class="box-info">
@@ -73,7 +79,7 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 				<li>
 					<i class='bx bxs-map-pin'></i>
 					<span class="text">
-						<h3><?php echo totalTours($conn); ?></h3>
+						<h3><?php echo totalTours($conn, $user_id); ?></h3>
 						<p>Overall Tours</p>
 					</span>
 				</li>
@@ -178,20 +184,22 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 		}
 
 		function visitorChart(tourId = null, timeFilter) {
-			const loader = document.querySelector('#visitorChart + .loader');
-			
-			loader.style.display = 'block';
+			const loader = $('#visitorChart + .loader');
+
+			loader.show();
 			const url = new URL('bagotours/admin/assets/visitorChart.php', window.location.origin);
 			if (tourId) {
 				url.searchParams.append('tour', tourId);
 			}
-			url.searchParams.append('id', <?php echo $user_id; ?>);
+			url.searchParams.append('id', <?php echo $user_id; ?>); // Inject PHP user ID dynamically
 			url.searchParams.append('time', timeFilter);
 
-			fetch(url)
-				.then(response => response.json())
-				.then(visitorData => {
-					loader.style.display = 'none';
+			$.ajax({
+				url: url,
+				method: 'GET',
+				dataType: 'json',
+				success: function (visitorData) {
+					loader.hide();
 					if (Array.isArray(visitorData) && visitorData.length > 0) {
 						const data = google.visualization.arrayToDataTable([
 							['City Residence', 'Count'],
@@ -215,20 +223,23 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 								top: 20,
 								width: '80%',
 								height: '70%'
-							},
+							}
 						};
 
-						const chart = new google.visualization.PieChart(document.getElementById('visitorChart'));
+						const chart = new google.visualization.PieChart($('#visitorChart')[0]);
 						chart.draw(data, options);
 					} else {
-						document.getElementById('visitorChart').innerHTML = '<p>No data available to display.</p>';
+						$('#visitorChart').html('<p>No data available to display.</p>');
 					}
-				})
-				.catch(error => {
-					loader.style.display = 'none'; // Hide the loader even on error
-					document.getElementById('visitorChart').innerHTML = '<p>Failed to load chart data.</p>';
-				});
+				},
+				error: function (error) {
+					loader.hide(); // Hide the loader even on error
+					console.error('Error fetching data:', error);
+					$('#visitorChart').html('<p>Failed to load chart data.</p>');
+				}
+			});
 		}
+
 	</script>
 </body>
 

@@ -56,19 +56,23 @@ $totalBookings = count($bookings);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) {
     $booking_id = $_POST['cancel_booking_id'];
 
-    // Check if the booking is cancellable
     $stmt = $conn->prepare("SELECT status FROM booking WHERE id = :booking_id");
     $stmt->bindParam(":booking_id", $booking_id, PDO::PARAM_INT);
     $stmt->execute();
     $booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($booking && $booking['status'] == 0) { // 0 means Booking Approval
-        // Proceed to cancel
         $updateStmt = $conn->prepare("UPDATE booking SET status = 2 WHERE id = :booking_id"); // Assuming 2 means cancelled
         $updateStmt->bindParam(":booking_id", $booking_id, PDO::PARAM_INT);
-        $updateStmt->execute();
-
-        echo "<script>alert('Booking has been successfully canceled.'); window.location.href='booking.php';</script>"; // Redirect to the current page
+        if($updateStmt->execute()) {
+            $accommodationStmt = $conn->prepare("DELETE FROM booking_accommodations WHERE booking_id = :booking_id");
+            $accommodationStmt->bindParam(":booking_id", $booking_id, PDO::PARAM_INT);
+            if ($accommodationStmt->execute()) {
+                echo "<script>alert('Booking has been successfully canceled.'); window.location.href='booking.php';</script>"; // Redirect to the current page
+            } else {
+                echo "<script>alert('Failed to cancel booking. Please try again later.'); window.location.href='booking.php';</script>";
+            }
+        }
     } else {
         echo "<script>alert('Booking cannot be canceled unless it is in Booking Approval status.'); window.location.href='booking.php';</script>";
     }
@@ -323,13 +327,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
                             (<?php echo $totalBookings; ?>)</button>
                     </div>
                     <div class="booking-container">
-                        <?php foreach ($bookings as $booking) { ?>
+                        <?php foreach ($bookings as $booking) {
+
+                            $booking_image = explode(',', $booking['img']);
+                            $main_image = $booking_image[0];
+                            ?>
                             <div class="booking-card" data-status="<?php echo $booking['status']; ?>"
                                 data-review="<?php echo $booking['is_review']; ?>">
-                                <img src="upload/Tour Images/<?php echo $booking['img']; ?>"
-                                    alt="<?php echo $booking['title']; ?>">
+                                <img src="upload/Tour Images/<?php echo $main_image; ?>" alt="<?php echo $booking['title']; ?>">
                                 <div class="desc">
                                     <h3><?php echo $booking['title']; ?></h3>
+                                    <h5>Booking ID : <?php echo $booking['BID']; ?></h5>
                                     <?php
                                     if ($booking['is_review']) {
                                         echo '<div class="status-label complete">Reviewed</div>';
@@ -362,8 +370,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
                                 </div>
                                 <span class="sched">Scheduled Date: <strong>
                                         <?php
-                                        $date = new DateTime($booking['date_sched']);
-                                        echo $date->format('M. d, Y');
+                                        $start = new DateTime($booking['start_date']);
+                                        echo $start->format('M. d, Y');
+                                        echo " - ";
+                                        $end = new DateTime($booking['end_date']);
+                                        echo $end->format('M. d, Y');
                                         ?>
                                     </strong></span>
                             </div>

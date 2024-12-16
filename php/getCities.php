@@ -1,57 +1,49 @@
 <?php
-$provinceId = isset($_GET['provinceId']) ? $_GET['provinceId'] : ''; // Get the province code from the query string
+$localFile = "cities.json"; // Path to the local cities file
+$provinceId = isset($_GET['provinceId']) ? $_GET['provinceId'] : ''; // Get province ID from query
 
+// Validate provinceId
 if (empty($provinceId)) {
     echo json_encode(['error' => 'Province code is required']);
     exit;
 }
 
-$apiUrl = "https://psgc.gitlab.io/api/provinces/$provinceId/cities-municipalities/";
-
-// Initialize cURL session
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $apiUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPGET, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-$response = curl_exec($ch);
-
-if (curl_errno($ch)) {
+// Check if the local file exists
+if (!file_exists($localFile)) {
     http_response_code(500);
-    echo json_encode(['error' => curl_error($ch)]);
-    curl_close($ch);
+    echo json_encode(['error' => 'Local cities data not found.']);
     exit;
 }
 
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+// Load the cities data from the local file
+$data = file_get_contents($localFile);
+$citiesData = json_decode($data, true);
 
-if ($httpCode !== 200) {
-    http_response_code($httpCode);
-    echo json_encode(['error' => "HTTP request failed with status code $httpCode"]);
-    exit;
-}
-
-$cities = json_decode($response, true);
-
+// Check if JSON parsing is successful
 if (json_last_error() !== JSON_ERROR_NONE) {
     http_response_code(500);
-    echo json_encode(['error' => 'Invalid JSON response from API']);
+    echo json_encode(['error' => 'Invalid JSON in local cities data.']);
     exit;
 }
 
-// Adjust based on actual API response structure
-if (empty($cities)) {
+// Filter cities by the given provinceId
+$citiesInProvince = array_filter($citiesData, function ($city) use ($provinceId) {
+    return $city['provinceCode'] === $provinceId;
+});
+
+// If no cities are found for the given provinceId
+if (empty($citiesInProvince)) {
     http_response_code(404);
     echo json_encode(['error' => 'No cities or municipalities found for the given province.']);
     exit;
 }
-usort($cities, function ($a, $b) {
+
+// Sort cities alphabetically by their name
+usort($citiesInProvince, function ($a, $b) {
     return strcmp($a['name'], $b['name']);
 });
 
-// Return the provinces data as JSON
+// Return the filtered and sorted cities as JSON
 header('Content-Type: application/json');
-echo json_encode($cities, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+echo json_encode(array_values($citiesInProvince), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 ?>

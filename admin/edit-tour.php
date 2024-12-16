@@ -1,8 +1,6 @@
 <?php
 include '../include/db_conn.php';
 include '../func/user_func.php';
-ini_set('log_errors', 1); // Enable error logging
-ini_set('error_log', '../error_log.txt'); // Set the error log file path
 session_start();
 $user_id = $_SESSION['user_id'];
 
@@ -241,8 +239,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         type="radio"
                                         id="status-yes"
                                         name="status"
-                                        value="1"
-                                        <?php echo ($tour['status'] == 1) ? 'checked' : ''; ?>>
+                                        value="Active"
+                                        <?php echo ($tour['status'] == 'Active') ? 'checked' : ''; ?>>
                                     <label for="status-yes">Active</label>
                                 </div>
                                 <div class="radio">
@@ -250,9 +248,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         type="radio"
                                         id="status-no"
                                         name="status"
-                                        value="3"
-                                        <?php echo ($tour['status'] == 3) ? 'checked' : ''; ?>>
+                                        value="Inactive"
+                                        <?php echo ($tour['status'] == 'Inactive') ? 'checked' : ''; ?>>
                                     <label for="status-no">Inactive</label>
+                                </div>
+                                <div class="radio">
+                                    <input
+                                        type="radio"
+                                        id="status-repair"
+                                        name="status"
+                                        value="Temporarily Closed"
+                                        <?php echo ($tour['status'] == 'Temporarily Closed') ? 'checked' : ''; ?>>
+                                    <label for="status-repair">Temporarily Closed</label>
                                 </div>
                             </div>
                         </div>

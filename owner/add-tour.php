@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Insert tour details into the database
             $query = "INSERT INTO tours (title, type, description, address, latitude, longitude, img, bookable, status, user_id) 
-                  VALUES (:title, :type, :description, :address, :latitude, :longitude, :img, :bookable, 1, :user_id)";
+                  VALUES (:title, :type, :description, :address, :latitude, :longitude, :img, :bookable, 'Pending', :user_id)";
 
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':title', $title);
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function tourAlreadyExists($conn, $title)
 {
-    $query = "SELECT COUNT(*) as count FROM tours WHERE title = :title AND status = 1";
+    $query = "SELECT COUNT(*) as count FROM tours WHERE title = :title";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':title', $title);
     $stmt->execute();
@@ -111,7 +111,7 @@ function tourAlreadyExists($conn, $title)
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
-    <title>BaGoTours. Tours</title>
+    <title>BaGoTours || Add Tour</title>
 </head>
 
 <body>
@@ -173,7 +173,7 @@ function tourAlreadyExists($conn, $title)
                                 <label for="bookable">Bookable <span>required</span></label>
                                 <div class="radio-group">
                                     <div class="radio">
-                                        <input type="radio" id="bookable-yes" name="bookable" valisue="1">
+                                        <input type="radio" id="bookable-yes" name="bookable" value="1">
                                         <label for="bookable-yes">Yes</label>
                                     </div>
                                     <div class="radio">

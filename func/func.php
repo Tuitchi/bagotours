@@ -1,12 +1,22 @@
 <?php
 function getTouristSpots($conn, $user_id)
 {
-    $query = "SELECT * FROM tours WHERE status = 1 AND user_id = $user_id";
+    $query = "SELECT * FROM tours WHERE status = 'Active' AND user_id = $user_id";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     return $result;
+}
+function generateUniqueBidId($conn) {
+    do {
+        $uniqueId = random_int(10000000, 99999999); // Generate an 8-digit number
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM booking WHERE BID = ?");
+        $stmt->execute([$uniqueId]);
+        $exists = $stmt->fetchColumn();
+    } while ($exists > 0); // Ensure the ID is unique in the database
+
+    return $uniqueId;
 }
 
 // NOTIFICATIONS
@@ -92,10 +102,10 @@ function getQR($conn, $tour_id)
 
 function recordVisit($conn, $tourId, $userId)
 {
-    $home = $conn->prepare("SELECT CASE WHEN home_address LIKE '%Bago%' THEN 'Bago City' ELSE 'Non-Bago City' END AS residence_status FROM users WHERE id = :user_id");
+    $home = $conn->prepare("SELECT home_address FROM users WHERE id = :user_id");
     $home->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $home->execute();
-    $homeAddress = $home->fetch()['residence_status'];
+    $homeAddress = $home->fetchColumn();
 
     $sql = 'INSERT INTO visit_records (tour_id, user_id, visit_time, city_residence) VALUES (:tour_id, :user_id, NOW(), :homeAddress)';
     $stmt = $conn->prepare($sql);

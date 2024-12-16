@@ -1,0 +1,2 @@
+[2024-12-15 17:00:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'

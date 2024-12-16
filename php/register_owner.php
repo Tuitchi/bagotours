@@ -16,11 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $type = trim($_POST['type']);
     $latitude = trim($_POST['latitude']);
     $longitude = trim($_POST['longitude']);
-    $proof_permits = $_POST['proof_permits'];  // proof titles (types)
-    $proof_images = $_FILES['proof-images'];  // proof images (files)
+    $proof_permits = $_POST['proof_permits']; 
+    $proof_images = $_FILES['proof-images']; 
     $tour_images = $_FILES['tour-images']; 
-    $bookable = $_POST['bookable'];   // tour images (files)
-    $status = 0;
+    $bookable = $_POST['bookable'];
 
     if (empty($title) || empty($address) || empty($description) || empty($type) || empty($latitude) || empty($longitude) || empty($proof_permits) || empty($proof_images) || empty($tour_images)) {
         echo json_encode(['success' => false, 'errors' => "Please fill in all required fields."]);
@@ -38,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         // Insert tour details into the database (with proof and image data)
-        $sql = "INSERT INTO tours (user_id, title, address, type, description, status, longitude, latitude, img, proof_title, proof_image, bookable)
-                VALUES (:user_id, :title, :address, :type, :description, :status, :longitude, :latitude, :img, :proof_title, :proof_image, :bookable)";
+        $sql = "INSERT INTO tours (user_id, title, address, type, description, longitude, latitude, img, proof_title, proof_image, bookable, status)
+                VALUES (:user_id, :title, :address, :type, :description, :longitude, :latitude, :img, :proof_title, :proof_image, :bookable, :status)";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
             ':user_id' => $user_id,
@@ -47,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ':address' => $address,
             ':type' => $type,
             ':description' => $description,
-            ':status' => $status,
             ':longitude' => $longitude,
             ':latitude' => $latitude,
             ':img' => $tour_images_str,  // Store comma-separated tour image filenames
             ':proof_title' => $proofs_str,  // Store comma-separated proof titles
             ':proof_image' => $proof_images_str,  // Store comma-separated proof image filenames
-            ':bookable' => $bookable
+            ':bookable' => $bookable,
+            ':status' => 'Pending'  // Set status to 0 for pending approval
         ]);
         $tour_id = $conn->lastInsertId();
         notifyAdmin($conn, $tour_id);

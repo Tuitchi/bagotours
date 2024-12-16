@@ -4,8 +4,8 @@ include '../include/db_conn.php';
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
-    $query = "SELECT u.id AS user_id, CONCAT(firstname, ' ', lastname) AS name, u.email, u.home_address, u.profile_picture, 
-    b.id AS booking_id, b.start_date, b.end_date, b.people, b.phone_number, b.status, b.date_created as date_created , t.id as tour_id,
+    $query = "SELECT u.id AS user_id, CONCAT(firstname, ' ', lastname) AS name, b.BID as bookingId, u.email, u.home_address, u.profile_picture, u.phone_number, u.is_trusted,
+    b.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_created as date_created , t.id as tour_id,
     t.title AS tour_title
 FROM booking b
 JOIN users u ON u.id = b.user_id 

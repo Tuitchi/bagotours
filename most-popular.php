@@ -51,7 +51,7 @@ LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
 LEFT JOIN booking_visitors bv ON t.id = bv.id
 LEFT JOIN visit_visitors vv ON t.id = vv.id
 LEFT JOIN review_data rd ON t.id = rd.id
-WHERE t.status = 1
+WHERE t.status IN ('Active','Temporarily Closed')
 GROUP BY t.id, rd.average_rating, rd.review_count, bv.total_booking_visitors, vv.total_visit_visitors;
 ";
 
@@ -152,7 +152,7 @@ try {
                         <div class='smallDetails'>
                             <span>" . htmlspecialchars($tour['type']) . "</span>
                             <span class='rating'>" . $totalStars . " (" . ($tour['review_count']) . " reviews)</span>
-                            <span class='rating'>" . htmlspecialchars($tour['total_visitors']) . " Visits</span>
+                            <span class='rating'>" . htmlspecialchars($tour['total_visitors']) . " Visitors</span>
                         </div>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ try {
     <?php require "include/login-registration.php"; ?>
 
     <script src="index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script>
         // Function to apply background images to each tourList item
         function applyBackgroundImages() {

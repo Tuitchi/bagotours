@@ -1,79 +1,71 @@
 <?php
-include '../include/db_conn.php';
 session_start();
-if (isset($_COOKIE['device_id'])) {
-    unset($_COOKIE['device_id']);
-}
-$errors = [];
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstname = htmlspecialchars(trim($_POST['firstname']));
-    $lastname = htmlspecialchars(trim($_POST['lastname']));
-    $name = $firstname . " " . $lastname;
-    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $home = $_POST['home-address'];
-    $uname = htmlspecialchars(trim($_POST['username']));
-    $pwd = trim($_POST['pwd']);
-    $confirm_password = trim($_POST['con-pwd']);
-    $device_id = md5($email . $uname);
-    $role = "user";
-    $pp = "default.png";
+require '../include/db_conn.php';
 
-    include '../func/user_func.php';
-    $emailAlreadyUsed = emailAlreadyUsed($conn, $email);
-    $usernameAlreadyUsed = usernameAlreadyUsed($conn, $uname);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errors = [];
+    $email = $_POST['email'];
+    $country = htmlspecialchars(trim($_POST['country']));
+    $province = htmlspecialchars(trim($_POST['province'] ?? ''));
+    $city = htmlspecialchars(trim($_POST['city'] ?? ''));
 
-    if (empty($firstname) || empty($lastname)) {
-        $errors['name'] = "Enter your first and last name.";
+    // Constructing home address from provided fields
+    $home_address = trim(($city ? $city . ', ' : '') . ($province ? $province . ', ' : '') . $country);
+
+    $password = $_POST['pwd'] ?? null;
+    $confirm_password = $_POST['con-pwd'] ?? null;
+
+    if (is_null($email)) {
+        $errors['email'] = "Email is required.";
     }
-    if (empty($home)) {
-        $errors['home'] = "Enter your home address.";
-    }
-    if (empty($uname)) {
-        $errors['uname'] = "Enter your username.";
-    } elseif ($usernameAlreadyUsed) {
-        $errors['uname'] = "Username already in use.";
-    }
-    if (empty($email)) {
-        $errors['email'] = "Enter your email.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "Invalid email format.";
-    } elseif ($emailAlreadyUsed) {
-        $errors['email'] = "Email already in use.";
     }
-    if (strlen(trim($pwd)) === 0) {
-        $errors['pwd'] = "Enter your password.";
-    } elseif (strlen($pwd) < 8) {
-        $errors['pwd'] = "Password must be at least 8 characters long.";
+    if (empty($country)) {
+        $errors['country'] = "Country is required.";
     }
-    if (empty($confirm_password)) {
-        $errors['confirm_password'] = "Confirm your password.";
-    } elseif ($pwd != $confirm_password) {
+
+    if (empty($password) || strlen($password) < 6) {
+        $errors['password'] = "Password must be at least 6 characters long.";
+    } elseif ($password !== $confirm_password) {
         $errors['confirm_password'] = "Passwords do not match.";
     }
 
-    if (!empty($errors)) {
-        echo json_encode(['success' => false, 'errors' => $errors]);
-        exit();
+    if (empty($errors)) {
+        try {
+            // Check if the email already exists
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
+            $stmt->execute(['email' => $email]);
+            $emailExists = $stmt->fetchColumn();
+
+            if ($emailExists > 0) {
+                $errors['email'] = "Email is already taken.";
+            } else {
+                $device_id = md5($email);
+                setcookie('device_id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
+                // Hash the password
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                // Insert new user into the database
+                $stmt = $conn->prepare("INSERT INTO users (email, home_address, password, role, device_id) VALUES (:email, :home_address, :password, 'user',:device_id)");
+                $stmt->execute([
+                    'email' => $email,
+                    'home_address' => $home_address,
+                    'password' => $hashed_password,
+                    'device_id' => $device_id,
+                ]);
+                $_SESSION['user_id'] = $conn->lastInsertId();
+                $_SESSION['role'] = 'user';
+                $_SESSION['profile-pic'] = 'upload/Profile Pictures/default.png';
+                echo json_encode(['success' => true, 'message' => 'Registration successful!', 'redirect' => '']);
+                exit;
+            }
+        } catch (PDOException $e) {
+            $errors['database'] = "Database error: " . $e->getMessage();
+        }
     }
-
-    $hashed_password = password_hash($pwd, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO users (name, email, username, password, role, profile_picture,home_address, device_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-    try {
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$name, $email, $uname, $hashed_password, $role, $pp, $home, $device_id]);
-
-        setcookie('device-id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
-        $_SESSION['profile-pic'] = $pp;
-        $_SESSION['user_id'] = $conn->lastInsertId();
-        $_SESSION['ROLE'] = 'user';
-        echo json_encode(['success' => true, 'redirect' => 'home']);
-    } catch (PDOException $e) {
-        $errors['register'] = "PDO error: " . $e->getMessage();
-        echo json_encode(['success' => false, 'errors' => $errors]);
-    }
-
-    $conn = null;
-    exit();
+    // Respond with errors if any
+    echo json_encode(['success' => false, 'errors' => $errors]);
+    exit;
 }
+

@@ -6,6 +6,30 @@ require_once 'include/db_conn.php';
 
 $user_id = $_SESSION['user_id'] ?? 0;
 $user = getUserById($conn, $user_id);
+$addressParts = array_map('trim', explode(',', $user['home_address']));
+
+// Handle different cases based on the number of parts in $addressParts
+if (count($addressParts) === 1) {
+    // Only one part, assume it's the country
+    $user['city'] = null;
+    $user['province'] = null;
+    $user['country'] = $addressParts[0];
+} elseif (count($addressParts) === 3) {
+    // All three parts present: city, province, and country
+    $user['city'] = $addressParts[0];
+    $user['province'] = $addressParts[1];
+    $user['country'] = $addressParts[2];
+} else {
+    // Unexpected format, default to null
+    $user['city'] = null;
+    $user['province'] = null;
+    $user['country'] = null;
+}
+
+// Example: Default country if critical
+// $user['country'] = $user['country'] ?? 'Philippines';
+
+
 ?>
 
 <head>
@@ -142,7 +166,8 @@ $user = getUserById($conn, $user_id);
             max-width: 500px;
             border-radius: 8px;
         }
-        .modal-content a{
+
+        .modal-content a {
             float: right;
         }
 
@@ -208,6 +233,13 @@ $user = getUserById($conn, $user_id);
                 /* Change icon color on hover */
             }
         }
+
+        .name {
+            width: calc(100% - 22px);
+            display: flex;
+            gap: 0.5em;
+            flex-direction: row;
+        }
     </style>
 </head>
 
@@ -231,11 +263,20 @@ $user = getUserById($conn, $user_id);
                 <aside>
                     <div class="Account">
                         <?php if (!empty($user)) { ?>
-                            <img src="upload/Profile Pictures/<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
+                            <img src="<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
                                 alt="Profile Preview" style="width:100px;">
                             <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'], ENT_QUOTES); ?></p>
                             <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?></p>
-                            <p><strong>Email Address:</strong> <?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>
+                            <p>
+                                <strong>Email Address:</strong>
+                                <?php
+                                echo htmlspecialchars($user['email'], ENT_QUOTES);
+                                if ($user['is_verified'] == true) {
+                                    echo "<i class='bx bxs-check-circle' style='color:#33af1f'></i>";
+                                } else {
+                                    echo '<button>Verify Email</button>';
+                                }
+                                ?>
                             </p>
                             <p><strong>Home Address:</strong>
                                 <?php echo htmlspecialchars($user['home_address'], ENT_QUOTES); ?></p>
@@ -265,16 +306,20 @@ $user = getUserById($conn, $user_id);
                         <form action="php/updateAcc.php" method="POST" enctype="multipart/form-data">
                             <div class="profilepic" id="profilePic">
                                 <img id="profilePreview"
-                                    src="upload/Profile Pictures/<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
+                                    src="<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
                                     alt="Profile Preview">
                                 <label for="profilePicture" id="pp-icon"><i class="fa fa-camera"></i></label>
                                 <input type="file" id="profilePicture" name="profilePicture">
                             </div>
                             <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName"
-                                value="<?php echo htmlspecialchars($user['name'], ENT_QUOTES); ?>">
+                            <div class="name">
+                                <input type="text" id="fullName" name="firstname"
+                                    value="<?php echo htmlspecialchars($user['firstname'], ENT_QUOTES); ?>">
+                                <input type="text" id="fullName" name="lastname"
+                                    value="<?php echo htmlspecialchars($user['lastname'], ENT_QUOTES); ?>">
+                            </div>
                             <label for="username">Username</label>
-                            <input type="text" id="username" name="username" disabled
+                            <input type="text" id="username" name="username" disabled placeholder="Username"
                                 value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>">
                             <label for="email">Email Address</label>
                             <input type="email" id="email" name="email" disabled
@@ -284,8 +329,39 @@ $user = getUserById($conn, $user_id);
                                 pattern="^(\+639|09)\d{9}$" placeholder="e.g. 09123456789"
                                 value="<?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES); ?>">
                             <label for="home-address">Home Address</label>
-                            <input type="text" id="home-address" name="home-address"
-                                value="<?php echo htmlspecialchars($user['home_address'], ENT_QUOTES); ?>">
+                            <div class="name">
+                                <select name="city" id="city" required disabled>
+                                    <?php
+                                    if (isset($user['city'])) {
+                                        echo '<option value="' . $user['city'] . '" selected>' . $user['city'] . '</option>';
+                                    } else {
+                                        echo '<option value="" selected disabled>Select City/Municipality</option>';
+                                    }
+                                    ; ?>
+                                    <!-- Auto Generated country throu JS -->
+                                </select>
+                                <select name="province" id="province" required disabled>
+                                    <?php
+                                    if (isset($user['province'])) {
+                                        echo '<option value="' . $user['province'] . '" selected>' . $user['province'] . '</option>';
+                                    } else {
+                                        echo '<option value="" selected disabled>Select Province</option>';
+                                    }
+                                    ; ?>
+                                    <!-- Auto Generated country throu JS -->
+                                </select>
+                                <select name="country" id="country" required>
+                                    <option value="" selected disabled>Select Country</option>
+                                    <?php
+                                    if (isset($user['country'])) {
+                                        echo '<option value="' . $user['country'] . '" selected>' . $user['country'] . '</option>';
+                                    } else {
+
+                                    }
+                                    ; ?>
+                                    <!-- Auto Generated country throu JS -->
+                                </select>
+                            </div>
                             <input type="submit" value="Update">
                         </form>
                     </div>
@@ -308,16 +384,15 @@ $user = getUserById($conn, $user_id);
         </div>
     </div>
     </div>
-    <?php require "include/login-registration.php"; ?>
     <script src="index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const links = $('.editUser a');
             const sections = $('aside > div');
 
-            links.on('click', function(event) {
+            links.on('click', function (event) {
                 event.preventDefault();
                 sections.hide();
                 const target = $(this).data('section');
@@ -346,24 +421,24 @@ $user = getUserById($conn, $user_id);
             var $btn = $("#upgradeButton");
             var $span = $(".close");
 
-            $btn.on("click", function() {
+            $btn.on("click", function () {
                 $modal.addClass('active');
             });
 
             // Close the modal when the "x" button is clicked
-            $span.on("click", function() {
+            $span.on("click", function () {
                 $modal.removeClass('active');
             });
 
             // Close the modal when clicking outside of the modal content
-            $(window).on("click", function(event) {
+            $(window).on("click", function (event) {
                 if ($(event.target).is($modal)) {
                     $modal.removeClass('active');
                 }
             });
 
             // Optional: Add keypress event to close modal with ESC key
-            $(window).on("keydown", function(event) {
+            $(window).on("keydown", function (event) {
                 if (event.key === "Escape") {
                     $modal.removeClass('active');
                 }
@@ -375,7 +450,7 @@ $user = getUserById($conn, $user_id);
             var $passwordError = $('#passwordError');
             var $passwordStrength = $('#passwordStrength');
 
-            $passwordForm.on('submit', function(e) {
+            $passwordForm.on('submit', function (e) {
                 e.preventDefault(); // Prevent the default form submission
 
                 var oldPassword = $('#oldPassword').val();
@@ -398,7 +473,7 @@ $user = getUserById($conn, $user_id);
                         oldPassword: oldPassword,
                         newPassword: newPassword
                     },
-                    success: function(response) {
+                    success: function (response) {
                         // Handle the response
                         var result = JSON.parse(response);
                         if (result.success) {
@@ -420,7 +495,7 @@ $user = getUserById($conn, $user_id);
                             });
                         }
                     },
-                    error: function() {
+                    error: function () {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -431,7 +506,7 @@ $user = getUserById($conn, $user_id);
                 });
             });
 
-            $('#newPassword').on('input', function() {
+            $('#newPassword').on('input', function () {
                 var newPassword = $(this).val();
                 var strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
@@ -441,6 +516,100 @@ $user = getUserById($conn, $user_id);
                     $strength.css('color', 'green').text('Strong');
                 } else {
                     $strength.css('color', 'orange').text('Weak');
+                }
+            });
+            const countries = [
+                "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+                "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+                "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+                "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)",
+                "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica",
+                "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+                "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
+                "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
+                "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea (North)", "Korea (South)", "Kuwait", "Kyrgyzstan",
+                "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
+                "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova",
+                "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand",
+                "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea",
+                "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
+                "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
+                "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka",
+                "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga",
+                "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+                "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+            ];
+
+            // Dropdown elements
+            const $countryDropdown = $('#country');
+            const $provinceDropdown = $('#province');
+            const $cityDropdown = $('#city');
+
+            // Populate country dropdown
+            $.each(countries, function (_, country) {
+                $countryDropdown.append(`<option value="${country}">${country}</option>`);
+            });
+
+            // Handle country change event
+            $countryDropdown.on('change', function () {
+                const selectedCountry = $(this).val();
+
+                if (selectedCountry === "Philippines") {
+                    $provinceDropdown.prop('disabled', false);
+                    $cityDropdown.prop('disabled', true);
+
+                    // Fetch provinces
+                    $.ajax({
+                        url: 'php/getProvinces.php',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (provinces) {
+                            $('.input-group.province').css('display', 'block');
+                            $provinceDropdown.html('<option value="" selected disabled>Select Province</option>');
+                            $.each(provinces, function (_, province) {
+                                $provinceDropdown.append(`<option value="${province.name}" data-code="${province.code}">${province.name}</option>`);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error fetching provinces:", error);
+                        }
+                    });
+                } else {
+                    $provinceDropdown.prop('disabled', true).html('<option value="" selected disabled>Select Province</option>');
+                    $cityDropdown.prop('disabled', true).html('<option value="" selected disabled>Select City/Municipality</option>');
+                }
+            });
+
+            // Handle province change event
+            $provinceDropdown.on('change', function () {
+                const provinceId = $(this).find(':selected').data('code');
+
+                if (provinceId) {
+                    $cityDropdown.prop('disabled', false);
+
+                    // Fetch cities
+                    $.ajax({
+                        url: 'php/getCities.php',
+                        method: 'GET',
+                        data: { provinceId: provinceId },
+                        dataType: 'json',
+                        success: function (cities) {
+                            $('.input-group.city').css('display', 'block');
+                            $cityDropdown.html('<option value="" selected disabled>Select City/Municipality</option>');
+                            $.each(cities, function (_, city) {
+                                $cityDropdown.append(`<option value="${city.name}">${city.name}</option>`);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            const errorMessage = xhr.responseText || error;
+                            Toast.fire({
+                                icon: 'error',
+                                title: `Error: ${errorMessage}`
+                            });
+                        }
+                    });
+                } else {
+                    $cityDropdown.prop('disabled', true).html('<option value="" selected disabled>Select City/Municipality</option>');
                 }
             });
         });

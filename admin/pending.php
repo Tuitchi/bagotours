@@ -3,7 +3,7 @@ include '../include/db_conn.php';
 session_start();
 $user_id = $_SESSION['user_id'];
 
-$query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 0 OR tours.status = 2";
+$query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 'Pending' OR tours.status = 'Rejected'";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -207,9 +207,11 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
+
         .accept-btn.accept {
             background-color: #45a049;
         }
+
         .accept-btn.decline {
             background-color: #ff5722;
         }
@@ -217,6 +219,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .accept-btn.accept:hover {
             background-color: #45a049;
         }
+
         .accept-btn.accept:active {
             background-color: #388e3c;
         }
@@ -224,6 +227,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .accept-btn.decline:active {
             background-color: #388e3c;
         }
+
         .accept-btn.decline:hover {
             background-color: red;
         }
@@ -317,15 +321,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     echo "<td>" . $counter++ . "</td>";
                                     echo "<td>" . $row['email'] . "</td>";
                                     echo "<td>" . $row['title'] . "</td>";
-                                    echo "<td>";
-                                    if ($status == 0) {
-                                        echo "Pending";
-                                    } elseif ($status == 1) {
-                                        echo "Accepted";
-                                    } else {
-                                        echo "Declined";
-                                    }
-                                    echo "</td>";
+                                    echo '<td style="color: ' . ($row['status'] == 'Pending' ? "green" : "red") . '">' . $row['status'] . '</td>';
                                     echo "<td><button class='view-btn' data-id='" . $row['id'] . "'>View</button></td>";
                                     echo "</tr>";
                                 }
@@ -354,10 +350,10 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </main>
     </section>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
 
     <script>
         console.log(typeof Swal !== 'undefined' ? 'SweetAlert2 Loaded' : 'SweetAlert2 Not Loaded');
@@ -405,45 +401,41 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         const proofImages = data.pending.proof_image ? data.pending.proof_image.split(',') : [];
 
                         $('#applicationInfoContent').html(`
-            <h1 style="text-align: center;">${data.pending.title}</h1>
-            
-            <!-- Loop through 'img' array and display all images -->
-            <div class="tour-images">
-                ${images.map(image => `
-                    <img src="../upload/Tour Images/${image}" alt="Tour Picture" width="100" class="zoomable-img">
-                `).join('')}
-            </div>
-            
-            <p><strong>Name:</strong> ${data.pending.name}</p>
-            <p><strong>Email:</strong> ${data.pending.email}</p>
-            <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
-            <p><strong>Address:</strong> ${data.pending.address}</p>
-            
-            <p style="overflow: hidden; white-space: normal; height: 5em; text-overflow: ellipsis;">
-                <strong>Description:</strong> ${data.pending.description}
-            </p>
-            
-            <!-- Loop through 'proof_title' array and display all titles -->
-            <p><strong>Proof:</strong></p>
-            <ul>
-                ${proofTitles.map(title => `
-                    <li>${title}</li>
-                `).join('')}
-            </ul>
-            
-            <!-- Loop through 'proof_image' array and display all images -->
-            <div class="proof-images">
-                ${proofImages.map(image => `
-                    <img src="../upload/Permits/${image}" alt="Proof Picture" width="100" class="zoomable-img">
-                `).join('')}
-            </div>
+                        <h1 style="text-align: center;">${data.pending.title}</h1>
+                        
+                        <div class="tour-images">
+                            ${images.map(image => `
+                                <img src="../upload/Tour Images/${image}" alt="Tour Picture" width="100" class="zoomable-img">
+                            `).join('')}
+                        </div>
+                        <br>
+                        <p><strong>Email:</strong> ${data.pending.email}</p>
+                        <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
+                        <p><strong>Address:</strong> ${data.pending.address}</p>
+                        
+                        <p style="overflow: hidden; white-space: normal; height: 5em; text-overflow: ellipsis;">
+                            <strong>Description:</strong> ${data.pending.description}
+                        </p>
+                        
+                        <p><strong>Proof:</strong></p>
+                        <ul>
+                            ${proofTitles.map(title => `
+                                <li>${title}</li>
+                            `).join('')}
+                        </ul>
+                        
+                        <div class="proof-images">
+                            ${proofImages.map(image => `
+                                <img src="../upload/Permits/${image}" alt="Proof Picture" width="100" class="zoomable-img">
+                            `).join('')}
+                        </div>
 
-            <p><strong>Date:</strong> ${formattedDate}</p>
-            <div class="btn-group">
-            <a class="accept-btn accept" href="../php/updatePending.php?status=1&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
-            <a class="accept-btn decline" href="../php/updatePending.php?status=2&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Decline</a>
-        </div>
-        `);
+                        <p><strong>Date:</strong> ${formattedDate}</p>
+                        <div class="btn-group">
+                        <a class="accept-btn accept" href="../php/updatePending.php?status=Confirmed&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
+                        <a class="accept-btn decline" href="../php/updatePending.php?status=Rejected&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Decline</a>
+                    </div>
+                    `);
 
                         // Show the modal
                         $('#viewModal').fadeIn();

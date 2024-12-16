@@ -1,13 +1,12 @@
 <?php
 include '../include/db_conn.php';
 include '../func/user_func.php';
-
 session_start();
-$status = isset($_GET["status"]) ? $_GET["status"] : '';
-
 $user_id = $_SESSION['user_id'];
+
+$status = isset($_GET["status"]) ? $_GET["status"] : '';
 $query = isset($_GET['search']) ? $_GET['search'] : null;
-$tour = getAllToursforOwners($conn, $user_id, $query);
+$tour = getAllToursforOwners($conn, $user_id,$query);
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +23,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
     <!-- Mapbox -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
-    <title>BaGoTours. Tours</title>
+    <title>BaGoTours || Tours</title>
     <style>
         .data {
             display: flex;
@@ -300,7 +299,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
                 <a class="btn-download" id="btn-download" href="add-tour">
-                    <i class='bx bx-plus'></i>Add Tour
+                    <i class='bx bx-plus'></i>Add Tours
                 </a>
             </div>
             <div class="table-data">
@@ -319,7 +318,6 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                     <?php if (!empty($tour)): ?>
                         <?php foreach ($tour as $row): ?>
                             <?php
-                            $stats = ($row['status'] == 1) ? 'Active' : (($row['status'] == 3) ? 'Inactive' : '');
                             $images = explode(',', $row['img']);
                             $mainImage = htmlspecialchars($images[0], ENT_QUOTES, 'UTF-8');
                             ?>
@@ -339,8 +337,8 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                                         <?php echo htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8'); ?>
                                     </p>
 
-                                    <p id="stats" style="color: <?php echo ($stats == 'Active') ? 'green' : 'red'; ?>;">
-                                        <?php echo htmlspecialchars($stats, ENT_QUOTES, 'UTF-8'); ?>
+                                    <p id="stats" style="color: <?php echo ($row['status'] == 'Active') ? 'green' : 'red'; ?>;">
+                                        <?php echo htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8'); ?>
                                     </p>
 
                                     <div class="dropdown">
@@ -352,6 +350,9 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                                             <a href="edit-tour?id=<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"
                                                 class="btn" id="edit">
                                                 <i class="bx bx-edit-alt"></i>Edit</a>
+                                            <a href="accommodation-fees-management?id=<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                class="btn" id="edit">
+                                                <i class='bx bx-dollar-circle'></i>Pricing</a>
                                             <a href="#" class="btn" id="delete"
                                                 data-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"><i
                                                     class="bx bx-trash"></i>Delete</a>
@@ -381,9 +382,9 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Handle the search input submission
-            $("#search-input").on("keypress", function (event) {
+            $("#search-input").on("keypress", function(event) {
                 if (event.which === 13) { // Check for Enter key
                     $(this).closest("form").submit(); // Submit the form
                 }
@@ -395,12 +396,12 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                 timer: 3000,
                 timerProgressBar: true
             });
-            $(document).on('click', '#delete', function (event) {
+            $(document).on('click', '#delete', function(event) {
                 event.preventDefault();
                 const id = $(this).data('id');
                 Delete(id);
             });
-            $(document).on('click', '#drop', function (event) {
+            $(document).on('click', '#drop', function(event) {
                 event.preventDefault();
 
                 // Close any open dropdowns first (optional, to hide others)
@@ -411,25 +412,26 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
 
                 // Check the current state and toggle it
                 if (actions.css('display') === 'none') {
-                    actions.css('display', 'block');  // Show the dropdown
+                    actions.css('display', 'block'); // Show the dropdown
                 } else {
-                    actions.css('display', 'none');   // Hide the dropdown
+                    actions.css('display', 'none'); // Hide the dropdown
                 }
             });
 
             // Close the dropdown when clicking outside of it
-            $(document).click(function (event) {
+            $(document).click(function(event) {
                 if (!$(event.target).closest('.dropdown').length) {
                     $('.actions').hide();
                 }
             });
-            $(document).on('click', '#view', function (event) {
+            $(document).on('click', '#view', function(event) {
                 event.preventDefault();
                 const id = $(this).data('id');
                 View(id);
             });
+
             function View(tourId) {
-                $.getJSON(`../php/get_tour_info.php?id=${tourId}`, function (data) {
+                $.getJSON(`../php/get_tour_info.php?id=${tourId}`, function(data) {
                     if (data.success) {
                         const images = data.tour.img.split(',');
                         let carouselItems = '';
@@ -472,14 +474,14 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                 </div>
                 <button type="button" class="btn-close" onclick=Close()>Close</button>
             `);
-                        $('#viewModal').show();
+                        $('#viewModal').css('display', 'flex');
                     } else {
                         Toast.fire({
                             icon: 'error',
                             title: 'Unable to fetch tour information.'
                         });
                     }
-                }).fail(function () {
+                }).fail(function() {
                     Toast.fire({
                         icon: 'error',
                         title: 'There was an error fetching the tour information.'
@@ -488,6 +490,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
             }
 
             let currentSlide = 0;
+
             function showSlide(index) {
                 const slides = document.querySelectorAll('.carousel-slide');
                 const indicators = document.querySelectorAll('.indicator');
@@ -508,7 +511,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                 showSlide((currentSlide - 1 + slides.length) % slides.length);
             }
 
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('indicator')) {
                     showSlide(parseInt(e.target.getAttribute('data-slide')));
                 }
@@ -529,7 +532,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                             url: `../php/delete_tour.php?id=${tourId}`,
                             type: 'POST',
                             dataType: 'json',
-                            success: function (response) {
+                            success: function(response) {
                                 if (response.success) {
                                     Toast.fire({
                                         icon: 'success',
@@ -543,7 +546,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                                     });
                                 }
                             },
-                            error: function (xhr, status, error) {
+                            error: function(xhr, status, error) {
                                 Toast.fire({
                                     icon: 'error',
                                     title: 'An error occurred. Please try again.'
@@ -554,7 +557,7 @@ $tour = getAllToursforOwners($conn, $user_id, $query);
                     }
                 });
             }
-            window.Close = function () {
+            window.Close = function() {
                 document.querySelector('.modal').style.display = 'none';
             };
 

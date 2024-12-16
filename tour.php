@@ -1,4 +1,5 @@
 <?php session_start();
+$currentTimestamp = date('Y-m-d H:i:s');
 require 'include/db_conn.php';
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
@@ -37,12 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     // Insert the review
                     $img = ''; // Handle image upload if required
-                    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img, date_created) VALUES (:tour_id, :user_id, :rating, :review, :img, NOW())");
+                    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img, date_created) VALUES (:tour_id, :user_id, :rating, :review, :img, :date)");
                     $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
                     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                     $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
                     $stmt->bindParam(':review', $review, PDO::PARAM_STR);
                     $stmt->bindParam(':img', $img, PDO::PARAM_STR);
+                    $stmt->bindParam(':date', $currentTimestamp, PDO::PARAM_STR);
 
                     if ($stmt->execute()) {
                         $_SESSION['successMessage'] = "Review submitted successfully!";
@@ -78,16 +80,31 @@ $ratingStars = displayRatingStars($averageRating);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BagoTours</title>
+    <title>Welcome to <?php echo $tour['title'] ?> || BagoTours</title>
     <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo $webIcon ?>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
     <link rel="stylesheet" href="user.css">
-    <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="assets/css/tour.css">
     <style>
+        .flex {
+            text-align: center;
+            display: flex;
+            gap: 5px;
+            width: 100%;
+            flex-direction: row;
+        }
+
+        .input-groups {
+            width: 100%;
+        }
+
+        .input-group input {
+            width: 100%;
+        }
+
         .comment-section {
             position: relative;
             width: 100%;
@@ -311,43 +328,61 @@ $ratingStars = displayRatingStars($averageRating);
                             <div class="pricing-container">
                                 <h3 class="pricing-header">Price <i class='bx bx-caret-down'></i></h3>
                                 <div class="pricing-content">
-                                    <div class="pricing">
-                                        <h4>Entrance</h4>
-                                        -
-                                        <h5>P100/pax</h5>
-                                    </div>
-                                    <div class="pricing">
-                                        <h4>Entrance</h4>
-                                        -
-                                        <h5>P100/pax</h5>
-                                    </div>
-                                    <div class="pricing">
-                                        <h4>Entrance</h4>
-                                        -
-                                        <h5>P100/pax</h5>
-                                    </div>
+                                    <?php
+                                    $stmt = $conn->prepare('SELECT * FROM fees WHERE tour_id = :tour_id');
+                                    $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT); // Explicitly specify the parameter type
+                                    $stmt->execute();
+                                    $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($fees as $fee) {
+                                        echo "<div class='pricing'>
+                                                    <h4>" . htmlspecialchars($fee['name'], ENT_QUOTES, 'UTF-8') . "</h4>
+                                                    -
+                                                    <h5>₱" . htmlspecialchars($fee['amount'], ENT_QUOTES, 'UTF-8') . " " . htmlspecialchars($fee['description'], ENT_QUOTES, 'UTF-8') . "</h5>
+                                                </div>";
+                                    }
+                                    ?>
+                                    <?php
+                                    $stmt = $conn->prepare('SELECT * FROM accommodations WHERE tour_id = :tour_id');
+                                    $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT); // Explicitly specify the parameter type
+                                    $stmt->execute();
+                                    $accommodations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($accommodations as $accommodation) {
+                                        echo "<div class='pricing'>
+                                                    <h4>" . htmlspecialchars($accommodation['name'], ENT_QUOTES, 'UTF-8') . "</h4>
+                                                    -
+                                                    <h5>₱" . htmlspecialchars($accommodation['amount'], ENT_QUOTES, 'UTF-8') . " (up to " . htmlspecialchars($accommodation['capacity'], ENT_QUOTES, 'UTF-8') . " person)</h5>
+                                                </div>";
+                                    }
+                                    ?>
                                 </div>
                             </div>
                             <p class="rating"><?php echo $ratingStars; ?></p>
                             <h4>About</h4>
                             <p class="details"><?php echo $tour['description'] ?></p>
                             <div class="btons">
-                                <?php if (isBookable($conn, $tour['id'])) {
-                                    $status = checkBookingStatus($conn, $user_id, $tour['id']);
+                                <?php if (!checkIfTemporarilyClosed($conn, $tour['id'])) {
 
-                                    if ($status) {
-                                        if ($status['status'] == 0 || $status['status'] == 1) {
-                                            echo "<button class='bookbtn' disabled>Already Booked</button>";
-                                        } elseif ($status['status'] == 3) {
-                                            echo '<button class="bookbtn" id="rate">Rate and Review</button>';
+                                    if (isBookable($conn, $tour['id'])) {
+                                        $status = checkBookingStatus($conn, $user_id, $tour['id']);
+
+                                        if ($status) {
+                                            if ($status['status'] == 0 || $status['status'] == 1) {
+                                                echo "<button class='bookbtn' disabled>Already Booked</button>";
+                                            } elseif ($status['status'] == 3) {
+                                                echo '<button class="bookbtn" id="rate" data-id="' . $status['id'] . '">Rate and Review</button>';
+                                            } else {
+                                                echo '<button class="bookbtn" id="book">Book Now</button>';
+                                            }
                                         } else {
                                             echo '<button class="bookbtn" id="book">Book Now</button>';
                                         }
-                                    } else {
-                                        echo '<button class="bookbtn" id="book">Book Now</button>';
-                                    }
+                                    } ?>
+                                    <a href="map?id=<?php echo $_GET['id']; ?>" class="viewbtn">Go Here</a>
+                                <?php } else {
+                                    echo '<button class="bookbtn Closed">Tour is temporarily closed</button>';
                                 } ?>
-                                <a href="map?id=<?php echo $_GET['id']; ?>" class="viewbtn">Go Here</a>
                             </div>
 
                         </div>
@@ -360,8 +395,7 @@ $ratingStars = displayRatingStars($averageRating);
                         <div class="comment-box">
                             <div class="rating">
                                 <div class="rating-container">
-                                    <img src="upload/Profile Pictures/<?php echo $_SESSION['profile-pic'] ?>"
-                                        alt="User Avatar" class="avatar">
+                                    <img src="<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar" class="avatar">
                                     <label for="rating" class="rating-label">Rate Us:</label>
                                     <select class="star" id="rating" name="rating">
                                         <option value="5">⭐ 5 Stars</option>
@@ -384,7 +418,7 @@ $ratingStars = displayRatingStars($averageRating);
                     <div class="comments-list">
                         <?php
                         try {
-                            $stmt = $conn->prepare("SELECT rr.*, CONCAT(firstname, ' ', lastname) as name, u.profile_picture AS img 
+                            $stmt = $conn->prepare("SELECT rr.*, CONCAT(firstname, ' ', lastname) as name, u.profile_picture AS img, u.is_trusted as trusted
                                 FROM review_rating rr 
                                 JOIN users u ON rr.user_id = u.id 
                                 WHERE tour_id = :tour_id 
@@ -412,8 +446,7 @@ $ratingStars = displayRatingStars($averageRating);
                         <?php foreach ($comments as $comment):
                             $isUserComment = ($comment['user_id'] == $user_id); ?>
                             <div class="comment" id="comment-<?php echo $comment['id']; ?>">
-                                <img src="upload/Profile Pictures/<?php echo $comment['img']; ?>" alt="User Avatar"
-                                    class="avatar">
+                                <img src="<?php echo $comment['img']; ?>" alt="User Avatar" class="avatar">
                                 <div class="comment-content">
                                     <h4 class="comment-author"><?php echo htmlspecialchars($comment['name']); ?></h4>
                                     <div class="comment-star">
@@ -437,10 +470,11 @@ $ratingStars = displayRatingStars($averageRating);
                                                 <textarea id="edit-text-<?php echo $comment['id']; ?>" class="comment-input"
                                                     style="width:100%"><?php echo htmlspecialchars($comment['review']); ?></textarea>
                                                 <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>" />
-                                                <button type="submit" class="comment-submit-btn"
+                                                <button type="submit" class="comment-save-btn"
                                                     data-comment-id="<?php echo $comment['id']; ?>">
-                                                    <i class="bx bxs-send"></i> Save
+                                                    Save <i class="bx bxs-send"></i>
                                                 </button>
+
                                             </form>
                                         <?php endif; ?>
                                     </div>
@@ -477,28 +511,62 @@ $ratingStars = displayRatingStars($averageRating);
         <div class="modal-content booking">
             <span class="close">&times;</span>
             <h2>Book Your Tour</h2>
-            <form action="php/booking.php" method="POST">
+            <form id="bookingForm">
+                <div class="flex">
+                    <div class="input-groups">
+                        <label for="tour_date">Start Date</label>
+                        <input type="date" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="input-groups">
+                        <label for="tour_date">End Date</label>
+                        <input type="date" id="end_date" name="end_date" required>
+                    </div>
+                </div>
+
                 <input type="hidden" name="tour_id" value="<?php echo $tour['id']; ?>">
                 <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                <label for="tour_date">Select Date:</label>
-                <input type="date" id="tour_date" name="date_sched" required>
+
+                <label for="people">Number of Person/s</label>
+                <input type="number" id="people" name="people" min="1" required>
+
+                <label for="accommodation">Accommodation</label>
+                <div class="flex">
+                    <select id="accommodationSelect">
+                        <option value="" selected>Select an Accommodation</option>
+                        <?php foreach ($accommodations as $accommodation): ?>
+                            <option value="<?php echo $accommodation['id']; ?>"
+                                data-name="<?php echo htmlspecialchars($accommodation['name'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-price="<?php echo $accommodation['amount']; ?>"
+                                data-capacity="<?php echo $accommodation['capacity']; ?>">
+                                <?php echo htmlspecialchars($accommodation['name'], ENT_QUOTES, 'UTF-8'); ?> -
+                                ₱<?php echo $accommodation['amount']; ?> (up to <?php echo $accommodation['capacity']; ?>
+                                persons)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="button" id="addAccommodationBtn" style="width:35%">Add</button>
+                </div>
+
+                <div id="selectedAccommodations">
+                </div>
+
                 <button type="submit" class="book-btn">Confirm Booking</button>
             </form>
         </div>
     </div>
+
     <?php require "include/login-registration.php"; ?>
     <?php
     if (isset($status['id'])) {
         $bookingId = $status['id'];
     } else {
-        $bookingId = ''; // Or handle the error accordingly
+        $bookingId = '';
     }
     ?>
     <script src="index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Initialize SweetAlert Toast
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -511,36 +579,193 @@ $ratingStars = displayRatingStars($averageRating);
                 }
             });
 
-            // Edit button functionality
+            // Booking form submission
+            $('#bookingForm').on('submit', function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+                const confirmButton = $('.book-btn');
+                confirmButton.prop('disabled', true).text('Booking...');
+
+                $.ajax({
+                    url: 'php/booking.php',
+                    method: 'POST',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    data: formData,
+                    success: function (response) {
+                        confirmButton.prop('disabled', false).text('Confirm Booking');
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: response.message,
+                                confirmButtonText: 'Confirm',  // Adds a custom text for the button
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {  // Checks if the user clicked the "Confirm" button
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            });
+                        }
+                    },
+                    error: function () {
+                        confirmButton.prop('disabled', false).text('Confirm Booking');
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'An error occurred',
+                        });
+                    },
+                    timeout: 5000
+                });
+            });
+
+            // Initialize the date fields
+            const today = new Date().toISOString().split('T')[0];
+            $('#start_date, #end_date').attr('min', today);
+
+            // Update the min value of the end date when the start date changes
+            $('#start_date').on('change', function () {
+                const selectedStartDate = $(this).val();
+                $('#end_date').attr('min', selectedStartDate);
+            });
+
+            // Validate the end date
+            $('#end_date').on('change', function () {
+                const endDate = $(this).val();
+                const startDate = $('#start_date').val();
+                if (endDate < startDate) {
+                    alert('End date cannot be earlier than the start date.');
+                    $(this).val(startDate); // Reset the end date to the start date
+                }
+            });
+
+            // Add accommodation to booking
+            $('#addAccommodationBtn').on('click', function () {
+                const selectedOption = $('#accommodationSelect option:selected');
+                const id = selectedOption.val();
+                const name = selectedOption.data('name');
+                const price = selectedOption.data('price');
+                const capacity = selectedOption.data('capacity');
+                const start_date = $('#start_date').val();
+                const end_date = $('#end_date').val();
+
+                // Validate accommodation selection and dates
+                if (!id || !start_date || !end_date || new Date(start_date) > new Date(end_date)) {
+                    alert('Please ensure all fields are correctly filled.');
+                    return;
+                }
+
+                if ($(`#selectedAccommodations .accommodation-item[data-id="${id}"]`).length > 0) {
+                    alert('This accommodation has already been added.');
+                    return;
+                }
+
+                // Fetch available units
+                fetchAvailableUnits(id, start_date, end_date);
+
+                // Function to fetch available units
+                function fetchAvailableUnits(id, start_date, end_date) {
+                    $.ajax({
+                        url: 'php/get_avail_unit.php',
+                        method: 'GET',
+                        data: { accommodation_id: id, start_date: start_date, end_date: end_date },
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success) {
+                                const availableUnits = response.available_units;
+                                if (availableUnits <= 0) {
+                                    Swal.fire('No units available', '', 'warning');
+                                    return;
+                                }
+                                $(`#available_units_${id}`).text(availableUnits);
+                                $(`#quantity_${id}`).attr('max', availableUnits);
+                            } else {
+                                Swal.fire(response.message || 'Failed to fetch available units.', '', 'error');
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Error fetching available units', '', 'error');
+                        }
+                    });
+                }
+
+                // Create the accommodation row
+                const accommodationRow = `<div class="accommodation-item" data-id="${id}" style="margin-bottom: 15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="flex: 1;">
+                                            <strong>${name} - ₱${price} (up to ${capacity} persons)</strong><br>
+                                            <small>Available Units: <span id="available_units_${id}">Fetching...</span></small>
+                                        </div>
+                                        <div class="input-group" style="display: flex; align-items: center; gap: 10px;">
+                                            <label for="quantity_${id}" style="margin-right: 5px; font-size:0.7em">Quantity</label>
+                                            <input type="number" id="quantity_${id}" name="accommodations[${id}]" min="1" value="1" style="width: 70px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;" placeholder="Quantity">
+                                        </div>
+                                        <button type="button" class="remove-btn" style="background: none; border: none; font-size: 20px; color: #ff0000; cursor: pointer; padding: 0 5px; width:50px; margin-left:30px">
+                                            <i class='bx bx-x'></i>
+                                        </button>
+                                    </div>`;
+
+                // Append the row to the accommodations list
+                $('#selectedAccommodations').append(accommodationRow);
+            });
+
+            // Remove accommodation from booking
+            $(document).on('click', '.remove-btn', function () {
+                const item = $(this).closest('.accommodation-item');
+                if (item.length > 0) {
+                    item.remove();
+                }
+            });
+
+            // Initialize SweetAlert Toast
+
+
+            <?php if (isset($_SESSION['successMessage'])): ?>
+                // Show success toast
+                Toast.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['successMessage']; ?>'
+                });
+                <?php unset($_SESSION['successMessage']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['errorMessage'])): ?>
+                // Show error toast
+                Toast.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['errorMessage']; ?>'
+                });
+                <?php unset($_SESSION['errorMessage']); ?>
+            <?php endif; ?>
+
+            // Edit and Delete comment functionality
             $('.edit').on('click', function (e) {
                 e.preventDefault();
-                const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
+                const commentId = $(this).attr('id').split('-')[2];
                 toggleEdit(commentId);
             });
 
-            // Delete comment functionality
             $('.delete').on('click', function (e) {
                 e.preventDefault();
-                const commentId = $(this).attr('id').split('-')[2]; // Extract comment ID
+                const commentId = $(this).attr('id').split('-')[2];
                 deleteComment(commentId);
             });
 
-            // Cancel edit functionality
-            $('.cancel').on('click', function (e) {
-                e.preventDefault();
-                const commentId = $(this).closest('.cancel-btn').attr('id').split('-')[2]; // Extract comment ID
-                cancelEdit(commentId);
-            });
-
-            // Toggle edit form visibility
+            // Toggle edit comment form
             function toggleEdit(commentId) {
+
+                let escapeListenerAdded = false;
                 const $textElement = $(`#text-${commentId}`);
                 const $editForm = $(`#edit-form-${commentId}`);
                 const $editBtn = $(`#edit-btn-${commentId}`);
                 const $deleteBtn = $(`#delete-btn-${commentId}`);
                 const $cancelBtn = $(`#cancel-btn-${commentId}`);
 
-                // Cancel the edit
                 function cancelEdit() {
                     $editForm.hide();
                     $textElement.show();
@@ -555,22 +780,23 @@ $ratingStars = displayRatingStars($averageRating);
                     $editBtn.hide();
                     $deleteBtn.hide();
                     $cancelBtn.removeClass('hide');
-
-                    $(document).on('keydown.escape', function (event) {
-                        if (event.key === 'Escape') {
-                            cancelEdit();
-                            $(document).off('keydown.escape');
-                        }
-                    });
+                    if (!escapeListenerAdded) {
+                        $(document).on('keydown.escape', function (event) {
+                            if (event.key === 'Escape') {
+                                cancelEdit();
+                                $(document).off('keydown.escape'); // Remove the listener after use
+                            }
+                        });
+                        escapeListenerAdded = true;
+                    }
                 } else {
                     cancelEdit();
                 }
             }
 
-            // Handle form submission via AJAX
+            // Submit edited comment
             $('.edit-form').on('submit', function (event) {
                 event.preventDefault();
-
                 const $form = $(this);
                 const commentId = $form.find('input[name="comment_id"]').val();
                 const reviewText = $form.find('textarea').val().trim();
@@ -587,7 +813,6 @@ $ratingStars = displayRatingStars($averageRating);
                                 title: 'Your review has been successfully updated.'
                             });
                             $(`#text-${commentId}`).text(data.updatedReview);
-                            $(`#comment-${commentId}`).find('.comment-text').show();
                             toggleEdit(commentId);
                         } else {
                             alert('Error updating the comment.');
@@ -602,7 +827,7 @@ $ratingStars = displayRatingStars($averageRating);
                 });
             });
 
-            // Delete comment action
+            // Delete comment functionality
             window.deleteComment = function (commentId) {
                 if (!confirm('Are you sure you want to delete this comment?')) return;
 
@@ -619,7 +844,7 @@ $ratingStars = displayRatingStars($averageRating);
                                 title: 'Your review has been successfully deleted.'
                             });
                         } else {
-                            alert('Error deleting the comment.');
+                            alert('Error deleting the comment: ' + (data.message || 'Unknown error.'));
                         }
                     },
                     error: function () {
@@ -628,51 +853,66 @@ $ratingStars = displayRatingStars($averageRating);
                 });
             };
 
-            // SweetAlert Toast Notifications for session messages
-            <?php if (isset($_SESSION['successMessage'])): ?>
-                Toast.fire({
-                    icon: 'success',
-                    title: '<?php echo $_SESSION['successMessage']; ?>'
-                });
-                <?php unset($_SESSION['successMessage']); ?>
-            <?php elseif (isset($_SESSION['errorMessage'])): ?>
-                Toast.fire({
-                    icon: 'error',
-                    title: '<?php echo $_SESSION['errorMessage']; ?>'
-                });
-                <?php unset($_SESSION['errorMessage']); ?>
-            <?php endif; ?>
-
-            // Toggle pricing section visibility
-            $('.pricing-header').on('click', function () {
+            $('.pricing-container').on('click', function () {
                 $('.pricing-content').toggle();
             });
+            const modal = $('#bookingModal');
+            const $bookbtn = $('#book');
+            const $ratebtn = $('#rate');
+            const span = $('.close');
 
-            // Modal handling for booking and rating
-            const modal = $("#bookingModal");
-            const $bookbtn = $("#book");
-            const $ratebtn = $("#rate");
-            const span = $(".close");
-
-            $bookbtn.on("click", function () {
+            $bookbtn.on('click', function () {
                 modal.addClass('active');
             });
 
-            $ratebtn.on("click", function () {
-                window.location.href = 'rate_review?booking_id=<?php echo $bookingId ?>';
+            $ratebtn.on('click', function () {
+                // Get the booking ID from the data-id attribute of the clicked button
+                var bookingId = $(this).data('id');
+
+                // Redirect to the rate_review page with the booking ID as a query parameter
+                window.location.href = 'rate_review?booking_id=' + bookingId;
             });
 
-            span.on("click", function () {
+
+            span.on('click', function () {
                 modal.removeClass('active');
             });
 
-            $(window).on("click", function (event) {
+            $(window).on('click', function (event) {
                 if ($(event.target).is(modal)) {
                     modal.removeClass('active');
                 }
             });
+            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
-            // Handle comments show more/less functionality
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/navigation-night-v1',
+                center: [<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>],
+                zoom: 15,
+                interactive: false
+            });
+
+            const markerEl = $('<div>').addClass('marker').css({
+                backgroundImage: `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " "), ENT_QUOTES); ?>.png)`,
+                width: '50px',
+                height: '50px',
+                backgroundSize: 'contain'
+            })[0];
+
+            new mapboxgl.Marker(markerEl)
+                .setLngLat([<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>])
+                .addTo(map);
+
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.touchZoomRotate.disable();
+            map.rotate.disable();
+            $('.pricing-header').on('click', function () {
+                $('.pricing-content').toggle();
+            });
+
+
             const $comments = $('.comments-list .comment');
             const $showMoreButton = $('.show-more-btn');
             let commentsPerPage = 5;
@@ -697,36 +937,9 @@ $ratingStars = displayRatingStars($averageRating);
             } else {
                 $showMoreButton.hide();
             }
-
-            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
-
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/navigation-night-v1',
-                center: [<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>],
-                zoom: 15,
-                interactive: false
-            });
-
-            const markerEl = document.createElement('div');
-            markerEl.className = 'marker';
-            markerEl.style.backgroundImage = `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " "), ENT_QUOTES); ?>.png)`;
-            markerEl.style.width = '50px';
-            markerEl.style.height = '50px';
-            markerEl.style.backgroundSize = 'contain';
-
-
-            const marker = new mapboxgl.Marker(markerEl)
-                .setLngLat([<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>])
-                .addTo(map);
-
-            map.dragPan.disable();
-            map.scrollZoom.disable();
-            map.touchZoomRotate.disable();
-            map.rotate.disable();
-
         });
     </script>
+
 
 </body>
 

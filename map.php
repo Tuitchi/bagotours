@@ -397,7 +397,8 @@ if (isset($_SESSION['user_id'])) {
                     title,
                     address,
                     id,
-                    average_rating
+                    average_rating,
+                    status
                 } = spot;
 
                 const markerEl = document.createElement('div');
@@ -409,13 +410,17 @@ if (isset($_SESSION['user_id'])) {
                 const marker = new mapboxgl.Marker(markerEl).setLngLat([longitude, latitude]).addTo(map);
                 const mainImage = img.split(',')[0];
                 const popupContent = `
-                <div class="popup-content" style="border-radius:26px;">
-                    <img src="upload/Tour Images/${mainImage}" alt="${title}" style="width: 100%; height: 80%;">
-                    <h3>${title}</h3>
-                    <p>${address}</p>
-                    <p>⭐ ${(Math.floor(average_rating * 100) / 100).toFixed(1)} / 5</p>
-                </div>
-            `;
+                                    <div class="popup-content" style="border-radius:26px;">
+                                        <img src="upload/Tour Images/${mainImage}" alt="${title}" style="width: 100%; height: 80%;">
+                                        <h3>${title}</h3>
+                                        <p>${address}</p>
+                                        <p>⭐ ${(Math.floor(average_rating * 100) / 100).toFixed(1)} / 5</p>
+                                        <span style="color:${status === "Active" ? "green" : status === "Temporarily Closed" ? "red" : "black"};">
+                                            ${status}
+                                        </span>
+                                    </div>
+                                `;
+
 
                 const popup = new mapboxgl.Popup({
                     closeOnClick: false,

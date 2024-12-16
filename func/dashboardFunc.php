@@ -6,14 +6,23 @@ function totalUser($conn)
     $stmt_book->execute();
     return $stmt_book->fetchColumn() ?? 0;
 }
-function totalPending($conn)
+function totalPending($conn, $status = 'Pending')
 {
-    $query = "SELECT COUNT(*) AS total_pending FROM tours WHERE status = '0'";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $totalPending = $stmt->fetchColumn();
-    return $totalPending == 0 ? "" : $totalPending;
+    try {
+        $query = "SELECT COUNT(*) AS total_pending FROM tours WHERE status = :status;";
+        $stmt = $conn->prepare($query);
+        $stmt->execute([':status' => $status]);
+        $totalPending = $stmt->fetchColumn();
+        
+        // Return 0 if there are no pending tours for better clarity
+        return $totalPending ? (int)$totalPending : 0;
+    } catch (PDOException $e) {
+        // Log the error and optionally return 0 or false to indicate failure
+        error_log("Error fetching total pending tours: " . $e->getMessage());
+        return 0;
+    }
 }
+
 function totalBooking($conn, $user_id)
 {
     $query = "SELECT COUNT(*) AS total_booking FROM booking b JOIN tours t ON b.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND b.status != 4 AND b.status != 2 AND b.status != 3";
@@ -47,10 +56,11 @@ function averageStars($conn, $user_id)
     return $totalReviews > 0 ? round($totalStars / $totalReviews, 1) : 0;
 }
 
-function totalTours($conn)
+function totalTours($conn, $user_id)
 {
-    $query_tours = "SELECT COUNT(*) AS total_tours FROM tours WHERE status = 1";
+    $query_tours = "SELECT COUNT(*) AS total_tours FROM tours WHERE status IN ('Active','Inactive','Temporarily Closed') AND user_id = :user_id";
     $stmt_tours = $conn->prepare($query_tours);
+    $stmt_tours->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt_tours->execute();
     return $stmt_tours->fetchColumn() ?? 0;
 }
@@ -66,7 +76,7 @@ function totalVisitors($conn, $user_id)
 
 function nonBago($conn, $user_id)
 {
-    $query = "SELECT COUNT(*) AS total_visit FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND vr.city_residence = 'Non-Bago City';";
+    $query = "SELECT COUNT(*) AS total_visit FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND vr.city_residence NOT LIKE '%Bago%'";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -74,7 +84,7 @@ function nonBago($conn, $user_id)
 }
 function Bago($conn, $user_id)
 {
-    $query = "SELECT COUNT(*) AS total_visit FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND vr.city_residence = 'Bago City';";
+    $query = "SELECT COUNT(*) AS total_visit FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND vr.city_residence LIKE '%Bago%'";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();

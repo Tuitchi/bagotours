@@ -7,7 +7,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Prepare to fetch tours from the database
-$query = "SELECT * FROM tours";
+$query = "SELECT * FROM tours WHERE status IN ('Active', 'Temporarily Closed')";
 $stmt = $conn->prepare($query);
 
 // Handle type submission
@@ -15,7 +15,7 @@ $type = isset($_POST['filter']) ? $_POST['filter'] : '';
 
 // Apply type to the query if set
 if ($type) {
-    $query .= " WHERE type = :type";
+    $query .= " AND type = :type";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':type', $type);
 }

@@ -97,13 +97,12 @@ label {
 
 .radio-group {
     display: flex;
-    gap: 30%;
+    gap: 10px;
 }
 
 .radio {
     display: flex;
     align-items: center;
-    gap: 2px;
 }
 
 .radio label {

@@ -14,6 +14,30 @@
   z-index: 1000;
 }
 
+.section-header {
+  width: 90%;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 0.85rem;
+  font-weight: light;
+  color: #343431;
+  text-align: center;
+  align-items: center;
+  margin: auto;
+  padding: 0 10px;
+}
+
+/* Divider styling */
+.section-divider {
+  flex-grow: 1;
+  border-radius: 10px;
+  border: 1px solid #a79e9e;
+}
+
 .modal.active {
   opacity: 1;
   pointer-events: auto;
@@ -39,22 +63,23 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  background: #ff4d4f;
   border: none;
   border-radius: 50%;
   width: 35px;
   height: 35px;
   display: flex;
+  background: transparent;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 20px;
-  color: #ffffff;
+  font-size: 40px;
+  color: #ff4d4f;
   transition: background 0.3s ease;
 }
 
 .closeBtn:hover {
-  background: #ff7875;
+  background: #ff4d4f;
+  color: #ffffff;
 }
 
 /* Error Message Styles */
@@ -64,7 +89,7 @@
   font-size: 13px;
   margin-right: 10px;
   top: 0px;
-  }
+}
 
 /* Form Container Styles */
 .form-container {
@@ -80,7 +105,8 @@
 }
 
 /* Input Field Styles */
-.form-container input {
+.form-container input,
+.form-container select {
   margin: 10px 0;
   padding: 12px;
   border: 1px solid #ddd;
@@ -94,6 +120,12 @@
 .form-container input:focus {
   border-color: #007BFF;
   outline: none;
+}
+
+.name {
+  width: 100%;
+  display: flex;
+  gap: 5px;
 }
 
 /* Button Styles */
@@ -113,6 +145,7 @@
 .form-container button:hover {
   background-color: #0056b3;
 }
+
 .form-container #cancel-button {
   padding: 12px;
   background-color: #b4b1b1;

@@ -1,8 +1,6 @@
 <?php
 include '../include/db_conn.php';
 session_start();
-
-
 $user_id = $_SESSION['user_id'];
 
 require_once __DIR__ . '/../func/dashboardFunc.php';
@@ -84,9 +82,9 @@ $totalRecords = $countStmt->fetchColumn();
 $totalPages = ceil($totalRecords / $results_per_page);
 
 // Prepare the main query for fetching visitor data
-$sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name, u.name as admin, 
+$sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name,CONCAT(u.firstname, '', u.lastname) as admin, 
                vr.visit_time as datetime, vr.city_residence as city, 
-               uc.name as client_name, uc.email as client_email
+               CONCAT(uc.firstname, '', uc.lastname) as client_name, uc.email as client_email
         FROM visit_records vr 
         JOIN tours t ON vr.tour_id = t.id 
         JOIN users u ON u.id = t.user_id 
@@ -114,7 +112,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/visitor.css">
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <title>BaGoTours. Visitor Records</title>
+    <title>BaGoTours || Visitor Records</title>
 </head>
 
 <body>
@@ -162,8 +160,8 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <i class='bx bx-search' id="search-icon"></i>
                             <input type="text" id="search-input" placeholder="Search...">
                         </div>
-                        <div class="filter">
-                            <i class='bx bx-filter' id="openFilter"></i>
+                        <div class="filter" id="openFilter">
+                            <i class='bx bx-filter'></i>
 
                             <!-- Hidden Dropdown -->
                             <div id="filterDropdown" class="dropdown-content">

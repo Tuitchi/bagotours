@@ -13,13 +13,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
     $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
     $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-    $home_address = isset($_POST['home-address']) ? trim($_POST['home-address']) : '';
+    $gender = $_POST['gender'] ?? null;
+    $country = $_POST['country'] ?? null;
+    $province = $_POST['province'] ?? null;
+    $city = $_POST['city'] ?? null;
+    $home_address = trim(
+        ($city ? $city . ', ' : '') .
+        ($province ? $province . ', ' : '') .
+        $country
+    );
 
     $profile_picture = $_FILES['profilePicture']['name'];
     $profile_picture_temp = $_FILES['profilePicture']['tmp_name'];
 
     $target_dir = "../upload/Profile Pictures/";
     $target_file = $target_dir . basename($profile_picture);
+    $db_pp = "upload/Profile Pictures/" . basename($profile_picture);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -47,14 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("SELECT profile_picture FROM users WHERE id = ?");
         $stmt->execute([$user_id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $profile_picture = $row['profile_picture'];
+        $db_pp = $row['profile_picture'];
     }
 
     unset($_SESSION['profile-pic']);
-    $_SESSION['profile-pic'] = $profile_picture;
+    $_SESSION['profile-pic'] = $db_pp;
 
     $stmt = $conn->prepare("UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, profile_picture = ?,home_address = ? WHERE id = ?");
-    if ($stmt->execute([$firstname, $lastname, $phone, $profile_picture, $home_address, $user_id])) {
+    if ($stmt->execute([$firstname, $lastname, $phone, $db_pp, $home_address, $user_id])) {
         $_SESSION['status'] = 'success';
         header("Location: ../manage-acc");
         exit();

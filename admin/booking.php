@@ -1,28 +1,65 @@
 <?php
 include '../include/db_conn.php';
 session_start();
+require '../func/func.php';
 
 $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$id = $_POST['id'];
-	$status = $_POST['status'];
-	$people = isset($_POST['people']) ? $_POST['people'] : 0;
+	$status = (int) $_POST['status']; // Ensure the status is treated as an integer
+	$people = $_POST['people'];
 
-	$stmt = $conn->prepare("UPDATE booking SET status = :status, people = :people WHERE id = :id");
-	$stmt->bindParam(':status', $status, PDO::PARAM_INT);
-	$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-	$stmt->bindParam(':people', $people, PDO::PARAM_INT);
+	try {
+		$stmt = $conn->prepare("SELECT user_id, BID FROM booking WHERE id = :id");
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
-	if ($stmt->execute()) {
-		header('Location: booking?status=success');
-	} else {
+		if (!$booking) {
+			header('Location: booking?status=not_found');
+			exit();
+		}
+
+		$client_id = $booking['user_id']; // This is the client who made the booking.
+
+		// Map the integer status to a user-friendly string
+		$statusText = match ($status) {
+			1 => "Confirmed",
+			2 => "Cancelled",
+			3 => "Completed",
+			default => "Unknown",
+		};
+
+		// Update the booking record
+		$stmt = $conn->prepare("UPDATE booking SET status = :status, people = :people WHERE id = :id");
+		$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->bindParam(':people', $people, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			// Create a notification for the client
+			$message = "Your booking (ID: " . $booking['BID'] . ") has been updated. Status: $statusText.";
+			$url = "booking";
+			$type = "booking_update";
+			$notificationResult = createNotification($conn, $client_id, $id, $message, $url, $type);
+
+			if ($notificationResult === "success") {
+				header('Location: booking?status=success');
+			} else {
+				header('Location: booking?status=notif_error');
+			}
+		} else {
+			header('Location: booking?status=err');
+		}
+	} catch (Exception $e) {
+		error_log("Error updating booking: " . $e->getMessage());
 		header('Location: booking?status=err');
 	}
 	exit();
 }
 
 
-$result = getBooking($conn, $user_id);
+$result = setBookingBtn($conn, $user_id);
 
 $statusOrder = [0, 1, 3, 4, 2];
 
@@ -32,7 +69,7 @@ usort($result, function ($a, $b) use ($statusOrder) {
 	$bOrder = array_search($b['status'], $statusOrder);
 	return $aOrder - $bOrder;
 });
-function getBooking($conn, $user_id)
+function setBookingBtn($conn, $user_id)
 {
 	$stmt = $conn->prepare("SELECT b.*, t.title as tour_title, u.firstname, u.lastname, u.email, u.phone_number FROM booking b
           JOIN tours t ON b.tour_id = t.id
@@ -333,9 +370,11 @@ function getStatusButton($row)
 									<?php foreach ($result as $row): ?>
 										<tr>
 											<td><?php echo $counter++; ?></td>
-											<td><?php echo htmlspecialchars($row['firstname'], ENT_QUOTES, 'UTF-8') ." ". $row['lastname']; ?></td>
+											<td><?php echo htmlspecialchars($row['firstname'], ENT_QUOTES, 'UTF-8') . " " . $row['lastname']; ?>
+											</td>
 											<td><?php echo htmlspecialchars($row['tour_title'], ENT_QUOTES, 'UTF-8'); ?></td>
-											<td><?php echo htmlspecialchars($row['start_date'], ENT_QUOTES, 'UTF-8') . " - " . htmlspecialchars($row['end_date'], ENT_QUOTES, 'UTF-8') ?></td>
+											<td><?php echo htmlspecialchars($row['start_date'], ENT_QUOTES, 'UTF-8') . " - " . htmlspecialchars($row['end_date'], ENT_QUOTES, 'UTF-8') ?>
+											</td>
 											<td><?php echo ($row['people'] == 0) ? 'N/A' : htmlspecialchars($row['people'], ENT_QUOTES, 'UTF-8'); ?>
 											</td>
 											<td><?php echo htmlspecialchars($row['phone_number'], ENT_QUOTES, 'UTF-8'); ?> -
@@ -396,12 +435,12 @@ function getStatusButton($row)
 				timer: 3000,
 				timerProgressBar: true
 			});
-			<?php if(isset($_GET['status'])=='success'){
+			<?php if (isset($_GET['status']) == 'success') {
 				echo "Toast.fire({
                     icon: 'success',
                     title: 'Booking status updated.'
                 });";
-			} elseif (isset($_GET['status'])=='err') {
+			} elseif (isset($_GET['status']) == 'err') {
 				echo "Toast.fire({
                     icon: 'error',
                     title: 'Failed to load booking data.'
@@ -413,18 +452,20 @@ function getStatusButton($row)
 					.done(data => {
 						if (data.success && data.book) {
 							const book = data.book;
-							const formattedDate = formatDate(book.date_sched);
+							const startDate = formatDate(book.start_date);
+							const endDate = formatDate(book.end_date);
 							const createdDate = formatDate(book.date_created);
-							const actionButtons = (modalId === '#viewModal') ? getActionButtons('view', id) : getActionButtons('complete', id);
-
+							const actionButtons = (modalId === '#viewModal') ? getActionButtons('view', id, book.people) : getActionButtons('complete', id, book.people);
+							const trusted = book.is_trusted === 1 ? 'Trusted' : '';
 							const content = `<div class="booking-card">
-								<h3 class="booking-title">${book.tour_title} <span class="booking-date">${formattedDate}</span></h3>
+								<h3 class="booking-title">${book.tour_title} <span class="booking-date">${startDate} - ${endDate}</span></h3>
 								<div class="booking-content">
 									<div class="user-info">
-										<img class="user-image" src="../upload/Profile Pictures/${book.profile_picture}" alt="User Image">
+										<img class="user-image" src="../${book.profile_picture}" alt="User Image">
 											<div class="user-details">
-												<h4 class="user-name">${book.name}</h4>
+												<h4 class="user-name">${book.name} <span>${trusted}</span></h4>
 												<p class="user-address"><i class='bx bxs-map'></i>${book.home_address}</p>
+												<p class="user-address"><i class='bx bxs-key'></i>${book.bookingId}</p>
 											</div>
 									</div>
 									<div class="contact-info">
@@ -441,7 +482,6 @@ function getStatusButton($row)
 									</form>
 								</div>	
 							</div>`
-							console.log(id);
 							modalContent.html(content);
 							$(modalId).modal('show');
 						} else {
@@ -451,16 +491,16 @@ function getStatusButton($row)
 					.fail(() => showErrorToast('Error fetching booking information.'));
 			}
 
-			function getActionButtons(action, bookId) {
+			function getActionButtons(action, bookId, people) {
 				if (action === 'view') {
 					return `
-				<button type="submit" class="action-button approve" name="status" value="1">Approve</button>
-				<button type="submit" class="action-button decline" name="status" value="2">Decline</button>
-		`;
+					<input type="hidden" name="people" value="${people}">
+					<button type="submit" class="action-button approve" name="status" value="1">Approve</button>
+				<button type="submit" class="action-button decline" name="status" value="2">Decline</button>`;
 				} else if (action === 'complete') {
 					return `
 			<label for="people">Number of People:</label>
-			<input type="number" name="people" min="1" max="99" required>
+			<input type="number" name="people" min="1" max="99" value="${people}" required>
 			<button type="submit" class="action-button arrived" name="status" value="3">Arrived</button>
 		`;
 				}

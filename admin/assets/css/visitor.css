@@ -20,6 +20,54 @@ table th {
     color: #333;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: auto;
+    max-width: 80vw;
+}
+.btn-form {
+    margin-left: 25px;
+    color: white;
+    width: auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #52aa6f;
+}
+
+.btn-form:hover {
+    background-color: green;
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-group {
+    margin: 50px 0;
+}
+
 /* Dropdown content */
 .dropdown-content {
     display: none;
@@ -107,7 +155,7 @@ table th {
 .radio-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     margin: auto;
 }
 

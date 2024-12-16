@@ -318,7 +318,6 @@ $tour = getAllToursforAdmin($conn, $query);
                     <?php if (!empty($tour)): ?>
                         <?php foreach ($tour as $row): ?>
                             <?php
-                            $stats = ($row['status'] == 1) ? 'Active' : (($row['status'] == 3) ? 'Inactive' : '');
                             $images = explode(',', $row['img']);
                             $mainImage = htmlspecialchars($images[0], ENT_QUOTES, 'UTF-8');
                             ?>
@@ -338,8 +337,8 @@ $tour = getAllToursforAdmin($conn, $query);
                                         <?php echo htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8'); ?>
                                     </p>
 
-                                    <p id="stats" style="color: <?php echo ($stats == 'Active') ? 'green' : 'red'; ?>;">
-                                        <?php echo htmlspecialchars($stats, ENT_QUOTES, 'UTF-8'); ?>
+                                    <p id="stats" style="color: <?php echo ($row['status'] == 'Active') ? 'green' : 'red'; ?>;">
+                                        <?php echo htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8'); ?>
                                     </p>
 
                                     <div class="dropdown">

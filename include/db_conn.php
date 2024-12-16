@@ -8,7 +8,8 @@ $DATABASE_PASSWORD = "";
 $DATABASE_NAME = "tourism";
 
 $salt = "ATON_ATON_LANG_NI!";
-
+$clientID = '993186673271-dhs3giufk5m2bie1u0tdp9b2eor5el1o.apps.googleusercontent.com';
+$clientSecret = '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';
 try {
     $conn = new PDO("mysql:host=$DATABASE_HOSTNAME;dbname=$DATABASE_NAME", $DATABASE_USERNAME, $DATABASE_PASSWORD);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -30,56 +31,70 @@ try {
     error_log("General error: " . $e->getMessage());
 }
 try {
+    $conn->beginTransaction();
+    $stmt = $conn->prepare("UPDATE booking SET status = 2  WHERE DATE(start_date) < CURDATE()");
+    $stmt->execute();
+
     $stmt = $conn->prepare("
-        SELECT b.id, b.user_id as client, t.id as tour_id, t.user_id as user_id, t.title as title
-        FROM booking b 
-        JOIN tours t ON b.tour_id = t.id 
-        JOIN users u ON t.user_id = u.id 
-        WHERE DATE(b.start_date) = CURDATE()
+        DELETE n
+        FROM notifications n
+        JOIN booking b ON n.user_id = b.user_id AND n.tour_id = b.tour_id
+        WHERE b.start_date < NOW()
     ");
+    $stmt->execute();
+
+    $conn->commit();
+} catch (Exception $e) {
+    $conn->rollBack();
+    error_log("Error deleting bookings: " . $e->getMessage());
+}
+
+
+try {
+    // Query all necessary information in one step
+    $stmt = $conn->prepare("SELECT 
+        b.id AS booking_id, 
+        b.user_id AS client, 
+        t.id AS tour_id, 
+        t.user_id AS user_id, 
+        t.title AS title, 
+        CONCAT(u.firstname, ' ', u.lastname) AS client_name 
+    FROM booking b 
+    JOIN tours t ON b.tour_id = t.id
+    JOIN users u ON b.user_id = u.id
+    WHERE DATE(b.start_date) = CURDATE();"); // Use CURDATE() instead of NOW()
+
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
         $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Prepare reusable statements
         $checkStmt = $conn->prepare("
-            SELECT COUNT(*) FROM notifications 
-            WHERE user_id = :user_id AND tour_id = :tour_id AND DATE(created_at) = CURDATE()
-        ");
-        $userStmt = $conn->prepare("SELECT name FROM users WHERE id = :user_id");
+            SELECT COUNT(*) 
+            FROM notifications 
+            WHERE user_id = :user_id 
+            AND tour_id = :tour_id 
+            AND type = 'booking'
+            AND DATE(created_at) = CURDATE()");
 
         foreach ($notif as $notification) {
-            // Check if notification already exists
-            $checkStmt->bindParam(':user_id', $notification['user_id'], PDO::PARAM_INT);
-            $checkStmt->bindParam(':tour_id', $notification['tour_id'], PDO::PARAM_INT);
-            $checkStmt->execute();
+
+            // Check if notification already exists for today
+            $checkStmt->execute([
+                ':user_id' => $notification['user_id'],
+                ':tour_id' => $notification['tour_id']
+            ]);
 
             if ($checkStmt->fetchColumn() == 0) {
-                // Fetch client name once
-                $userStmt->bindParam(':user_id', $notification['client'], PDO::PARAM_INT);
-                $userStmt->execute();
-                $user = $userStmt->fetch();
+                // Prepare messages
+                $tourOwnerMessage = "{$notification['client_name']} will arrive today at {$notification['title']}";
+                $clientMessage = "Your reservation at {$notification['title']} is scheduled for today. Click me, and I'll direct you there.";
+                $clientUrl = "map?id=" . base64_encode($notification['tour_id'] . $salt);
 
                 // Create notifications
                 try {
-                    createNotif(
-                        $conn,
-                        $notification['user_id'],
-                        $notification['tour_id'],
-                        "{$user['name']} will arrive today at {$notification['title']}",
-                        "booking?id={$notification['id']}",
-                        "booking"
-                    );
-
-                    createNotif(
-                        $conn,
-                        $notification['client'],
-                        $notification['tour_id'],
-                        "Your reservation at {$notification['title']} is scheduled for today. Click me, and I'll direct you there.",
-                        "map?id=" . base64_encode($notification['tour_id'] . $salt),
-                        "booking"
-                    );
+                    createNotif($conn, $notification['user_id'], $notification['tour_id'], $tourOwnerMessage, "booking?id={$notification['booking_id']}", "booking");
+                    createNotif($conn, $notification['client'], $notification['tour_id'], $clientMessage, $clientUrl, "booking");
 
                     log_error_with_location("Notification created for user: {$notification['user_id']}, tour: {$notification['tour_id']}");
                 } catch (Exception $e) {
@@ -94,14 +109,26 @@ try {
 
 function createNotif($conn, $userId, $tour_id, $message, $url, $type)
 {
-    $stmt = $conn->prepare("INSERT INTO notifications (user_id, tour_id, message, url, type, created_at) VALUES (:user_id, :tour_id, :message, :url, :type, NOW())");
-    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
-    $stmt->bindParam(':message', $message, PDO::PARAM_STR);
-    $stmt->bindParam(':url', $url, PDO::PARAM_STR);
-    $stmt->bindParam(':type', $type, PDO::PARAM_STR);
-    return $stmt->execute() ? "success" : "error";
+    try {
+        $stmt = $conn->prepare("
+            INSERT INTO notifications (user_id, tour_id, message, url, type, created_at) 
+            VALUES (:user_id, :tour_id, :message, :url, :type, NOW())
+        ");
+        $stmt->execute([
+            ':user_id' => $userId,
+            ':tour_id' => $tour_id,
+            ':message' => $message,
+            ':url' => $url,
+            ':type' => $type
+        ]);
+        return "success";
+    } catch (PDOException $e) {
+        log_error_with_location("Error creating notification: " . $e->getMessage());
+        return "error";
+    }
 }
+
+
 function log_error_with_location($message)
 {
     // Get the current file and line where this function is called
@@ -113,4 +140,21 @@ function log_error_with_location($message)
 
     // Log the message to the PHP error log
     error_log($formatted_message, 3, '../error_log.txt');
+}
+function getUserByEmail($conn, $email)
+{
+    $stmt = $conn->prepare('SELECT id, username, role, profile_picture, device_id FROM users WHERE email = :email');
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+function createUser($conn, $email, $firstname, $lastname, $profile_picture)
+{
+    $stmt = $conn->prepare('INSERT INTO users (email, firstname, lastname, profile_picture, role) VALUES (:email,:firstname,:lastname, :profile_picture, "user")');
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':lastname', $lastname);
+    $stmt->bindParam(':profile_picture', $profile_picture);
+    $stmt->execute();
+    return $conn->lastInsertId();
 }

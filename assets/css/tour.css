@@ -11,11 +11,11 @@
 
 .modal-content.booking {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 5% auto;
     padding: 20px;
     border-radius: 10px;
-    width: 80%;
-    max-width: 400px;
+    width: 90%;
+    max-width: 650px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -46,9 +46,11 @@
 }
 
 .modal-content form input,
-.modal-content form button {
+.modal-content form button,
+.modal-content form select {
     padding: 10px;
     border-radius: 5px;
+    width: 100%;
     border: 1px solid #ddd;
 }
 
@@ -106,6 +108,7 @@
 .rescont .desc {
     font-size: 0.8rem;
 }
+
 .rescont .desc .bxs-map {
     font-size: 1rem;
 }
@@ -138,6 +141,7 @@
     margin-top: 10px;
     padding: 0 25px;
 }
+
 .pricing {
     display: flex;
     flex-direction: row;
@@ -168,6 +172,7 @@
     transition: background 0.3s, color 0.3s, transform 0.2s;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .viewbtn:hover {
     background: linear-gradient(135deg, #218838, #1e7e34);
     /* Green gradient on hover */
@@ -194,10 +199,19 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.bookbtn.Closed {
+    background: linear-gradient(135deg, #e64848, #d40000);
+    cursor: not-allowed;
+}
+
 .bookbtn:hover {
     background: linear-gradient(135deg, #007bff, #0100b3);
     transform: translateY(-3px);
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bookbtn.Closed:hover {
+    background: linear-gradient(135deg, #d40000, #e64848);
 }
 
 
@@ -263,6 +277,7 @@
     font-size: 13px;
     color: #333;
 }
+
 .comment-text form {
     display: flex;
     flex-direction: row;
@@ -280,16 +295,20 @@
     display: flex;
     gap: 15px;
 }
-.comment-actions .cancel{
+
+.comment-actions .cancel {
     color: #0056b3;
 }
-.comment-actions .cancel:hover{
+
+.comment-actions .cancel:hover {
     color: #007bff;
 }
-.comment-actions .hide{
+
+.comment-actions .hide {
     display: none !important;
 }
-.comment-actions .cancel-btn{
+
+.comment-actions .cancel-btn {
     display: flex;
     gap: 3px;
 }
@@ -329,29 +348,39 @@
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .comment-box {
-        flex-direction: column; /* Stack elements vertically */
-        align-items: stretch; /* Stretch elements to fit */
-        gap: 10px; /* Add spacing between elements */
+        flex-direction: column;
+        /* Stack elements vertically */
+        align-items: stretch;
+        /* Stretch elements to fit */
+        gap: 10px;
+        /* Add spacing between elements */
     }
 
     .comment-box .avatar {
-        margin-bottom: 10px; /* Add spacing for better alignment */
+        margin-bottom: 10px;
+        /* Add spacing for better alignment */
     }
 
     .input-box {
-        width: 100%; /* Make the input box take full width */
+        width: 100%;
+        /* Make the input box take full width */
     }
 
     .input-box .comment-input {
-        width: 100%; /* Ensure textarea fits container */
+        width: 100%;
+        /* Ensure textarea fits container */
         padding: 8px;
-        box-sizing: border-box; /* Prevent overflow from padding */
-        font-size: 14px; /* Adjust font size */
+        box-sizing: border-box;
+        /* Prevent overflow from padding */
+        font-size: 14px;
+        /* Adjust font size */
     }
 
     .comment-submit-btn {
-        width: 100%; /* Make button full width */
-        margin-top: 10px; /* Add space above the button */
+        width: 100%;
+        /* Make button full width */
+        margin-top: 10px;
+        /* Add space above the button */
         padding: 10px;
     }
 }

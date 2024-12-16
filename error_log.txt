@@ -707,3 +707,642 @@ Stack trace:
 #1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
 #2 {main}
   thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+[09-Dec-2024 18:12:07 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\php\register.php on line 51
+[09-Dec-2024 18:12:07 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\php\register.php:51
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\register.php on line 51
+[09-Dec-2024 18:12:10 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\php\register.php on line 51
+[09-Dec-2024 18:12:10 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\php\register.php:51
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\register.php on line 51
+[09-Dec-2024 18:12:45 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\php\register.php on line 51
+[09-Dec-2024 18:12:45 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\php\register.php:51
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\register.php on line 51
+[09-Dec-2024 18:13:03 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\php\register.php on line 60
+[09-Dec-2024 18:13:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\php\register.php:60
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\register.php on line 60
+[11-Dec-2024 04:32:32 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list' in C:\xampp\htdocs\bagotours\admin\visitor.php:98
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(98): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 98
+[11-Dec-2024 04:33:33 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'firstname' in field list is ambiguous in C:\xampp\htdocs\bagotours\admin\visitor.php:98
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(98): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 98
+[11-Dec-2024 04:33:48 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'field list' in C:\xampp\htdocs\bagotours\admin\visitor.php:98
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(98): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 98
+[11-Dec-2024 04:39:51 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND vr.city_residence NOT LIKE '%Bago%'' at line 1 in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:72
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\dashboardFunc.php(72): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\visitor.php(142): nonBago(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 72
+[11-Dec-2024 04:40:07 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND vr.city_residence NOT LIKE '%bago%'' at line 1 in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:72
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\dashboardFunc.php(72): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\visitor.php(142): nonBago(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 72
+[11-Dec-2024 04:40:38 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND vr.city_residence NOT LIKE '%Bago%'' at line 1 in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:72
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\dashboardFunc.php(72): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\visitor.php(142): nonBago(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 72
+[11-Dec-2024 08:38:58 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list' in C:\xampp\htdocs\bagotours\admin\inq.php:69
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\inq.php(69): PDOStatement->execute()
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\inq.php on line 69
+[13-Dec-2024 13:51:37 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 341
+[13-Dec-2024 13:51:37 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 341
+[13-Dec-2024 13:51:37 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 341
+[13-Dec-2024 13:51:37 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 341
+[13-Dec-2024 13:51:48 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 340
+[13-Dec-2024 13:51:48 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 340
+[13-Dec-2024 13:51:48 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 340
+[13-Dec-2024 13:51:48 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\bagotours\admin\tours.php on line 340
+[13-Dec-2024 14:33:44 Europe/Berlin] Error fetching tours: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Confirmed')' at line 1
+[14-Dec-2024 07:22:55 Europe/Berlin] PHP Fatal error:  Uncaught Error: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\bagotours\php\booking.php:33
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\booking.php on line 33
+[14-Dec-2024 07:23:22 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'accomodation_id' in 'field list'
+[14-Dec-2024 07:30:15 Europe/Berlin] Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'accomodation_id' in 'field list'
+[14-Dec-2024 07:31:55 Europe/Berlin] Error: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+[14-Dec-2024 07:38:12 Europe/Berlin] PHP Warning:  Undefined array key "accommodation" in C:\xampp\htdocs\bagotours\php\booking.php on line 11
+[14-Dec-2024 07:38:12 Europe/Berlin] Error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'accommodation_id' cannot be null
+[14-Dec-2024 09:00:26 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:27 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:28 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:29 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:29 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:29 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:29 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:29 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:29 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:30 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:30 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:30 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:30 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:30 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:31 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:31 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:31 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:31 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:31 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:00:32 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:50 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:51 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:52 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:52 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:52 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:53 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:53 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:53 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:53 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:53 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:54 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:54 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:54 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:09:54 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:17:00 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:17:23 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:18:21 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:18:21 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:18:22 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:18:24 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:18:24 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:19:25 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:20:11 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:20:18 Europe/Berlin] Error executing query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.phone_number' in 'field list'
+[14-Dec-2024 09:21:01 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.status, b.date_created as date_created , t.id as tour_id,
+    t.title AS to...' at line 2
+[14-Dec-2024 09:21:01 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.status, b.date_created as date_created , t.id as tour_id,
+    t.title AS to...' at line 2
+[14-Dec-2024 09:34:39 Europe/Berlin] PHP Warning:  Undefined array key "people" in C:\xampp\htdocs\bagotours\admin\booking.php on line 9
+[14-Dec-2024 09:35:10 Europe/Berlin] PHP Warning:  Undefined array key "people" in C:\xampp\htdocs\bagotours\admin\booking.php on line 9
+[14-Dec-2024 17:59:44 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:00:37 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:01:02 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:01:45 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:02:01 Europe/Berlin] Error fetching available units: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ba.booked_units' in 'field list'
+[14-Dec-2024 18:02:04 Europe/Berlin] Error fetching available units: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ba.booked_units' in 'field list'
+[14-Dec-2024 18:02:06 Europe/Berlin] Error fetching available units: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ba.booked_units' in 'field list'
+[14-Dec-2024 18:02:53 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:03:00 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ba.booked_units' in 'field list' in C:\xampp\htdocs\bagotours\php\get_avail_unit.php:40
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\get_avail_unit.php(40): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\get_avail_unit.php on line 40
+[14-Dec-2024 18:03:33 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:09:13 Europe/Berlin] Error fetching available units: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tourism.accommodation' doesn't exist
+[14-Dec-2024 18:09:32 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tourism.accommodation' doesn't exist in C:\xampp\htdocs\bagotours\php\get_avail_unit.php:42
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\get_avail_unit.php(42): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\get_avail_unit.php on line 42
+[14-Dec-2024 18:21:18 Europe/Berlin] PHP Warning:  Undefined array key "accommodations" in C:\xampp\htdocs\bagotours\php\booking.php on line 12
+[14-Dec-2024 18:39:00 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')
+GROUP BY
+    a.id' at line 14 in C:\xampp\htdocs\bagotours\php\get_avail_unit.php:43
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\get_avail_unit.php(43): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\get_avail_unit.php on line 43
+[14-Dec-2024 18:39:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')
+GROUP BY
+    a.id' at line 14 in C:\xampp\htdocs\bagotours\php\get_avail_unit.php:43
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\php\get_avail_unit.php(43): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\php\get_avail_unit.php on line 43
+[15-Dec-2024 08:25:33 Europe/Berlin] PHP Warning:  Undefined variable $status in C:\xampp\htdocs\bagotours\php\register_owner.php on line 49
+[15-Dec-2024 08:25:33 Europe/Berlin] PHP Warning:  Undefined variable $status in C:\xampp\htdocs\bagotours\php\register_owner.php on line 49
+[15-Dec-2024 15:37:46 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function totalTours(), 1 passed in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 79 and exactly 2 expected in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:59
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\owner\dashboard.php(79): totalTours(Object(PDO))
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 59
+[15-Dec-2024 15:37:52 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list' in C:\xampp\htdocs\bagotours\owner\booking.php:43
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\owner\booking.php(43): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\owner\booking.php(26): getBooking(Object(PDO), 55)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\owner\booking.php on line 43
+[15-Dec-2024 15:37:54 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function totalTours(), 1 passed in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 79 and exactly 2 expected in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:59
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\owner\dashboard.php(79): totalTours(Object(PDO))
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 59
+[15-Dec-2024 15:37:56 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function totalTours(), 1 passed in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 79 and exactly 2 expected in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:59
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\owner\dashboard.php(79): totalTours(Object(PDO))
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 59
+[15-Dec-2024 15:38:58 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function totalTours(), 1 passed in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 79 and exactly 2 expected in C:\xampp\htdocs\bagotours\func\dashboardFunc.php:59
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\owner\dashboard.php(79): totalTours(Object(PDO))
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\dashboardFunc.php on line 59
+[15-Dec-2024 15:44:55 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\bagotours\owner\tours.php:19) in C:\xampp\htdocs\bagotours\php\accValidation.php on line 7
+[15-Dec-2024 15:44:57 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\tours.php on line 5
+[15-Dec-2024 15:44:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\bagotours\func\user_func.php:41
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\user_func.php(41): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\owner\tours.php(9): getAllToursforOwners(Object(PDO), NULL, NULL)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\user_func.php on line 41
+[15-Dec-2024 15:44:58 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\tours.php on line 5
+[15-Dec-2024 15:44:58 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\bagotours\func\user_func.php:41
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\user_func.php(41): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\owner\tours.php(9): getAllToursforOwners(Object(PDO), NULL, NULL)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\user_func.php on line 41
+[15-Dec-2024 15:44:59 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\tours.php on line 5
+[15-Dec-2024 15:44:59 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\bagotours\func\user_func.php:41
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\user_func.php(41): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\owner\tours.php(9): getAllToursforOwners(Object(PDO), NULL, NULL)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\user_func.php on line 41
+[15-Dec-2024 15:45:00 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[15-Dec-2024 15:46:19 Europe/Berlin] IMAGE LEFT : 
+[15-Dec-2024 15:46:30 Europe/Berlin] IMAGE LEFT : 1734269537_1.jpg
+[2024-12-15 17:00:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:54] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:57] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:57] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:00:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:01:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:01:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:02:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:02:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:03:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:03:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:04:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:05:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:06:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:07:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:08:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:08:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:09:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:09:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:10:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:10:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:11:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:11:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:12:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:13:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:13:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:13:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:14:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:14:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:15:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:15:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:16:28] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:16:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:17:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:17:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:44] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:44] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:48] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:49] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:49] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:51] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:51] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:32:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:33:25] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:33:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:34:25] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:34:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:35:25] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:35:55] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:35:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:35:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:03] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:36:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:37:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:37:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:38:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:38:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:39:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:39:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:40:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:40:46] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:41:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:41:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:42:17] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:42:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:43:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:43:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:44:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:44:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:45:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:46:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:46:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:47:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:47:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:48:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:48:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:49:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:49:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:50:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:50:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:51:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:51:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:52:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:53:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:54:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:55:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:56:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:57:15] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 17:57:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:00:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:01:52] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:02:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:02:20] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:02:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:02:50] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:31:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:31:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:31:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[2024-12-15 18:31:08] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 110: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list'
+[15-Dec-2024 20:14:38 Europe/Berlin] Error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tourism.book12ing_accommodations' doesn't exist
+[16-Dec-2024 01:45:55 Europe/Berlin] PHP Warning:  require(../func/func): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\admin\booking.php on line 4
+[16-Dec-2024 01:45:55 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../func/func' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\bagotours\admin\booking.php:4
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 4
+[16-Dec-2024 01:46:02 Europe/Berlin] PHP Warning:  require(../func/func): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\admin\booking.php on line 4
+[16-Dec-2024 01:46:02 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../func/func' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\bagotours\admin\booking.php:4
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 4
+[16-Dec-2024 01:46:38 Europe/Berlin] PHP Fatal error:  Cannot redeclare getBooking() (previously declared in C:\xampp\htdocs\bagotours\admin\booking.php:72) in C:\xampp\htdocs\bagotours\func\func.php on line 228
+[16-Dec-2024 01:47:15 Europe/Berlin] PHP Fatal error:  Cannot redeclare getBooking() (previously declared in C:\xampp\htdocs\bagotours\admin\booking.php:72) in C:\xampp\htdocs\bagotours\func\func.php on line 228
+[16-Dec-2024 01:47:16 Europe/Berlin] PHP Fatal error:  Cannot redeclare getBooking() (previously declared in C:\xampp\htdocs\bagotours\admin\booking.php:72) in C:\xampp\htdocs\bagotours\func\func.php on line 228
+[16-Dec-2024 01:47:23 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.date_sched' in 'order clause' in C:\xampp\htdocs\bagotours\func\func.php:227
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(227): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\booking.php(62): getBooking(Object(PDO), 11)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 227
+[2024-12-16 02:17:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:17:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:18:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:18:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:12] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:12] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:19:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:20:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:20:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:20:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:20:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:20:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:21:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:21:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:22:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:22:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:23:35] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 114: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:24:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 167: Error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'b.id AS booking_id, 
+            b.user_id AS client, 
+            t.id AS ...' at line 2
+[2024-12-16 02:24:36] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 167: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:25:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 168: Error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'b.id AS booking_id, 
+            b.user_id AS client, 
+            t.id AS ...' at line 2
+[2024-12-16 02:25:37] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 168: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:26:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 167: Error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'b.id AS booking_id, 
+            b.user_id AS client, 
+            t.id AS ...' at line 2
+[2024-12-16 02:26:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 167: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:27:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:28:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:29:41] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:30:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:30:57] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:30:59] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:12] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:16] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:17] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:21] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:39] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2024-12-16 02:31:52] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:32:22 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:32:22] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:32:53 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:32:53] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:00 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:00 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:32 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:38 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:38 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:38] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:40 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:40 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:40] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:56 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:33:56 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:33:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:34:04 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:34:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:34:04 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:34:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:34:29 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:34:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:34:29 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:34:29] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:34:34 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:34:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:34:34 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:34:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:35:04 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:35:04] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:35:34 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:35:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 125: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:05 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:07 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:07 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:07] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:10 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:11] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:12] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:42 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:42] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[16-Dec-2024 02:36:58 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:36:58] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:36:58 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:37:02] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:37:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:32 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:37:32] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 122: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:37:34 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:37:34] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 124: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:37:34 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:47 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:37:47] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:37:47 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:56 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:37:56] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:37:56 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:37:57 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:37:57] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:37:57 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:01 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:38:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:38:01 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:05 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:38:05] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:38:05 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:09 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:38:09] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:38:10 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:38:10] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:38:13 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:38:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:38:13 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:38:43 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:38:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:39:13 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:39:13] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:39:43 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:39:43] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 123: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:40:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:13 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:13 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:13 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:14 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:40:45 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:02 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:03 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:03 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:03 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:03 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:03 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:41:34 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:03 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:30 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:30 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:54 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:54 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:59 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:42:59 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:43:30 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:43:43 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:43:43 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:43:50 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:43:50 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:44:01 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:44:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 126: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:44:01 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:44:01] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 126: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:44:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:44:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 126: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:44:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:44:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 126: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:44:36 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:45:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[2024-12-16 02:45:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 126: Notification created for user: 11, tour: 1
+[16-Dec-2024 02:45:19 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:45:23 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:45:37 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:06 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:08 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:08 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:10 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:10 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:10 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:46:40 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:47:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:47:41 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:48:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:48:40 Europe/Berlin] Error deleting bookings: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'n JOIN booking b ON n.user_id = b.user_id ON n.tour_id = b.tour_id WHERE b.st...' at line 1
+[16-Dec-2024 02:49:10 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:49:12 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:49:41 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:50:11 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[16-Dec-2024 02:50:41 Europe/Berlin] Error deleting bookings: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM booking SET status=2 Value WHERE start_date < NOW()' at line 1
+[16-Dec-2024 09:11:08 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_creat...' at line 2
+[16-Dec-2024 09:11:11 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_creat...' at line 2
+[16-Dec-2024 09:11:11 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_creat...' at line 2
+[16-Dec-2024 09:11:13 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_creat...' at line 2
+[16-Dec-2024 09:11:13 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_creat...' at line 2
+[16-Dec-2024 09:11:28 Europe/Berlin] Error executing query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.id AS booking_id, b.start_date, b.end_date, b.people, b.status, b.date_creat...' at line 2
+[16-Dec-2024 09:56:24 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\visitor.php on line 45
+[16-Dec-2024 09:56:24 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\visitor.php on line 45
+[16-Dec-2024 10:05:16 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\visitor.php on line 45
+[16-Dec-2024 10:05:16 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\visitor.php on line 45
+[16-Dec-2024 10:05:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\visitor.php on line 45
+[16-Dec-2024 10:05:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\visitor.php on line 45
+[16-Dec-2024 10:10:25 Europe/Berlin] PHP Warning:  Undefined variable $db in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 9
+[16-Dec-2024 10:10:25 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\admin\print-visitors.php:9
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 9
+[16-Dec-2024 10:10:33 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tourism.tour' doesn't exist in C:\xampp\htdocs\bagotours\admin\print-visitors.php:11
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\print-visitors.php(11): PDOStatement->execute()
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 11
+[16-Dec-2024 10:10:41 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tour_id' in 'where clause' in C:\xampp\htdocs\bagotours\admin\print-visitors.php:11
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\print-visitors.php(11): PDOStatement->execute()
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 11
+[16-Dec-2024 10:10:45 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Invalid column index in C:\xampp\htdocs\bagotours\admin\print-visitors.php:12
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\print-visitors.php(12): PDOStatement->fetchColumn(2)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 12
+[16-Dec-2024 10:11:33 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 45
+[16-Dec-2024 10:11:38 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 45
+[16-Dec-2024 10:11:57 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 45

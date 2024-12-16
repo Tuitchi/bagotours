@@ -1,5 +1,6 @@
 <?php
 session_start();
+$currentTimestamp = date('Y-m-d H:i:s');
 require 'include/db_conn.php';
 
 if (isset($_SESSION['user_id'])) {
@@ -11,16 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_review'])) {
     $tour_id = htmlspecialchars($_POST['tour_id']);
     $rating = (int) $_POST['rating'];
     $review = htmlspecialchars($_POST['review']);
-    $img = ''; // Placeholder for image upload functionality
-
-    // Insert review into the database
     try {
-        $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img) VALUES (:tour_id, :user_id, :rating, :review, :img)");
+        $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, date_created) VALUES (:tour_id, :user_id, :rating, :review, $currentTimestamp)");
         $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
         $stmt->bindParam(':review', $review, PDO::PARAM_STR);
-        $stmt->bindParam(':img', $img, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
             $message = "<p>Review submitted successfully!</p>";
@@ -55,14 +52,6 @@ if (isset($_GET['booking_id'])) {
     } catch (PDOException $e) {
         error_log($e->getMessage());
     }
-}
-try {
-    $stmt = $conn->prepare("SELECT * FROM review_rating WHERE tour_id = :tour_id ORDER BY date_created DESC");
-    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    error_log($e->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -160,22 +149,7 @@ try {
                 <button type="submit" name="submit_review">Submit Review</button>
             </form>
 
-            <h3>Existing Reviews</h3>
-            <div class="reviews">
-                <?php if ($reviews): ?>
-                    <?php foreach ($reviews as $row): ?>
-                        <div class="review">
-                            <strong>User ID: <?php echo htmlspecialchars($row['user_id']); ?></strong>
-                            <p>Rating: <?php echo htmlspecialchars($row['rating']); ?> Stars</p>
-                            <p><?php echo nl2br(htmlspecialchars($row['review'])); ?></p>
-                            <p><em>Reviewed on: <?php echo htmlspecialchars($row['date_created']); ?></em></p>
-                        </div>
-                        <hr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No reviews yet. Be the first to review!</p>
-                <?php endif; ?>
-            </div>
+
         </div>
     </div>
 </div>

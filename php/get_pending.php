@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     // Corrected query with proper parentheses for the OR condition
     $query = "SELECT users.*, tours.* FROM tours 
               JOIN users ON users.id = tours.user_id 
-              WHERE tours.id = :id AND (tours.status = 0 OR tours.status = 2)";
+              WHERE tours.id = :id AND (tours.status = 'Pending' OR tours.status = 'Rejected')";
 
     try {
         $stmt = $conn->prepare($query);

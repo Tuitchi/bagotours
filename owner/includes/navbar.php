@@ -1,5 +1,4 @@
 <?php
-$pp = $_SESSION['profile-pic'];
 $pageRole = "owner";
 require_once '../php/accValidation.php';
 ?>
@@ -100,7 +99,7 @@ require_once '../php/accValidation.php';
 			<div class="no-notifications">No new notifications</div>
 		</div>
 		<a href="" class="profile">
-			<img src="../upload/Profile Pictures/<?php echo htmlspecialchars($pp); ?>" alt="Profile Picture">
+		<img src="../<?php echo htmlspecialchars($_SESSION['profile-pic']); ?>" alt="Profile Picture">
 		</a>
 	</div>
 </nav>

@@ -19,11 +19,17 @@ switch ($timeFilter) {
     case 'yearly':
         $whereClause .= " AND YEAR(visit_time) = YEAR(CURDATE())";
         break;
-        
 }
 
-$query = "SELECT city_residence, COUNT(*) as count
-          FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON u.id = t.user_id
+$query = "SELECT 
+            CASE
+                WHEN vr.city_residence LIKE '%City of Bago%' THEN 'Bago Residence'
+                ELSE 'Non-Bago Residence'
+            END AS city_residence,
+            COUNT(*) AS count
+          FROM visit_records vr 
+          JOIN tours t ON vr.tour_id = t.id 
+          JOIN users u ON u.id = t.user_id
           WHERE u.id = :user_id" . $whereClause . "
           GROUP BY city_residence";
 
@@ -39,8 +45,20 @@ try {
     $visitorData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $response = [];
+    $nonBagoCount = 0;
+
     foreach ($visitorData as $row) {
-        $response[] = [$row['city_residence'], (int) $row['count']];
+        if ($row['city_residence'] === 'Bago Residence') {
+            $response[] = [$row['city_residence'], (int) $row['count']];
+        } else {
+            // Add to Non-Bago Residence count
+            $nonBagoCount += (int) $row['count'];
+        }
+    }
+
+    // Add Non-Bago Residence entry if there are any non-Bago cities
+    if ($nonBagoCount > 0) {
+        $response[] = ['Non-Bago Residence', $nonBagoCount];
     }
 
     echo json_encode($response);

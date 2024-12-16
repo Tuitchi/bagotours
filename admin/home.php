@@ -4,7 +4,7 @@ require_once '../include/db_conn.php';
 $user_id = $_SESSION['user_id'];
 
 try {
-	$query = "SELECT id, title, latitude, longitude, type, address, img FROM tours WHERE status = 1";
+	$query = "SELECT id, title, latitude, longitude, type, address, img, status FROM tours WHERE status NOT IN ('Pending', 'Rejected', 'Confirmed', '')";
 	$stmt = $conn->prepare($query);
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +23,8 @@ try {
 				'longitude' => $row['longitude'],
 				'type' => $row['type'],
 				'image' => $image_array[0],
-				'address' => $row['address']
+				'address' => $row['address'],
+				'status' => $row['status']
 			];
 		}
 	}
@@ -82,9 +83,9 @@ try {
 	<!-- My CSS -->
 	<link rel="stylesheet" href="assets/css/admin.css">
 	<link rel="stylesheet" href="../assets/css/map.css">
+	<link rel="stylesheet" href="../assets/css/mapbox-gl.css">
 	<!-- Mapbox -->
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
-	<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 
 	<title>BaGoTours || Home</title>
 
@@ -112,8 +113,8 @@ try {
 			</div>
 		</main>
 	</section>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="../assets/js/script.js"></script>
+	<script src="../assets/js/jquery-3.7.1.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
 			mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
@@ -138,17 +139,18 @@ try {
 
 				const popupContent = `
 					<div class="popup-content">
-						<img src="../upload/Tour Images/${spot.image}" alt="${spot.name}">
+					<img src="../upload/Tour Images/${spot.image}" alt="${spot.name}">
+						<p>${spot.status}</p>
 						<h3>${spot.title}</h3>
 						<p>${spot.address}</p>
 					</div>
 				`;
 
 				const popup = new mapboxgl.Popup({
-						closeOnClick: false,
-						offset: 25,
-						closeButton: false
-					})
+					closeOnClick: false,
+					offset: 25,
+					closeButton: false
+				})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {
@@ -185,10 +187,10 @@ try {
 `;
 
 				const popup = new mapboxgl.Popup({
-						closeOnClick: false,
-						offset: 25,
-						closeButton: false
-					})
+					closeOnClick: false,
+					offset: 25,
+					closeButton: false
+				})
 					.setHTML(popupContent);
 
 				marker.getElement().addEventListener('mouseenter', () => {

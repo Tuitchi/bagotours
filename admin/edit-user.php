@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $role = $_POST['role'];
     $status = $_POST['status'];
 
-    if (empty($gender) || empty($firstname) || empty($lastname) || empty($role)) {
+    if (empty($role)) {
         $_SESSION['errorMessage'] = "All fields are required.";
     } else {
         try {
@@ -125,17 +125,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <h3 class="section-title">User Information</h3>
                                 <hr class="section-divider">
                             </div>
-                            <label for="firstname">Name <span>required</span></label>
+                            <label for="firstname">Name</label>
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" id="firstname" name="firstname" placeholder="First Name"
                                         value="<?php echo isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : $user['firstname']; ?>"
-                                        required>
+                                        >
                                 </div>
                                 <div class="input-group">
                                     <input type="text" id="lastname" name="lastname" placeholder="Last Name"
                                         value="<?php echo isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : $user['lastname']; ?>"
-                                        required>
+                                        >
                                 </div>
                             </div>
                             <div class="form-group">

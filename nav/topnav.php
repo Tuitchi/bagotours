@@ -171,6 +171,59 @@
         color: #333;
         /* White text */
     }
+
+    .switch-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+    input:checked+.slider {
+        background-color: #4CAF50;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(26px);
+    }
 </style>
 
 <header>
@@ -187,51 +240,73 @@
             </form>
             <div id="dropdown"></div>
         </div>
-        <?php
-        if (empty($user_id)) {
-            echo "<button id='open-modal' class='login'>Login</button>";
-        } else {
+        <?php if (empty($user_id)): ?>
+            <button id="open-modal" class="login">Login</button>
+        <?php else: ?>
+            <?php
             require_once("func/func.php");
             $notif = getNotifications($conn, $user_id);
             $unreadNotifications = array_filter($notif, function ($notifItem) {
                 return $notifItem['is_read'] == 0;
             });
 
-            // Step 2: Count unread notifications
+            // Count unread notifications
             $notifCount = count($unreadNotifications);
-            echo "
-            <div class='notification' onclick='toggleNotificationMenu()'>
-                <i class='fa fa-bell'><span id='notification-count' class='num'>$notifCount</span></i>
-                <div class='notification-menu' id='notificationMenu'>";
-
-            if (!empty($notif)) {
-                foreach ($notif as $i) {
-                    $readClass = $i['is_read'] ? 'read' : 'unread';
-                    $formattedDate = date('M. d, Y', strtotime($i['created_at']));
-                    echo "<a class='$readClass' href='" . $i['url'] . "' data-id='" . $i['id'] . "'>
-                            <p>" . $i['message'] . " <span>" . $formattedDate . "</span></p>
-                          </a><hr>";
-                }
-            } else {
-                echo "<p>No Notification.</p>";
-            }
-            echo "
+            ?>
+            <div class="notification" onclick="toggleNotificationMenu()">
+                <i class="fa fa-bell">
+                    <span id="notification-count" class="num"><?= $notifCount ?></span>
+                </i>
+                <div class="notification-menu" id="notificationMenu">
+                    <?php if (!empty($notif)): ?>
+                        <?php foreach ($notif as $i): ?>
+                            <?php
+                            $readClass = $i['is_read'] ? 'read' : 'unread';
+                            $formattedDate = date('M. d, Y', strtotime($i['created_at']));
+                            ?>
+                            <a class="<?= $readClass ?>" href="<?= $i['url'] ?>" data-id="<?= $i['id'] ?>">
+                                <p><?= $i['message'] ?> <span><?= $formattedDate ?></span></p>
+                            </a>
+                            <hr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No Notification.</p>
+                    <?php endif; ?>
                 </div>
             </div>
-                
-            <div class='dp' onclick='toggleAccountMenu()'>
-                <img src='upload/Profile Pictures/" . $_SESSION['profile-pic'] . "' class='dpicn' alt='dp'>
-                <div class='account-menu' id='accountMenu'>
+
+            <div class="dp" onclick="toggleAccountMenu()">
+
+                <div class="profile-container">
+                    <img src="<?= $_SESSION['profile-pic'] ?>" class="dpicn" alt="dp">
+                    <?php require_once 'func/user_func.php';
+                    if (checkIfTrusted($conn, $user_id)) {
+                        echo '<img src="assets/crown.png" class="crown-icon" alt="Crown">';
+                    } ?>
+                </div>
+                <div class="account-menu" id="accountMenu">
                     <ul>
-                        <a href='manage-acc'><li>Manage Account</li></a>
-                        <a href='booking'><li>Bookings</li></a>
-                        <li>Settings</li>
-                        <a onclick='logout()'><li>Logout</li></a>
+                        <a href="php/role-switch.php">
+                            <li>User Mode
+                                <label class="switch">
+                                    <input type="checkbox" id="roleSwitch">
+                                    <span class="slider"></span>
+                                </label>
+                            </li>
+                        </a>
+                        <a href="manage-acc">
+                            <li>Manage Account</li>
+                        </a>
+                        <a href="booking">
+                            <li>Bookings</li>
+                        </a>
+                        <a onclick="logout()">
+                            <li style="color:red;">Logout</li>
+                        </a>
                     </ul>
                 </div>
-            </div>";
-        }
-        ?>
+            </div>
+        <?php endif; ?>
     </div>
 </header>
 

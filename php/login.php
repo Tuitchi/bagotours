@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         if ($stmt->rowCount() === 0) {
-            $errors['username'] = "User not found";
+            $errors['password'] = "Invalid username or password";
             echo json_encode(['success' => false, 'errors' => $errors]);
             exit();
         }

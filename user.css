@@ -250,7 +250,26 @@ input[type=text]:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+}
+
+.profile-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dpicn {
+  width: 100%;  /* Use 100% to fill the .dp circle */
+  height: auto;/* Use 100% to fill the .dp circle */
+  object-fit: cover;
+  border-radius: 50%; /* Ensures the profile image is circular */
+}
+
+.crown-icon {
+  position: absolute;
+  top: -10px; /* Adjust to position the crown properly */
+  left: -7px; /* Adjust to position the crown properly */
+  width: 30px; /* Adjust size as needed */
+  z-index: 1; /* Ensure crown is above the profile image */
 }
 
 .dp .account-menu ul li a {
@@ -599,6 +618,29 @@ input[type=text]:focus {
   width: 100%;
 }
 
+.spinner {
+  border: 2px solid #f3f3f3;
+  /* Light gray */
+  border-top: 2px solid #3498db;
+  /* Blue */
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .spot {
   color: #000000;
   background-color: #f9f9f9;
@@ -823,6 +865,26 @@ input[type=text]:focus {
   width: 100%;
 }
 
+.comment-save-btn {
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 80px;
+}
+
+.bxs-send {
+  font-size: smaller;
+}
+
+.comment-save-btn:hover {
+  background-color: #0056b3;
+}
+
 .form-container button:hover {
   background-color: #0056b3;
 }
@@ -1039,6 +1101,14 @@ input[type=text]:focus {
   .item1,
   .items {
     width: 800px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .modal-content {
+    max-width: 100%;
+    margin: 0;
+    align-items: center;
   }
 }
 

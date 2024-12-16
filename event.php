@@ -230,7 +230,7 @@ try {
                 </div>
             <?php } else { ?>
                 <div class="booking">
-                    <h2>No Event.</h2>
+                    <h2>No Event</h2>
                     <img src="assets/booking-empty.png" alt="No bookings found" style="max-width: 100%; height: auto;">
                     <div class="desc">
                         <p>At this time, there are no events scheduled. Please visit again later for updates.</p>
