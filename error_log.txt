@@ -707,6 +707,7 @@ Stack trace:
 #1 C:\xampp\htdocs\bagotours\admin\booking.php(25): getBooking(Object(PDO), 11)
 #2 {main}
   thrown in C:\xampp\htdocs\bagotours\admin\booking.php on line 42
+<<<<<<< HEAD
 [09-Dec-2024 18:12:07 Europe/Berlin] PHP Warning:  Undefined variable $pdo in C:\xampp\htdocs\bagotours\php\register.php on line 51
 [09-Dec-2024 18:12:07 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\bagotours\php\register.php:51
 Stack trace:
@@ -1346,3 +1347,7 @@ Stack trace:
 [16-Dec-2024 10:11:33 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 45
 [16-Dec-2024 10:11:38 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 45
 [16-Dec-2024 10:11:57 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\bagotours\admin\print-visitors.php on line 45
+=======
+[2024-12-14 07:58:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
+[2024-12-14 07:59:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
+>>>>>>> fe0d1e70e2c87751f3549d61e5093db796e78902
