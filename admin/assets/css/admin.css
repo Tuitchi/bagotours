@@ -46,7 +46,9 @@ body {
   background: var(--grey);
   overflow-x: hidden;
 }
-
+table {
+  margin-bottom: 30px;
+}
 /* Overlay */
 #rotate-message {
   position: fixed;
@@ -82,15 +84,25 @@ body {
 
 /* PAGINATION */
 .pagination {
-  margin: 5px;
+  margin: 0 auto;
+  /* Centers the pagination horizontally */
   display: flex;
   justify-content: center;
+  /* Centers the content inside the pagination */
+  align-items: center;
+  /* Centers the items vertically */
   background-color: var(--light);
-  /* Ensuring the background is white */
   padding: 10px;
   border-radius: 8px;
-  /* Rounded corners for the pagination container */
+  position: absolute;
+  left: 50%;
+  /* Start from the middle */
+  transform: translateX(-50%);
+  /* Offset by half its width for perfect centering */
+  bottom: 0;
+  /* Position at the bottom of the parent */
 }
+
 
 .pagination a,
 .pagination span {
@@ -98,19 +110,14 @@ body {
   padding: 6px 12px;
   text-decoration: none;
   border: 1px solid #444;
-  /* Darker border color */
   color: #444;
-  /* Dark text color */
   border-radius: 4px;
   font-size: 14px;
-  /* Smaller font size */
   background-color: #f5f5f5;
-  /* Light gray background for inactive buttons */
 }
 
 .pagination .btn {
   color: #343a40;
-  /* Indicate that the button is not clickable */
 }
 
 .pagination a.active {
@@ -139,26 +146,26 @@ body {
 /* MODAL STYLING */
 
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 11111;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: fixed;
+  z-index: 1000000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-	position: relative;
-	background-color: #fff;
-	margin: auto;
-	padding: 20px;
-	border-radius: 4px;
-	border: 1px solid #888;
-	width: 90vw;
+  position: relative;
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  width: 90vw;
 }
 
 .close {
@@ -311,7 +318,7 @@ body {
   width: 280px;
   height: 100%;
   background: var(--light);
-  z-index: 2000;
+  z-index: 1;
   font-family: var(--lato);
   transition: 0.3s ease;
   overflow-x: hidden;
@@ -447,7 +454,7 @@ body {
   transition: 0.3s ease;
 }
 
-#sidebar.hide ~ #content {
+#sidebar.hide~#content {
   width: calc(100% - 60px);
   left: 60px;
 }
@@ -484,7 +491,7 @@ body {
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1;
 }
 
 #content nav::before {
@@ -606,7 +613,7 @@ body {
   transition: all 0.3s ease;
 }
 
-#content nav #switch-mode:checked + .switch-mode::before {
+#content nav #switch-mode:checked+.switch-mode::before {
   left: calc(100% - (25px - 4px) - 2px);
 }
 
@@ -622,7 +629,7 @@ body {
 }
 
 #content main::-webkit-scrollbar-thumb {
-	background-image:linear-gradient(to bottom, rgb(0, 0, 85), rgb(0, 0, 50));
+  background-image: linear-gradient(to bottom, rgb(0, 0, 85), rgb(0, 0, 50));
 }
 
 #content main::-webkit-scrollbar {
@@ -868,7 +875,7 @@ main #delete:hover {
   color: var(--dark);
 }
 
-#content main .table-data > div {
+#content main .table-data>div {
   border-radius: 20px;
   background: var(--light);
   padding: 24px;
@@ -1041,8 +1048,8 @@ main #delete:hover {
     background: var(--red);
   }
 
-  #content nav form.show ~ .notification,
-  #content nav form.show ~ .profile {
+  #content nav form.show~.notification,
+  #content nav form.show~.profile {
     display: none;
   }
 

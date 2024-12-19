@@ -18,13 +18,13 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <h3> Home</h3>
             </a>
 
-            <a href="event" class="nav-option <?php echo (in_array($current_page, ['event', 'view-event']))  ? 'active' : ''; ?>">
+            <a href="event" class="nav-option <?php echo (in_array($current_page, ['event', 'view-event', 'history-event']))  ? 'active' : ''; ?>">
                 <i class='bx bxs-party'></i>
                 <h3> Event</h3>
             </a>
             <a href="list" class="nav-option <?php echo (in_array($current_page, ['list', 'tour']))  ? 'active' : ''; ?>">
                 <i class='bx bxs-map-alt'></i>
-                <h3> Tour List</h3>
+                <h3> Tourist List</h3>
             </a>
             <a href="most-popular" class="nav-option <?php echo $current_page == 'most-popular' ? 'active' : ''; ?>"><i
                     class='bx bxs-hot'></i>
@@ -33,7 +33,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             <?php if (isset($_SESSION['user_id'])) { ?>
                 <a href="map" class="nav-option <?php echo $current_page == 'map' ? 'active' : ''; ?>"><i
                         class='bx bxs-map'></i>
-                    <h3> Tours Map</h3>
+                    <h3> Tourist Map</h3>
                 </a>
             <?php } ?>
         </div>

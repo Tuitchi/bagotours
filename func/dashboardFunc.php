@@ -13,9 +13,9 @@ function totalPending($conn, $status = 'Pending')
         $stmt = $conn->prepare($query);
         $stmt->execute([':status' => $status]);
         $totalPending = $stmt->fetchColumn();
-        
+
         // Return 0 if there are no pending tours for better clarity
-        return $totalPending ? (int)$totalPending : 0;
+        return $totalPending ? (int) $totalPending : 0;
     } catch (PDOException $e) {
         // Log the error and optionally return 0 or false to indicate failure
         error_log("Error fetching total pending tours: " . $e->getMessage());
@@ -82,10 +82,16 @@ function nonBago($conn, $user_id)
     $stmt->execute();
     return $stmt->fetchColumn() ?? 0;
 }
-function Bago($conn, $user_id)
+function Bago($conn, $user_id, $tour = null)
 {
     $query = "SELECT COUNT(*) AS total_visit FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id AND vr.city_residence LIKE '%Bago%'";
+    if ($tour) {
+        $query .= " AND t.id = :tour";
+    }
     $stmt = $conn->prepare($query);
+    if ($tour) {
+        $stmt->bindParam(':tour', $tour, PDO::PARAM_INT);
+    }
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn() ?? 0;

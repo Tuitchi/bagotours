@@ -55,9 +55,6 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 				<div class="left">
 					<?php include 'includes/breadcrumb.php'; ?>
 				</div>
-				<a class="btn-download" id="btn-download" href="add-tour">
-                    <i class='bx bxs-printer'></i>Print Data
-                </a>
 			</div>
 
 			<ul class="box-info">
@@ -187,7 +184,20 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 			const loader = $('#visitorChart + .loader');
 
 			loader.show();
-			const url = new URL('bagotours/admin/assets/visitorChart.php', window.location.origin);
+			const origin = window.location.origin;
+			let basePath;
+
+			if (origin === 'http://localhost') {
+				basePath = origin + '/bagotours/admin/';
+			} else {
+				basePath = origin + '/admin/';
+			}
+
+			const url = new URL('assets/visitorChart.php', basePath);
+
+			console.log(url.toString()); // Output the resolved URL to verify
+
+			alert('url: ' + url);
 			if (tourId) {
 				url.searchParams.append('tour', tourId);
 			}

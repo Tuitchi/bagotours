@@ -161,7 +161,16 @@ function tourAlreadyExists($conn, $title)
                             </div>
                             <div class="input-group" style="width:35%">
                                 <label for="type">Tour Type <span>required</span></label>
-                                <input type="text" id="type" name="type" required>
+                                <select name="type" id="type" required>
+                                    <option value="none" selected disabled>Select an Option</option>
+                                    <option value="Beach Resort">Beach Resort</option>
+                                    <option value="Campsite">Campsite</option>
+                                    <option value="Falls">Falls</option>
+                                    <option value="Historical Landmark">Historical Landmark</option>
+                                    <option value="Mountain Resort">Mountain Resort</option>
+                                    <option value="Park">Park</option>
+                                    <option value="Swimming Pool">Swimming Pool</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

@@ -6,10 +6,35 @@ require 'include/db_conn.php';
 
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['role'] == 'admin') {
-        header("Location: admin");
+        header("Location: admin/home");
+        exit();
+    } elseif ($_SESSION['role'] == 'owner') {
+        header("Location: owner/home");
         exit();
     }
     $user_id = $_SESSION['user_id'];
+    try {
+        $deviceStmt = $conn->prepare("SELECT email, device_id FROM users WHERE id = :user_id");
+        $deviceStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        if ($deviceStmt->execute()) {
+            $deviceId = $deviceStmt->fetch();
+            if (!$deviceId['device_id']) {
+                $device_id = md5($deviceId['email']);
+                $updateStmt = $conn->prepare("UPDATE users SET device_id = :device_id WHERE id = :user_id");
+                $updateStmt->bindParam(':device_id', $device_id, PDO::PARAM_STR);
+                if ($updateStmt->execute()) {
+                    setcookie('device_id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
+                } else {
+                    echo "<script> alert('Failed to update device_id');</script>";
+                }
+            } else {
+                unset($_COOKIE['device_id']);
+                setcookie('device_id', $deviceId['device_id'], time() + (10 * 365 * 24 * 60 * 60), "/");
+            }
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
     $date = date('Y-m-d');
     $stmt = $conn->prepare("SELECT expiry, id, status FROM tours WHERE user_id = :user_id AND (status = 'Rejected' OR DATE(expiry) >= :current_date)");
 
@@ -60,68 +85,67 @@ if (isset($_SESSION['user_id'])) {
             }
         }
     }
-}
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        if ($input['action'] === 'get_nearby_tours') {
+            $userLat = $input['userLat'];
+            $userLng = $input['userLng'];
+            $radius = 50;
+
+            // Validate input
+            if (!is_numeric($userLat) || !is_numeric($userLng)) {
+                echo json_encode(['error' => 'Invalid latitude or longitude']);
+                exit;
+            }
+            $query = "
+            SELECT 
+                t.id AS id, 
+                title, 
+                type, 
+                t.img AS img, 
+                IFNULL(AVG(r.rating), 0) AS average_rating, 
+                IFNULL(COUNT(r.id), 0) AS review_count,
+                (6371 * acos(
+                    cos(radians(:userLat)) * cos(radians(latitude)) * 
+                    cos(radians(longitude) - radians(:userLng)) + 
+                    sin(radians(:userLat)) * sin(radians(latitude))
+                )) AS distance
+            FROM tours t
+            LEFT JOIN review_rating r ON t.id = r.tour_id 
+            WHERE t.status IN ('Active', 'Temporarily Closed')
+            GROUP BY t.id, t.title, t.type, t.img, t.latitude, t.longitude
+            HAVING distance < :radius  -- Corrected HAVING clause
+            ORDER BY distance ASC;  -- Corrected ORDER BY clause
+        ";
 
 
-// Handle AJAX request for nearby tours
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = json_decode(file_get_contents("php://input"), true);
 
-    if ($input['action'] === 'get_nearby_tours') {
-        $userLat = $input['userLat'];
-        $userLng = $input['userLng'];
-        $radius = 50;
+            try {
+                $stmt = $conn->prepare($query);
+                $stmt->execute([
+                    ':userLat' => $userLat,
+                    ':userLng' => $userLng,
+                    ':radius' => $radius,
+                ]);
 
-        // Validate input
-        if (!is_numeric($userLat) || !is_numeric($userLng)) {
-            echo json_encode(['error' => 'Invalid latitude or longitude']);
+                $nearbyTours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($nearbyTours as &$tour) {
+                    $tour['encoded_id'] = base64_encode($tour['id'] . $salt);
+                }
+
+                // Ensure we return an empty array if no tours are found
+                header('Content-Type: application/json');
+                echo json_encode($nearbyTours);
+            } catch (PDOException $e) {
+                echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+            }
             exit;
         }
-        $query = "
-        SELECT 
-            t.id AS id, 
-            title, 
-            type, 
-            t.img AS img, 
-            IFNULL(AVG(r.rating), 0) AS average_rating, 
-            IFNULL(COUNT(r.id), 0) AS review_count,
-            (6371 * acos(
-                cos(radians(:userLat)) * cos(radians(latitude)) * 
-                cos(radians(longitude) - radians(:userLng)) + 
-                sin(radians(:userLat)) * sin(radians(latitude))
-            )) AS distance
-        FROM tours t
-        LEFT JOIN review_rating r ON t.id = r.tour_id 
-        WHERE t.status IN ('Active', 'Temporarily Closed')
-        GROUP BY t.id, t.title, t.type, t.img, t.latitude, t.longitude
-        HAVING distance < :radius  -- Corrected HAVING clause
-        ORDER BY distance ASC;  -- Corrected ORDER BY clause
-    ";
-
-
-
-        try {
-            $stmt = $conn->prepare($query);
-            $stmt->execute([
-                ':userLat' => $userLat,
-                ':userLng' => $userLng,
-                ':radius' => $radius,
-            ]);
-
-            $nearbyTours = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($nearbyTours as &$tour) {
-                $tour['encoded_id'] = base64_encode($tour['id'] . $salt);
-            }
-
-            // Ensure we return an empty array if no tours are found
-            header('Content-Type: application/json');
-            echo json_encode($nearbyTours);
-        } catch (PDOException $e) {
-            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-        }
-        exit;
     }
 }
+// Handle AJAX request for nearby tours
 ?>
 
 <!DOCTYPE html>
@@ -190,17 +214,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $totalStars = $fullStars . $emptyStars;
                         $tour_images = explode(',', $tour['img']);
                         $main_image = $tour_images[0];
+
                         echo "<div class='spot'>
-                                <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                                    <img src='upload/Tour Images/" . $main_image . "' alt='" . htmlspecialchars($tour['title']) . "'>  
-                                    <h3>" . htmlspecialchars($tour['title']) . "</h3>
-                                    <p>" . htmlspecialchars($tour['type']) . "</p>
-                                    <div class='rating'>" . $totalStars . " <span>(" . htmlspecialchars($tour['review_count']) . " reviews)</span>
-                                    </div>
-                                </a>
-                            </div>";
-                    } ?>
+                <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
+                    <div class='img'>
+                        <img src='upload/Tour Images/" . $main_image . "' alt='" . htmlspecialchars($tour['title']) . "'>";
+
+                        // Fix for the bookable icon
+                        if ($tour['status'] == 'Temporarily Closed') {
+                            echo "<img src='assets/icons/closed.png' class='bookable closed'>";
+                        } else {
+                            if ($tour['bookable']) {
+                                echo "<img src='assets/icons/booking.png' class='bookable'>";
+                            } else {
+                                echo "<img src='assets/icons/free.png' class='bookable'>";
+                            }
+                        }
+                        echo "</div>
+                <h3>" . htmlspecialchars($tour['title']) . "</h3>
+                <p>" . htmlspecialchars($tour['type']) . "</p>
+                <div class='rating'>" . $totalStars . " <span>(" . htmlspecialchars($tour['review_count']) . " reviews)</span>
                 </div>
+            </a>
+        </div>";
+                    } // End of foreach loop
+                    ?>
+                </div>
+
             </div>
             <?php
             $events = getEventByDate($conn);
@@ -245,29 +285,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php endif; ?>
             </div>
-
-            <div class="popularspot">
-                <h2>Nearby Tours</h2>
-                <div id="loadingCard" style="display: none;">
-                    <p>Loading nearby tours...</p>
+            <?php
+            if (isset($_SESSION['user_id'])) {
+                ?>
+                <div class="popularspot">
+                    <h2>Nearby Tours</h2>
+                    <div id="loadingCard" style="display: none;">
+                        <p>Loading nearby tours...</p>
+                    </div>
+                    <div class="spots nearby-spots">
+                        <!-- Nearby tours will be loaded here -->
+                    </div>
                 </div>
-                <div class="spots nearby-spots">
-                    <!-- Nearby tours will be loaded here -->
-                </div>
-            </div>
+            <?php } ?>
 
             <div class="report-container" id="cardContainer">
                 <?php foreach ($tours as $tour) {
+                    $averageRating = round($tour['average_rating']);
+                    $fullStars = str_repeat("★", $averageRating);
+                    $emptyStars = str_repeat("☆", 5 - $averageRating);
+                    $totalStars = $fullStars . $emptyStars;
                     $tour_images = explode(',', $tour['img']);
                     $main_image = $tour_images[0];
                     echo "<div class='cards'>
                         <a href='tour?id=" . base64_encode($tour['id'] . $salt) . "' class='card'>
-                        <img src='upload/Tour Images/" . $main_image . "' alt='" . $tour['title'] . "'>
-                          
-                            <h2 class='title'>" . $tour['title'] . "</h2>
-                        </a>
-                    </div>";
+                            <div class='img'>
+                                <img src='upload/Tour Images/" . $main_image . "' alt='" . $tour['title'] . "'>";
+
+                    // Fix for the bookable icon
+                    if ($tour['status'] == 'Temporarily Closed') {
+                        echo "<img src='assets/icons/closed.png' class='bookable closed'>";
+                    } else {
+                        if ($tour['bookable']) {
+                            echo "<img src='assets/icons/booking.png' class='bookable'>";
+                        } else {
+                            echo "<img src='assets/icons/free.png' class='bookable'>";
+                        }
+                    }
+
+                    echo "</div>
+                        <h2 class='title'>" . $tour['title'] . "</h2>
+                                <div class='rating overflow'>" . $totalStars . " <span>(" . htmlspecialchars($tour['review_count']) . " reviews)</span></div>
+                    </a>
+                </div>";
                 } ?>
+
             </div>
             <div class="pagination" id="pagination"></div>
         </div>
@@ -320,18 +382,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $('#loadingCard').hide();  // Hide loading indicator
 
                         if (!Array.isArray(data) || data.length === 0) {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                icon: 'error',
-                                title: 'No Nearby Tours',
-                                timerProgressBar: true,
+                            $('#loadingCard').text('No tourist spots are near you.').show();
 
-                            });
-                            Toast.fire();
-                            $('#loadingCard').show();
                         } else {
                             displayNearbyTours(data);
                         }

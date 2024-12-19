@@ -111,27 +111,54 @@ if (isset($_GET['tour_id'])) {
             </div>
         <?php } else {
             try {
-                $stmt = $conn->prepare('SELECT id FROM users WHERE device_id = ?');
+                $stmt = $conn->prepare('SELECT id, home_address FROM users WHERE device_id = ?');
                 $stmt->execute([$_COOKIE['device_id']]);
-                $user_id = $stmt->fetchColumn();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 header("Location:index.php");
                 exit();
             }
-            if (hasVisitedToday($conn, $id, $user_id)) { ?>
-                <h1>You've already been to <?php echo $title ?> today.</h1>
-            <?php } else {
-                if (recordVisit($conn, $id, $user_id)) {
-                    try {
-                        $stmt = $conn->prepare("SELECT CONCAT(firstname , ' ', lastname) as name FROM users WHERE id = ?");
-                        $stmt->execute([$user_id]);
-                        $user = $stmt->fetchColumn();
-                    } catch (PDOException $e) {
-                        echo "Error: " . $e->getMessage();
-                    }
-                    createNotification($conn, $admin, $id, "$user visits $title", "dashboard", "visits");
-                } ?>
-                <h1>Thank you for visiting <?php echo $title ?>.</h1>
+            if (!empty($user['home_address'])) {
+
+                if (hasVisitedToday($conn, $id, $user['id'])) { ?>
+                    <h1>You've already been to <?php echo $title ?> today.</h1>
+                <?php } else {
+                    if (recordVisit($conn, $id, $user['id'])) {
+                        try {
+                            $stmt = $conn->prepare("SELECT CONCAT(firstname , ' ', lastname) as name FROM users WHERE id = ?");
+                            $stmt->execute([$user['id']]);
+                            $user = $stmt->fetchColumn();
+                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                        }
+                        createNotification($conn, $admin, $id, "$user visits $title", "dashboard", "visits");
+                    } ?>
+                    <h1>Thank you for visiting <?php echo $title ?>.</h1>
+                <?php }
+            } else { ?>
+                <div class="form-container">
+                    <h2>Home Address</h2>
+                    <form id="address">
+                        <input type="hidden" value="<?php echo $user['id']?>" name="id">
+                        <div class="name">
+                            <select name="country" id="country" required>
+                                <option value="" selected disabled>Select Country</option>
+                                <!-- Auto Generated country throu JS -->
+                            </select>
+                            <select name="province" id="province" required disabled>
+                                <option value="" selected disabled>Select Province</option>
+                                <!-- Auto Generated country throu JS -->
+                            </select>
+                            <select name="city" id="city" required disabled>
+                                <option value="" selected disabled>Select City/Municipality</option>
+                                <!-- Auto Generated country throu JS -->
+                            </select>
+                        </div>
+                        <div id="address-error" class="error-message"></div>
+
+                        <button type="submit">Update Address</button>
+                    </form>
+                </div>
             <?php }
         } ?>
     </div>
@@ -206,6 +233,46 @@ if (isset($_GET['tour_id'])) {
                 });
             });
 
+            // update 
+            $('#address').on('submit', function (event) {
+                event.preventDefault();
+                const $submitButton = $(this).find('button[type="submit"]');
+                $submitButton.prop('disabled', true).text('Updating...');
+
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: 'php/update-address.php',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        const data = JSON.parse(response);
+
+                        $('#address-error').text('').css('color', '').css('border', '');
+                        $('#address').css('border', '1px solid #ddd');
+
+                        if (data.success) {
+                            $('#address-error').css('color', 'green').text(data.message);
+                            $('#address').css('border', '1px solid green');
+                            setTimeout(function () {
+                                $modal.removeClass('active');
+                            }, 3000);
+                        } else if (data.errors.address) {
+                            $('#address-error').text(data.errors.address);
+                            $('#address').css('border', '1px solid red');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred. Please try again.');
+                    },
+                    complete: function () {
+                        $submitButton.prop('disabled', false).text('Sign in');
+                    },
+                });
+            });
+
             // Login Form
             $('#loginForm').on('submit', function (event) {
                 event.preventDefault();
@@ -255,8 +322,7 @@ if (isset($_GET['tour_id'])) {
                 event.preventDefault();
 
                 const formData = new FormData(this);
-                const $submitButton = $(this).find('button[type="submit"]'); // Target the submit button
-                // Show loading spinner or text and disable the button
+                const $submitButton = $(this).find('button[type="submit"]');
                 submitButton.html('<span class="spinner"></span> Registering...').prop('disabled', true);
 
                 $.ajax({

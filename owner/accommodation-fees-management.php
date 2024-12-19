@@ -3,6 +3,14 @@ include '../include/db_conn.php';
 
 if (isset($_GET['id'])) {
     $tour_id = $_GET['id'];
+    $sql = "SELECT title FROM tours WHERE id = :tour_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $tour = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($tour) {
+        $title = $tour['title'];
+    }
 } else {
     header("Location: tours.php");
     exit();
@@ -68,7 +76,7 @@ $user_id = $_SESSION['user_id'];
                 <div class="order table">
                     <div class="order">
                         <div class="title">
-                            <h2>Accommodation and Fees Management</h2>
+                            <h2><?= $title?> - Accommodation and Fees Management</h2>
                             <p>Choose the types of fees and accommodations you want to include in your tour.</p>
                             <select id="fees" onchange="changeForm()">
                                 <option value="" selected disabled>Choose a fee or accommodation type to add</option>
@@ -202,7 +210,8 @@ $user_id = $_SESSION['user_id'];
                                         <td>
                                             <?php if ($edit_id === $accommodation['id']): ?>
                                                 <form method="POST" action="../php/accommodation-fees/update-accommodation.php">
-                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($accommodation['id']) ?>">
+                                                    <input type="hidden" name="id"
+                                                        value="<?= htmlspecialchars($accommodation['id']) ?>">
                                                     <input type="hidden" name="tour_id" value="<?= $tour_id ?>">
                                                     <input type="hidden" name="type" value="accommodation">
                                                     <input type="text" name="item_name"
@@ -253,7 +262,9 @@ $user_id = $_SESSION['user_id'];
                                                 <a
                                                     href="accommodation-fees-management?id=<?= $tour_id ?>&edit_id=<?= htmlspecialchars($accommodation['id']) ?>"><i
                                                         class="bx bx-edit"></i></a>
-                                                <a href="#" class="delete-accommodation" data-id="<?= htmlspecialchars($accommodation['id']) ?>"><i class="bx bx-trash"></i></a>
+                                                <a href="#" class="delete-accommodation"
+                                                    data-id="<?= htmlspecialchars($accommodation['id']) ?>"><i
+                                                        class="bx bx-trash"></i></a>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -336,7 +347,8 @@ $user_id = $_SESSION['user_id'];
                                                 <a
                                                     href="accommodation-fees-management?id=<?= $tour_id ?>&edit_id=<?= htmlspecialchars($fee['id']) ?>"><i
                                                         class="bx bx-edit"></i></a>
-                                                <a href="#" class="delete-fee" data-id="<?= htmlspecialchars($fee['id']) ?>"><i class="bx bx-trash"></i></a>
+                                                <a href="#" class="delete-fee" data-id="<?= htmlspecialchars($fee['id']) ?>"><i
+                                                        class="bx bx-trash"></i></a>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -359,7 +371,7 @@ $user_id = $_SESSION['user_id'];
     <script src="../assets/js/jquery-3.7.1.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             <?php if (isset($_GET['success']) && $_['success'] = 1): ?>
                 Swal.fire({
@@ -374,7 +386,7 @@ $user_id = $_SESSION['user_id'];
 
             <?php endif; ?>
             $('.order.table')
-            $(".delete-fee").on("click", function(e) {
+            $(".delete-fee").on("click", function (e) {
                 e.preventDefault();
 
                 const feeId = $(this).data("id");
@@ -386,20 +398,20 @@ $user_id = $_SESSION['user_id'];
                         data: {
                             id: feeId
                         },
-                        success: function(response) {
+                        success: function (response) {
                             alert(response.message);
                             if (response.success) {
                                 Swal.fire('Success!', 'The fee has been successfully deleted.', 'success');
                                 $('.order.table').load(window.location.href + ' .order.table');
                             }
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             Swal.fire('Error!', `Something went wrong: ${xhr.responseText}`, 'error');
                         }
                     });
                 }
             });
-            $(".delete-accommodation").on("click", function(e) {
+            $(".delete-accommodation").on("click", function (e) {
                 e.preventDefault();
 
                 const accomId = $(this).data("id");
@@ -411,14 +423,14 @@ $user_id = $_SESSION['user_id'];
                         data: {
                             id: accomId
                         },
-                        success: function(response) {
+                        success: function (response) {
                             alert(response.message);
                             if (response.success) {
                                 Swal.fire('Success!', 'The fee has been successfully deleted.', 'success');
                                 $('.order.table').load(window.location.href + ' .order.table');
                             }
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             Swal.fire('Error!', `Something went wrong: ${xhr.responseText}`, 'error');
                         }
                     });
@@ -426,7 +438,7 @@ $user_id = $_SESSION['user_id'];
             });
 
             function handleFormSubmit(formId, actionUrl, successMessage) {
-                $(`#${formId}`).on('submit', function(event) {
+                $(`#${formId}`).on('submit', function (event) {
                     event.preventDefault();
 
                     let formData = new FormData(this);
@@ -437,12 +449,12 @@ $user_id = $_SESSION['user_id'];
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response) {
+                        success: function (response) {
                             Swal.fire('Success!', successMessage, 'success');
                             $(`#${formId}`)[0].reset();
                             $('.order.table').load(window.location.href + ' .order.table');
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             Swal.fire('Error!', `Something went wrong: ${xhr.responseText}`, 'error');
                         }
                     });

@@ -93,11 +93,24 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
+        .tour-item .img {
+            position: relative;
+
+            width: 100%;
+            height: 200px;
+        }
+
         .tour-item img {
             width: 100%;
             object-fit: cover;
             border-radius: 8px;
             height: 200px;
+        }
+
+        .img .bookable {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
         }
 
         .tour-item h3 {
@@ -206,8 +219,20 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     $main_image = $tour_images[0]; ?>
                     <div class="tour-item">
                         <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
-                            <img src='upload/Tour Images/<?php echo $main_image; ?>'
-                                alt='<?php echo htmlspecialchars($tour['title']); ?>'>
+
+                            <div class="img">
+                                <img src='upload/Tour Images/<?php echo $main_image; ?>'
+                                    alt='<?php echo htmlspecialchars($tour['title']); ?>'>
+                                <?php if ($tour['status'] == 'Temporarily Closed') {
+                                    echo "<img src='assets/icons/closed.png' class='bookable closed'>";
+                                } else {
+                                    if ($tour['bookable']) {
+                                        echo "<img src='assets/icons/booking.png' class='bookable'>";
+                                    } else {
+                                        echo "<img src='assets/icons/free.png' class='bookable'>";
+                                    }
+                                } ?>
+                            </div>
                             <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
                             <p>
                                 <?php

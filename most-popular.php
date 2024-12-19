@@ -60,31 +60,27 @@ try {
     $stmt->execute();
     $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Find max values and prevent division by zero
     $max_visitors = max(array_column($tours, 'total_visitors'));
     $max_bookings = max(array_column($tours, 'total_completed_bookings'));
-    $max_rating = 5; // Assuming rating is out of 5
+    $max_rating = 5;
     $max_reviews = max(array_column($tours, 'review_count'));
 
-    // Prevent division by zero by checking max values
     $max_visitors = ($max_visitors > 0) ? $max_visitors : 1;
     $max_bookings = ($max_bookings > 0) ? $max_bookings : 1;
     $max_reviews = ($max_reviews > 0) ? $max_reviews : 1;
 
     $weighted_tours = [];
     $total_visitors_weight = 0.2;
-    $completed_bookings_weight = 0.3;
-    $rating_weight = 0.3;
-    $review_weight = 0.2;
+    $completed_bookings_weight = 0.2;
+    $rating_weight = 0.5;
+    $review_weight = 0.1;
 
     foreach ($tours as $tour) {
-        // Normalize the data
         $normalized_visitors = $tour['total_visitors'] / $max_visitors;
         $normalized_bookings = $tour['total_completed_bookings'] / $max_bookings;
         $normalized_rating = $tour['average_rating'] / $max_rating;
         $normalized_reviews = $tour['review_count'] / $max_reviews;
 
-        // Calculate the weighted score
         $weighted_score = ($normalized_visitors * $total_visitors_weight) +
             ($normalized_bookings * $completed_bookings_weight) +
             ($normalized_rating * $rating_weight) +
@@ -93,19 +89,20 @@ try {
         $tour['weighted_score'] = $weighted_score;
         $weighted_tours[] = $tour;
     }
-
-    // Sort by weighted score in descending order
     usort($weighted_tours, function ($a, $b) {
+        if ($b['average_rating'] == 5 && $a['average_rating'] < 5) {
+            return 1;
+        } elseif ($a['average_rating'] == 5 && $b['average_rating'] < 5) {
+            return -1;
+        }
         return $b['weighted_score'] <=> $a['weighted_score'];
     });
 
-    // Limit to top 15 tours
     $top_tours = array_slice($weighted_tours, 0, 15);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 ?>
-
 
 
 <!DOCTYPE html>
@@ -167,9 +164,7 @@ try {
     <script src="index.js"></script>
     <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script>
-        // Function to apply background images to each tourList item
         function applyBackgroundImages() {
-            // Clear previous background styles
             $('style[data-index]').remove();
 
             $('.tourList').each(function(index) {
@@ -178,7 +173,6 @@ try {
                     const uniqueClass = `tourList-bg-${index}`;
                     $(this).addClass(uniqueClass);
 
-                    // Create a new style element for the updated image
                     const style = document.createElement('style');
                     style.setAttribute('data-index', index);
                     style.textContent = `
@@ -191,11 +185,9 @@ try {
             });
         }
 
-        // Initial load of background images
         $(document).ready(function() {
             applyBackgroundImages();
 
-            // Handle filter buttons to reload content and update backgrounds
             $('.option').on('click', function() {
                 $('.option').removeClass('active');
                 $(this).addClass('active');
@@ -203,16 +195,13 @@ try {
                 var timeFilter = $(this).data('filter');
 
                 $.ajax({
-                    url: '', // Use the same page URL to handle the request
+                    url: '',
                     type: 'POST',
                     data: {
                         filter: timeFilter
                     },
                     success: function(response) {
-                        // Update the tour list container with new content
                         $('#tour-list-container').html($(response).find('#tour-list-container').html());
-
-                        // Reapply background images after content update
                         applyBackgroundImages();
                     },
                     error: function() {

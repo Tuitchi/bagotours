@@ -13,8 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
     $bookable = isset($_POST['bookable']) ? $_POST['bookable'] : 0;
+
+    $proof_titles = isset($_POST['proof']) ? $_POST['proof'] : [];
+    $proof_title_str = implode(',', $proof_titles);
+
+    $proof_images = isset($_FILES['proof_image']) ? $_FILES['proof_image'] : [];
+    $proof_image_names = [];
+
     if (tourAlreadyExists($conn, $title)) {
-        $errorMessage = "Tour already exist, please fill up a new tour.";
+        $errorMessage = "Tour already exists, please fill up a new tour.";
     } else {
         $uploaded_images = [];
         if (isset($_FILES['tour-images']) && !empty($_FILES['tour-images']['name'][0])) {
@@ -27,24 +34,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $image_size = $images['size'][$key];
                 $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
 
-                // Validate image (Check for allowed types and size)
                 if (!in_array($image_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
                     $image_error = true;
                     $error_message = "Invalid image type. Only jpg, jpeg, png, and gif are allowed.";
                     break;
                 }
-                if ($image_size > 5000000) { // Max size of 5MB
+                if ($image_size > 5000000) {
                     $image_error = true;
                     $error_message = "Image size exceeds 5MB.";
                     break;
                 }
 
-                // Generate a unique name for the image
                 $new_image_name = uniqid() . '.' . $image_ext;
                 $target_path = "../upload/Tour Images/" . $new_image_name;
 
                 if (move_uploaded_file($image_tmp_name, $target_path)) {
-                    $uploaded_images[] = $new_image_name; // Store the image name for DB insertion
+                    $uploaded_images[] = $new_image_name;
                 } else {
                     $image_error = true;
                     $error_message = "Error uploading image.";
@@ -57,14 +62,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        // If no errors, insert the tour into the database
         if (!$image_error) {
-            // Convert the array of uploaded images to a comma-separated string for the database
             $image_paths = implode(',', $uploaded_images);
 
-            // Insert tour details into the database
-            $query = "INSERT INTO tours (title, type, description, address, latitude, longitude, img, bookable, status, user_id) 
-                  VALUES (:title, :type, :description, :address, :latitude, :longitude, :img, :bookable, 'Pending', :user_id)";
+            $proof_image_names = [];
+            if (isset($_FILES['permit_image']) && !empty($_FILES['permit_image']['name'][0])) {
+                foreach ($_FILES['permit_image']['name'] as $key => $proof_image_name) {
+                    $proof_image_tmp_name = $_FILES['permit_image']['tmp_name'][$key];
+                    $proof_image_ext = pathinfo($proof_image_name, PATHINFO_EXTENSION);
+                    $proof_image_new_name = uniqid() . '.' . $proof_image_ext;
+                    $proof_image_target_path = "../upload/Permits/" . $proof_image_new_name;
+
+                    if (move_uploaded_file($proof_image_tmp_name, $proof_image_target_path)) {
+                        $proof_image_names[] = $proof_image_new_name;
+                    } else {
+                        $errorMessage = "Error uploading proof image.";
+                        break;
+                    }
+                }
+            }
+
+            $proof_image_paths = implode(',', $proof_image_names);
+
+            $query = "INSERT INTO tours (title, type, description, address, latitude, longitude, img, bookable, status, user_id, proof_title, proof_image) 
+          VALUES (:title, :type, :description, :address, :latitude, :longitude, :img, :bookable, 'Pending', :user_id, :proof_title, :proof_image)";
 
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':title', $title);
@@ -76,6 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':img', $image_paths);
             $stmt->bindParam(':bookable', $bookable);
             $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':proof_title', $proof_title_str);
+            $stmt->bindParam(':proof_image', $proof_image_paths);
 
             if ($stmt->execute()) {
                 $successMessage = "Tour added successfully!";
@@ -138,8 +161,8 @@ function tourAlreadyExists($conn, $title)
                             <h3 class="section-title">Tour Information</h3>
                             <hr class="section-divider">
                         </div>
-                        <label for="image-preview-container">Tour Image <span>required</span></label>
-                        <div class="image-preview-container">
+                        <label for="tour-image-preview-container">Tour Image <span>required</span></label>
+                        <div class="tour-image-preview-container">
                             <div class="main-image">
                                 <img id="main-image-preview" src="" alt="Main Image Preview">
                             </div>
@@ -160,8 +183,17 @@ function tourAlreadyExists($conn, $title)
                                 <input type="text" id="title" name="title" required>
                             </div>
                             <div class="input-group" style="width:35%">
-                                <label for="type">Tour Type <span>required</span></label>
-                                <input type="text" id="type" name="type" required>
+                                <label for="type">Tour Type <span>require</span></label>
+                                <select name="type" id="type" required>
+                                    <option value="none" selected disabled>Select an Option</option>
+                                    <option value="Beach Resort">Beach Resort</option>
+                                    <option value="Campsite">Campsite</option>
+                                    <option value="Falls">Falls</option>
+                                    <option value="Historical Landmark">Historical Landmark</option>
+                                    <option value="Mountain Resort">Mountain Resort</option>
+                                    <option value="Park">Park</option>
+                                    <option value="Swimming Pool">Swimming Pool</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -187,6 +219,28 @@ function tourAlreadyExists($conn, $title)
 
                         <label for="description">Tour Description <span>required</span></label>
                         <textarea id="description" name="description" rows="4" required></textarea>
+                        <div class="section-header">
+                            <hr class="section-divider">
+                            <h3 class="section-title">Proof of Permit</h3>
+                            <hr class="section-divider">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group" style="width:80%">
+                                <label for="permit">Permit Type <span>require</span></label>
+                                <select name="permit[]" id="permit" multiple required style="height:150px;">
+                                </select>
+                            </div>
+                            <div class="input-group" style="width:20%">
+                                <button type="button" id="add-btn" class="btn"><i class='bx bx-plus'></i>Add</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div id="selected-permits" class="selected-permits-container">
+                                <!-- Selected items will appear here -->
+                            </div>
+                        </div>
+
 
                         <input type="hidden" id="latitude" name="latitude">
                         <input type="hidden" id="longitude" name="longitude">
@@ -209,6 +263,141 @@ function tourAlreadyExists($conn, $title)
 
     <script src="../assets/js/script.js"></script>
     <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                // Check if there are selected permits with associated images
+                var permits = [];
+                var permitImages = [];
+                $('.permit-item').each(function () {
+                    var permit = $(this).find('.permit-text').text();
+                    permits.push(permit);  // Add permit title
+
+                    var permitImage = $(this).find('.permit-image')[0].files[0];  // Get the file from the permit input
+                    if (permitImage) {
+                        permitImages.push(permitImage);
+                    }
+                });
+
+                // Add permit titles and images to hidden inputs before submitting the form
+                var permitTitleInput = $('<input>').attr({
+                    type: 'hidden',
+                    name: 'proof[]',
+                    value: permits.join(',')
+                });
+                $(this).append(permitTitleInput);
+
+                var permitImageInput = $('<input>').attr({
+                    type: 'hidden',
+                    name: 'permit_image[]',
+                    value: permitImages.join(',')  // You may want to handle file uploading separately
+                });
+                $(this).append(permitImageInput);
+            });
+            var permits = [
+                "Building Permit",
+                "Business Permit",
+                "Environmental Compliance Certificate (ECC)",
+                "Barangay Clearance",
+                "Fire Safety Inspection Certificate"
+            ];
+
+            $('#permit').empty();
+            $('#permit').append('<option value="none" selected disabled>Select a Proof of Permit</option>');
+
+            $.each(permits, function (index, permit) {
+                $('#permit').append('<option value="' + permit + '">' + permit + '</option>');
+            });
+
+            const closeIcon = "<i class='bx bx-x'></i>";
+
+            // Add Permit Items when the Add button is clicked
+            $('#add-btn').click(function () {
+                var selectedPermits = $('#permit').val();
+                if (selectedPermits && selectedPermits.length > 0) {
+                    $.each(selectedPermits, function (index, selectedPermit) {
+                        if (!$('#selected-permits').find('.permit-item[data-permit="' + selectedPermit + '"]').length) {
+                            var newItem = `
+                        <div class="permit-item" data-permit="${selectedPermit}">
+                            <span class="permit-text">${selectedPermit}</span>
+                            <input type="file" name="permit_image[]" class="permit-image" accept="image/*" required>
+                            <div class="permit-image-preview-container">
+                                <img alt="Preview Image" class="permit-image-preview" style="display:none; max-width: 100px; margin-top: 5px;">
+                            </div>
+                            <button type="button" class="close-btn">${closeIcon}</button>
+                        </div>
+                    `;
+                            $('#selected-permits').append(newItem);
+                        }
+                    });
+                } else {
+                    alert("Please select at least one permit.");
+                }
+            });
+
+            // Close Button functionality for permit items
+            $(document).on('click', '.close-btn', function () {
+                $(this).closest('.permit-item').remove();
+            });
+
+            // Image Preview functionality for Permit Images
+            $(document).on('change', '.permit-image', function (e) {
+                var fileInput = $(this);
+                var previewContainer = fileInput.closest('.permit-item').find('.permit-image-preview-container');
+                var previewImage = previewContainer.find('.permit-image-preview')[0];
+
+                var file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        previewImage.src = event.target.result;
+                        previewImage.style.display = 'block'; // Show the image preview
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImage.style.display = 'none';
+                }
+            });
+
+            // Tour Image Preview Functionality (separate from Permit Image functionality)
+            $('#tour-images').on('change', function (event) {
+                const files = event.target.files;
+                const $imagesPreview = $('.tour-image-preview-container');
+                const $mainImagePreview = $('#main-image-preview');
+                const $thumbnailContainer = $('.thumbnail-images');
+
+                // Clear existing image previews and thumbnails
+                $imagesPreview.toggle();
+                $thumbnailContainer.empty();
+                $mainImagePreview.attr('src', '');
+
+                $.each(files, function (index, file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const $img = $('<img>', {
+                            src: e.target.result,
+                            alt: `Image ${index + 1}`,
+                        });
+
+                        $img.on('click', function () {
+                            $mainImagePreview.attr('src', e.target.result);
+                            $('.thumbnail-images img').removeClass('selected');
+                            $img.addClass('selected');
+                        });
+
+                        $thumbnailContainer.append($img);
+
+                        if (index === 0) {
+                            $mainImagePreview.attr('src', e.target.result);
+                            $img.addClass('selected');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        });
+
+
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -299,41 +488,6 @@ function tourAlreadyExists($conn, $title)
                     .catch((err) => console.error("Error in reverse geocoding: ", err));
             }
 
-            $('#tour-images').on('change', function (event) {
-                const files = event.target.files;
-                const $imagesPreview = $('.image-preview-container');
-                const $mainImagePreview = $('#main-image-preview');
-                const $thumbnailContainer = $('.thumbnail-images');
-
-                // Clear existing image previews and thumbnails
-                $imagesPreview.toggle();
-                $thumbnailContainer.empty();
-                $mainImagePreview.attr('src', '');
-
-                $.each(files, function (index, file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const $img = $('<img>', {
-                            src: e.target.result,
-                            alt: `Image ${index + 1}`,
-                        });
-
-                        $img.on('click', function () {
-                            $mainImagePreview.attr('src', e.target.result);
-                            $('.thumbnail-images img').removeClass('selected');
-                            $img.addClass('selected');
-                        });
-
-                        $thumbnailContainer.append($img);
-
-                        if (index === 0) {
-                            $mainImagePreview.attr('src', e.target.result);
-                            $img.addClass('selected');
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
         });
     </script>
 </body>

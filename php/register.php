@@ -56,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 $_SESSION['user_id'] = $conn->lastInsertId();
                 $_SESSION['role'] = 'user';
-                $_SESSION['profile-pic'] = 'upload/Profile Pictures/default.png';
                 echo json_encode(['success' => true, 'message' => 'Registration successful!', 'redirect' => '']);
                 exit;
             }

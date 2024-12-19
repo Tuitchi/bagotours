@@ -2,10 +2,20 @@
 ini_set('log_errors', 1); // Enable error logging
 ini_set('error_log', '../error_log.txt'); // Set the error log file path
 
-$DATABASE_HOSTNAME = "localhost";
-$DATABASE_USERNAME = "root";
-$DATABASE_PASSWORD = "";
-$DATABASE_NAME = "tourism";
+if ($_SERVER['HTTP_HOST'] === 'localhost') {
+    // Local environment
+    $DATABASE_HOSTNAME = "localhost";
+    $DATABASE_USERNAME = "root";
+    $DATABASE_PASSWORD = "";
+    $DATABASE_NAME = "tourism";
+} else {
+    // Live environment
+    $DATABASE_HOSTNAME = "localhost";
+    $DATABASE_USERNAME = "u520834156_digiTourism24";
+    $DATABASE_PASSWORD = "2024@BagoDigitalTourism";
+    $DATABASE_NAME = "u520834156_digitaltourism";
+}
+
 
 $salt = "ATON_ATON_LANG_NI!";
 $clientID = '993186673271-dhs3giufk5m2bie1u0tdp9b2eor5el1o.apps.googleusercontent.com';

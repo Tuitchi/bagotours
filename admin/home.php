@@ -163,7 +163,7 @@ try {
 				});
 
 				marker.getElement().addEventListener('click', () => {
-					window.location.href = `view_tour?id=${spot.id}`;
+					window.location.href = `edit-tour?id=${spot.id}`;
 				});
 			});
 			const events = <?php echo $eventsJson; ?>;

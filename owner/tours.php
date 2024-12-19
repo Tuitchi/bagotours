@@ -353,9 +353,6 @@ $tour = getAllToursforOwners($conn, $user_id,$query);
                                             <a href="accommodation-fees-management?id=<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"
                                                 class="btn" id="edit">
                                                 <i class='bx bx-dollar-circle'></i>Pricing</a>
-                                            <a href="#" class="btn" id="delete"
-                                                data-id="<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>"><i
-                                                    class="bx bx-trash"></i>Delete</a>
                                         </div>
                                     </div>
                                 </div>

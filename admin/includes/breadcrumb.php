@@ -30,7 +30,7 @@ $breadcrumbs = [
     ],
     'dashboard' => [
         ['title' => 'Home', 'url' => 'home'],
-        ['title' => 'dashboard', 'url' => 'dashboard']
+        ['title' => 'Dashboard', 'url' => 'dashboard']
     ],
     'event' => [
         ['title' => 'Home', 'url' => 'home'],

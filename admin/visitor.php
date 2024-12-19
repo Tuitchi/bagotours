@@ -27,14 +27,14 @@ function buildQuery($baseSql, $filters, &$params)
                     $params[':tour_id'] = $value;
                     break;
                 case 'search':
-                    $baseSql .= " AND (uc.name LIKE :search OR uc.username LIKE :search OR uc.email LIKE :search)";
+                    $baseSql .= " AND (u.firstname LIKE :search OR u.lastname LIKE :search OR uc.username LIKE :search OR uc.email LIKE :search)";
                     $params[':search'] = '%' . $value . '%';
                     break;
                 case 'visitor_type':
                     if ($value === 'bago') {
-                        $baseSql .= " AND vr.city_residence = 'Bago City'";
+                        $baseSql .= " AND vr.city_residence LIKE '%City of Bago%'";
                     } elseif ($value === 'nonbago') {
-                        $baseSql .= " AND vr.city_residence != 'Bago City'";
+                        $baseSql .= " AND vr.city_residence NOT LIKE '%City of Bago%'";
                     }
                     break;
                 case 'specific_date':
@@ -82,7 +82,7 @@ $totalRecords = $countStmt->fetchColumn();
 $totalPages = ceil($totalRecords / $results_per_page);
 
 // Prepare the main query for fetching visitor data
-$sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name,CONCAT(u.firstname, '', u.lastname) as admin, 
+$sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name,CONCAT(u.firstname, ' ', u.lastname) as admin, 
                vr.visit_time as datetime, vr.city_residence as city, 
                CONCAT(uc.firstname, '', uc.lastname) as client_name, uc.email as client_email
         FROM visit_records vr 
@@ -231,7 +231,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                     </div>
-                    <table id="visitorTable">
+                    <table id="visitorTable" class="visitor">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -302,7 +302,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <h2>Print Visitors</h2>
-                    <form action="print-visitors.php" METHOD="GET">
+                    <form action="print-visitors.php" METHOD="GET" target="_blank">
                         <div class="form-group">
                             <label for="tour">Tours</label>
                             <select name="tour" id="tour" required>
@@ -373,7 +373,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             const $specificDateFilter = $('#specificDate');
             const $visitorBodyTable = $('#visitorTable tbody');
             const $paginationContainer = $('.pagination');
-            // Populate the days dropdown based on the selected month and year
+
             function populateDays() {
                 var daySelect = $('#daySelect');
                 var month = $('#monthSelect').val();
@@ -444,7 +444,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 });
                 console.log('Fetching data with params:', params.toString());
                 $.ajax({
-                    url: `?${params.toString()}`, // Server URL with query parameters
+                    url: `?${params.toString()}`,
                     type: 'GET',
                     success: function (response) {
                         console.log('AJAX response:', response);
@@ -452,12 +452,12 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         // Update table body
                         const $newTableBody = $doc.find('#visitorTable tbody');
-                        console.log('New Table Body:', $newTableBody.html()); // Ensure correct table content
+                        console.log('New Table Body:', $newTableBody.html());
                         $visitorBodyTable.html($newTableBody.html());
 
                         // Update pagination
                         const $newPagination = $doc.find('.pagination');
-                        console.log('New Pagination:', $newPagination.html()); // Ensure correct pagination content
+                        console.log('New Pagination:', $newPagination.html());
                         $paginationContainer.html($newPagination.html());
                     },
                     error: function (error) {

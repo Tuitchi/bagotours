@@ -19,15 +19,14 @@ if (isset($_GET['id'])) {
     $tour = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $rating = filter_var($_POST['rating'], FILTER_SANITIZE_NUMBER_INT);
-    $review = filter_var($_POST['review'], FILTER_SANITIZE_STRING);
+    $rating = filter_var($_POST['rating']);
+    $review = filter_var($_POST['review']);
 
     if (!empty($rating) && !empty($review)) {
         if ($rating < 1 || $rating > 5) {
             $_SESSION['errorMessage'] = "Rating must be between 1 and 5 stars.";
         } else {
             try {
-                // Check for duplicate reviews
                 $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
                 $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
                 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -36,16 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($stmt->fetchColumn() > 0) {
                     $_SESSION['errorMessage'] = "You have already submitted a review for this tour.";
                 } else {
-                    // Insert the review
-                    $img = ''; // Handle image upload if required
-                    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, img, date_created) VALUES (:tour_id, :user_id, :rating, :review, :img, :date)");
+                    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, date_created) VALUES (:tour_id, :user_id, :rating, :review, NOW()");
                     $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
                     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                     $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
                     $stmt->bindParam(':review', $review, PDO::PARAM_STR);
-                    $stmt->bindParam(':img', $img, PDO::PARAM_STR);
-                    $stmt->bindParam(':date', $currentTimestamp, PDO::PARAM_STR);
-
                     if ($stmt->execute()) {
                         $_SESSION['successMessage'] = "Review submitted successfully!";
                     } else {
@@ -460,7 +454,7 @@ $ratingStars = displayRatingStars($averageRating);
                                         ?>
                                     </div>
                                     <div class="comment-text">
-                                        <p id="text-<?php echo $comment['id']; ?>">
+                                        <p class="comment" id="text-<?php echo $comment['id']; ?>">
                                             <?php echo htmlspecialchars($comment['review']); ?>
                                         </p>
 
@@ -890,7 +884,9 @@ $ratingStars = displayRatingStars($averageRating);
                 style: 'mapbox://styles/mapbox/navigation-night-v1',
                 center: [<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>],
                 zoom: 15,
-                interactive: false
+                interactive: false,
+                attributionControl: false
+
             });
 
             const markerEl = $('<div>').addClass('marker').css({

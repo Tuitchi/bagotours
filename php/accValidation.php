@@ -4,16 +4,16 @@ if (isset($_SESSION['user_id'])) {
         if ($_SESSION['role'] !== $pageRole) {
             session_unset();
             session_destroy();
-            header("Location: ../index.php");
+            header("Location: ../home");
             exit;
         }
     } else {
         session_unset();
         session_destroy();
-        header("Location: ../index.php");
+        header("Location: ../home");
         exit;
     }
 } else {
-    header("Location: ../index.php");
+    header("Location: ../home");
     exit;
 }

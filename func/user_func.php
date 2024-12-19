@@ -1,25 +1,29 @@
 <?php
-function getAllToursforAdmin($conn, $query = null)
-{
-    $sql = "SELECT * FROM tours";
+function getAllToursforAdmin($conn, $query = null, $page = 1, $limit = 10) {
+    $offset = ($page - 1) * $limit;
+    $queryCondition = "";
 
-    // Prepare the SQL statement
     if ($query) {
-        // Add conditions to the WHERE clause
-        $sql .= " WHERE (status IN ('Active', 'Inactive', 'Temporarily Closed')) 
-                  AND (title LIKE :search OR address LIKE :search)";
-        $stmt = $conn->prepare($sql);
-        $searchTerm = "%" . $query . "%";
-        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
-    } else {
-        $stmt = $conn->prepare($sql);
+        $query = "%" . $query . "%";
+        $queryCondition = "WHERE title LIKE :query OR address LIKE :query";
     }
 
-    // Execute the prepared statement
+    $sql = "SELECT * FROM tours $queryCondition LIMIT :limit OFFSET :offset";
+    $stmt = $conn->prepare($sql);
+
+    if ($query) {
+        $stmt->bindParam(':query', $query, PDO::PARAM_STR);
+    }
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Fetch all results
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalQuery = $conn->query("SELECT FOUND_ROWS() as total");
+    $total = $totalQuery->fetch(PDO::FETCH_ASSOC)['total'];
+
+    return ['tours' => $tours, 'total' => $total];
 }
 
 function getAllToursforOwners($conn, $user_id, $query = null)
@@ -51,8 +55,8 @@ function getAllTours($conn)
     // Updated SQL query to include average rating and review count
     $sql = "
         SELECT t.*, 
-               IFNULL(AVG(r.rating), 0) AS average_rating, 
-               IFNULL(COUNT(r.id), 0) AS review_count 
+                IFNULL(AVG(r.rating), 0) AS average_rating,
+       IFNULL(COUNT(r.id), 0) AS review_count 
         FROM tours t 
         LEFT JOIN review_rating r ON t.id = r.tour_id 
         WHERE t.status IN ('Active','Temporarily Closed') 
@@ -61,37 +65,6 @@ function getAllTours($conn)
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-function getAllToursWithDistance($conn, $user_lat, $user_lng)
-{
-    $sql = "
-        SELECT 
-            t.*, 
-            IFNULL(AVG(r.rating), 0) AS average_rating, 
-            IFNULL(COUNT(r.id), 0) AS review_count,
-            (6371 * ACOS(
-                COS(RADIANS(:user_lat)) * COS(RADIANS(t.latitude)) *
-                COS(RADIANS(t.longitude) - RADIANS(:user_lng)) +
-                SIN(RADIANS(:user_lat)) * SIN(RADIANS(t.latitude))
-            )) AS distance
-        FROM 
-            tours t
-        LEFT JOIN 
-            review_rating r ON t.id = r.tour_id
-        WHERE 
-            t.status IN ('Active', 'Temporarily Closed')
-        GROUP BY 
-            t.id
-        ORDER BY 
-            distance ASC;
-    ";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':user_lat', $user_lat);
-    $stmt->bindParam(':user_lng', $user_lng);
-    $stmt->execute();
-
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -118,6 +91,8 @@ SELECT t.id,
        t.title,
        t.img,
        t.type,
+       t.status,
+       t.bookable,
        COALESCE(bv.total_booking_visitors, 0) + COALESCE(vv.total_visit_visitors, 0) AS total_visitors,
        COUNT(DISTINCT b.id) AS total_completed_bookings,
        IFNULL(AVG(r.rating), 0) AS average_rating,  -- Average rating
@@ -127,7 +102,7 @@ LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
 LEFT JOIN booking_visitors bv ON t.id = bv.id
 LEFT JOIN visit_visitors vv ON t.id = vv.id
 LEFT JOIN review_rating r ON t.id = r.tour_id  -- Join with review_rating table
-WHERE t.status IN ('Active','Temporarily Closed')
+WHERE t.status IN ('Active')
 GROUP BY t.id, t.title, bv.total_booking_visitors, vv.total_visit_visitors
 ORDER BY total_visitors DESC, total_completed_bookings DESC LIMIT 15;
 ";
@@ -270,7 +245,8 @@ function userValidation($pageRole)
 }
 
 
-function checkIfTemporarilyClosed($conn, $tour_id) {
+function checkIfTemporarilyClosed($conn, $tour_id)
+{
     $stmt = $conn->prepare("SELECT status FROM tours WHERE id = :tour_id");
     $stmt->bindParam(":tour_id", $tour_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -279,10 +255,25 @@ function checkIfTemporarilyClosed($conn, $tour_id) {
 }
 
 
-function checkIfTrusted($conn, $user_id){
+function checkIfTrusted($conn, $user_id)
+{
     $stmt = $conn->prepare("SELECT is_trusted FROM users WHERE id = :user_id");
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->execute();
 
     return $stmt->fetchColumn() === 1;
+}
+
+function fetchProfilePicture($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT profile_picture FROM users WHERE id = :user_id");
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+
+function checkIfPasswordIsNull ($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT password FROM users WHERE id = :user_id");
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() === null;
 }

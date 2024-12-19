@@ -246,11 +246,14 @@
                 foreach ($tours as $tour) { ?>
                     <div class="discover__card">
                         <div class="discover__image">
-                            <img src="upload/Tour Images/<?php echo $tour['img'] ?>" alt="discover" />
+                            <img src="upload/Tour Images/<?php
+                            $tour_images = explode(',', $tour['img']);
+                            $main_image = $tour_images[0];
+                            echo $main_image ?>" alt="discover" />
                         </div>
                         <div class="discover__card__content">
                             <h4><?php echo $tour['title'] ?></h4>
-                            500px; <p>
+                            <p>
                                 "<?php echo $tour['description'] ?>
                             </p>
                             <button class="discover__btn"

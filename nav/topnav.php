@@ -171,59 +171,6 @@
         color: #333;
         /* White text */
     }
-
-    .switch-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-    }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 24px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: 0.4s;
-        border-radius: 24px;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 20px;
-        width: 20px;
-        left: 2px;
-        bottom: 2px;
-        background-color: white;
-        transition: 0.4s;
-        border-radius: 50%;
-    }
-
-    input:checked+.slider {
-        background-color: #4CAF50;
-    }
-
-    input:checked+.slider:before {
-        transform: translateX(26px);
-    }
 </style>
 
 <header>
@@ -278,28 +225,25 @@
             <div class="dp" onclick="toggleAccountMenu()">
 
                 <div class="profile-container">
-                    <img src="<?= $_SESSION['profile-pic'] ?>" class="dpicn" alt="dp">
                     <?php require_once 'func/user_func.php';
-                    if (checkIfTrusted($conn, $user_id)) {
+                    if ($profile = fetchProfilePicture($conn, $user_id)) {
+                        echo '<img src="' . $profile . '" class="dpicn" alt="dp">';
+                    } else {
+                        echo '<img src="assets/icons/user-male.png" class="dpicn" alt="dp">';
+                    } ?>
+                    <?php if (checkIfTrusted($conn, $user_id)) {
                         echo '<img src="assets/crown.png" class="crown-icon" alt="Crown">';
                     } ?>
                 </div>
                 <div class="account-menu" id="accountMenu">
                     <ul>
-                        <a href="php/role-switch.php">
-                            <li>User Mode
-                                <label class="switch">
-                                    <input type="checkbox" id="roleSwitch">
-                                    <span class="slider"></span>
-                                </label>
-                            </li>
-                        </a>
                         <a href="manage-acc">
                             <li>Manage Account</li>
                         </a>
                         <a href="booking">
                             <li>Bookings</li>
                         </a>
+                        <hr>
                         <a onclick="logout()">
                             <li style="color:red;">Logout</li>
                         </a>
@@ -311,7 +255,7 @@
 </header>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="assets/js/jquery-3.7.1.min.js"></script>
 
 <script>
     const searchIcon = document.querySelector(".bx-search-alt");

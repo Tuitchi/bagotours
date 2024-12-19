@@ -14,7 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
 
-    // Check if new password and confirm password match
+
+    // Validate the input
+    if (empty($newPassword) || empty($confirmPassword)) {
+        echo json_encode(["status" => "error", "message" => "All fields are required!"]);
+        exit();
+    }
+    // Validate password strength
+    if (strlen($newPassword) < 8 || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[A-Z]/', $newPassword) || !preg_match('/\d/', $newPassword) || !preg_match('/[@$!%*?&]/', $newPassword)) {
+        echo json_encode(["status" => "error", "message" => "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*)"]);
+        exit();
+    }
+
     if ($newPassword !== $confirmPassword) {
         echo json_encode(["status" => "error", "message" => "Passwords do not match!"]);
         exit();

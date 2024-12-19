@@ -15,7 +15,6 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Handling image deletions
         if (!empty($_POST['deleted-images'])) {
             $deletedImagesArray = explode(',', trim($_POST['deleted-images'], ','));
             $currentImages = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
@@ -265,7 +264,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <input type="hidden" id="latitude" name="latitude" value="<?php echo $tour['latitude'] ?>">
                         <input type="hidden" id="longitude" name="longitude" value="<?php echo $tour['longitude'] ?>">
-                        <button type="submit" class="btn-submit">Save Edit</button>
+                        <div class="form-group button">
+                            <button type="submit" class="btn-submit">Save Edit</button>
+                            <button type="button" class="btn-submit pricing" onclick="window.location.href='accommodation-fees-management?id=<?php echo htmlspecialchars($tour['id'], ENT_QUOTES, 'UTF-8'); ?>';"><i class="bx bx-dollar-circle"></i>Pricing</button>
+                        </div>
                     </form>
                 </div>
             </div>

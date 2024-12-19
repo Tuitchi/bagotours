@@ -105,6 +105,7 @@ if (isset($_SESSION['user_id'])) {
             /* Optional: limit height of instructions */
         }
 
+        
         /* Additional styles for the step instruction */
         .step-instruction {
             padding: 8px;
@@ -175,6 +176,7 @@ if (isset($_SESSION['user_id'])) {
                     <div class="distance-display"></div>
                     <div class="instructions-container">
                         <h3>Route Instructions</h3>
+                        <div class="eta-display" style="font-size: 16px; margin-top: 10px;"></div>
                         <div id="instructions-list"></div>
                     </div>
                 </div>
@@ -217,7 +219,7 @@ if (isset($_SESSION['user_id'])) {
                     }
                     if (spotDirection) {
                         const destination = [spotDirection.longitude, spotDirection.latitude];
-                        updateDistanceAndRoute(userLocation, destination);
+                        updateDistanceAndRoute(userLocation, destination, spotDirection.title);
                     }
                 },
                 () => setupMap([122.8313, 10.5338]), {
@@ -238,7 +240,8 @@ if (isset($_SESSION['user_id'])) {
                     container: 'map',
                     style: 'mapbox://styles/mapbox/navigation-night-v1',
                     center: center,
-                    zoom: 11
+                    zoom: 11,
+                    attributionControl: false
                 });
 
                 map.addControl(geolocateControl);
@@ -267,6 +270,7 @@ if (isset($_SESSION['user_id'])) {
                 const destination = [spotDirection.longitude, spotDirection.latitude];
                 addDestinationMarker(destination, spotDirection.type);
                 updateDistanceAndRoute(center, destination, spotDirection.title);
+
             } else {
                 loadTouristSpots();
             }
@@ -284,6 +288,7 @@ if (isset($_SESSION['user_id'])) {
         async function updateDistanceAndRoute(start, end, title) {
             const distance = calculateDistance(start, end);
             updateDistanceDisplay(distance, title);
+
             map.flyTo({
                 center: start,
                 zoom: 15
@@ -318,6 +323,7 @@ if (isset($_SESSION['user_id'])) {
 
                 const route = json.routes[0].geometry.coordinates;
                 const steps = json.routes[0].legs[0].steps;
+                const duration = json.routes[0].legs[0].duration; // Duration in seconds
 
                 const geojson = {
                     type: 'Feature',
@@ -350,6 +356,8 @@ if (isset($_SESSION['user_id'])) {
                 }
 
                 displayInstructions(steps, start);
+                updateDistanceDisplay(calculateDistance(start, end), spotDirection.title);
+                displayRemainingTime(duration);
             } catch (error) {
                 console.error('Error fetching directions:', error);
             }
@@ -370,6 +378,26 @@ if (isset($_SESSION['user_id'])) {
                 instructionsList.appendChild(stepDiv);
             });
         }
+        function displayRemainingTime(durationInSeconds) {
+            const days = Math.floor(durationInSeconds / (24 * 3600)); // Calculate days
+            const hours = Math.floor((durationInSeconds % (24 * 3600)) / 3600); // Calculate hours
+            const minutes = Math.floor((durationInSeconds % 3600) / 60); // Calculate minutes
+            const seconds = Math.floor(durationInSeconds % 60); // Calculate seconds (whole number)
+
+            // Format the display
+            let timeRemaining = '';
+            if (days > 0) timeRemaining += `${days}d `;
+            if (hours > 0 || days > 0) timeRemaining += `${hours}h `; // Show hours if days are included
+            if (minutes > 0 || hours > 0 || days > 0) timeRemaining += `${minutes}m `; // Show minutes if hours or days are included
+            if (seconds >= 0) timeRemaining += `${seconds}s`; // Show seconds
+
+            const etaDisplay = document.querySelector('.eta-display');
+            if (etaDisplay) {
+                etaDisplay.textContent = `Estimated Arrival Time: ${timeRemaining.trim()}.`;
+            }
+        }
+
+
 
         function animateMarker(marker, newPosition, duration = 500) {
             const start = marker.getLngLat();

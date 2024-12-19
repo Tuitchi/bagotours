@@ -21,39 +21,36 @@ $params = [':user_id' => $user_id];
 $sql_bago = "SELECT COUNT(*) AS count FROM visit_records vr
              JOIN tours t ON vr.tour_id = t.id
              JOIN users u ON u.id = t.user_id
-             WHERE u.id = :user_id AND vr.city_residence = 'Bago City'";
+             WHERE u.id = :user_id AND vr.city_residence LIKE '%City of Bago%'";
 
 $sql_nonbago = "SELECT COUNT(*) AS count FROM visit_records vr
                 JOIN tours t ON vr.tour_id = t.id
                 JOIN users u ON u.id = t.user_id
-                WHERE u.id = :user_id AND vr.city_residence != 'Bago City'";
+                WHERE u.id = :user_id AND vr.city_residence NOT LIKE '%City of Bago%'";
 
 // Apply filters
-if (!empty($tour_id)) {
-    $sql_bago .= " AND vr.tour_id = :tour_id";
-    $sql_nonbago .= " AND vr.tour_id = :tour_id";
-    $params[':tour_id'] = $tour_id;
-}
-
-if (!empty($day)) {
-    $sql_bago .= " AND YEAR(vr.visit_time) = :year AND MONTH(vr.visit_time) = :month AND DAY(vr.visit_time) = :day";
-    $sql_nonbago .= " AND YEAR(vr.visit_time) = :year AND MONTH(vr.visit_time) = :month AND DAY(vr.visit_time) = :day";
-    $params[':year'] = $year;
-    $params[':month'] = $monthInput;
-    $params[':day'] = $day;
-}
-
-if (!empty($monthInput)) {
-    $sql_bago .= " AND YEAR(vr.visit_time) = :year AND MONTH(vr.visit_time) = :month";
-    $sql_nonbago .= " AND YEAR(vr.visit_time) = :year AND MONTH(vr.visit_time) = :month";
-    $params[':year'] = $year;
-    $params[':month'] = $monthInput;
-}
-
 if (!empty($year)) {
     $sql_bago .= " AND YEAR(vr.visit_time) = :year";
     $sql_nonbago .= " AND YEAR(vr.visit_time) = :year";
     $params[':year'] = $year;
+
+    if (!empty($monthInput)) {
+        $sql_bago .= " AND MONTH(vr.visit_time) = :month";
+        $sql_nonbago .= " AND MONTH(vr.visit_time) = :month";
+        $params[':month'] = $monthInput;
+
+        if (!empty($day)) {
+            $sql_bago .= " AND DAY(vr.visit_time) = :day";
+            $sql_nonbago .= " AND DAY(vr.visit_time) = :day";
+            $params[':day'] = $day;
+        }
+    }
+}
+
+if (!empty($tour_id)) {
+    $sql_bago .= " AND vr.tour_id = :tour_id";
+    $sql_nonbago .= " AND vr.tour_id = :tour_id";
+    $params[':tour_id'] = $tour_id;
 }
 
 // Execute queries
@@ -66,6 +63,7 @@ $stmt_nonbago->execute($params);
 $nonbago_count = $stmt_nonbago->fetch(PDO::FETCH_ASSOC)['count'];
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,6 +71,7 @@ $nonbago_count = $stmt_nonbago->fetch(PDO::FETCH_ASSOC)['count'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitor Count - Print</title>
+    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo $webIcon ?>">
     <style>
         body {
             font-family: Arial, sans-serif;

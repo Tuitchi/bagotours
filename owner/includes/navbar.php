@@ -91,6 +91,7 @@ require_once '../php/accValidation.php';
 <nav>
 	<i class='bx bx-menu'></i>
 	<div class="nav-right">
+		<a href="../php/role-switch?code=<?= $user_id?>" class="switch">qweqweqwe</a>
 		<a href="#" class="notification">
 			<i class='bx bxs-bell'></i>
 			<span id="notification-count" class="num">0</span>

@@ -175,6 +175,11 @@ $users = $stmt->fetchAll();
         font-size: 1.1em;
         cursor: pointer;
     }
+
+    .order {
+        position: relative;
+        overflow: hidden;
+    }
 </style>
 </head>
 

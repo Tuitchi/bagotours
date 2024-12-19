@@ -82,7 +82,7 @@ $totalRecords = $countStmt->fetchColumn();
 $totalPages = ceil($totalRecords / $results_per_page);
 
 // Prepare the main query for fetching visitor data
-$sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name,CONCAT(u.firstname, '', u.lastname) as admin, 
+$sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name,CONCAT(u.firstname, ' ', u.lastname) as admin, 
                vr.visit_time as datetime, vr.city_residence as city, 
                CONCAT(uc.firstname, '', uc.lastname) as client_name, uc.email as client_email
         FROM visit_records vr 
@@ -125,6 +125,9 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="left">
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
+                <a class="btn-download" id="btn-download">
+                    <i class='bx bxs-printer'></i> Print Visitors
+                </a>
             </div>
 
             <ul class="box-info">
@@ -295,6 +298,61 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="loader" style="display: none;"></div>
                 </div>
             </div>
+            <div id="printModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Print Visitors</h2>
+                    <form action="print-visitors.php" METHOD="GET" target="_blank">
+                        <div class="form-group">
+                            <label for="tour">Tours</label>
+                            <select name="tour" id="tour" required>
+                                <option value="none" selected disabled hidden>Select an Option</option>
+                                <?php $tours = getTouristSpots($conn, $user_id);
+                                foreach ($tours as $tour) {
+                                    ?>
+                                    <option value="<?php echo $tour['id'] ?>">
+                                        <?php echo $tour['title'] ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <label for="dateType">Date</label>
+                            <div>
+                                <!-- Day Select -->
+                                <label for="daySelect">Day</label>
+                                <select id="daySelect" name="day">
+                                    <option value="">Day</option>
+                                </select>
+
+                                <!-- Month Select -->
+                                <label for="monthSelect">Month</label>
+                                <select id="monthSelect" name="month">
+                                    <option value="">Month</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+
+                                <!-- Year Select -->
+                                <label for="yearSelect">Year</label>
+                                <select id="yearSelect" name="year">
+                                    <option value="">Year</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-form">Print</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </main>
     </section>
 
@@ -315,9 +373,56 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             const $specificDateFilter = $('#specificDate');
             const $visitorBodyTable = $('#visitorTable tbody');
             const $paginationContainer = $('.pagination');
+            // Populate the days dropdown based on the selected month and year
+            function populateDays() {
+                var daySelect = $('#daySelect');
+                var month = $('#monthSelect').val();
+                var year = $('#yearSelect').val();
+
+                // Clear existing options
+                daySelect.empty().append('<option value="">Day</option>');
+
+                // Determine the number of days in the selected month and year
+                if (month) {
+                    var daysInMonth = new Date(year, month, 0).getDate();
+                    for (var day = 1; day <= daysInMonth; day++) {
+                        daySelect.append('<option value="' + day + '">' + day + '</option>');
+                    }
+                }
+            }
+
+            // Populate the years dropdown with a range of years
+            function populateYears() {
+                var yearSelect = $('#yearSelect');
+                var currentYear = new Date().getFullYear();
+                var startYear = currentYear - 100; // 100 years ago
+                var endYear = currentYear + 10;   // 10 years in the future
+
+                // Populate years
+                for (var year = startYear; year <= endYear; year++) {
+                    yearSelect.append('<option value="' + year + '">' + year + '</option>');
+                }
+            }
+
+            // Add event listeners to update days dynamically
+            $('#monthSelect, #yearSelect').on('change', populateDays);
+
+            // Initial setup
+            populateYears();
+
 
             // Toggle the filter dropdown
-
+            $(document).on('click', '#btn-download', function () {
+                $('#printModal').show();
+            });
+            $('.close').click(function () {
+                $(this).closest('.modal').hide();
+            });
+            $(window).click(function (event) {
+                if ($(event.target).hasClass('modal')) {
+                    $(event.target).hide();
+                }
+            });
             // Function to fetch filtered data from the server
             function fetchFilteredData() {
                 const search = $searchInput.val().trim();
@@ -418,6 +523,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // Handle back/forward navigation
             $(window).on('popstate', fetchFilteredData);
+
         });
     </script>
 

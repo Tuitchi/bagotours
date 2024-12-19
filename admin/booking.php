@@ -150,13 +150,7 @@ function getStatusButton($row)
 
 		/* for modal */
 		/* Container styling */
-		.modal-content {
-			position: relative;
-			background-color: #fff;
-			margin: auto;
-			border-radius: 4px;
-			width: 80vw;
-		}
+
 
 		@media screen and (max-width: 768px) {
 			.modal-content {

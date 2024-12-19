@@ -1351,3 +1351,172 @@ Stack trace:
 [2024-12-14 07:58:45] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
 [2024-12-14 07:59:00] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 109: Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.start_date' in 'where clause'
 >>>>>>> fe0d1e70e2c87751f3549d61e5093db796e78902
+[16-Dec-2024 16:50:34 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\bagotours\php\accValidation.php on line 2
+[16-Dec-2024 16:50:36 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\bagotours\php\accValidation.php on line 2
+[16-Dec-2024 16:55:15 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 16:55:17 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 5
+[16-Dec-2024 16:55:18 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 5
+[16-Dec-2024 16:55:18 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\tours.php on line 5
+[16-Dec-2024 16:55:18 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\bagotours\func\user_func.php:41
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\user_func.php(41): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\owner\tours.php(9): getAllToursforOwners(Object(PDO), NULL, NULL)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\user_func.php on line 41
+[16-Dec-2024 16:55:19 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\dashboard.php on line 5
+[16-Dec-2024 16:55:20 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 16:55:22 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 16:55:22 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 16:55:23 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 16:55:23 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 16:59:34 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 17:00:18 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[16-Dec-2024 18:44:22 Europe/Berlin] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\bagotours\owner\add-tour.php on line 69
+[16-Dec-2024 18:44:22 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\bagotours\owner\add-tour.php on line 69
+[16-Dec-2024 18:51:34 Europe/Berlin] PHP Warning:  move_uploaded_file(../upload/Tour Proofs/676068a614b86.jfif): Failed to open stream: No such file or directory in C:\xampp\htdocs\bagotours\owner\add-tour.php on line 76
+[16-Dec-2024 18:51:34 Europe/Berlin] PHP Warning:  move_uploaded_file(): Unable to move &quot;C:\xampp\tmp\phpECFC.tmp&quot; to &quot;../upload/Tour Proofs/676068a614b86.jfif&quot; in C:\xampp\htdocs\bagotours\owner\add-tour.php on line 76
+[17-Dec-2024 07:20:09 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined function getTouristSpots() in C:\xampp\htdocs\bagotours\admin\visitor.php:140
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 140
+[17-Dec-2024 09:24:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:25:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:26:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:27:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:28:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:29:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:30:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:31:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:32:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:33:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:34:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:35:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:36:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:37:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:38:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:39:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:40:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:41:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:42:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:43:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:44:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:45:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:46:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:47:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:47:59 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:48:30 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:49:00 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:49:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:50:47 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[17-Dec-2024 09:51:35 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1[18-Dec-2024 15:15:38 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[18-Dec-2024 15:15:38 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\bagotours\admin\visitor.php on line 98
+[18-Dec-2024 15:15:38 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\bagotours\func\func.php on line 4
+[18-Dec-2024 15:15:38 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'where clause' in C:\xampp\htdocs\bagotours\func\func.php:6
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(6): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\admin\visitor.php(185): getTouristSpots(Object(PDO), Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 6
+[19-Dec-2024 19:12:56 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:56 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:56 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:56 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:12:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:13:03 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:13:03 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:13:04 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:13:04 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:13:05 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uc.name' in 'where clause' in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:36 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%n%' OR uc.username LIKE '%n%' OR uc.email LIKE '%n%')' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:37 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%ni%' OR uc.username LIKE '%ni%' OR uc.email LIKE '%ni%')' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:37 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%nik%' OR uc.username LIKE '%nik%' OR uc.email LIKE '%nik%')' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:37 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%niko%' OR uc.username LIKE '%niko%' OR uc.email LIKE '%niko%')' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:38 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%nikol%' OR uc.username LIKE '%nikol%' OR uc.email LIKE '%ni...' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:38 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%nikola%' OR uc.username LIKE '%nikola%' OR uc.email LIKE '%...' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:26:39 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'as uc.name LIKE '%nikolai%' OR uc.username LIKE '%nikolai%' OR uc.email LIKE ...' at line 5 in C:\xampp\htdocs\bagotours\admin\visitor.php:80
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\admin\visitor.php(80): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
+[19-Dec-2024 19:32:58 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[19-Dec-2024 19:33:59 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6

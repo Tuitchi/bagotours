@@ -699,6 +699,7 @@ if (isset($_GET['process'])) {
                     style: "mapbox://styles/mapbox/streets-v11",
                     center: [122.9413, 10.4998],
                     zoom: 10.2,
+                    attributionControl: false
                 });
 
                 map.addControl(new mapboxgl.NavigationControl());

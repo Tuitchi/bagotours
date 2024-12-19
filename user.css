@@ -258,18 +258,25 @@ input[type=text]:focus {
 }
 
 .dpicn {
-  width: 100%;  /* Use 100% to fill the .dp circle */
-  height: auto;/* Use 100% to fill the .dp circle */
+  width: 100%;
+  /* Use 100% to fill the .dp circle */
+  height: auto;
+  /* Use 100% to fill the .dp circle */
   object-fit: cover;
-  border-radius: 50%; /* Ensures the profile image is circular */
+  border-radius: 50%;
+  /* Ensures the profile image is circular */
 }
 
 .crown-icon {
   position: absolute;
-  top: -10px; /* Adjust to position the crown properly */
-  left: -7px; /* Adjust to position the crown properly */
-  width: 30px; /* Adjust size as needed */
-  z-index: 1; /* Ensure crown is above the profile image */
+  top: -10px;
+  /* Adjust to position the crown properly */
+  left: -7px;
+  /* Adjust to position the crown properly */
+  width: 30px;
+  /* Adjust size as needed */
+  z-index: 1;
+  /* Ensure crown is above the profile image */
 }
 
 .dp .account-menu ul li a {
@@ -575,6 +582,19 @@ input[type=text]:focus {
   cursor: not-allowed;
 }
 
+.btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn.history:hover {
+  background-color: #0056b3;
+}
+
 @media screen and (max-width: 550px) {
   .title {
     font-size: 15px;
@@ -584,6 +604,31 @@ input[type=text]:focus {
   .cards {
     width: calc(50% - 10px);
   }
+}
+
+@media screen and (max-width: 1150px) {
+  .spots {
+    justify-content: first baseline;
+    object-fit: cover;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  .spot {
+    flex: 0 0 auto;
+    width: 80%;
+    max-width: 280px;
+    margin: 0 auto;
+    scroll-snap-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
 }
 
 /* popularspot */
@@ -644,14 +689,11 @@ input[type=text]:focus {
 .spot {
   color: #000000;
   background-color: #f9f9f9;
-  /* Optional background color for each spot */
   border: 1px solid #ddd;
-  /* Optional border for better visibility */
   border-radius: 8px;
   /* Rounded corners */
   padding: 10px;
   width: 19%;
-  /* Adjusts the width of each spot to take most of the screen */
   max-width: 17 0px;
   /* Ensures a maximum width for larger mobile screens */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -708,11 +750,42 @@ input[type=text]:focus {
   white-space: nowrap;
 }
 
+.img {
+  width: 100%;
+  height: 120px;
+  position: relative;
+}
+
 .spot img {
   width: 100%;
   object-fit: cover;
   height: 120px;
   border-radius: 8px 8px 0 0;
+}
+
+.img img {
+  width: 100%;
+  object-fit: cover;
+  height: 120px;
+  border-radius: 8px 8px 0 0;
+}
+
+.img .bookable {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+
+.img .bookable.closed {
+  position: absolute;
+  width: 55px;
+  height: auto;
 }
 
 .rating {
@@ -724,6 +797,9 @@ input[type=text]:focus {
 }
 
 .rating span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-decoration: none;
   font-size: 0.65em;
 }
@@ -921,39 +997,15 @@ input[type=text]:focus {
 /* /MODAL */
 
 @media screen and (min-width: 300px) and (max-width: 600px) {
-  .spots {
-    justify-content: first baseline;
-    object-fit: cover;
-    display: flex;
-    flex-wrap: nowrap;
-    /* Prevents the items from wrapping to the next line */
-    overflow-x: auto;
-    /* Adds horizontal scrolling */
-    gap: 10px;
-    /* Reduces gap between items */
-    padding: 10px;
-    /* Adds some padding for spacing */
-    scroll-snap-type: x mandatory;
-    /* Enables smooth snap scrolling */
-    -webkit-overflow-scrolling: touch;
-    /* Enhances the scrolling on touch devices */
-    scroll-behavior: smooth;
-    /* Smooth scrolling effect */
-  }
+
 
   .spot {
     flex: 0 0 auto;
-    /* Prevents the spot from resizing and keeps it at its natural size */
     width: 80%;
-    /* Adjusts the width of each spot to take most of the screen */
     max-width: 280px;
-    /* Ensures a maximum width for larger mobile screens */
     margin: 0 auto;
-    /* Centers the spot within the scroll area */
     scroll-snap-align: center;
-    /* Aligns the card to the center when scrolling */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* Smooth transition on hover */
   }
 }
 
@@ -1113,6 +1165,11 @@ input[type=text]:focus {
 }
 
 @media screen and (max-width: 850px) {
+  .comment {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
   .tourList {
     margin-bottom: 0px;
   }

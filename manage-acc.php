@@ -4,7 +4,11 @@ require_once 'func/user_func.php';
 require_once 'func/func.php';
 require_once 'include/db_conn.php';
 
-$user_id = $_SESSION['user_id'] ?? 0;
+if (!isset($_SESSION['user_id'])) {
+    header('Location: home?login=true');
+    exit;
+}
+$user_id = $_SESSION['user_id'];
 $user = getUserById($conn, $user_id);
 $addressParts = array_map('trim', explode(',', $user['home_address']));
 
@@ -31,216 +35,276 @@ if (count($addressParts) === 1) {
 
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES); ?>">
-    <title>BagoTours</title>
-    <link rel="stylesheet" href="user.css">
-    <style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES); ?>">
+<title>BagoTours</title>
+<link rel="stylesheet" href="user.css">
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        margin: 20px auto;
+        width: 100%;
+        height: auto;
+        background: #fff;
+        border: 1px solid #037d54;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .editUser {
+        flex: 1;
+        max-width: 250px;
+        padding: 20px;
+        border-right: 1px solid #ddd;
+    }
+
+    .editUser ul {
+        padding: 0;
+        list-style: none;
+    }
+
+    .editUser ul li {
+        margin: 10px 0;
+    }
+
+    .editUser ul li a {
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 10px;
+        padding: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
+
+    .editUser ul li a:hover {
+        color: #04AA6D;
+    }
+
+    aside {
+        flex: 3;
+        padding: 20px;
+    }
+
+    aside>div {
+        display: none;
+    }
+
+    .Account {
+        display: block;
+    }
+
+    .profilepic {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        position: relative;
+    }
+
+    .profilepic input[type="file"] {
+        display: none;
+        text-align: center;
+    }
+
+    .profilepic img {
+        width: 100px;
+        height: auto;
+        border-radius: 50%;
+        border: 2px solid #04AA6D;
+    }
+
+    form {
+        margin: 20px 0;
+    }
+
+    .container input[type="text"],
+    .container input[type="tel"],
+    .container input[type="password"],
+    .container input[type="email"],
+    select {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .container input[type="submit"],
+    .button {
+        text-decoration: none;
+        background-color: #04AA6D;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .container input[type="submit"]:hover,
+    .button:hover {
+        background-color: #037d54;
+    }
+
+    .error {
+        color: red;
+        display: none;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 10px 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 8px;
+    }
+
+    .modal-content a {
+        float: right;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        cursor: pointer;
+    }
+
+    @media (max-width: 568px) {
         .container {
-            display: flex;
-            justify-content: center;
-            margin: 20px auto;
+            flex-direction: column;
+            padding: 10px;
             width: 100%;
-            height: auto;
-            background: #fff;
-            border: 1px solid #037d54;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .editUser {
-            flex: 1;
-            max-width: 250px;
-            padding: 20px;
-            border-right: 1px solid #ddd;
+            flex-direction: row;
+            /* Switch to row layout */
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            max-width: 100%;
+            /* Full width on mobile */
+            border: none;
+            /* Remove border for cleaner mobile design */
         }
 
         .editUser ul {
-            padding: 0;
-            list-style: none;
+            display: flex;
+            /* Flex layout for the list */
+            flex-wrap: wrap;
+            /* Wrap items if needed */
+            /* Space between icons */
         }
 
         .editUser ul li {
-            margin: 10px 0;
+            margin: 0;
+            /* Remove margins */
         }
 
         .editUser ul li a {
+            font-size: 0;
+            /* Hide text */
+        }
+
+        .editUser ul li a i {
+            font-size: 20px;
+            /* Show only icons */
             color: #333;
-            font-weight: bold;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            cursor: pointer;
-            margin-bottom: 10px;
-            padding: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
+            /* Icon color */
         }
 
-        .editUser ul li a:hover {
+        .editUser ul li a:hover i {
             color: #04AA6D;
+            /* Change icon color on hover */
+        }
+    }
+
+    .name {
+        width: calc(100% - 22px);
+        display: flex;
+        gap: 0.5em;
+        flex-direction: row;
+    }
+
+    /* Message Display Container */
+    .message-display {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        margin: 10px auto;
+        max-width: 500px;
+        border-radius: 8px;
+        background-color: #f8d7da;
+        /* Light red background */
+        color: #721c24;
+        /* Dark red text */
+        border: 1px solid #f5c6cb;
+        /* Border matching the background */
+        font-size: 14px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Slight shadow for elevation */
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Close Button */
+    .message-display .close {
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        color: #721c24;
+        border: none;
+        background: none;
+        margin-left: 10px;
+    }
+
+    /* Close Button Hover Effect */
+    .message-display .close:hover {
+        color: #d9534f;
+        /* Slightly darker red on hover */
+        transition: color 0.3s ease-in-out;
+    }
+
+    /* Message Content */
+    .message-display .message-content {
+        flex: 1;
+        margin: 0;
+    }
+
+    /* Fade In Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
-        aside {
-            flex: 3;
-            padding: 20px;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        aside>div {
-            display: none;
-        }
-
-        .Account {
-            display: block;
-        }
-
-        .profilepic {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            position: relative;
-        }
-
-        .profilepic input[type="file"] {
-            display: none;
-            text-align: center;
-        }
-
-        .profilepic img {
-            width: 100px;
-            height: auto;
-            border-radius: 50%;
-            border: 2px solid #04AA6D;
-        }
-
-        form {
-            margin: 20px 0;
-        }
-
-        .container input[type="text"],
-        .container input[type="tel"],
-        .container input[type="password"],
-        .container input[type="email"],
-        select {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .container input[type="submit"],
-        .button {
-            text-decoration: none;
-            background-color: #04AA6D;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .container input[type="submit"]:hover,
-        .button:hover {
-            background-color: #037d54;
-        }
-
-        .error {
-            color: red;
-            display: none;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 10px 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-        }
-
-        .modal-content a {
-            float: right;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            cursor: pointer;
-        }
-
-        @media (max-width: 568px) {
-            .container {
-                flex-direction: column;
-                padding: 10px;
-                width: 100%;
-            }
-
-            .editUser {
-                flex-direction: row;
-                /* Switch to row layout */
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 0;
-                max-width: 100%;
-                /* Full width on mobile */
-                border: none;
-                /* Remove border for cleaner mobile design */
-            }
-
-            .editUser ul {
-                display: flex;
-                /* Flex layout for the list */
-                flex-wrap: wrap;
-                /* Wrap items if needed */
-                /* Space between icons */
-            }
-
-            .editUser ul li {
-                margin: 0;
-                /* Remove margins */
-            }
-
-            .editUser ul li a {
-                font-size: 0;
-                /* Hide text */
-            }
-
-            .editUser ul li a i {
-                font-size: 20px;
-                /* Show only icons */
-                color: #333;
-                /* Icon color */
-            }
-
-            .editUser ul li a:hover i {
-                color: #04AA6D;
-                /* Change icon color on hover */
-            }
-        }
-
-        .name {
-            width: calc(100% - 22px);
-            display: flex;
-            gap: 0.5em;
-            flex-direction: row;
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
@@ -253,55 +317,52 @@ if (count($addressParts) === 1) {
                     <h2>Profile</h2>
                     <ul>
                         <li><a href="#" data-section="Account"><i class="fas fa-user"></i> Account</a></li>
-                        <li><a href="#" data-section="personalDetails"><i class="fas fa-id-card"></i> Personal
-                                Details</a></li>
-                        <li><a href="#" data-section="changepassword"><i class="fas fa-lock"></i> Change Password</a>
+                        <li><a href="#" data-section="changepassword"><i class="fas fa-lock"></i> Change
+                                Password</a>
                         </li>
-                        <li><a href="#" data-section="upgrade"><i class="fas fa-arrow-up"></i> Upgrade Account</a></li>
+                        <li><a href="#" data-section="upgrade"><i class="fas fa-arrow-up"></i> Upgrade Account</a>
+                        </li>
                     </ul>
                 </div>
                 <aside>
-                    <div class="Account">
-                        <?php if (!empty($user)) { ?>
-                            <img src="<?php echo htmlspecialchars($user['profile_picture'], ENT_QUOTES); ?>"
-                                alt="Profile Preview" style="width:100px;">
-                            <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'], ENT_QUOTES); ?></p>
-                            <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?></p>
-                            <p>
-                                <strong>Email Address:</strong>
-                                <?php
-                                echo htmlspecialchars($user['email'], ENT_QUOTES);
-                                if ($user['is_verified'] == true) {
-                                    echo "<i class='bx bxs-check-circle' style='color:#33af1f'></i>";
-                                } else {
-                                    echo '<button>Verify Email</button>';
-                                }
-                                ?>
-                            </p>
-                            <p><strong>Home Address:</strong>
-                                <?php echo htmlspecialchars($user['home_address'], ENT_QUOTES); ?></p>
-                            <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES); ?>
-                            </p>
+
+                    <div class="changepassword">
+                        <?php if (checkIfPasswordIsNull($conn, $user_id)) { ?>
+                            <h3>Add Password</h3>
+                            <form id="addPasswordForm">
+                                <div class="message-display" style="display:none">
+                                    <p class="message-content"></p>
+                                </div>
+
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password" onkeyup="checkPasswordStrength()">
+                                <div id="passwordStrength" style="color:red"></div>
+                                <label for="confirm_password">Confirm Password:</label>
+                                <input type="password" id="confirm_password" name="confirm_password">
+                                <input type="submit" value="Save">
+                            </form>
                         <?php } else { ?>
-                            <p>You are not logged in.</p>
+                            <h3>Change Password</h3>
+                            <form id="changePasswordForm">
+
+                                <div class="message-display" style="display:none">
+                                    <p class="message-content"></p>
+                                </div>
+
+                                <label for="oldPassword">Old Password:</label>
+                                <input type="password" id="oldPassword" name="oldPassword">
+                                <label for="newPassword">New Password:</label>
+                                <input type="password" id="newPassword" name="newPassword"
+                                    onkeyup="checkPasswordStrength()">
+                                <div id="passwordStrength" style="color:red"></div>
+                                <label for="confirmPassword">Confirm Password:</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword">
+                                <span class="error" id="passwordError">Passwords do not match!</span>
+                                <input type="submit" value="Save">
+                            </form>
                         <?php } ?>
                     </div>
-                    <div class="changepassword">
-                        <h3>Change Password</h3>
-                        <form id="changePasswordForm">
-                            <label for="oldPassword">Old Password:</label>
-                            <input type="password" id="oldPassword" name="oldPassword" required>
-                            <label for="newPassword">New Password:</label>
-                            <input type="password" id="newPassword" name="newPassword" required
-                                onkeyup="checkPasswordStrength()">
-                            <div id="passwordStrength" style="color:red"></div>
-                            <label for="confirmPassword">Confirm Password:</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required>
-                            <span class="error" id="passwordError">Passwords do not match!</span>
-                            <input type="submit" value="Save">
-                        </form>
-                    </div>
-                    <div class="personalDetails">
+                    <div class="Account">
                         <h3>Personal Details</h3>
                         <form action="php/updateAcc.php" method="POST" enctype="multipart/form-data">
                             <div class="profilepic" id="profilePic">
@@ -311,19 +372,21 @@ if (count($addressParts) === 1) {
                                 <label for="profilePicture" id="pp-icon"><i class="fa fa-camera"></i></label>
                                 <input type="file" id="profilePicture" name="profilePicture">
                             </div>
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" disabled
+                                value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>">
                             <label for="fullName">Full Name</label>
                             <div class="name">
                                 <input type="text" id="fullName" name="firstname"
-                                    value="<?php echo htmlspecialchars($user['firstname'], ENT_QUOTES); ?>">
+                                    value="<?php echo htmlspecialchars($user['firstname'], ENT_QUOTES); ?>"
+                                    placeholder="First Name">
                                 <input type="text" id="fullName" name="lastname"
-                                    value="<?php echo htmlspecialchars($user['lastname'], ENT_QUOTES); ?>">
+                                    value="<?php echo htmlspecialchars($user['lastname'], ENT_QUOTES); ?>"
+                                    placeholder="Last Name">
                             </div>
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" disabled placeholder="Username"
                                 value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" disabled
-                                value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>">
                             <label for="phone">Phone</label>
                             <input type="tel" id="phone" name="phone" maxlength="11" required
                                 pattern="^(\+639|09)\d{9}$" placeholder="e.g. 09123456789"
@@ -447,6 +510,7 @@ if (count($addressParts) === 1) {
 
 
             var $passwordForm = $('#changePasswordForm');
+            var $addPasswordForm = $('#addPasswordForm');
             var $passwordError = $('#passwordError');
             var $passwordStrength = $('#passwordStrength');
 
@@ -457,42 +521,73 @@ if (count($addressParts) === 1) {
                 var newPassword = $('#newPassword').val();
                 var confirmPassword = $('#confirmPassword').val();
 
-                // Validate passwords match
-                if (newPassword !== confirmPassword) {
-                    $passwordError.text('Passwords do not match!').show();
-                    return;
-                } else {
-                    $passwordError.hide();
-                }
-
-                // Perform AJAX request to update the password
                 $.ajax({
-                    url: 'php/change_password.php', // Path to your PHP script
+                    url: 'php/changePass.php',
                     type: 'POST',
                     data: {
                         oldPassword: oldPassword,
-                        newPassword: newPassword
+                        newPassword: newPassword,
+                        confirmPassword: confirmPassword
+                    },
+                    success: function (response) {
+                        $('.message-display').show();
+                        var result = JSON.parse(response);
+                        if (result.status == 'success') {
+                            $('.message-display .message-content').text(result.message);
+                            $('.message-display').css({
+                                'background-color':' #a9dc90', // Set background color
+                                'color': '#365b4c'                   // Set text color
+                            });
+
+                            setTimeout(() => {
+                                window.location.href = window.location.href;
+                            }, 1500);
+                            $passwordForm[0].reset(); // Reset the form
+                            $passwordStrength.text('');
+                        } else {
+                            $('.message-display').text(result.message);
+
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Something went wrong. Please try again later.',
+                            showConfirmButton: true
+                        });
+                    }
+                });
+            });
+            $addPasswordForm.on('submit', function (e) {
+                e.preventDefault();
+
+                var password = $('#password').val();
+                var confirm_password = $('#confirm_password').val();
+
+                $.ajax({
+                    url: 'php/addPassword.php',
+                    type: 'POST',
+                    data: {
+                        password: password,
+                        confirm_password: confirm_password
                     },
                     success: function (response) {
                         // Handle the response
                         var result = JSON.parse(response);
+                        $('.message-display').show();
                         if (result.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Password Updated',
-                                text: 'Your password has been successfully updated!',
-                                timer: 3000,
-                                showConfirmButton: false
-                            });
-                            $passwordForm[0].reset(); // Reset the form
+                            $('.message-display').text(result.message);
+
+                            setTimeout(() => {
+                                window.location.href = window.location.href;
+                            }, 1500);
+
+                            $('#addPasswordForm').reset();
                             $passwordStrength.text('');
                         } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: result.message,
-                                showConfirmButton: true
-                            });
+                            $('.message-display').text(result.message);
+
                         }
                     },
                     error: function () {
@@ -615,3 +710,5 @@ if (count($addressParts) === 1) {
         });
     </script>
 </body>
+
+</html>

@@ -1,35 +1,37 @@
 <?php
 require_once 'vendor/autoload.php';
 
-$redirectUri = 'http://localhost/bagotours/home';
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$basePath = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+$redirectUri = $protocol . $host . $basePath . '/home';
+
 $client = new Google_Client();
 $client->setClientId($clientID);
 $client->setClientSecret($clientSecret);
 $client->setRedirectUri($redirectUri);
 $client->addScope("email");
 $client->addScope("profile");
-$loginUrl = $client->createAuthUrl(); // If user is already logged in, redirect to home page 
+$loginUrl = $client->createAuthUrl();
 if (isset($_GET['code'])) {
+
     $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
     $client->setAccessToken($token['access_token']);
     $google_oauth = new Google_Service_Oauth2($client);
     $google_account_info = $google_oauth->userinfo->get();
     $email = $google_account_info->email;
-    $firstname = $google_account_info->given_name;
-    $lastname = $google_account_info->family_name;
-    $profile_picture = $google_account_info->picture;
     $existingUser = getUserByEmail($conn, $email);
     if ($existingUser) {
         $_SESSION['user_id'] = $existingUser['id'];
         $_SESSION['role'] = $existingUser['role'];
         $_SESSION['profile-pic'] = $existingUser['profile_picture'];
         $device_id = $existingUser['device_id'];
-        if (empty($existingUser['device_id'])) {
+        if (empty($existingUser['device_id']) || is_null($existingUser['device_id'])) {
             $device_id = md5($email . $existingUser['username']);
             $stmt = $conn->prepare("UPDATE users SET device_id = ? WHERE email=?");
             $stmt->execute([$device_id, $email]);
+            echo "<script>alert('Goodstuff');</script>";
         }
-        setcookie('device_id', $device_id, time() + (10 * 365 * 24 * 60 * 60), "/");
         if ($_SESSION['role'] == 'user') {
             echo "<script>window.location.replace(window.location.pathname);</script>";
         } elseif ($_SESSION['role'] == 'owner') {
@@ -39,6 +41,9 @@ if (isset($_GET['code'])) {
         }
         exit;
     } else {
+        $firstname = $google_account_info->given_name;
+        $lastname = $google_account_info->family_name;
+        $profile_picture = $google_account_info->picture;
         $newUserId = createUser($conn, $email, $firstname, $lastname, $profile_picture);
         $_SESSION['user_id'] = $newUserId;
         $_SESSION['email'] = $email;
@@ -65,9 +70,11 @@ if (isset($_GET['code'])) {
                 <h2>Sign In</h2>
                 <p id="login-first" style="display:none; color:red">To begin, you must log in.</p>
                 <center>
-                    <a href="<?php echo $client->createAuthUrl() ?>"><img src="assets/sign-in.png" width="100%">
+                    <a href="<?php echo htmlspecialchars($client->createAuthUrl()); ?>">
+                        <img src="assets/sign-in.png" width="100%">
                     </a>
                 </center>
+
 
                 <div class="section-header">
                     <hr class="section-divider">
