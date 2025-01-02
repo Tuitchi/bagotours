@@ -139,19 +139,19 @@ if (isset($_GET['tour_id'])) {
                 <div class="form-container">
                     <h2>Home Address</h2>
                     <form id="address">
-                        <input type="hidden" value="<?php echo $user['id']?>" name="id">
+                        <input type="hidden" value="<?php echo $user['id'] ?>" name="id">
                         <div class="name">
                             <select name="country" id="country" required>
                                 <option value="" selected disabled>Select Country</option>
-                                <!-- Auto Generated country throu JS -->
+
                             </select>
                             <select name="province" id="province" required disabled>
                                 <option value="" selected disabled>Select Province</option>
-                                <!-- Auto Generated country throu JS -->
+
                             </select>
                             <select name="city" id="city" required disabled>
                                 <option value="" selected disabled>Select City/Municipality</option>
-                                <!-- Auto Generated country throu JS -->
+
                             </select>
                         </div>
                         <div id="address-error" class="error-message"></div>
@@ -320,10 +320,9 @@ if (isset($_GET['tour_id'])) {
             // Signup Form
             $('#signupForm').on('submit', function (event) {
                 event.preventDefault();
-
                 const formData = new FormData(this);
                 const $submitButton = $(this).find('button[type="submit"]');
-                submitButton.html('<span class="spinner"></span> Registering...').prop('disabled', true);
+                $submitButton.prop('disabled', true).text('Signing Up...');
 
                 $.ajax({
                     url: 'php/register.php',
@@ -335,7 +334,6 @@ if (isset($_GET['tour_id'])) {
                         const data = JSON.parse(response);
                         ['#regEmail-error', '#regPassword-error', '#conPass-error', '#country-error'].forEach(id => $(id).text(''));
                         ['#email', '#pwd', '#con-pwd', '#country'].forEach(id => $(id).css('border', '1px solid #ddd'));
-
 
                         if (data.success) {
                             setTimeout(() => {
@@ -358,6 +356,7 @@ if (isset($_GET['tour_id'])) {
                                 $('#country-error').text(data.errors.country);
                                 $('#country').css('border', '1px solid red');
                             }
+                            $submitButton.prop('disabled', false).text('Sign up');
                         }
                     },
                     error: function () {

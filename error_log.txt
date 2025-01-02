@@ -1520,3 +1520,43 @@ Stack trace:
   thrown in C:\xampp\htdocs\bagotours\admin\visitor.php on line 80
 [19-Dec-2024 19:32:58 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
 [19-Dec-2024 19:33:59 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1Database error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1[21-Dec-2024 20:07:06 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[21-Dec-2024 20:07:13 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\owner\home.php on line 4
+[01-Jan-2025 16:23:43 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\admin\dashboard.php on line 5
+[01-Jan-2025 17:33:06 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\php\getNotifCount.php on line 6
+[01-Jan-2025 17:33:12 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\admin\pending.php on line 4
+[01-Jan-2025 17:33:12 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\bagotours\admin\pending.php:18) in C:\xampp\htdocs\bagotours\php\accValidation.php on line 17
+[01-Jan-2025 17:33:13 Europe/Berlin] PHP Warning:  Undefined array key "user_id" in C:\xampp\htdocs\bagotours\admin\pending.php on line 4
+[01-Jan-2025 17:33:13 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\bagotours\admin\pending.php:18) in C:\xampp\htdocs\bagotours\php\accValidation.php on line 17
+[01-Jan-2025 18:57:03 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\bagotours\php\updatePending.php on line 7
+[01-Jan-2025 18:57:03 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`tourism`.`notifications`, CONSTRAINT `User Notification` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) in C:\xampp\htdocs\bagotours\func\func.php:31
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(31): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\php\updatePending.php(26): createNotification(Object(PDO), 0, 0, 'Your tourist at...', 'form', 'Upgrade Approve...')
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 31
+[01-Jan-2025 19:01:41 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\bagotours\php\updatePending.php on line 7
+[01-Jan-2025 19:01:41 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`tourism`.`notifications`, CONSTRAINT `User Notification` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) in C:\xampp\htdocs\bagotours\func\func.php:31
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(31): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\php\updatePending.php(26): createNotification(Object(PDO), 0, 0, 'Your tourist at...', 'form', 'Upgrade Approve...')
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 31
+[01-Jan-2025 19:14:50 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'tour_id' cannot be null in C:\xampp\htdocs\bagotours\func\func.php:31
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(31): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\php\updatePending.php(34): createNotification(Object(PDO), '', NULL, 'Your applicatio...', 'form', 'Upgrade Cancell...')
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 31
+[01-Jan-2025 19:16:14 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`tourism`.`notifications`, CONSTRAINT `User Notification` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) in C:\xampp\htdocs\bagotours\func\func.php:31
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(31): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\php\updatePending.php(34): createNotification(Object(PDO), '', '', 'Your applicatio...', 'form', 'Upgrade Cancell...')
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 31
+[01-Jan-2025 19:16:20 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`tourism`.`notifications`, CONSTRAINT `User Notification` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) in C:\xampp\htdocs\bagotours\func\func.php:31
+Stack trace:
+#0 C:\xampp\htdocs\bagotours\func\func.php(31): PDOStatement->execute()
+#1 C:\xampp\htdocs\bagotours\php\updatePending.php(34): createNotification(Object(PDO), '', '', 'Your applicatio...', 'form', 'Upgrade Cancell...')
+#2 {main}
+  thrown in C:\xampp\htdocs\bagotours\func\func.php on line 31

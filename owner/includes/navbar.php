@@ -91,7 +91,6 @@ require_once '../php/accValidation.php';
 <nav>
 	<i class='bx bx-menu'></i>
 	<div class="nav-right">
-		<a href="../php/role-switch?code=<?= $user_id?>" class="switch">qweqweqwe</a>
 		<a href="#" class="notification">
 			<i class='bx bxs-bell'></i>
 			<span id="notification-count" class="num">0</span>
@@ -100,7 +99,7 @@ require_once '../php/accValidation.php';
 			<div class="no-notifications">No new notifications</div>
 		</div>
 		<a href="" class="profile">
-		<img src="../<?php echo htmlspecialchars($_SESSION['profile-pic']); ?>" alt="Profile Picture">
+			<img src="../<?php echo htmlspecialchars($_SESSION['profile-pic']); ?>" alt="Profile Picture">
 		</a>
 	</div>
 </nav>
@@ -154,27 +153,6 @@ require_once '../php/accValidation.php';
 			if (!$(e.target).closest('.notification').length && !$(e.target).closest('#notification-dropdown').length) {
 				$('#notification-dropdown').removeClass('active');
 			}
-		});
-		$('#notification-dropdown').on('click', '.url', function () {
-			let notificationId = $(this).data('id');
-
-			$.ajax({
-				url: '../php/updateNotificationStatus.php',
-				method: 'POST',
-				data: {
-					id: notificationId
-				},
-				success: function (response) {
-					if (response.success) {
-						fetchNotifications();
-					} else {
-						console.error('Error updating notification status');
-					}
-				},
-				error: function () {
-					console.error('Error sending update request');
-				}
-			});
 		});
 	});
 </script>

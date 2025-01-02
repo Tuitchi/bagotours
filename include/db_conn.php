@@ -2,7 +2,7 @@
 ini_set('log_errors', 1); // Enable error logging
 ini_set('error_log', '../error_log.txt'); // Set the error log file path
 
-if ($_SERVER['HTTP_HOST'] === 'localhost') {
+if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === 'bagotours.com') {
     // Local environment
     $DATABASE_HOSTNAME = "localhost";
     $DATABASE_USERNAME = "root";

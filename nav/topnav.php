@@ -228,12 +228,7 @@
                     <?php require_once 'func/user_func.php';
                     if ($profile = fetchProfilePicture($conn, $user_id)) {
                         echo '<img src="' . $profile . '" class="dpicn" alt="dp">';
-                    } else {
-                        echo '<img src="assets/icons/user-male.png" class="dpicn" alt="dp">';
-                    } ?>
-                    <?php if (checkIfTrusted($conn, $user_id)) {
-                        echo '<img src="assets/crown.png" class="crown-icon" alt="Crown">';
-                    } ?>
+                    }?>
                 </div>
                 <div class="account-menu" id="accountMenu">
                     <ul>

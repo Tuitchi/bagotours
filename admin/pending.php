@@ -33,8 +33,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.8);
-            padding-top: 60px;
-            transition: all 0.3s ease;
         }
 
         .modal-content {
@@ -55,7 +53,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             right: 20px;
             font-size: 30px;
             font-weight: bold;
-            color: #333;
             cursor: pointer;
             z-index: 1000;
             transition: color 0.3s ease;
@@ -69,33 +66,23 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         /* Zoom Modal Styling */
         #zoomModal {
             display: none;
-            position: fixed;
             z-index: 9999;
-            /* Set a higher z-index for the zoom modal */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding-top: 60px;
-            transition: all 0.3s ease;
         }
 
         /* Main Modal Styling */
         #viewModal {
             display: none;
-            position: fixed;
-            z-index: 9998;
-            /* Set a lower z-index for the main modal */
-            left: 0;
-            top: 0;
+            z-index: 1;
+        }
+
+        textarea {
+            resize: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Semi-transparent black background */
-            padding-top: 60px;
-            transition: all 0.3s ease;
+            overflow-y: auto;
         }
 
         .zoom-modal-content {
@@ -278,6 +265,21 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 top: 10px;
             }
         }
+
+        .view-btn {
+            background-color: #45a049;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        button {
+            border: none;
+        }
     </style>
 </head>
 
@@ -347,6 +349,20 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div id="applicationInfoContent"></div>
                 </div>
             </div>
+
+            <div id="rejectModal" class="modal">
+                <div class="modal-content">
+                    <span class="close reject">&times;</span>
+                    <h2>Reason for Rejection</h2>
+                    <form id="rejectForm" action="../php/updatePending.php" method="post">
+                        <textarea name="reason" id="reason" required></textarea>
+                        <input type="hidden" name="tour_id" id="rejectTourId">
+                        <input type="hidden" name="user_id" id="user_id">
+                        <input type="hidden" name="status" value="Rejected">
+                        <button type="submit" class="accept-btn decline reject-btn">Submit</button>
+                    </form>
+                </div>
+            </div>
         </main>
     </section>
 
@@ -356,8 +372,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="../assets/js/jquery-3.7.1.min.js"></script>
 
     <script>
-        console.log(typeof Swal !== 'undefined' ? 'SweetAlert2 Loaded' : 'SweetAlert2 Not Loaded');
-
         $(document).ready(function () {
             const Toast = Swal.mixin({
                 toast: true,
@@ -367,26 +381,51 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 timerProgressBar: true
             });
 
-            $('.close').click(function () {
-                $('#viewModal').fadeOut();
+            function toggleModal(modalId, action = "show") {
+                if (action === "show") {
+                    $(`#${modalId}`).fadeIn();
+                } else {
+                    $(`#${modalId}`).fadeOut();
+                }
+            }
+
+            function displayError(message) {
+                Toast.fire({
+                    icon: 'error',
+                    title: message || 'An error occurred. Please try again.'
+                });
+            }
+
+            $(document).on('click', '.reject-btn', function () {
+                const tourId = $(this).data('id');
+                const userId = $(this).data('user');
+                $('#rejectTourId').val(tourId);
+                $('#user_id').val(userId);
+                toggleModal('rejectModal', 'show');
             });
 
-            $('.view-btn').click(function (event) {
+            $('.close').click(function () {
+                toggleModal('viewModal', 'hide');
+            });
+
+            $('.close.reject').click(function () {
+                toggleModal('rejectModal', 'hide');
+            });
+
+            $('.close-zoom').click(function () {
+                toggleModal('zoomModal', 'hide');
+            });
+
+            $(document).on('click', '.view-btn', function (event) {
                 event.preventDefault();
                 const id = $(this).data('id');
-                View(id);
+                ViewPendingTour(id);
             });
 
-            function View(id) {
-                let url = new URL(window.location.href);
-                url.searchParams.set('view', 'true');
-                url.searchParams.set('id', id);
-                window.history.pushState({}, '', url);
-
+            function ViewPendingTour(id) {
                 $.getJSON(`../php/get_pending.php?id=${id}`, function (data) {
                     if (data.success) {
-                        const originalDate = new Date(data.pending.date_created);
-                        const formattedDate = originalDate.toLocaleString('en-US', {
+                        const formattedDate = new Date(data.pending.date_created).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',
                             year: 'numeric',
@@ -395,87 +434,59 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             hour12: true
                         });
 
-                        // Ensure img, proof_title, and proof_image are arrays
                         const images = data.pending.img ? data.pending.img.split(',') : [];
                         const proofTitles = data.pending.proof_title ? data.pending.proof_title.split(',') : [];
                         const proofImages = data.pending.proof_image ? data.pending.proof_image.split(',') : [];
 
                         $('#applicationInfoContent').html(`
                         <h1 style="text-align: center;">${data.pending.title}</h1>
-                        
                         <div class="tour-images">
                             ${images.map(image => `
                                 <img src="../upload/Tour Images/${image}" alt="Tour Picture" width="100" class="zoomable-img">
                             `).join('')}
                         </div>
-                        <br>
                         <p><strong>Email:</strong> ${data.pending.email}</p>
                         <p><strong>Phone Number:</strong> ${data.pending.phone_number}</p>
                         <p><strong>Address:</strong> ${data.pending.address}</p>
-                        
-                        <p style="overflow: hidden; white-space: normal; height: 5em; text-overflow: ellipsis;">
-                            <strong>Description:</strong> ${data.pending.description}
-                        </p>
-                        
+                        <p><strong>Description:</strong> ${data.pending.description}</p>
                         <p><strong>Proof:</strong></p>
                         <ul>
-                            ${proofTitles.map(title => `
-                                <li>${title}</li>
-                            `).join('')}
+                            ${proofTitles.map(title => `<li>${title}</li>`).join('')}
                         </ul>
-                        
                         <div class="proof-images">
                             ${proofImages.map(image => `
                                 <img src="../upload/Permits/${image}" alt="Proof Picture" width="100" class="zoomable-img">
                             `).join('')}
                         </div>
-
                         <p><strong>Date:</strong> ${formattedDate}</p>
                         <div class="btn-group">
-                        <a class="accept-btn accept" href="../php/updatePending.php?status=Confirmed&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
-                        <a class="accept-btn decline" href="../php/updatePending.php?status=Rejected&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Decline</a>
-                    </div>
+                            <a class="accept-btn accept" href="../php/updatePending.php?status=Confirmed&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
+                            <button class="accept-btn decline reject-btn" data-id="${data.pending.id}" data-user="${data.pending.user_id}">Decline</button>
+                        </div>
                     `);
-
-                        // Show the modal
-                        $('#viewModal').fadeIn();
+                        toggleModal('viewModal', 'show');
                     } else {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'Unable to fetch pending information.'
-                        });
+                        displayError('Unable to fetch pending information.');
                     }
                 }).fail(function () {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'There was an error fetching the pending information.'
-                    });
+                    displayError('There was an error fetching the pending information.');
                 });
-
-            }
-            const urlParams = new URLSearchParams(window.location.search);
-            const view = urlParams.get('view');
-            const id = urlParams.get('id');
-
-            if (view === 'true' && id) {
-                View(id);
             }
 
             $(document).on('click', '.zoomable-img', function () {
                 const imgSrc = $(this).attr('src');
                 $('#zoomImage').attr('src', imgSrc);
-                $('#zoomModal').fadeIn();
+                toggleModal('zoomModal', 'show');
             });
-            $('.close-zoom').click(function () {
-                $('#zoomModal').fadeOut();
-            });
+
             $(window).click(function (event) {
-                if ($(event.target).is('#zoomModal')) {
-                    $('#zoomModal').fadeOut();
-                }
+                if ($(event.target).is('#zoomModal')) toggleModal('zoomModal', 'hide');
+                if ($(event.target).is('#rejectModal')) toggleModal('rejectModal', 'hide');
+                if ($(event.target).is('#viewModal')) toggleModal('viewModal', 'hide');
             });
         });
     </script>
+
 
 </body>
 

@@ -259,12 +259,9 @@ input[type=text]:focus {
 
 .dpicn {
   width: 100%;
-  /* Use 100% to fill the .dp circle */
   height: auto;
-  /* Use 100% to fill the .dp circle */
   object-fit: cover;
   border-radius: 50%;
-  /* Ensures the profile image is circular */
 }
 
 .crown-icon {
@@ -595,6 +592,10 @@ input[type=text]:focus {
   background-color: #0056b3;
 }
 
+.spots::-webkit-scrollbar {
+  width: 20px;
+}
+
 @media screen and (max-width: 550px) {
   .title {
     font-size: 15px;
@@ -629,6 +630,7 @@ input[type=text]:focus {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
+
 }
 
 /* popularspot */
@@ -645,21 +647,13 @@ input[type=text]:focus {
   margin-bottom: 20px;
   justify-content: flex-start;
   display: flex;
-  /* Adjusts spacing between items */
   flex-wrap: nowrap;
-  /* Prevents the items from wrapping to the next line */
   overflow-x: auto;
-  /* Adds horizontal scrolling */
   gap: 5px;
-  /* Reduces gap between items */
   padding: 10px;
-  /* Adds some padding for spacing */
   scroll-snap-type: x mandatory;
-  /* Enables smooth snap scrolling */
   -webkit-overflow-scrolling: touch;
-  /* Enhances the scrolling on touch devices */
   scroll-behavior: smooth;
-  /* Smooth scrolling effect */
   width: 100%;
 }
 

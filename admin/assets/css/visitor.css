@@ -142,6 +142,9 @@ table th {
     display: flex;
     gap: 5%;
 }
+.form-group.btn-group {
+    justify-content: flex-end;
+}
 
 .input-group {
     width: 33%;

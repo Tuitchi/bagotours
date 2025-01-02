@@ -194,10 +194,6 @@ require_once __DIR__ . '/../func/dashboardFunc.php';
 			}
 
 			const url = new URL('assets/visitorChart.php', basePath);
-
-			console.log(url.toString()); // Output the resolved URL to verify
-
-			alert('url: ' + url);
 			if (tourId) {
 				url.searchParams.append('tour', tourId);
 			}

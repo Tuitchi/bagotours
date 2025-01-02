@@ -265,7 +265,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <input type="hidden" id="latitude" name="latitude" value="<?php echo $tour['latitude'] ?>">
                         <input type="hidden" id="longitude" name="longitude" value="<?php echo $tour['longitude'] ?>">
-                        <button type="submit" class="btn-submit">Save Edit</button>
+                        <div class="form-group btn-group">
+                            <a href="accommodation-fees-management?id=<?php echo htmlspecialchars($tour['id'], ENT_QUOTES, 'UTF-8'); ?>" class="btn-submit pricing">Pricing Management</a>
+                            <button type="submit" class="btn-submit">Save Edit</button>
+                        </div>
                     </form>
                 </div>
             </div>

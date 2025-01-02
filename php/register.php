@@ -2,8 +2,8 @@
 session_start();
 require '../include/db_conn.php';
 
+$errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $errors = [];
     $email = $_POST['email'];
     $country = htmlspecialchars(trim($_POST['country']));
     $province = htmlspecialchars(trim($_POST['province'] ?? ''));

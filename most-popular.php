@@ -63,28 +63,23 @@ try {
     $max_visitors = max(array_column($tours, 'total_visitors'));
     $max_bookings = max(array_column($tours, 'total_completed_bookings'));
     $max_rating = 5;
-    $max_reviews = max(array_column($tours, 'review_count'));
 
     $max_visitors = ($max_visitors > 0) ? $max_visitors : 1;
     $max_bookings = ($max_bookings > 0) ? $max_bookings : 1;
-    $max_reviews = ($max_reviews > 0) ? $max_reviews : 1;
 
     $weighted_tours = [];
     $total_visitors_weight = 0.2;
     $completed_bookings_weight = 0.2;
     $rating_weight = 0.5;
-    $review_weight = 0.1;
 
     foreach ($tours as $tour) {
         $normalized_visitors = $tour['total_visitors'] / $max_visitors;
         $normalized_bookings = $tour['total_completed_bookings'] / $max_bookings;
         $normalized_rating = $tour['average_rating'] / $max_rating;
-        $normalized_reviews = $tour['review_count'] / $max_reviews;
 
         $weighted_score = ($normalized_visitors * $total_visitors_weight) +
             ($normalized_bookings * $completed_bookings_weight) +
-            ($normalized_rating * $rating_weight) +
-            ($normalized_reviews * $review_weight);
+            ($normalized_rating * $rating_weight);
 
         $tour['weighted_score'] = $weighted_score;
         $weighted_tours[] = $tour;

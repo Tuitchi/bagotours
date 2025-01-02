@@ -477,34 +477,34 @@ if (isset($_GET['process'])) {
                                 <div class="permit-container">
                                     <div class="permit">
                                         <label for="permit1">
-                                            <input type="checkbox" id="permit1" name="proof_permits[]" value="Building Permit">
+                                            <input type="checkbox" id="permit1" name="proof_permits[]" value="Building Permit" checked disabled>
                                             Building Permit
                                         </label>
                                     </div>
                                     <div class="permit">
                                         <label for="permit2">
-                                            <input type="checkbox" id="permit2" name="proof_permits[]" value="Business Permit">
+                                            <input type="checkbox" id="permit2" name="proof_permits[]" value="Business Permit" checked disabled>
                                             Business Permit
                                         </label>
                                     </div>
                                     <div class="permit">
                                         <label for="permit3">
                                             <input type="checkbox" id="permit3" name="proof_permits[]"
-                                                value="Environmental Compliance Certificate (ECC)">
+                                                value="Environmental Compliance Certificate (ECC)" checked disabled>
                                             Environmental Compliance Certificate (ECC)
                                         </label>
                                     </div>
                                     <div class="permit">
                                         <label for="permit4">
                                             <input type="checkbox" id="permit4" name="proof_permits[]"
-                                                value="Barangay Clearance">
+                                                value="Barangay Clearance" checked disabled>
                                             Barangay Clearance
                                         </label>
                                     </div>
                                     <div class="permit">
                                         <label for="permit5">
                                             <input type="checkbox" id="permit5" name="proof_permits[]"
-                                                value="Fire Safety Inspection Certificate">
+                                                value="Fire Safety Inspection Certificate" checked disabled>
                                             Fire Safety Inspection Certificate
                                         </label>
                                     </div>

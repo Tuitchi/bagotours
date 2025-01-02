@@ -26,29 +26,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($rating < 1 || $rating > 5) {
             $_SESSION['errorMessage'] = "Rating must be between 1 and 5 stars.";
         } else {
-            try {
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM review_rating WHERE tour_id = :tour_id AND user_id = :user_id");
+            $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() > 0) {
+                $_SESSION['errorMessage'] = "You have already submitted a review for this tour.";
+            } else {
+                $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, date_created) VALUES (:tour_id, :user_id, :rating, :review, :date_created)");
                 $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
                 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-                $stmt->execute();
-
-                if ($stmt->fetchColumn() > 0) {
-                    $_SESSION['errorMessage'] = "You have already submitted a review for this tour.";
+                $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
+                $stmt->bindParam(':review', $review, PDO::PARAM_STR);
+                $stmt->bindParam(':date_created', $currentTimestamp, PDO::PARAM_STR);
+                if ($stmt->execute()) {
+                    $_SESSION['successMessage'] = "Review submitted successfully!";
                 } else {
-                    $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, date_created) VALUES (:tour_id, :user_id, :rating, :review, NOW()");
-                    $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
-                    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-                    $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
-                    $stmt->bindParam(':review', $review, PDO::PARAM_STR);
-                    if ($stmt->execute()) {
-                        $_SESSION['successMessage'] = "Review submitted successfully!";
-                    } else {
-                        $_SESSION['errorMessage'] = "Review submission failed.";
-                    }
+                    $_SESSION['errorMessage'] = "Review submission failed.";
                 }
-            } catch (PDOException $e) {
-                error_log("Database error: " . $e->getMessage(), 3, "error_log.txt");
-                $_SESSION['errorMessage'] = "An error occurred while submitting your review.";
             }
         }
     } else {
@@ -382,7 +378,7 @@ $ratingStars = displayRatingStars($averageRating);
                         </div>
                     </div>
                 </div>
-                <hr>
+                <br>
                 <div class="comment-section">
                     <h3>Rating and Reviews</h3>
                     <form action="" method="post">

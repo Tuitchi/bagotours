@@ -268,7 +268,7 @@ if (isset($_SESSION['user_id'])) {
                     <div class="spots events">
                         <?php foreach ($events as $event): ?>
                             <div class="spot event">
-                                <a href="tour?id=<?php echo base64_encode($event['event_code'] . $salt); ?>">
+                                <a href="view-event?event=<?php echo base64_encode($event['event_code'] . $salt); ?>">
                                     <img src="upload/Event/<?php echo htmlspecialchars($event['event_image']); ?>"
                                         alt="<?php echo htmlspecialchars($event['event_name']); ?>">
                                     <h3><?php echo htmlspecialchars($event['event_name']); ?></h3>

@@ -67,7 +67,8 @@ $totalPages = ceil($total / $limit);
                             ?>
                             <div class="data">
                                 <div class="img">
-                                    <img src="../upload/Tour Images/<?php echo $mainImage; ?>" alt="Main Tour Image">
+                                    <a href="edit-tour?id=<?php echo htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <img src="../upload/Tour Images/<?php echo $mainImage; ?>" alt="Main Tour Image"></a>
                                 </div>
 
                                 <div class="content">

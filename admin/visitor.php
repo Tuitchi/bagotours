@@ -6,7 +6,7 @@ $user_id = $_SESSION['user_id'];
 require_once __DIR__ . '/../func/dashboardFunc.php';
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$tour_id = isset($_GET['tour']) ? $_GET['tour'] : '';
+$tour_id = isset($_GET['mergeTour']) ? $_GET['mergeTour'] : '';
 $visitor_type = isset($_GET['visitorType']) ? $_GET['visitorType'] : '';
 $specific_date = isset($_GET['date']) ? $_GET['date'] : '';
 $monthInput = isset($_GET['month']) ? $_GET['month'] : '';
@@ -98,6 +98,43 @@ $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 
 $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Prepare the query for Bago City visitors
+$bagoSql = "SELECT COUNT(*) FROM visit_records vr 
+            JOIN tours t ON vr.tour_id = t.id 
+            JOIN users u ON u.id = t.user_id 
+            JOIN users uc ON uc.id = vr.user_id  
+            WHERE u.id = :user_id AND vr.city_residence LIKE '%City of Bago%'";
+$bagoParams = [':user_id' => $user_id];
+$bagoSql = buildQuery($bagoSql, $filters, $bagoParams);
+$bagoStmt = $conn->prepare($bagoSql);
+$bagoStmt->execute($bagoParams);
+$bagoVisitors = $bagoStmt->fetchColumn();
+
+// Prepare the query for non-Bago City visitors
+$nonBagoSql = "SELECT COUNT(*) FROM visit_records vr 
+               JOIN tours t ON vr.tour_id = t.id 
+               JOIN users u ON u.id = t.user_id 
+               JOIN users uc ON uc.id = vr.user_id  
+               WHERE u.id = :user_id AND vr.city_residence NOT LIKE '%City of Bago%'";
+$nonBagoParams = [':user_id' => $user_id];
+$nonBagoSql = buildQuery($nonBagoSql, $filters, $nonBagoParams);
+$nonBagoStmt = $conn->prepare($nonBagoSql);
+$nonBagoStmt->execute($nonBagoParams);
+$nonBagoVisitors = $nonBagoStmt->fetchColumn();
+
+// Prepare the query for total visitors
+$totalSql = "SELECT COUNT(*) FROM visit_records vr 
+             JOIN tours t ON vr.tour_id = t.id 
+             JOIN users u ON u.id = t.user_id 
+             JOIN users uc ON uc.id = vr.user_id  
+             WHERE u.id = :user_id";
+$totalParams = [':user_id' => $user_id];
+$totalSql = buildQuery($totalSql, $filters, $totalParams);
+$totalStmt = $conn->prepare($totalSql);
+$totalStmt->execute($totalParams);
+$totalVisitors = $totalStmt->fetchColumn();
+
 ?>
 
 <!DOCTYPE html>
@@ -131,34 +168,34 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <ul class="box-info">
-
                 <li>
                     <i class='bx bxs-city'></i>
                     <span class="text">
-                        <h3><?php echo Bago($conn, $user_id); ?></h3>
+                        <h3><?php echo $bagoVisitors; ?></h3>
                         <p>Bago City Visitors</p>
                     </span>
                 </li>
                 <li>
                     <i class='bx bx-globe'></i>
                     <span class="text">
-                        <h3><?php echo nonBago($conn, $user_id); ?></h3>
+                        <h3><?php echo $nonBagoVisitors; ?></h3>
                         <p>Non-Bago City Visitors</p>
                     </span>
                 </li>
                 <li>
                     <i class='bx bxs-user'></i>
                     <span class="text">
-                        <h3><?php echo totalVisitors($conn, $user_id); ?></h3>
+                        <h3><?php echo $totalVisitors; ?></h3>
                         <p>Total Visitors</p>
                     </span>
                 </li>
             </ul>
 
+
             <div class="table-data">
                 <div class="order">
                     <div class="head">
-                        <h3>Visitors</h3>
+                        <h3 id="tableHeader">Visitors</h3>
                         <div class="search-container">
                             <i class='bx bx-search' id="search-icon"></i>
                             <input type="text" id="search-input" placeholder="Search...">
@@ -168,6 +205,8 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             <!-- Hidden Dropdown -->
                             <div id="filterDropdown" class="dropdown-content">
+                                <span>Filters</span>
+
                                 <div class="section-header">
                                     <hr class="section-divider">
                                     <p class="section-title">Tourist Spot</p>
@@ -178,7 +217,9 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?php require_once '../func/func.php';
                                     $tours = getTouristSpots($conn, $user_id);
                                     foreach ($tours as $tour) { ?>
-                                        <option value="<?php echo $tour['id'] ?>"><?php echo $tour['title'] ?></option>
+                                        <option value="<?php echo $tour['id'] . "|" . $tour['title'] ?>">
+                                            <?php echo $tour['title'] ?>
+                                        </option>
                                     <?php } ?>
                                 </select>
 
@@ -222,7 +263,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                     <div class="input-group">
                                         <label for="year">Year:</label>
-                                        <input type="number" id="year" placeholder="YYYY" min="2024" max="2100"><br>
+                                        <input type="week   " id="year" placeholder="YYYY" min="2024" max="2100"><br>
                                     </div>
                                 </div>
                                 <div class="button-group">
@@ -373,6 +414,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             const $specificDateFilter = $('#specificDate');
             const $visitorBodyTable = $('#visitorTable tbody');
             const $paginationContainer = $('.pagination');
+            const $tableHeader = $('#tableHeader');
 
             function populateDays() {
                 var daySelect = $('#daySelect');
@@ -426,7 +468,11 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             // Function to fetch filtered data from the server
             function fetchFilteredData() {
                 const search = $searchInput.val().trim();
-                const tour = $tourFilter.val();
+                const mergeTour = $tourFilter.val();
+                if (mergeTour) {
+                    const [id, title] = mergeTour.split("|");
+                    $tableHeader.text('Visitors - ' + title);
+                }
                 const visitor = $visitorFilter.filter(':checked').val();
                 const month = $monthFilter.val();
                 const year = $yearFilter.val();
@@ -435,7 +481,7 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 const params = new URLSearchParams({
                     search,
-                    tour,
+                    mergeTour,
                     visitorType: visitor, // Match server-side parameter name
                     month,
                     year,
@@ -452,22 +498,26 @@ $visitRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         // Update table body
                         const $newTableBody = $doc.find('#visitorTable tbody');
-                        console.log('New Table Body:', $newTableBody.html());
                         $visitorBodyTable.html($newTableBody.html());
 
                         // Update pagination
                         const $newPagination = $doc.find('.pagination');
-                        console.log('New Pagination:', $newPagination.html());
                         $paginationContainer.html($newPagination.html());
+
+                        // Update box info
+                        const $newBoxInfo = $doc.find('.box-info');
+                        $('.box-info').html($newBoxInfo.html());
                     },
                     error: function (error) {
                         console.error('Error fetching data:', error);
                     }
                 });
+
             }
             function resetFilters() {
                 $searchInput.val('');
                 $tourFilter.val('');
+                $tableHeader.text('Visitors');
                 $visitorFilter.prop('checked', false); // Reset radio buttons
                 $('#allVisitor').prop('checked', true);
                 $monthFilter.val('');
