@@ -145,7 +145,11 @@ table th {
 .form-group.btn-group {
     justify-content: flex-end;
 }
-
+.year {
+    width: 95%;
+    height: 35px;
+    padding: 3px;
+}
 .input-group {
     width: 33%;
 }

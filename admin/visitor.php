@@ -268,7 +268,7 @@ $totalVisitors = $totalStmt->fetchColumn();
                                     </div>
                                     <div class="input-group">
                                         <label for="year">Year:</label>
-                                        <input type="week   " id="year" placeholder="YYYY" min="2024" max="2100"><br>
+                                        <input class="year" type="year" id="year" placeholder="YYYY" min="2024" max="2100"><br>
                                     </div>
                                 </div>
                                 <div class="button-group">
