@@ -162,9 +162,14 @@ $totalVisitors = $totalStmt->fetchColumn();
                 <div class="left">
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
-                <a class="btn-download" id="btn-download">
-                    <i class='bx bxs-printer'></i> Print Visitors
-                </a>
+                <div class="right">
+                    <a class="btn-download" id="btn-download">
+                        <i class='bx bxs-download'></i> Download SV
+                    </a>
+                    <a class="btn-download" id="btn-download">
+                        <i class='bx bxs-printer'></i> Print Visitors
+                    </a>
+                </div>
             </div>
 
             <ul class="box-info">
@@ -292,7 +297,7 @@ $totalVisitors = $totalStmt->fetchColumn();
                                 echo "<td>" . htmlspecialchars($record['client_email']) . "</td>"; // Email
                                 echo "<td>" . htmlspecialchars($record['city']) . "</td>"; // Address (City Residence)
                                 echo "<td>" . htmlspecialchars($record['tour_name']) . "</td>"; // Tour Name
-                            
+
                                 $date = new DateTime($record['datetime']);
                                 echo "<td>" . htmlspecialchars($date->format('M. d, Y')) . "</td>";
                                 echo "</tr>";
@@ -350,24 +355,18 @@ $totalVisitors = $totalStmt->fetchColumn();
                                 <option value="none" selected disabled hidden>Select an Option</option>
                                 <?php $tours = getTouristSpots($conn, $user_id);
                                 foreach ($tours as $tour) {
-                                    ?>
-                                    <option value="<?php echo $tour['id'] ?>">
+                                ?>
+                                    <option value="<?php echo $tour['title'] ?>">
                                         <?php echo $tour['title'] ?>
                                     </option>
                                 <?php } ?>
                             </select>
                             <label for="dateType">Date</label>
                             <div>
-                                <!-- Day Select -->
-                                <label for="daySelect">Day</label>
-                                <select id="daySelect" name="day">
-                                    <option value="">Day</option>
-                                </select>
 
                                 <!-- Month Select -->
-                                <label for="monthSelect">Month</label>
-                                <select id="monthSelect" name="month">
-                                    <option value="">Month</option>
+                                <label for="monthSelect">Month</label >
+                                <select id="monthSelect" name="month" required>
                                     <option value="1">January</option>
                                     <option value="2">February</option>
                                     <option value="3">March</option>
@@ -384,7 +383,7 @@ $totalVisitors = $totalStmt->fetchColumn();
 
                                 <!-- Year Select -->
                                 <label for="yearSelect">Year</label>
-                                <select id="yearSelect" name="year">
+                                <select id="yearSelect" name="year" required>
                                     <option value="">Year</option>
                                 </select>
                             </div>
@@ -402,7 +401,7 @@ $totalVisitors = $totalStmt->fetchColumn();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const $dropdownButton = $('#openFilter');
             const $filterContainer = $('.filter');
             const $dropdownContent = $filterContainer.find('.dropdown-content');
@@ -438,7 +437,7 @@ $totalVisitors = $totalStmt->fetchColumn();
                 var yearSelect = $('#yearSelect');
                 var currentYear = new Date().getFullYear();
                 var startYear = currentYear - 100; // 100 years ago
-                var endYear = currentYear + 10;   // 10 years in the future
+                var endYear = currentYear + 10; // 10 years in the future
 
                 // Populate years
                 for (var year = startYear; year <= endYear; year++) {
@@ -454,13 +453,13 @@ $totalVisitors = $totalStmt->fetchColumn();
 
 
             // Toggle the filter dropdown
-            $(document).on('click', '#btn-download', function () {
+            $(document).on('click', '#btn-download', function() {
                 $('#printModal').show();
             });
-            $('.close').click(function () {
+            $('.close').click(function() {
                 $(this).closest('.modal').hide();
             });
-            $(window).click(function (event) {
+            $(window).click(function(event) {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();
                 }
@@ -492,7 +491,7 @@ $totalVisitors = $totalStmt->fetchColumn();
                 $.ajax({
                     url: `?${params.toString()}`,
                     type: 'GET',
-                    success: function (response) {
+                    success: function(response) {
                         console.log('AJAX response:', response);
                         const $doc = $(response);
 
@@ -508,12 +507,13 @@ $totalVisitors = $totalStmt->fetchColumn();
                         const $newBoxInfo = $doc.find('.box-info');
                         $('.box-info').html($newBoxInfo.html());
                     },
-                    error: function (error) {
+                    error: function(error) {
                         console.error('Error fetching data:', error);
                     }
                 });
 
             }
+
             function resetFilters() {
                 $searchInput.val('');
                 $tourFilter.val('');
@@ -535,7 +535,7 @@ $totalVisitors = $totalStmt->fetchColumn();
             $specificDateFilter.on('change', fetchFilteredData);
 
             // Pagination links
-            $paginationContainer.on('click', 'a', function (e) {
+            $paginationContainer.on('click', 'a', function(e) {
                 e.preventDefault();
                 const url = new URL(window.location.href); // Use the current page's URL as base
                 const page = $(this).attr('href').split('=')[1]; // Extract the page number from href
@@ -549,20 +549,20 @@ $totalVisitors = $totalStmt->fetchColumn();
                 fetchFilteredData();
             });
 
-            $dropdownButton.on('click', function (event) {
+            $dropdownButton.on('click', function(event) {
                 event.stopPropagation();
                 $filterContainer.toggleClass('active');
             });
 
             // Close the dropdown when clicking outside of it
-            $(window).on('click', function () {
+            $(window).on('click', function() {
                 if ($filterContainer.hasClass('active')) {
                     $filterContainer.removeClass('active');
                 }
             });
 
             // Prevent closing the dropdown when clicking inside
-            $dropdownContent.on('click', function (event) {
+            $dropdownContent.on('click', function(event) {
                 event.stopPropagation();
             });
             // Reset filters function

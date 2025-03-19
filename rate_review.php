@@ -7,31 +7,39 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
 $message = null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_review'])) {
     // Sanitize input
     $tour_id = htmlspecialchars($_POST['tour_id']);
     $rating = (int) $_POST['rating'];
     $review = htmlspecialchars($_POST['review']);
+    
     try {
-        $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, date_created) VALUES (:tour_id, :user_id, :rating, :review, $currentTimestamp)");
+        $stmt = $conn->prepare("INSERT INTO review_rating (tour_id, user_id, rating, review, date_created) 
+                                VALUES (:tour_id, :user_id, :rating, :review, :date_created)");
         $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
         $stmt->bindParam(':review', $review, PDO::PARAM_STR);
+        $stmt->bindParam(':date_created', $currentTimestamp, PDO::PARAM_STR); // Bind the current timestamp
 
         if ($stmt->execute()) {
             $message = "<p>Review submitted successfully!</p>";
-            try {
-                $statusStmt = $conn->prepare("update booking SET status = 4 WHERE id = :id");
-                $statusStmt->bindParam(':id', $_GET['booking_id'], PDO::PARAM_INT);
-                if ($statusStmt->execute()) {
-                    sleep(2);
-
-                    header("Location: booking");
-                    exit();
+            
+            // Now update the booking status
+            if (isset($_GET['booking_id'])) {
+                $booking_id = $_GET['booking_id'];
+                try {
+                    $statusStmt = $conn->prepare("UPDATE booking SET status = 4 WHERE id = :id");
+                    $statusStmt->bindParam(':id', $booking_id, PDO::PARAM_INT);
+                    if ($statusStmt->execute()) {
+                        sleep(2); // Optionally wait for 2 seconds before redirect
+                        header("Location: booking"); // Redirect after review submission and status update
+                        exit();
+                    }
+                } catch (PDOException $e) {
+                    error_log($e->getMessage());
                 }
-            } catch (PDOException $e) {
-                error_log($e->getMessage());
             }
         }
     } catch (PDOException $e) {
@@ -124,16 +132,16 @@ if (isset($_GET['booking_id'])) {
         }
     </style>
 </head>
+
 <?php include 'nav/topnav.php' ?>
 <div class="main-container">
     <?php include 'nav/sidenav.php' ?>
     <div class="main">
         <div class="review-section">
-            <?php if ($message)
-                echo $message ?>
-                <h2>Share Your Experience</h2>
-                <form method="POST" action="">
-                    <input type="hidden" name="tour_id" value="<?php echo htmlspecialchars($tour_id); ?>">
+            <?php if ($message) echo $message; ?>
+            <h2>Share Your Experience</h2>
+            <form method="POST" action="">
+                <input type="hidden" name="tour_id" value="<?php echo htmlspecialchars($tour_id); ?>">
                 <label for="rating">Rating:</label>
                 <select name="rating" id="rating" required>
                     <option value="1">1 Star</option>
@@ -148,8 +156,6 @@ if (isset($_GET['booking_id'])) {
                 <br>
                 <button type="submit" name="submit_review">Submit Review</button>
             </form>
-
-
         </div>
     </div>
 </div>

@@ -8,7 +8,8 @@ function getTouristSpots($conn, $user_id)
 
     return $result;
 }
-function generateUniqueBidId($conn) {
+function generateUniqueBidId($conn)
+{
     do {
         $uniqueId = random_int(10000000, 99999999); // Generate an 8-digit number
         $stmt = $conn->prepare("SELECT COUNT(*) FROM booking WHERE BID = ?");
@@ -102,16 +103,20 @@ function getQR($conn, $tour_id)
 
 function recordVisit($conn, $tourId, $userId)
 {
-    $home = $conn->prepare("SELECT home_address FROM users WHERE id = :user_id");
+    $home = $conn->prepare("SELECT home_address, gender FROM users WHERE id = :user_id");
     $home->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $home->execute();
-    $homeAddress = $home->fetchColumn();
+    $userData = $home->fetch(PDO::FETCH_ASSOC);
 
-    $sql = 'INSERT INTO visit_records (tour_id, user_id, visit_time, city_residence) VALUES (:tour_id, :user_id, NOW(), :homeAddress)';
+    $homeAddress = $userData['home_address'] ?? null;
+    $gender = isset($userData['gender']) && strtolower($userData['gender']) === 'male' ? 1 : 0;
+
+    $sql = 'INSERT INTO visit_records (tour_id, user_id, visit_time, city_residence, gender) VALUES (:tour_id, :user_id, NOW(), :homeAddress, gender)';
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':tour_id', $tourId, PDO::PARAM_INT);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->bindParam(':homeAddress', $homeAddress, PDO::PARAM_STR);
+    $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
 
     if ($stmt->execute()) {
         return ['success' => true, 'message' => 'Visit recorded successfully.'];

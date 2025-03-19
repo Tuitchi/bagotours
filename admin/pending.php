@@ -3,7 +3,7 @@ include '../include/db_conn.php';
 session_start();
 $user_id = $_SESSION['user_id'];
 
-$query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 'Pending' OR tours.status = 'Rejected'";
+$query = "SELECT users.*, tours.* FROM tours RIGHT JOIN users ON users.id = tours.user_id WHERE tours.status = 'Pending' OR tours.status = 'Rejected' Order BY tours.status";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -324,7 +324,11 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     echo "<td>" . $row['email'] . "</td>";
                                     echo "<td>" . $row['title'] . "</td>";
                                     echo '<td style="color: ' . ($row['status'] == 'Pending' ? "green" : "red") . '">' . $row['status'] . '</td>';
-                                    echo "<td><button class='view-btn' data-id='" . $row['id'] . "'>View</button></td>";
+                                    if ($row['status'] == 'Pending') {
+                                        echo "<td><button class='view-btn' data-id='" . $row['id'] . "'>View</button></td>";
+                                    } else {
+                                        echo "<td><button class='view-btn' disabled>Expiry Date : " . $row['expiry'] . "</button></td>";
+                                    }
                                     echo "</tr>";
                                 }
                             } else {
@@ -354,12 +358,25 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal-content">
                     <span class="close reject">&times;</span>
                     <h2>Reason for Rejection</h2>
-                    <form id="rejectForm" action="../php/updatePending.php" method="post">
+                    <form id="rejectForm">
                         <textarea name="reason" id="reason" required></textarea>
                         <input type="hidden" name="tour_id" id="rejectTourId">
                         <input type="hidden" name="user_id" id="user_id">
                         <input type="hidden" name="status" value="Rejected">
                         <button type="submit" class="accept-btn decline reject-btn">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div id="approvalModal" class="modal">
+                <div class="modal-content">
+                    <span class="close accept-close">&times;</span>
+                    <h2>Are you sure?</h2>
+                    <form id="acceptForm">
+                        <input type="hidden" name="tour_id" id="acceptTourID">
+                        <input type="hidden" name="user_id" id="acceptUserID">
+                        <input type="hidden" name="status" value="Confirmed">
+                        <button type="submit" class="accept-btn accept">Yes</button>
+                        <button type="button" class="accept-btn decline accept-close">No</button>
                     </form>
                 </div>
             </div>
@@ -370,7 +387,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
     <script src="../assets/js/jquery-3.7.1.min.js"></script>
-
+    F
     <script>
         $(document).ready(function () {
             const Toast = Swal.mixin({
@@ -381,6 +398,102 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 timerProgressBar: true
             });
 
+            $(document).on("submit", "#acceptForm", function (e) {
+                e.preventDefault(); // Prevent default form submission behavior
+                console.log("Running AJAX request");
+
+                const formData = new FormData(this);
+                const submitButton = $(this).find(".accept"); // Select the submit button    for (let [key, value] of formData.entries()) {
+                for (let [key, value] of formData.entries()) {
+                    console.log(key + ": " + value); // Logs each key-value pair in FormData
+                };
+                submitButton.prop("disabled", true).text("Accepting...");
+
+                // Check if the form data is being collected properly
+                console.log("Form data:", formData);
+
+                // Perform the AJAX request
+                $.ajax({
+                    url: "../php/updatePending.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false, // Prevent jQuery from processing the FormData object
+                    contentType: false, // Prevent jQuery from setting the content type header
+                    success: function (data) {
+                        console.log("Response:", data); // Check the response in the console
+                        if (data.success) {
+                            submitButton.text("Accepted"); // Change text to "Accepted"
+                            Toast.fire({
+                                icon: "success",
+                                title: "Accepted successfully!",
+                            }).then(() => {
+                                location.reload(); // Reload the page after the toast
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Approval Error: " + data.message,
+                            });
+                            // Re-enable the button if submission fails
+                            submitButton.prop("disabled", false).text("Accept");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                        Toast.fire({
+                            icon: "error",
+                            title: "An error occurred while submitting the rejection.",
+                        });
+                        // Re-enable the button if an error occurs
+                        submitButton.prop("disabled", false).text("Accept");
+                    },
+                });
+            });
+
+
+            $("#rejectForm").on("submit", function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                const formData = new FormData(this);
+                const submitButton = $(this).find(".reject-btn"); // Select the submit button
+
+                // Disable the button while processing
+                submitButton.prop("disabled", true).text("Submitting...");
+
+                $.ajax({
+                    url: "../php/updatePending.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false, // Prevent jQuery from processing the FormData object
+                    contentType: false, // Prevent jQuery from setting the content type header
+                    success: function (data) {
+                        if (data.success) {
+                            submitButton.text("Submitted"); // Change text to "Submitted"
+                            Toast.fire({
+                                icon: "success",
+                                title: "Rejection submitted successfully!",
+                            })
+                            location.reload(); // Reload the page after the toast
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Failed to submit rejection: " + data.message,
+                            });
+                            // Re-enable the button if submission fails
+                            submitButton.prop("disabled", false).text("Submit");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                        Toast.fire({
+                            icon: "error",
+                            title: "An error occurred while submitting the rejection.",
+                        });
+                        // Re-enable the button if an error occurs
+                        submitButton.prop("disabled", false).text("Submit");
+                    },
+                });
+            });
             function toggleModal(modalId, action = "show") {
                 if (action === "show") {
                     $(`#${modalId}`).fadeIn();
@@ -396,12 +509,37 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 });
             }
 
+            $(document).on('click', '.acceptOpenModal', function () {
+                const tourId = $(this).data('id');
+                const userId = $(this).data('user');
+
+                // Debugging
+                console.log('Tour ID:', tourId); // Should log the tour ID
+                console.log('User ID:', userId); // Should log the user ID
+
+                if (tourId && userId) {
+                    $('#acceptTourID').val(tourId);
+                    $('#acceptUserID').val(userId);
+                    $('#approvalModal').show(); // Show the modal
+                } else {
+                    console.error('Tour ID or User ID is missing');
+                }
+            });
             $(document).on('click', '.reject-btn', function () {
                 const tourId = $(this).data('id');
                 const userId = $(this).data('user');
-                $('#rejectTourId').val(tourId);
-                $('#user_id').val(userId);
-                toggleModal('rejectModal', 'show');
+
+                // Debugging
+                console.log('Tour ID:', tourId); // Should log the tour ID
+                console.log('User ID:', userId); // Should log the user ID
+
+                if (tourId && userId) {
+                    $('#rejectTourId').val(tourId);
+                    $('#user_id').val(userId);
+                    $('#rejectModal').show(); // Show the modal
+                } else {
+                    console.error('Tour ID or User ID is missing');
+                }
             });
 
             $('.close').click(function () {
@@ -410,6 +548,9 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $('.close.reject').click(function () {
                 toggleModal('rejectModal', 'hide');
+            });
+            $('.accept-close').click(function () {
+                toggleModal('approvalModal', 'hide');
             });
 
             $('.close-zoom').click(function () {
@@ -460,7 +601,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <p><strong>Date:</strong> ${formattedDate}</p>
                         <div class="btn-group">
-                            <a class="accept-btn accept" href="../php/updatePending.php?status=Confirmed&tour_id=${data.pending.id}&user_id=${data.pending.user_id}">Accept</a>
+                            <button class="accept-btn accept acceptOpenModal" data-id="${data.pending.id}" data-user="${data.pending.user_id}">Accept</button>
                             <button class="accept-btn decline reject-btn" data-id="${data.pending.id}" data-user="${data.pending.user_id}">Decline</button>
                         </div>
                     `);
@@ -484,6 +625,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if ($(event.target).is('#rejectModal')) toggleModal('rejectModal', 'hide');
                 if ($(event.target).is('#viewModal')) toggleModal('viewModal', 'hide');
             });
+
         });
     </script>
 

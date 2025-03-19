@@ -6,10 +6,29 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
 
-$stmt = $conn->prepare("SELECT b.*, t.title, t.img FROM booking b JOIN users u ON b.user_id = u.id JOIN tours t ON b.tour_id = t.id WHERE u.id = :user_id");
+$stmt = $conn->prepare("
+    SELECT 
+        b.*, 
+        t.title, 
+        t.img, 
+        u_owner.phone_number, 
+        u_owner.email
+    FROM 
+        booking b
+    JOIN 
+        users u ON b.user_id = u.id  -- client details
+    JOIN 
+        tours t ON b.tour_id = t.id
+    LEFT JOIN 
+        users u_owner ON t.user_id = u_owner.id  -- owner details
+    WHERE 
+        u.id = :user_id
+");
+
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 $statusOrder = [3, 0, 1, 4, 2];
 
@@ -64,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
     if ($booking && $booking['status'] == 0) { // 0 means Booking Approval
         $updateStmt = $conn->prepare("UPDATE booking SET status = 2 WHERE id = :booking_id"); // Assuming 2 means cancelled
         $updateStmt->bindParam(":booking_id", $booking_id, PDO::PARAM_INT);
-        if($updateStmt->execute()) {
+        if ($updateStmt->execute()) {
             $accommodationStmt = $conn->prepare("DELETE FROM booking_accommodations WHERE booking_id = :booking_id");
             $accommodationStmt->bindParam(":booking_id", $booking_id, PDO::PARAM_INT);
             if ($accommodationStmt->execute()) {
@@ -337,8 +356,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking_id'])) 
                                 <img src="upload/Tour Images/<?php echo $main_image; ?>" alt="<?php echo $booking['title']; ?>">
                                 <div class="desc">
                                     <h3><?php echo $booking['title']; ?></h3>
-                                    <h5>Booking ID : <?php echo $booking['BID']; ?></h5>
-                                    <?php
+                                    <h5>Booking ID : <?php echo $booking['BID']; ?></h5><br>
+                                    <?php if($booking['status']==1){?>
+                                    <h4>Contact Information</h4>
+                                    <h3>📧 : <?php echo $booking['email'] ?></h3> 
+                                    <h3>📞 : <?php echo $booking['phone_number'] ?>
+                                    </h3>
+                                    <?php };
                                     if ($booking['is_review']) {
                                         echo '<div class="status-label complete">Reviewed</div>';
                                     } else {

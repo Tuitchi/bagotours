@@ -278,7 +278,20 @@ function tourAlreadyExists($conn, $title)
             window.openMap = function () {
                 document.getElementById('mapModal').style.display = 'block';
                 if (!map) {
-                    initializeMap();
+                    fetch('../php/map_usage.php', {
+					method: 'POST'
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.allowMap) {
+						initializeMap();
+					} else {
+						alert('Map access has been temporarily disabled due to usage limits.');
+					}
+				})
+				.catch(error => {
+					console.error('Error checking map usage:', error);
+				});
                 }
             };
 

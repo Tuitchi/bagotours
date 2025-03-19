@@ -1,8 +1,10 @@
 <?php
+
+use Google\Service\HangoutsChat\PermissionSetting;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+header('Content-Type: application/json');
 include '../include/db_conn.php';
 session_start();
 
@@ -11,14 +13,20 @@ $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = trim($_POST['title']);
-    $address = trim($_POST['purok'] . ", " . $_POST['barangay'] . ", " . $_POST['address']);
+    $address = trim($_POST['address']);
     $description = trim($_POST['description']);
     $type = trim($_POST['type']);
     $latitude = trim($_POST['latitude']);
     $longitude = trim($_POST['longitude']);
-    $proof_permits = $_POST['proof_permits']; 
-    $proof_images = $_FILES['proof-images']; 
-    $tour_images = $_FILES['tour-images']; 
+    $proof_permits = [
+        'Building Permit',
+        'Business Permit',
+        'Environmental Compliance Certificate (ECC)',
+        'Barangay Clearance',
+        'Fire Safety Inspection Certificate'
+    ];
+    $proof_images = $_FILES['proof-images'];
+    $tour_images = $_FILES['tour-images'];
     $bookable = $_POST['bookable'];
 
     if (empty($title) || empty($address) || empty($description) || empty($type) || empty($latitude) || empty($longitude) || empty($proof_permits) || empty($proof_images) || empty($tour_images)) {

@@ -177,7 +177,6 @@ try {
 
         <?php include 'nav/sidenav.php' ?>
         <div class="main">
-            <button class="btn history" onclick="window.location.href='history-event';">History</button>
             <?php if ($events) { ?>
                 <div class="carousel-container">
                     <button class="prev" onclick="prevSlide()">&#10094;</button>

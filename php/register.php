@@ -8,6 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $country = htmlspecialchars(trim($_POST['country']));
     $province = htmlspecialchars(trim($_POST['province'] ?? ''));
     $city = htmlspecialchars(trim($_POST['city'] ?? ''));
+    $gender = htmlspecialchars(trim($_POST['gender'] ?? ''));
+    if ($gender == 'male') {
+        $profile_pic = "upload/Profile Pictures/user-male.png";
+    } elseif ($gender == 'female') {
+        $profile_pic = "upload/Profile Pictures/user-female.png";
+    }
 
     // Constructing home address from provided fields
     $home_address = trim(($city ? $city . ', ' : '') . ($province ? $province . ', ' : '') . $country);
@@ -47,13 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
                 // Insert new user into the database
-                $stmt = $conn->prepare("INSERT INTO users (email, home_address, password, role, device_id) VALUES (:email, :home_address, :password, 'user',:device_id)");
+                $stmt = $conn->prepare("INSERT INTO users (email, home_address, password, role, device_id, gender, profile_picture) 
+VALUES (:email, :home_address, :password, 'user', :device_id, :gender, :profile_picture)");
                 $stmt->execute([
                     'email' => $email,
                     'home_address' => $home_address,
                     'password' => $hashed_password,
                     'device_id' => $device_id,
+                    'gender' => $gender,
+                    'profile_picture' => $profile_pic
                 ]);
+
                 $_SESSION['user_id'] = $conn->lastInsertId();
                 $_SESSION['role'] = 'user';
                 echo json_encode(['success' => true, 'message' => 'Registration successful!', 'redirect' => '']);
@@ -67,4 +77,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'errors' => $errors]);
     exit;
 }
-

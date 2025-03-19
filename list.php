@@ -7,7 +7,8 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Prepare to fetch tours from the database
-$query = "SELECT * FROM tours WHERE status IN ('Active', 'Temporarily Closed')";
+$query = "SELECT *, (SELECT AVG(rr.rating) FROM review_rating rr WHERE rr.tour_id = tours.id) AS rating FROM tours WHERE status IN ('Active', 'Temporarily Closed')";
+
 $stmt = $conn->prepare($query);
 
 // Handle type submission
@@ -36,9 +37,40 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <style>
+
+        .img .rating {
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .img .rating .star {
+            color: yellow;
+            font-size: 1em;
+            margin-left: 3px;
+        }
+
         h2 {
             text-align: center;
             margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            font-size: .7em;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+            transition: text-decoration 0.3s;
+
         }
 
         /* Filter Form */
@@ -221,6 +253,12 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <a href='tour?id=<?php echo base64_encode($tour['id'] . $salt); ?>' class='card'>
 
                             <div class="img">
+                                <span class="rating">
+                                    <?php
+                                    // Format the rating to 1 decimal place
+                                    echo htmlspecialchars(number_format($tour['rating'] ?? 0, 1));
+                                    ?> <span class="star">★</span>
+                                </span>
                                 <img src='upload/Tour Images/<?php echo $main_image; ?>'
                                     alt='<?php echo htmlspecialchars($tour['title']); ?>'>
                                 <?php if ($tour['status'] == 'Temporarily Closed') {
@@ -236,10 +274,7 @@ $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
                             <p>
                                 <?php
-                                $description = htmlspecialchars($tour['description']);
-                                $sentences = explode('.', $description);
-                                $preview = implode('.', array_slice($sentences, 0, 2)) . '.';
-                                echo $preview;
+                                echo htmlspecialchars($tour['address']);
                                 ?>
                             </p>
                         </a>

@@ -36,7 +36,7 @@ try {
 	$touristSpotsJson = json_encode(['error' => 'Unable to fetch tourist spots.']);
 }
 try {
-	$query = "SELECT event_code, event_name, latitude, longitude, event_type, event_image FROM events WHERE status = 'upcoming'";
+	$query = "SELECT event_code, event_name, latitude, longitude, event_type, event_image FROM events WHERE status = 'upcoming' AND event_date_end > NOW()";
 	$stmt = $conn->prepare($query);
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -118,27 +118,43 @@ try {
 	<script src="../assets/js/jquery-3.7.1.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
+			fetch('../php/map_usage.php', {
+					method: 'POST'
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.allowMap) {
+						initializeMap();
+					} else {
+						alert('Map access has been temporarily disabled due to usage limits.');
+					}
+				})
+				.catch(error => {
+					console.error('Error checking map usage:', error);
+				});
 
-			const map = new mapboxgl.Map({
-				container: 'map',
-				style: 'mapbox://styles/mapbox/streets-v12',
-				center: [122.9413, 10.4998],
-				zoom: 10.6
-			});
+			function initializeMap() {
+				mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
-			const touristSpots = <?php echo $touristSpotsJson; ?>;
+				const map = new mapboxgl.Map({
+					container: 'map',
+					style: 'mapbox://styles/mapbox/streets-v12',
+					center: [122.9413, 10.4998],
+					zoom: 10.6
+				});
 
-			touristSpots.forEach(spot => {
-				const el = document.createElement('div');
-				el.className = 'marker';
-				el.style.backgroundImage = `url(../assets/icons/${spot.type.split(' ')[0]}.png)`;
+				const touristSpots = <?php echo $touristSpotsJson; ?>;
 
-				const marker = new mapboxgl.Marker(el)
-					.setLngLat([spot.longitude, spot.latitude])
-					.addTo(map);
+				touristSpots.forEach(spot => {
+					const el = document.createElement('div');
+					el.className = 'marker';
+					el.style.backgroundImage = `url(../assets/icons/${spot.type.split(' ')[0]}.png)`;
 
-				const popupContent = `
+					const marker = new mapboxgl.Marker(el)
+						.setLngLat([spot.longitude, spot.latitude])
+						.addTo(map);
+
+					const popupContent = `
 					<div class="popup-content">
 					<img src="../upload/Tour Images/${spot.image}" alt="${spot.name}">
 						<p>${spot.status}</p>
@@ -147,66 +163,67 @@ try {
 					</div>
 				`;
 
-				const popup = new mapboxgl.Popup({
-					closeOnClick: false,
-					offset: 25,
-					closeButton: false
-				})
-					.setHTML(popupContent);
+					const popup = new mapboxgl.Popup({
+							closeOnClick: false,
+							offset: 25,
+							closeButton: false
+						})
+						.setHTML(popupContent);
 
-				marker.getElement().addEventListener('mouseenter', () => {
-					popup.addTo(map);
-					popup.setLngLat([spot.longitude, spot.latitude]);
+					marker.getElement().addEventListener('mouseenter', () => {
+						popup.addTo(map);
+						popup.setLngLat([spot.longitude, spot.latitude]);
+					});
+
+					marker.getElement().addEventListener('mouseleave', () => {
+						popup.remove();
+					});
+
+					marker.getElement().addEventListener('click', () => {
+						window.location.href = `edit-tour?id=${spot.id}`;
+					});
 				});
+				const events = <?php echo $eventsJson; ?>;
 
-				marker.getElement().addEventListener('mouseleave', () => {
-					popup.remove();
+				events.forEach(event => {
+					const el = document.createElement('div');
+					el.className = 'marker event';
+					el.style.backgroundImage = `url(../assets/icons/stars.png)`;
+
+					const marker = new mapboxgl.Marker(el)
+						.setLngLat([event.longitude, event.latitude])
+						.addTo(map);
+
+					const popupContent = `
+											<div class="popup-content event">
+												<img src="../upload/Event/${event.image}" alt="${event.title}" class="popup-image">
+												<h3 class="popup-title">${event.title}</h3>
+												<p class="popup-type">${event.type}</p>
+												<a href="#" class="popup-link">Learn More</a>
+											</div>
+										`;
+
+					const popup = new mapboxgl.Popup({
+							closeOnClick: false,
+							offset: 25,
+							closeButton: false
+						})
+						.setHTML(popupContent);
+
+					marker.getElement().addEventListener('mouseenter', () => {
+						popup.addTo(map);
+						popup.setLngLat([event.longitude, event.latitude]);
+					});
+
+					marker.getElement().addEventListener('mouseleave', () => {
+						popup.remove();
+					});
+
+					marker.getElement().addEventListener('click', () => {
+						window.location.href = `view-event?event=${event.event_code}`;
+					});
 				});
-
-				marker.getElement().addEventListener('click', () => {
-					window.location.href = `edit-tour?id=${spot.id}`;
-				});
-			});
-			const events = <?php echo $eventsJson; ?>;
-
-			events.forEach(event => {
-				const el = document.createElement('div');
-				el.className = 'marker event';
-				el.style.backgroundImage = `url(../assets/icons/stars.png)`;
-
-				const marker = new mapboxgl.Marker(el)
-					.setLngLat([event.longitude, event.latitude])
-					.addTo(map);
-
-				const popupContent = `
-	<div class="popup-content event">
-		<img src="../upload/Event/${event.image}" alt="${event.title}" class="popup-image">
-		<h3 class="popup-title">${event.title}</h3>
-		<p class="popup-type">${event.type}</p>
-		<a href="#" class="popup-link">Learn More</a>
-	</div>
-`;
-
-				const popup = new mapboxgl.Popup({
-					closeOnClick: false,
-					offset: 25,
-					closeButton: false
-				})
-					.setHTML(popupContent);
-
-				marker.getElement().addEventListener('mouseenter', () => {
-					popup.addTo(map);
-					popup.setLngLat([event.longitude, event.latitude]);
-				});
-
-				marker.getElement().addEventListener('mouseleave', () => {
-					popup.remove();
-				});
-
-				marker.getElement().addEventListener('click', () => {
-					window.location.href = `view-event?event=${event.event_code}`;
-				});
-			});
+			}
 		});
 		<?php
 		if (isset($_SESSION['loginSuccess']) && $_SESSION['loginSuccess'] == true) {

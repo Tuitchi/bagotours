@@ -62,8 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     unset($_SESSION['profile-pic']);
     $_SESSION['profile-pic'] = $db_pp;
 
-    $stmt = $conn->prepare("UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, profile_picture = ?,home_address = ? WHERE id = ?");
-    if ($stmt->execute([$firstname, $lastname, $phone, $db_pp, $home_address, $user_id])) {
+    $stmt = $conn->prepare("UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, profile_picture = ?,home_address = ?, gender = ? WHERE id = ?");
+    if ($stmt->execute([$firstname, $lastname, $phone, $db_pp, $home_address,$gender, $user_id])) {
         $_SESSION['status'] = 'success';
         header("Location: ../manage-acc");
         exit();

@@ -100,3 +100,13 @@
 [2024-12-16 02:44:06] Error in file C:\xampp\htdocs\bagotours\include\db_conn.php on line 126: Notification created for user: 11, tour: 1
 [16-Dec-2024 02:46:08 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
 [16-Dec-2024 02:46:08 Europe/Berlin] Error deleting bookings: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`tourism`.`booking_accommodations`, CONSTRAINT `booking_accommodations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`id`))
+[06-Jan-2025 01:09:35 Europe/Berlin] PHP Warning:  Undefined array key "check-in" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 254
+[06-Jan-2025 01:09:35 Europe/Berlin] PHP Warning:  Undefined array key "check-out" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 258
+[06-Jan-2025 01:09:39 Europe/Berlin] PHP Warning:  Undefined array key "check-in" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 254
+[06-Jan-2025 01:09:39 Europe/Berlin] PHP Warning:  Undefined array key "check-out" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 258
+[06-Jan-2025 01:09:42 Europe/Berlin] PHP Warning:  Undefined array key "check-in" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 254
+[06-Jan-2025 01:09:42 Europe/Berlin] PHP Warning:  Undefined array key "check-out" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 258
+[06-Jan-2025 01:09:45 Europe/Berlin] PHP Warning:  Undefined array key "check-in" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 254
+[06-Jan-2025 01:09:45 Europe/Berlin] PHP Warning:  Undefined array key "check-out" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 258
+[06-Jan-2025 01:13:58 Europe/Berlin] PHP Warning:  Undefined array key "check-in" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 255
+[06-Jan-2025 01:13:58 Europe/Berlin] PHP Warning:  Undefined array key "check-out" in C:\xampp\htdocs\bagotours\admin\edit-tour.php on line 260

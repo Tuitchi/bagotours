@@ -5,57 +5,57 @@ require '../func/func.php';
 
 $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
-    $status = (int)$_POST['status']; // Ensure the status is treated as an integer
-    $people = $_POST['people'];
+	$id = $_POST['id'];
+	$status = (int) $_POST['status']; // Ensure the status is treated as an integer
+	$people = $_POST['people'];
 
-    try {
-        $stmt = $conn->prepare("SELECT user_id, BID FROM booking WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $booking = $stmt->fetch(PDO::FETCH_ASSOC);
+	try {
+		$stmt = $conn->prepare("SELECT user_id, BID FROM booking WHERE id = :id");
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$booking) {
-            header('Location: booking?status=not_found');
-            exit();
-        }
+		if (!$booking) {
+			header('Location: booking?status=not_found');
+			exit();
+		}
 
-        $client_id = $booking['user_id']; // This is the client who made the booking.
+		$client_id = $booking['user_id']; // This is the client who made the booking.
 
-        // Map the integer status to a user-friendly string
-        $statusText = match ($status) {
+		// Map the integer status to a user-friendly string
+		$statusText = match ($status) {
 			1 => "Confirmed",
-            2 => "Cancelled",
-            3 => "Completed",
-            default => "Unknown",
-        };
+			2 => "Cancelled",
+			3 => "Completed",
+			default => "Unknown",
+		};
 
-        // Update the booking record
-        $stmt = $conn->prepare("UPDATE booking SET status = :status, people = :people WHERE id = :id");
-        $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':people', $people, PDO::PARAM_INT);
+		// Update the booking record
+		$stmt = $conn->prepare("UPDATE booking SET status = :status, people = :people WHERE id = :id");
+		$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->bindParam(':people', $people, PDO::PARAM_INT);
 
-        if ($stmt->execute()) {
-            // Create a notification for the client
-            $message = "Your booking (ID: ".$booking['BID'].") has been updated. Status: $statusText.";
-            $url = "booking";
-            $type = "booking_update";
-            $notificationResult = createNotification($conn, $client_id, $id, $message, $url, $type);
+		if ($stmt->execute()) {
+			// Create a notification for the client
+			$message = "Your booking (ID: " . $booking['BID'] . ") has been updated. Status: $statusText.";
+			$url = "booking";
+			$type = "booking_update";
+			$notificationResult = createNotification($conn, $client_id, $id, $message, $url, $type);
 
-            if ($notificationResult === "success") {
-                header('Location: booking?status=success');
-            } else {
-                header('Location: booking?status=notif_error');
-            }
-        } else {
-            header('Location: booking?status=err');
-        }
-    } catch (Exception $e) {
-        error_log("Error updating booking: " . $e->getMessage());
-        header('Location: booking?status=err');
-    }
-    exit();
+			if ($notificationResult === "success") {
+				header('Location: booking?status=success');
+			} else {
+				header('Location: booking?status=notif_error');
+			}
+		} else {
+			header('Location: booking?status=err');
+		}
+	} catch (Exception $e) {
+		error_log("Error updating booking: " . $e->getMessage());
+		header('Location: booking?status=err');
+	}
+	exit();
 }
 
 
@@ -150,13 +150,7 @@ function getStatusButton($row)
 
 		/* for modal */
 		/* Container styling */
-		.modal-content {
-			position: relative;
-			background-color: #fff;
-			margin: auto;
-			border-radius: 4px;
-			width: 80vw;
-		}
+
 
 		@media screen and (max-width: 768px) {
 			.modal-content {
@@ -456,6 +450,10 @@ function getStatusButton($row)
 							const endDate = formatDate(book.end_date);
 							const createdDate = formatDate(book.date_created);
 							const actionButtons = (modalId === '#viewModal') ? getActionButtons('view', id, book.people) : getActionButtons('complete', id, book.people);
+							const trusted = book.is_trusted === 1 ? 'Trusted' : '';
+							const accommodationsContent = book.accommodations.map(accommodation => {
+								return `<p class="user-address"><i class='bx bxs-home'></i>${accommodation.accommodation_name} - ${accommodation.units_reserved}</p>`;
+							}).join(""); // Join the array of strings to create a single string of accommodation HTML
 
 							const content = `<div class="booking-card">
 								<h3 class="booking-title">${book.tour_title} <span class="booking-date">${startDate} - ${endDate}</span></h3>
@@ -463,11 +461,18 @@ function getStatusButton($row)
 									<div class="user-info">
 										<img class="user-image" src="../${book.profile_picture}" alt="User Image">
 											<div class="user-details">
-												<h4 class="user-name">${book.name}</h4>
+												<h4 class="user-name">${book.name} <span>${trusted}</span></h4>
 												<p class="user-address"><i class='bx bxs-map'></i>${book.home_address}</p>
 												<p class="user-address"><i class='bx bxs-key'></i>${book.bookingId}</p>
 											</div>
 									</div>
+										<div class="user-info">
+											<div class="user-details">
+												<h4>Booking information</h4>
+												<p class="user-address"><i class='bx bxs-user'></i> ${book.people} persons</p>
+												${accommodationsContent} <!-- This will display all accommodations -->
+											</div>	
+										</div>
 									<div class="contact-info">
 										<h6>Contact Information</h6>
 										<p><i class='bx bxs-envelope'></i> ${book.email}</p>
@@ -481,7 +486,8 @@ function getStatusButton($row)
 										<div class="action-buttons">${actionButtons}</div>
 									</form>
 								</div>	
-							</div>`
+							</div>`;
+
 							modalContent.html(content);
 							$(modalId).modal('show');
 						} else {

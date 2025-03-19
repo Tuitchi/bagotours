@@ -51,6 +51,7 @@ if (isset($_GET['tour_id'])) {
         .modal-content p {
             color: #333;
         }
+        
     </style>
 </head>
 
@@ -73,7 +74,15 @@ if (isset($_GET['tour_id'])) {
             <div id="sign-up-form" class="form-container">
                 <h2>Sign Up</h2>
                 <form id="signupForm">
-                    <input id="email" name="email" type="text" placeholder="Email" autocomplete="email" />
+                    <div class="name">
+                        <input id="email" name="email" type="text" placeholder="Email" autocomplete="email">
+
+                        <select name="gender" id="gender" required style="width:100%">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
                     <div id="regEmail-error" class="error-message"></div>
                     <div class="name">
                         <select name="country" id="country" required>
@@ -109,7 +118,7 @@ if (isset($_GET['tour_id'])) {
                 </form>
                 <button id="cancel-button">Cancel</button>
             </div>
-        <?php } else {
+            <?php } else {
             try {
                 $stmt = $conn->prepare('SELECT id, home_address FROM users WHERE device_id = ?');
                 $stmt->execute([$_COOKIE['device_id']]);
@@ -122,6 +131,7 @@ if (isset($_GET['tour_id'])) {
 
                 if (hasVisitedToday($conn, $id, $user['id'])) { ?>
                     <h1>You've already been to <?php echo $title ?> today.</h1>
+
                 <?php } else {
                     if (recordVisit($conn, $id, $user['id'])) {
                         try {
@@ -159,14 +169,14 @@ if (isset($_GET['tour_id'])) {
                         <button type="submit">Update Address</button>
                     </form>
                 </div>
-            <?php }
+        <?php }
         } ?>
     </div>
     <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script src="assets/js/country.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const $modal = $('#modal');
             const $forgotPassForm = $('#forgot-password-form');
             const $signInForm = $('#sign-in-form');
@@ -191,7 +201,7 @@ if (isset($_GET['tour_id'])) {
             }
 
             // Forgot Password
-            $('#forgotForm').on('submit', function (event) {
+            $('#forgotForm').on('submit', function(event) {
                 event.preventDefault();
                 const $submitButton = $(this).find('button[type="submit"]');
                 $submitButton.prop('disabled', true).text('Searching...');
@@ -204,7 +214,7 @@ if (isset($_GET['tour_id'])) {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: function(response) {
                         const data = JSON.parse(response);
 
                         $('#forgotEmail-error').text('').css('color', '').css('border', '');
@@ -213,7 +223,7 @@ if (isset($_GET['tour_id'])) {
                         if (data.success) {
                             $('#forgotEmail-error').css('color', 'green').text(data.message);
                             $('#forgotEmail').css('border', '1px solid green');
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 $modal.removeClass('active');
                                 clearFormInputs($('#loginForm'));
                                 clearFormInputs($forgotPassForm);
@@ -224,17 +234,17 @@ if (isset($_GET['tour_id'])) {
                             $('#forgotEmail').css('border', '1px solid red');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('An error occurred. Please try again.');
                     },
-                    complete: function () {
+                    complete: function() {
                         $submitButton.prop('disabled', false).text('Sign in');
                     },
                 });
             });
 
             // update 
-            $('#address').on('submit', function (event) {
+            $('#address').on('submit', function(event) {
                 event.preventDefault();
                 const $submitButton = $(this).find('button[type="submit"]');
                 $submitButton.prop('disabled', true).text('Updating...');
@@ -247,7 +257,7 @@ if (isset($_GET['tour_id'])) {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: function(response) {
                         const data = JSON.parse(response);
 
                         $('#address-error').text('').css('color', '').css('border', '');
@@ -256,7 +266,7 @@ if (isset($_GET['tour_id'])) {
                         if (data.success) {
                             $('#address-error').css('color', 'green').text(data.message);
                             $('#address').css('border', '1px solid green');
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 $modal.removeClass('active');
                             }, 3000);
                         } else if (data.errors.address) {
@@ -264,17 +274,17 @@ if (isset($_GET['tour_id'])) {
                             $('#address').css('border', '1px solid red');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('An error occurred. Please try again.');
                     },
-                    complete: function () {
+                    complete: function() {
                         $submitButton.prop('disabled', false).text('Sign in');
                     },
                 });
             });
 
             // Login Form
-            $('#loginForm').on('submit', function (event) {
+            $('#loginForm').on('submit', function(event) {
                 event.preventDefault();
                 const $submitButton = $(this).find('button[type="submit"]');
                 $submitButton.prop('disabled', true).text('Logging in...');
@@ -287,7 +297,7 @@ if (isset($_GET['tour_id'])) {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: function(response) {
                         const data = JSON.parse(response);
                         $('#username-error, #password-error').text('');
                         $('#username, #password').css('border', '1px solid #ddd');
@@ -308,17 +318,17 @@ if (isset($_GET['tour_id'])) {
                             }
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('An error occurred. Please try again.');
                     },
-                    complete: function () {
+                    complete: function() {
                         $submitButton.prop('disabled', false).text('Sign in');
                     },
                 });
             });
 
             // Signup Form
-            $('#signupForm').on('submit', function (event) {
+            $('#signupForm').on('submit', function(event) {
                 event.preventDefault();
                 const formData = new FormData(this);
                 const $submitButton = $(this).find('button[type="submit"]');
@@ -330,7 +340,7 @@ if (isset($_GET['tour_id'])) {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: function(response) {
                         const data = JSON.parse(response);
                         ['#regEmail-error', '#regPassword-error', '#conPass-error', '#country-error'].forEach(id => $(id).text(''));
                         ['#email', '#pwd', '#con-pwd', '#country'].forEach(id => $(id).css('border', '1px solid #ddd'));
@@ -359,53 +369,53 @@ if (isset($_GET['tour_id'])) {
                             $submitButton.prop('disabled', false).text('Sign up');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('An error occurred. Please try again.');
                     },
-                    complete: function () {
+                    complete: function() {
                         submitButton.prop('disabled', false).text('Sign up');
                     },
                 });
             });
 
             // Button and Modal Handlers
-            $openModalButtons.on('click', function () {
+            $openModalButtons.on('click', function() {
                 $modal.addClass('active');
                 $signInForm.addClass('slide-in');
             });
 
-            $cancelButton.on('click', function (e) {
+            $cancelButton.on('click', function(e) {
                 e.preventDefault();
                 $forgotPassForm.addClass('hidden').removeClass('slide-in');
                 $signInForm.removeClass('hidden').addClass('slide-in');
             });
 
-            $forgotPassButton.on('click', function (e) {
+            $forgotPassButton.on('click', function(e) {
                 e.preventDefault();
                 $signInForm.addClass('hidden').removeClass('slide-in');
                 $forgotPassForm.removeClass('hidden').addClass('slide-in');
             });
 
-            $toSignUpButton.on('click', function (e) {
+            $toSignUpButton.on('click', function(e) {
                 e.preventDefault();
                 $signInForm.addClass('hidden').removeClass('slide-in');
                 $signUpForm.removeClass('hidden').addClass('slide-in');
             });
 
-            $toSignInButton.on('click', function (e) {
+            $toSignInButton.on('click', function(e) {
                 e.preventDefault();
                 $signUpForm.addClass('hidden').removeClass('slide-in');
                 $signInForm.removeClass('hidden').addClass('slide-in');
             });
 
-            $closeModalButton.on('click', function () {
+            $closeModalButton.on('click', function() {
                 $modal.removeClass('active');
                 clearFormInputs($('#loginForm'));
                 clearFormInputs($('#forgotForm'));
                 clearFormInputs($('#signupForm'));
             });
 
-            $(window).on('keydown', function (e) {
+            $(window).on('keydown', function(e) {
                 if (e.key === 'Escape') {
                     $modal.removeClass('active');
                 }
@@ -419,7 +429,6 @@ if (isset($_GET['tour_id'])) {
                 }
             <?php } ?>
         });
-
     </script>
 </body>
 

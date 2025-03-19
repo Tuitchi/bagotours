@@ -60,7 +60,6 @@ if (isset($_GET['code'])) {
     }
 }
 ?>
-
 <div id="modal" class="modal">
     <div class="backdrop"></div>
     <div class="modal-content">
@@ -81,10 +80,15 @@ if (isset($_GET['code'])) {
                     <h3 class="section-title">or</h3>
                     <hr class="section-divider">
                 </div>
-                <input id="username" name="username" type="text" placeholder="Email" autocomplete="username" />
+                <input id="username" name="username" type="text" placeholder="Email or Username" autocomplete="username" />
                 <div id="username-error" class="error-message"></div>
-                <input id="password" name="password" type="password" placeholder="Password" />
+                <div style="position: relative;">
+                    <input id="password" name="password" type="password" placeholder="Password" />
+                    <i id="toggle-password" class="bx bx-show"
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.5em; color: #333;"></i>
+                </div>
                 <div id="password-error" class="error-message"></div>
+
                 <button type="submit" class="btn">Sign in</button>
             </form>
             <a href="#" id="forgot-password">Forgot Password?</a>
@@ -104,7 +108,15 @@ if (isset($_GET['code'])) {
                     <h3 class="section-title">or</h3>
                     <hr class="section-divider">
                 </div>
-                <input id="email" name="email" type="text" placeholder="Email" autocomplete="email" />
+                <div class="name" style="gap: 0.5px;">
+                    <input id="email" name="email" type="text" placeholder="Email" autocomplete="email">
+
+                    <select name="gender" id="gender" required style="width:100px">
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
                 <div id="regEmail-error" class="error-message"></div>
                 <div class="name">
                     <select name="country" id="country" required>
@@ -122,11 +134,20 @@ if (isset($_GET['code'])) {
                         <!-- Auto Generated country throu JS -->
                     </select>
                 </div>
-                <input id="pwd" name="pwd" type="password" placeholder="Password" />
+                <div style="position: relative;">
+                    <input id="pwd" name="pwd" type="password" placeholder="Password" />
+                    <i id="toggle-pwd" class="bx bx-show"
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.5em; color: #333;"></i>
+                </div>
                 <div id="regPassword-error" class="error-message"></div>
 
-                <input id="con-pwd" name="con-pwd" id="conPass" type="password" placeholder="Confirm password" />
+                <div style="position: relative;">
+                    <input id="con-pwd" name="con-pwd" type="password" placeholder="Confirm Password" />
+                    <i id="toggle-con-pwd" class="bx bx-show"
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.5em; color: #333;"></i>
+                </div>
                 <div id="conPass-error" class="error-message"></div>
+
 
 
                 <button type="submit">Sign Up</button>
@@ -147,12 +168,59 @@ if (isset($_GET['code'])) {
 </div>
 <script src="https://unpkg.com/scrollreveal"></script>
 <script src="assets/js/country.js"></script>
-<script> function handleCredentialResponse(response) { // Process the response 
+<script>
+    function handleCredentialResponse(response) { // Process the response 
         console.log("Encoded JWT ID token: " + response.credential); // Send token to server for verification 
-    } 
+    }
+    document.getElementById('toggle-password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = this;
+
+        // Toggle the type attribute
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.classList.remove('bx-show');
+            passwordIcon.classList.add('bx-hide');
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.classList.remove('bx-hide');
+            passwordIcon.classList.add('bx-show');
+        }
+    });
+    // Toggle password visibility for Password field
+    document.getElementById('toggle-pwd').addEventListener('click', function() {
+        const passwordInput = document.getElementById('pwd');
+        const passwordIcon = this;
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.classList.remove('bx-show');
+            passwordIcon.classList.add('bx-hide');
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.classList.remove('bx-hide');
+            passwordIcon.classList.add('bx-show');
+        }
+    });
+
+    // Toggle password visibility for Confirm Password field
+    document.getElementById('toggle-con-pwd').addEventListener('click', function() {
+        const confirmPasswordInput = document.getElementById('con-pwd');
+        const confirmPasswordIcon = this;
+
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            confirmPasswordIcon.classList.remove('bx-show');
+            confirmPasswordIcon.classList.add('bx-hide');
+        } else {
+            confirmPasswordInput.type = 'password';
+            confirmPasswordIcon.classList.remove('bx-hide');
+            confirmPasswordIcon.classList.add('bx-show');
+        }
+    });
 </script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         const $modal = $('#modal');
         const $forgotPassForm = $('#forgot-password-form');
         const $signInForm = $('#sign-in-form');
@@ -177,7 +245,7 @@ if (isset($_GET['code'])) {
         }
 
         // Forgot Password
-        $('#forgotForm').on('submit', function (event) {
+        $('#forgotForm').on('submit', function(event) {
             event.preventDefault();
             const $submitButton = $(this).find('button[type="submit"]');
             $submitButton.prop('disabled', true).text('Searching...');
@@ -190,7 +258,7 @@ if (isset($_GET['code'])) {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: function(response) {
                     const data = JSON.parse(response);
 
                     $('#forgotEmail-error').text('').css('color', '').css('border', '');
@@ -199,7 +267,7 @@ if (isset($_GET['code'])) {
                     if (data.success) {
                         $('#forgotEmail-error').css('color', 'green').text(data.message);
                         $('#forgotEmail').css('border', '1px solid green');
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $modal.removeClass('active');
                             clearFormInputs($('#loginForm'));
                             clearFormInputs($forgotPassForm);
@@ -210,17 +278,17 @@ if (isset($_GET['code'])) {
                         $('#forgotEmail').css('border', '1px solid red');
                     }
                 },
-                error: function () {
+                error: function() {
                     alert('An error occurred. Please try again.');
                 },
-                complete: function () {
+                complete: function() {
                     $submitButton.prop('disabled', false).text('Sign in');
                 },
             });
         });
 
         // Login Form
-        $('#loginForm').on('submit', function (event) {
+        $('#loginForm').on('submit', function(event) {
             event.preventDefault();
             const submitButton = $(this).find('button[type="submit"]');
             const originalText = submitButton.html();
@@ -233,7 +301,7 @@ if (isset($_GET['code'])) {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: function(response) {
                     const data = JSON.parse(response);
                     $('#username-error, #password-error').text('');
                     $('#username, #password').css('border', '1px solid #ddd');
@@ -255,7 +323,7 @@ if (isset($_GET['code'])) {
                         submitButton.prop('disabled', false).text('Sign in');
                     }
                 },
-                error: function () {
+                error: function() {
                     alert('An error occurred. Please try again.');
                     $submitButton.prop('disabled', false).text('Sign in');
                 },
@@ -263,7 +331,7 @@ if (isset($_GET['code'])) {
         });
 
         // Signup Form
-        $('#signupForm').on('submit', function (event) {
+        $('#signupForm').on('submit', function(event) {
             event.preventDefault();
 
             const formData = new FormData(this);
@@ -279,7 +347,7 @@ if (isset($_GET['code'])) {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: function(response) {
                     const data = JSON.parse(response);
                     ['#regEmail-error', '#regPassword-error', '#conPass-error', '#country-error'].forEach(id => $(id).text(''));
                     ['#email', '#pwd', '#con-pwd', '#country'].forEach(id => $(id).css('border', '1px solid #ddd'));
@@ -308,50 +376,50 @@ if (isset($_GET['code'])) {
                         }
                     }
                 },
-                error: function () {
+                error: function() {
                     alert('An error occurred. Please try again.');
                 },
             });
         });
 
         // Button and Modal Handlers
-        $openModalButtons.on('click', function () {
+        $openModalButtons.on('click', function() {
             $modal.addClass('active');
             $signInForm.addClass('slide-in');
         });
 
-        $cancelButton.on('click', function (e) {
+        $cancelButton.on('click', function(e) {
             e.preventDefault();
             $forgotPassForm.addClass('hidden').removeClass('slide-in');
             $signInForm.removeClass('hidden').addClass('slide-in');
         });
 
-        $forgotPassButton.on('click', function (e) {
+        $forgotPassButton.on('click', function(e) {
             e.preventDefault();
             $signInForm.addClass('hidden').removeClass('slide-in');
             $forgotPassForm.removeClass('hidden').addClass('slide-in');
         });
 
-        $toSignUpButton.on('click', function (e) {
+        $toSignUpButton.on('click', function(e) {
             e.preventDefault();
             $signInForm.addClass('hidden').removeClass('slide-in');
             $signUpForm.removeClass('hidden').addClass('slide-in');
         });
 
-        $toSignInButton.on('click', function (e) {
+        $toSignInButton.on('click', function(e) {
             e.preventDefault();
             $signUpForm.addClass('hidden').removeClass('slide-in');
             $signInForm.removeClass('hidden').addClass('slide-in');
         });
 
-        $closeModalButton.on('click', function () {
+        $closeModalButton.on('click', function() {
             $modal.removeClass('active');
             clearFormInputs($('#loginForm'));
             clearFormInputs($('#forgotForm'));
             clearFormInputs($('#signupForm'));
         });
 
-        $(window).on('keydown', function (e) {
+        $(window).on('keydown', function(e) {
             if (e.key === 'Escape') {
                 $modal.removeClass('active');
             }
@@ -365,5 +433,4 @@ if (isset($_GET['code'])) {
             }
         <?php } ?>
     });
-
 </script>

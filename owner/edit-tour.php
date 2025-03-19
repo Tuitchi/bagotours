@@ -1,6 +1,8 @@
 <?php
 include '../include/db_conn.php';
 include '../func/user_func.php';
+ini_set('log_errors', 1); // Enable error logging
+ini_set('error_log', 'error_log.txt'); // Set the error log file path
 session_start();
 $user_id = $_SESSION['user_id'];
 
@@ -15,6 +17,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // Handling image deletions
         if (!empty($_POST['deleted-images'])) {
             $deletedImagesArray = explode(',', trim($_POST['deleted-images'], ','));
             $currentImages = !empty($tour['img']) ? explode(',', trim($tour['img'], ',')) : [];
@@ -77,30 +80,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Update other tour details (type, description, bookable, status)
-        if (isset($_POST['title'], $_POST['type'], $_POST['description'], $_POST['bookable'], $_POST['status'])) {
+        if (isset($_POST['title'], $_POST['type'], $_POST['description'], $_POST['bookable'], $_POST['status'], $_POST['check-in'], $_POST['check-out'])) {
             $title = $_POST['title'];
             $type = $_POST['type'];
             $description = $_POST['description'];
             $bookable = $_POST['bookable'];
             $status = $_POST['status'];
-
-            $sql = "UPDATE tours SET title = :title, type = :type, description = :description, bookable = :bookable, status= :status WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':type', $type);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':bookable', $bookable);
-            $stmt->bindParam(':status', $status);
-            $stmt->bindParam(':id', $id);
-
-            if ($stmt->execute()) {
-                $_SESSION['successMessage'] = 'Tour updated successfully!';
+            $check_in = $_POST['check-in'];
+            $check_out = $_POST['check-out'];
+        
+            // Validate Check-in and Check-out times
+            if ($check_in >= $check_out) {
+                $_SESSION['errorMessage'] = 'Check-out time must be later than Check-in time.';
             } else {
-                $_SESSION['errorMessage'] = 'Failed to update tour details.';
+                $sql = "UPDATE tours 
+                        SET title = :title, 
+                            type = :type, 
+                            description = :description, 
+                            bookable = :bookable, 
+                            status = :status, 
+                            check_in = :check_in, 
+                            check_out = :check_out 
+                        WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':title', $title);
+                $stmt->bindParam(':type', $type);
+                $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':bookable', $bookable);
+                $stmt->bindParam(':status', $status);
+                $stmt->bindParam(':check_in', $check_in);
+                $stmt->bindParam(':check_out', $check_out);
+                $stmt->bindParam(':id', $id);
+        
+                if ($stmt->execute()) {
+                    $_SESSION['successMessage'] = 'Tour updated successfully!';
+                } else {
+                    $_SESSION['errorMessage'] = 'Failed to update tour details.';
+                }
             }
         } else {
             $_SESSION['errorMessage'] = 'Failed to update tour details.';
         }
+        
+        
 
         // Redirect after successful update
         header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
@@ -226,6 +248,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="input-group" style="width:min-content">
+                                <label for="check-in">Check-in <span class="editable">editable</span></label>
+                                <input type="time" id="check-in" name="check-in" 
+                                    value="<?php echo isset($tour['check_in']) ? htmlspecialchars(substr($tour['check_in'], 0, 5)) : ''; ?>">
+                            </div>
+                            <div class="input-group">
+                                <label for="check-out">Check-out <span class="editable">editable</span></label>
+                                <input type="time" id="check-out" name="check-out" 
+                                    value="<?php echo isset($tour['check_out']) ? htmlspecialchars(substr($tour['check_out'], 0, 5)) : ''; ?>">
+                            </div>
+                        </div>
+
+
 
                         <label for="description">Tour Description <span class="editable">editable</span></label>
                         <textarea id="description" name="description"
@@ -264,9 +300,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <input type="hidden" id="latitude" name="latitude" value="<?php echo $tour['latitude'] ?>">
                         <input type="hidden" id="longitude" name="longitude" value="<?php echo $tour['longitude'] ?>">
-                        <div class="form-group button">
+                        <div class="form-group btn-group">
+                            <a href="accommodation-fees-management?id=<?php echo htmlspecialchars($tour['id'], ENT_QUOTES, 'UTF-8'); ?>" class="btn-submit pricing">Pricing Management</a>
                             <button type="submit" class="btn-submit">Save Edit</button>
-                            <button type="button" class="btn-submit pricing" onclick="window.location.href='accommodation-fees-management?id=<?php echo htmlspecialchars($tour['id'], ENT_QUOTES, 'UTF-8'); ?>';"><i class="bx bx-dollar-circle"></i>Pricing</button>
                         </div>
                     </form>
                 </div>

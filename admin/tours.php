@@ -7,7 +7,7 @@ $user_id = $_SESSION['user_id'];
 $status = isset($_GET["status"]) ? $_GET["status"] : '';
 $query = isset($_GET['search']) ? $_GET['search'] : null;
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$limit = 3; // Number of items per page
+$limit = 100; // Number of items per page
 $data = getAllToursforAdmin($conn, $query, $page, $limit);
 
 $tours = $data['tours'];
@@ -107,30 +107,6 @@ $totalPages = ceil($total / $limit);
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>No tours found.</p>
-                    <?php endif; ?>
-                </div>
-                <div class="pagination">
-                    <?php if ($totalPages > 1): ?>
-                        <ul>
-                            <?php if ($page > 1): ?>
-                                <li><a
-                                        href="?page=<?php echo $page - 1; ?>&search=<?php echo htmlspecialchars($query); ?>">Previous</a>
-                                </li>
-                            <?php endif; ?>
-
-                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                <li class="<?php echo $i == $page ? 'active' : ''; ?>">
-                                    <a
-                                        href="?page=<?php echo $i; ?>&search=<?php echo htmlspecialchars($query); ?>"><?php echo $i; ?></a>
-                                </li>
-                            <?php endfor; ?>
-
-                            <?php if ($page < $totalPages): ?>
-                                <li><a
-                                        href="?page=<?php echo $page + 1; ?>&search=<?php echo htmlspecialchars($query); ?>">Next</a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
                     <?php endif; ?>
                 </div>
 

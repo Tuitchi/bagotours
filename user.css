@@ -878,13 +878,6 @@ input[type=text]:focus {
   align-items: center;
   color: #fff;
 }
-
-.modal-content h2 {
-  margin-bottom: 20px;
-  text-align: left;
-  color: black;
-}
-
 .form-container input {
   margin: 8px 0;
   padding: 10px;
@@ -893,7 +886,23 @@ input[type=text]:focus {
   background: rgba(255, 255, 255, 0.8);
   color: #333;
   width: 100%;
-  min-width: 350px;
+  min-width: 200px;
+}
+.form-container select {
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  width: 100%;
+  max-width: 200px;
+  min-width: 50px;
+}
+.modal-content h2 {
+  margin-bottom: 20px;
+  text-align: left;
+  color: black;
 }
 
 .form-container #forgot-password {

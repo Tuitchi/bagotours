@@ -33,7 +33,7 @@ function totalBooking($conn, $user_id)
     return $totalBooking == 0 ? "" : $totalBooking;
 }
 
-function averageStars($conn, $user_id)
+function averageStars($conn, $user_id, $tour_id = null, $time_filter = null)
 {
     $query = "
         SELECT 
@@ -44,17 +44,39 @@ function averageStars($conn, $user_id)
         JOIN users u ON t.user_id = u.id
         WHERE u.id = :id
     ";
+
+    // Add conditions for the tour filter
+    if ($tour_id) {
+        $query .= " AND rr.tour_id = :tour_id";
+    }
+
+    // Add conditions for the time filter
+    if ($time_filter) {
+        if ($time_filter == 'daily') {
+            $query .= " AND DATE(rr.review_date) = CURDATE()";  // Filter by today
+        } elseif ($time_filter == 'monthly') {
+            $query .= " AND MONTH(rr.review_date) = MONTH(CURDATE()) AND YEAR(rr.review_date) = YEAR(CURDATE())";  // Filter by current month
+        } elseif ($time_filter == 'yearly') {
+            $query .= " AND YEAR(rr.review_date) = YEAR(CURDATE())";  // Filter by current year
+        }
+    }
+
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+
+    if ($tour_id) {
+        $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    }
+
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $totalStars = $result['total_stars'] ?? 0;
     $totalReviews = $result['total_reviews'] ?? 0;
 
-    // Calculate the average, ensuring no division by zero
     return $totalReviews > 0 ? round($totalStars / $totalReviews, 1) : 0;
 }
+
 
 function totalTours($conn, $user_id)
 {
@@ -65,14 +87,41 @@ function totalTours($conn, $user_id)
     return $stmt_tours->fetchColumn() ?? 0;
 }
 
-function totalVisitors($conn, $user_id)
+function totalVisitors($conn, $user_id, $tour_id = null, $time_filter = null)
 {
-    $query = "SELECT COUNT(*) AS total_visit FROM visit_records vr JOIN tours t ON vr.tour_id = t.id JOIN users u ON t.user_id = u.id WHERE u.id = :id";
+    $query = "SELECT COUNT(*) AS total_visit 
+              FROM visit_records vr
+              JOIN tours t ON vr.tour_id = t.id
+              JOIN users u ON t.user_id = u.id
+              WHERE u.id = :id";
+
+    // Add conditions for the tour filter
+    if ($tour_id) {
+        $query .= " AND vr.tour_id = :tour_id";
+    }
+
+    // Add conditions for the time filter
+    if ($time_filter) {
+        if ($time_filter == 'daily') {
+            $query .= " AND DATE(vr.visit_date) = CURDATE()";  // Filter by today
+        } elseif ($time_filter == 'monthly') {
+            $query .= " AND MONTH(vr.visit_date) = MONTH(CURDATE()) AND YEAR(vr.visit_date) = YEAR(CURDATE())"; // Filter by current month
+        } elseif ($time_filter == 'yearly') {
+            $query .= " AND YEAR(vr.visit_date) = YEAR(CURDATE())";  // Filter by current year
+        }
+    }
+
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+
+    if ($tour_id) {
+        $stmt->bindParam(':tour_id', $tour_id, PDO::PARAM_INT);
+    }
+
     $stmt->execute();
     return $stmt->fetchColumn() ?? 0;
 }
+
 
 function nonBago($conn, $user_id)
 {

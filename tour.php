@@ -55,6 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: " . $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING']);
     exit;
 }
+function convertTo12HourFormat($time)
+{
+    // Assuming $time is in HH:MM:SS format (24-hour)
+    $time = date("g:i A", strtotime($time)); // Convert to 12-hour format with AM/PM
+    return $time;
+}
 
 
 
@@ -79,6 +85,49 @@ $ratingStars = displayRatingStars($averageRating);
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="assets/css/tour.css">
     <style>
+        .checkincheckout {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .checkincheckout h4 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .time-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .time-box {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 45%;
+        }
+
+        .time-box h5 {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .time-box span {
+            font-size: 1.3rem;
+            color: #333;
+            font-weight: bold;
+        }
+
         .flex {
             text-align: center;
             display: flex;
@@ -315,187 +364,222 @@ $ratingStars = displayRatingStars($averageRating);
                         <div class="rescont">
                             <h1 class="title"><?php echo $tour['title'] ?></h1>
                             <p class="desc"><i class="bx bxs-map"></i><?php echo $tour['address'] ?></p>
-                            <div class="pricing-container">
-                                <h3 class="pricing-header">Price <i class='bx bx-caret-down'></i></h3>
-                                <div class="pricing-content">
-                                    <?php
-                                    $stmt = $conn->prepare('SELECT * FROM fees WHERE tour_id = :tour_id');
-                                    $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT); // Explicitly specify the parameter type
-                                    $stmt->execute();
-                                    $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            <?php
+                            try {
+                                $stmt = $conn->prepare('SELECT * FROM fees WHERE tour_id = :tour_id');
+                                $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                    foreach ($fees as $fee) {
-                                        echo "<div class='pricing'>
-                                                    <h4>" . htmlspecialchars($fee['name'], ENT_QUOTES, 'UTF-8') . "</h4>
-                                                    -
-                                                    <h5>₱" . htmlspecialchars($fee['amount'], ENT_QUOTES, 'UTF-8') . " " . htmlspecialchars($fee['description'], ENT_QUOTES, 'UTF-8') . "</h5>
-                                                </div>";
-                                    }
-                                    ?>
-                                    <?php
-                                    $stmt = $conn->prepare('SELECT * FROM accommodations WHERE tour_id = :tour_id');
-                                    $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT); // Explicitly specify the parameter type
-                                    $stmt->execute();
-                                    $accommodations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $stmt = $conn->prepare('SELECT * FROM accommodations WHERE tour_id = :tour_id');
+                                $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $accommodations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                                error_log($e->getMessage()); // Log the error
+                                echo "Database query failed: " . $e->getMessage();
+                            }
 
-                                    foreach ($accommodations as $accommodation) {
-                                        echo "<div class='pricing'>
-                                                    <h4>" . htmlspecialchars($accommodation['name'], ENT_QUOTES, 'UTF-8') . "</h4>
-                                                    -
-                                                    <h5>₱" . htmlspecialchars($accommodation['amount'], ENT_QUOTES, 'UTF-8') . " (up to " . htmlspecialchars($accommodation['capacity'], ENT_QUOTES, 'UTF-8') . " person)</h5>
-                                                </div>";
-                                    }
-                                    ?>
+                            // Check if both fees and accommodations are empty
+                            if (!empty($fees) || !empty($accommodations)) {
+                            ?>
+
+                                <div class="pricing-container">
+                                    <h3 class="pricing-header">Price <i class='bx bx-caret-down'></i></h3>
+                                    <div class="pricing-content">
+                                        <?php
+                                        // Loop through the fees
+                                        foreach ($fees as $fee) {
+                                            echo "<div class='pricing'>
+                        <h4>" . htmlspecialchars($fee['name'], ENT_QUOTES, 'UTF-8') . "</h4>
+                        -
+                        <h5>₱" . htmlspecialchars($fee['amount'], ENT_QUOTES, 'UTF-8') . " " . htmlspecialchars($fee['description'], ENT_QUOTES, 'UTF-8') . "</h5>
+                    </div>";
+                                        }
+
+                                        // Loop through the accommodations
+                                        foreach ($accommodations as $accommodation) {
+                                            echo "<div class='pricing'>
+                        <h4>" . htmlspecialchars($accommodation['name'], ENT_QUOTES, 'UTF-8') . "</h4>
+                        -
+                        <h5>₱" . htmlspecialchars($accommodation['amount'], ENT_QUOTES, 'UTF-8') . " (up to " . htmlspecialchars($accommodation['capacity'], ENT_QUOTES, 'UTF-8') . " person)</h5>
+                    </div>";
+                                        }
+                                        ?>
+                                    </div>
                                 </div>
-                            </div>
+
+                            <?php
+                            }
+                            ?>
+
                             <p class="rating"><?php echo $ratingStars; ?></p>
+                            <?php if ($tour['check_in'] === $tour['check_out']) {
+                            } else { ?>
+                                <div class="checkincheckout">
+                                    <div class="time-container">
+                                        <div class="time-box">
+                                            <h5>Check-in Time</h5>
+                                            <span
+                                                id="checkintime"><?php echo isset($tour['check_in']) ? convertTo12HourFormat($tour['check_in']) : 'N/A'; ?></span>
+                                        </div>
+                                        <div class="time-box">
+                                            <h5>Check-out Time</h5>
+                                            <span
+                                                id="checkouttime"><?php echo isset($tour['check_out']) ? convertTo12HourFormat($tour['check_out']) : 'N/A'; ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
                             <h4>About</h4>
                             <p class="details"><?php echo $tour['description'] ?></p>
-                            <div class="btons">
-                                <?php if (!checkIfTemporarilyClosed($conn, $tour['id'])) {
 
-                                    if (isBookable($conn, $tour['id'])) {
-                                        $status = checkBookingStatus($conn, $user_id, $tour['id']);
 
-                                        if ($status) {
-                                            if ($status['status'] == 0 || $status['status'] == 1) {
-                                                echo "<button class='bookbtn' disabled>Already Booked</button>";
-                                            } elseif ($status['status'] == 3) {
-                                                echo '<button class="bookbtn" id="rate" data-id="' . $status['id'] . '">Rate and Review</button>';
-                                            } else {
-                                                echo '<button class="bookbtn" id="book">Book Now</button>';
-                                            }
+                        </div>
+                        <div class="btons">
+                            <?php if (!checkIfTemporarilyClosed($conn, $tour['id'])) {
+
+                                if (isBookable($conn, $tour['id'])) {
+                                    $status = checkBookingStatus($conn, $user_id, $tour['id']);
+
+                                    if ($status) {
+                                        if ($status['status'] == 0 || $status['status'] == 1) {
+                                            echo "<button class='bookbtn' disabled>Already Booked</button>";
+                                        } elseif ($status['status'] == 3) {
+                                            echo '<button class="bookbtn" id="rate" data-id="' . $status['id'] . '">Rate and Review</button>';
                                         } else {
                                             echo '<button class="bookbtn" id="book">Book Now</button>';
                                         }
-                                    } ?>
-                                    <a href="map?id=<?php echo $_GET['id']; ?>" class="viewbtn">Go Here</a>
-                                <?php } else {
-                                    echo '<button class="bookbtn Closed">Tour is temporarily closed</button>';
+                                    } else {
+                                        echo '<button class="bookbtn" id="book">Book Now</button>';
+                                    }
                                 } ?>
-                            </div>
-
+                                <a href="map?id=<?php echo $_GET['id']; ?>" class="viewbtn">Go Here</a>
+                            <?php } else {
+                                echo '<button class="bookbtn Closed">Tour is temporarily closed</button>';
+                            } ?>
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="comment-section">
-                    <h3>Rating and Reviews</h3>
-                    <form action="" method="post">
-                        <div class="comment-box">
-                            <div class="rating">
-                                <div class="rating-container">
-                                    <img src="<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar" class="avatar">
-                                    <label for="rating" class="rating-label">Rate Us:</label>
-                                    <select class="star" id="rating" name="rating">
-                                        <option value="5">⭐ 5 Stars</option>
-                                        <option value="4">⭐ 4 Stars</option>
-                                        <option value="3">⭐ 3 Stars</option>
-                                        <option value="2">⭐ 2 Stars</option>
-                                        <option value="1">⭐ 1 Star</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="input-box">
-
-                                <textarea placeholder="Share your experience..." class="comment-input"
-                                    name="review"></textarea>
-                                <button class="comment-submit-btn" type="submit">Post</button>
+            </div>
+            <br>
+            <div class="comment-section">
+                <h3>Rating and Reviews</h3>
+                <form action="" method="post">
+                    <div class="comment-box">
+                        <div class="rating">
+                            <div class="rating-container">
+                                <img src="<?php echo $_SESSION['profile-pic'] ?>" alt="User Avatar" class="avatar">
+                                <label for="rating" class="rating-label">Rate Us:</label>
+                                <select class="star" id="rating" name="rating">
+                                    <option value="5">⭐ 5 Stars</option>
+                                    <option value="4">⭐ 4 Stars</option>
+                                    <option value="3">⭐ 3 Stars</option>
+                                    <option value="2">⭐ 2 Stars</option>
+                                    <option value="1">⭐ 1 Star</option>
+                                </select>
                             </div>
                         </div>
-                    </form>
-                    <div class="comments-list">
-                        <?php
-                        try {
-                            $stmt = $conn->prepare("SELECT rr.*, CONCAT(firstname, ' ', lastname) as name, u.profile_picture AS img, u.is_trusted as trusted
+
+                        <div class="input-box">
+
+                            <textarea placeholder="Share your experience..." class="comment-input"
+                                name="review"></textarea>
+                            <button class="comment-submit-btn" type="submit">Post</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="comments-list">
+                    <?php
+                    try {
+                        $stmt = $conn->prepare("SELECT rr.*, CONCAT(firstname, ' ', lastname) as name, u.profile_picture AS img, u.is_trusted as trusted
                                 FROM review_rating rr 
                                 JOIN users u ON rr.user_id = u.id 
                                 WHERE tour_id = :tour_id 
                                 ORDER BY date_created DESC");
-                            $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
-                            $stmt->execute();
-                            $comments = $stmt->fetchAll();
+                        $stmt->bindParam(':tour_id', $decrypted_id, PDO::PARAM_INT);
+                        $stmt->execute();
+                        $comments = $stmt->fetchAll();
 
-                            $userComment = [];
-                            $otherComments = [];
+                        $userComment = [];
+                        $otherComments = [];
 
-                            foreach ($comments as $comment) {
-                                if ($comment['user_id'] == $user_id) {
-                                    $userComment[] = $comment;
-                                } else {
-                                    $otherComments[] = $comment;
-                                }
+                        foreach ($comments as $comment) {
+                            if ($comment['user_id'] == $user_id) {
+                                $userComment[] = $comment;
+                            } else {
+                                $otherComments[] = $comment;
                             }
-                            $comments = array_merge($userComment, $otherComments);
-                        } catch (PDOException $e) {
-                            error_log("Error fetching comments: " . $e->getMessage());
                         }
-                        ?>
+                        $comments = array_merge($userComment, $otherComments);
+                    } catch (PDOException $e) {
+                        error_log("Error fetching comments: " . $e->getMessage());
+                    }
+                    ?>
 
-                        <?php foreach ($comments as $comment):
-                            $isUserComment = ($comment['user_id'] == $user_id); ?>
-                            <div class="comment" id="comment-<?php echo $comment['id']; ?>">
-                                <img src="<?php echo $comment['img']; ?>" alt="User Avatar" class="avatar">
-                                <div class="comment-content">
-                                    <h4 class="comment-author"><?php echo htmlspecialchars($comment['name']); ?></h4>
-                                    <div class="comment-star">
-                                        <?php
-                                        $rating = $comment['rating'];
-                                        for ($i = 1; $i <= 5; $i++) {
-                                            echo $i <= $rating
-                                                ? "<span class='comment-star'><i class='bx bxs-star'></i></span>"
-                                                : "<span class='comment-star'><i class='bx bx-star'></i></span>";
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="comment-text">
-                                        <p class="comment" id="text-<?php echo $comment['id']; ?>">
-                                            <?php echo htmlspecialchars($comment['review']); ?>
-                                        </p>
-
-                                        <?php if ($isUserComment): ?>
-                                            <form id="edit-form-<?php echo $comment['id']; ?>" class="edit-form"
-                                                style="display: none;">
-                                                <textarea id="edit-text-<?php echo $comment['id']; ?>" class="comment-input"
-                                                    style="width:100%"><?php echo htmlspecialchars($comment['review']); ?></textarea>
-                                                <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>" />
-                                                <button type="submit" class="comment-save-btn"
-                                                    data-comment-id="<?php echo $comment['id']; ?>">
-                                                    Save <i class="bx bxs-send"></i>
-                                                </button>
-
-                                            </form>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="comment-actions">
-                                        <span class="comment-time">
-                                            <?php
-                                            // Check if 'date_updated' is null, and determine the appropriate timestamp
-                                            $timestamp = $comment['date_updated'] ?: $comment['date_created'];
-                                            $status = $comment['date_updated'] ? "edited" : "";
-                                            echo timeAgo($timestamp) . " " . $status;
-                                            ?>
-                                        </span>
-                                        <?php if ($isUserComment): ?>
-                                            <a class="edit" id="edit-btn-<?php echo $comment['id']; ?>" href="#">Edit</a>
-                                            <a class="delete" href="#" id="delete-btn-<?php echo $comment['id']; ?>">Delete</a>
-                                            <div class="cancel-btn hide" id="cancel-btn-<?php echo $comment['id']; ?>">
-                                                <p>Press ESC to</p>
-                                                <a class="cancel" href="#">Cancel</a>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
+                    <?php foreach ($comments as $comment):
+                        $isUserComment = ($comment['user_id'] == $user_id); ?>
+                        <div class="comment" id="comment-<?php echo $comment['id']; ?>">
+                            <img src="<?php echo $comment['img']; ?>" alt="User Avatar" class="avatar">
+                            <div class="comment-content">
+                                <h4 class="comment-author"><?php echo htmlspecialchars($comment['name']); ?></h4>
+                                <div class="comment-star">
+                                    <?php
+                                    $rating = $comment['rating'];
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        echo $i <= $rating
+                                            ? "<span class='comment-star'><i class='bx bxs-star'></i></span>"
+                                            : "<span class='comment-star'><i class='bx bx-star'></i></span>";
+                                    }
+                                    ?>
                                 </div>
+                                <div class="comment-text">
+                                    <p class="comment" id="text-<?php echo $comment['id']; ?>">
+                                        <?php echo htmlspecialchars($comment['review']); ?>
+                                    </p>
+
+                                    <?php if ($isUserComment): ?>
+                                        <form id="edit-form-<?php echo $comment['id']; ?>" class="edit-form"
+                                            style="display: none;">
+                                            <textarea id="edit-text-<?php echo $comment['id']; ?>" class="comment-input"
+                                                style="width:100%"><?php echo htmlspecialchars($comment['review']); ?></textarea>
+                                            <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>" />
+                                            <button type="submit" class="comment-save-btn"
+                                                data-comment-id="<?php echo $comment['id']; ?>">
+                                                Save <i class="bx bxs-send"></i>
+                                            </button>
+
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="comment-actions">
+                                    <span class="comment-time">
+                                        <?php
+                                        // Check if 'date_updated' is null, and determine the appropriate timestamp
+                                        $timestamp = $comment['date_updated'] ?: $comment['date_created'];
+                                        $status = $comment['date_updated'] ? "edited" : "";
+                                        echo timeAgo($timestamp) . " " . $status;
+                                        ?>
+                                    </span>
+                                    <?php if ($isUserComment): ?>
+                                        <a class="edit" id="edit-btn-<?php echo $comment['id']; ?>" href="#">Edit</a>
+                                        <a class="delete" href="#" id="delete-btn-<?php echo $comment['id']; ?>">Delete</a>
+                                        <div class="cancel-btn hide" id="cancel-btn-<?php echo $comment['id']; ?>">
+                                            <p>Press ESC to</p>
+                                            <a class="cancel" href="#">Cancel</a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
                             </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <button class="show-more-btn" style="display: none;">Show More</button>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
+                <button class="show-more-btn" style="display: none;">Show More</button>
             </div>
-            <!-- comment section -->
         </div>
+        <!-- comment section -->
+    </div>
     </div>
     <div id="bookingModal" class="modal booking">
         <div class="modal-content booking">
@@ -556,7 +640,7 @@ $ratingStars = displayRatingStars($averageRating);
     <script src="index.js"></script>
     <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -570,7 +654,7 @@ $ratingStars = displayRatingStars($averageRating);
             });
 
             // Booking form submission
-            $('#bookingForm').on('submit', function (event) {
+            $('#bookingForm').on('submit', function(event) {
                 event.preventDefault();
 
                 const formData = new FormData(this);
@@ -584,16 +668,16 @@ $ratingStars = displayRatingStars($averageRating);
                     contentType: false,
                     dataType: 'json',
                     data: formData,
-                    success: function (response) {
+                    success: function(response) {
                         confirmButton.prop('disabled', false).text('Confirm Booking');
                         if (response.success) {
                             Swal.fire({
                                 icon: 'success',
                                 title: response.message,
-                                confirmButtonText: 'Confirm',  // Adds a custom text for the button
+                                confirmButtonText: 'Confirm', // Adds a custom text for the button
                                 allowOutsideClick: false
                             }).then((result) => {
-                                if (result.isConfirmed) {  // Checks if the user clicked the "Confirm" button
+                                if (result.isConfirmed) { // Checks if the user clicked the "Confirm" button
                                     window.location.reload();
                                 }
                             });
@@ -604,7 +688,7 @@ $ratingStars = displayRatingStars($averageRating);
                             });
                         }
                     },
-                    error: function () {
+                    error: function() {
                         confirmButton.prop('disabled', false).text('Confirm Booking');
                         Toast.fire({
                             icon: 'error',
@@ -620,13 +704,13 @@ $ratingStars = displayRatingStars($averageRating);
             $('#start_date, #end_date').attr('min', today);
 
             // Update the min value of the end date when the start date changes
-            $('#start_date').on('change', function () {
+            $('#start_date').on('change', function() {
                 const selectedStartDate = $(this).val();
                 $('#end_date').attr('min', selectedStartDate);
             });
 
             // Validate the end date
-            $('#end_date').on('change', function () {
+            $('#end_date').on('change', function() {
                 const endDate = $(this).val();
                 const startDate = $('#start_date').val();
                 if (endDate < startDate) {
@@ -636,7 +720,7 @@ $ratingStars = displayRatingStars($averageRating);
             });
 
             // Add accommodation to booking
-            $('#addAccommodationBtn').on('click', function () {
+            $('#addAccommodationBtn').on('click', function() {
                 const selectedOption = $('#accommodationSelect option:selected');
                 const id = selectedOption.val();
                 const name = selectedOption.data('name');
@@ -664,9 +748,13 @@ $ratingStars = displayRatingStars($averageRating);
                     $.ajax({
                         url: 'php/get_avail_unit.php',
                         method: 'GET',
-                        data: { accommodation_id: id, start_date: start_date, end_date: end_date },
+                        data: {
+                            accommodation_id: id,
+                            start_date: start_date,
+                            end_date: end_date
+                        },
                         dataType: 'json',
-                        success: function (response) {
+                        success: function(response) {
                             if (response.success) {
                                 const availableUnits = response.available_units;
                                 if (availableUnits <= 0) {
@@ -679,7 +767,7 @@ $ratingStars = displayRatingStars($averageRating);
                                 Swal.fire(response.message || 'Failed to fetch available units.', '', 'error');
                             }
                         },
-                        error: function () {
+                        error: function() {
                             Swal.fire('Error fetching available units', '', 'error');
                         }
                     });
@@ -705,7 +793,7 @@ $ratingStars = displayRatingStars($averageRating);
             });
 
             // Remove accommodation from booking
-            $(document).on('click', '.remove-btn', function () {
+            $(document).on('click', '.remove-btn', function() {
                 const item = $(this).closest('.accommodation-item');
                 if (item.length > 0) {
                     item.remove();
@@ -734,13 +822,13 @@ $ratingStars = displayRatingStars($averageRating);
             <?php endif; ?>
 
             // Edit and Delete comment functionality
-            $('.edit').on('click', function (e) {
+            $('.edit').on('click', function(e) {
                 e.preventDefault();
                 const commentId = $(this).attr('id').split('-')[2];
                 toggleEdit(commentId);
             });
 
-            $('.delete').on('click', function (e) {
+            $('.delete').on('click', function(e) {
                 e.preventDefault();
                 const commentId = $(this).attr('id').split('-')[2];
                 deleteComment(commentId);
@@ -771,7 +859,7 @@ $ratingStars = displayRatingStars($averageRating);
                     $deleteBtn.hide();
                     $cancelBtn.removeClass('hide');
                     if (!escapeListenerAdded) {
-                        $(document).on('keydown.escape', function (event) {
+                        $(document).on('keydown.escape', function(event) {
                             if (event.key === 'Escape') {
                                 cancelEdit();
                                 $(document).off('keydown.escape'); // Remove the listener after use
@@ -785,7 +873,7 @@ $ratingStars = displayRatingStars($averageRating);
             }
 
             // Submit edited comment
-            $('.edit-form').on('submit', function (event) {
+            $('.edit-form').on('submit', function(event) {
                 event.preventDefault();
                 const $form = $(this);
                 const commentId = $form.find('input[name="comment_id"]').val();
@@ -795,8 +883,11 @@ $ratingStars = displayRatingStars($averageRating);
                     url: 'php/edit_comment.php',
                     type: 'POST',
                     dataType: 'json',
-                    data: { comment_id: commentId, review: reviewText },
-                    success: function (data) {
+                    data: {
+                        comment_id: commentId,
+                        review: reviewText
+                    },
+                    success: function(data) {
                         if (data.success) {
                             Toast.fire({
                                 icon: 'success',
@@ -808,7 +899,7 @@ $ratingStars = displayRatingStars($averageRating);
                             alert('Error updating the comment.');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Toast.fire({
                             icon: 'error',
                             title: 'An error occurred while saving the comment'
@@ -818,15 +909,17 @@ $ratingStars = displayRatingStars($averageRating);
             });
 
             // Delete comment functionality
-            window.deleteComment = function (commentId) {
+            window.deleteComment = function(commentId) {
                 if (!confirm('Are you sure you want to delete this comment?')) return;
 
                 $.ajax({
                     url: 'php/delete_comment.php',
                     type: 'POST',
                     dataType: 'json',
-                    data: { comment_id: commentId },
-                    success: function (data) {
+                    data: {
+                        comment_id: commentId
+                    },
+                    success: function(data) {
                         if (data.success) {
                             $(`#comment-${commentId}`).remove();
                             Toast.fire({
@@ -837,13 +930,13 @@ $ratingStars = displayRatingStars($averageRating);
                             alert('Error deleting the comment: ' + (data.message || 'Unknown error.'));
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('Error deleting the comment.');
                     }
                 });
             };
 
-            $('.pricing-container').on('click', function () {
+            $('.pricing-container').on('click', function() {
                 $('.pricing-content').toggle();
             });
             const modal = $('#bookingModal');
@@ -851,11 +944,11 @@ $ratingStars = displayRatingStars($averageRating);
             const $ratebtn = $('#rate');
             const span = $('.close');
 
-            $bookbtn.on('click', function () {
+            $bookbtn.on('click', function() {
                 modal.addClass('active');
             });
 
-            $ratebtn.on('click', function () {
+            $ratebtn.on('click', function() {
                 // Get the booking ID from the data-id attribute of the clicked button
                 var bookingId = $(this).data('id');
 
@@ -864,45 +957,63 @@ $ratingStars = displayRatingStars($averageRating);
             });
 
 
-            span.on('click', function () {
+            span.on('click', function() {
                 modal.removeClass('active');
             });
 
-            $(window).on('click', function (event) {
+            $(window).on('click', function(event) {
                 if ($(event.target).is(modal)) {
                     modal.removeClass('active');
                 }
             });
-            mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/navigation-night-v1',
-                center: [<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>],
-                zoom: 15,
-                interactive: false,
-                attributionControl: false
+            fetch('php/map_usage.php', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.allowMap) {
+                        initializeMap();
+                    } else {
+                        alert('Map access has been temporarily disabled due to usage limits.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking map usage:', error);
+                });
 
-            });
+            function initializeMap() {
+                mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb2xhaTEyMjIiLCJhIjoiY20xemJ6NG9hMDRxdzJqc2NqZ3k5bWNlNiJ9.tAsio6eF8LqzAkTEcPLuSw';
 
-            const markerEl = $('<div>').addClass('marker').css({
-                backgroundImage: `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " "), ENT_QUOTES); ?>.png)`,
-                width: '50px',
-                height: '50px',
-                backgroundSize: 'contain'
-            })[0];
+                const map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/navigation-night-v1',
+                    center: [<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>],
+                    zoom: 15,
+                    interactive: false,
+                    attributionControl: false
+                });
 
-            new mapboxgl.Marker(markerEl)
-                .setLngLat([<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>])
-                .addTo(map);
+                const markerEl = $('<div>').addClass('marker').css({
+                    backgroundImage: `url(assets/icons/<?php echo htmlspecialchars(strtok($tour['type'], " "), ENT_QUOTES); ?>.png)`,
+                    width: '50px',
+                    height: '50px',
+                    backgroundSize: 'contain'
+                })[0];
 
-            map.dragPan.disable();
-            map.scrollZoom.disable();
-            map.touchZoomRotate.disable();
-            map.rotate.disable();
-            $('.pricing-header').on('click', function () {
-                $('.pricing-content').toggle();
-            });
+                new mapboxgl.Marker(markerEl)
+                    .setLngLat([<?php echo htmlspecialchars($tour['longitude'], ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars($tour['latitude'], ENT_QUOTES, 'UTF-8'); ?>])
+                    .addTo(map);
+
+                map.dragPan.disable();
+                map.scrollZoom.disable();
+                map.touchZoomRotate.disable();
+                map.rotate.disable();
+
+                $('.pricing-header').on('click', function() {
+                    $('.pricing-content').toggle();
+                });
+            }
 
 
             const $comments = $('.comments-list .comment');
@@ -911,7 +1022,7 @@ $ratingStars = displayRatingStars($averageRating);
             let isExpanded = false;
 
             function updateCommentDisplay() {
-                $comments.each(function (index, comment) {
+                $comments.each(function(index, comment) {
                     $(comment).toggle(index < commentsPerPage || isExpanded);
                 });
 
@@ -921,7 +1032,7 @@ $ratingStars = displayRatingStars($averageRating);
 
             if ($comments.length > 0) {
                 updateCommentDisplay();
-                $showMoreButton.on('click', function () {
+                $showMoreButton.on('click', function() {
                     isExpanded = !isExpanded;
                     commentsPerPage = isExpanded ? $comments.length : 5;
                     updateCommentDisplay();

@@ -88,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 $errorMessage = "No file uploaded or there was an upload error.";
             }
-
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());
             $errorMessage = "An error occurred while processing your request.";
@@ -283,18 +282,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 });
             }
 
-            window.openMap = function () {
+            window.openMap = function() {
                 document.getElementById('mapModal').style.display = 'block';
                 if (!map) {
-                    initializeMap();
+                    fetch('../php/map_usage.php', {
+                            method: 'POST'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.allowMap) {
+                                initializeMap();
+                            } else {
+                                alert('Map access has been temporarily disabled due to usage limits.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error checking map usage:', error);
+                        });
                 }
             };
 
-            window.closeMap = function () {
+            window.closeMap = function() {
                 document.getElementById('mapModal').style.display = 'none';
             };
 
-            document.getElementById('confirm-location').addEventListener('click', function () {
+            document.getElementById('confirm-location').addEventListener('click', function() {
                 if (lngLat) {
                     reverseGeocode(lngLat.lng, lngLat.lat);
                     document.getElementById("longitude").value = lngLat.lng;
@@ -316,7 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     .catch((err) => console.error("Error in reverse geocoding: ", err));
             }
 
-            $('#event_image').on('change', function (event) {
+            $('#event_image').on('change', function(event) {
                 const $previewContainer = $('#image-preview');
                 const $previewImage = $('#preview-image');
                 const $imageError = $('#image-error');
@@ -324,12 +336,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         $previewImage.attr('src', e.target.result);
                         const img = new Image();
                         img.src = e.target.result;
 
-                        img.onload = function () {
+                        img.onload = function() {
                             const aspectRatio = img.width / img.height;
                             if (aspectRatio < 1.3) {
                                 $('#event_image').val(''); // Clear the file input

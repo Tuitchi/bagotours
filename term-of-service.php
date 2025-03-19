@@ -13,11 +13,13 @@
 
         .container {
             flex-direction: column;
-            max-width: 900px;
+            max-width: 80vw;
             margin: auto;
+            margin-bottom: 150px;
             padding: 20px;
             background: #fff;
             border-radius: 8px;
+            
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -71,7 +73,6 @@
 <body>
     <?php include 'nav/topnav.php' ?>
     <div class="main-container container">
-    <?php include 'nav/sidenav.php' ?>
         <section id="introduction">
             <h2>1. Acceptance of Terms</h2>
             <p>By accessing, registering, or using our Services, you confirm that you:</p>

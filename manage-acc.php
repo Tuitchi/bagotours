@@ -384,33 +384,43 @@ if (count($addressParts) === 1) {
                                     value="<?php echo htmlspecialchars($user['lastname'], ENT_QUOTES); ?>"
                                     placeholder="Last Name">
                             </div>
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" disabled placeholder="Username"
-                                value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>">
+                            <div class="name">
+
+                            </div>
+                            <label for="username" style="margin-right:50%;">Username</label>
+                            <label for="gender">Gender</label>
+                            <div class="name">
+                                <input type="text" id="username" name="username" disabled placeholder="Username"
+                                    value="<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>" style="width:150%;">
+                                <select name="gender" id="gender" required>
+                                    <option value="" disabled>Select Gender</option>
+                                    <option value="male" <?php echo ($user['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
+                                    <option value="female" <?php echo ($user['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
+                                </select>
+
+                            </div>
                             <label for="phone">Phone</label>
                             <input type="tel" id="phone" name="phone" maxlength="11" required
                                 pattern="^(\+639|09)\d{9}$" placeholder="e.g. 09123456789"
                                 value="<?php echo htmlspecialchars($user['phone_number'], ENT_QUOTES); ?>">
                             <label for="home-address">Home Address</label>
                             <div class="name">
-                                <select name="city" id="city" required disabled>
+                                <select name="city" id="city">
                                     <?php
                                     if (isset($user['city'])) {
                                         echo '<option value="' . $user['city'] . '" selected>' . $user['city'] . '</option>';
                                     } else {
                                         echo '<option value="" selected disabled>Select City/Municipality</option>';
-                                    }
-                                    ; ?>
+                                    }; ?>
                                     <!-- Auto Generated country throu JS -->
                                 </select>
-                                <select name="province" id="province" required disabled>
+                                <select name="province" id="province">
                                     <?php
                                     if (isset($user['province'])) {
                                         echo '<option value="' . $user['province'] . '" selected>' . $user['province'] . '</option>';
                                     } else {
                                         echo '<option value="" selected disabled>Select Province</option>';
-                                    }
-                                    ; ?>
+                                    }; ?>
                                     <!-- Auto Generated country throu JS -->
                                 </select>
                                 <select name="country" id="country" required>
@@ -419,9 +429,7 @@ if (count($addressParts) === 1) {
                                     if (isset($user['country'])) {
                                         echo '<option value="' . $user['country'] . '" selected>' . $user['country'] . '</option>';
                                     } else {
-
-                                    }
-                                    ; ?>
+                                    }; ?>
                                     <!-- Auto Generated country throu JS -->
                                 </select>
                             </div>
@@ -451,11 +459,11 @@ if (count($addressParts) === 1) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const links = $('.editUser a');
             const sections = $('aside > div');
 
-            links.on('click', function (event) {
+            links.on('click', function(event) {
                 event.preventDefault();
                 sections.hide();
                 const target = $(this).data('section');
@@ -484,24 +492,24 @@ if (count($addressParts) === 1) {
             var $btn = $("#upgradeButton");
             var $span = $(".close");
 
-            $btn.on("click", function () {
+            $btn.on("click", function() {
                 $modal.addClass('active');
             });
 
             // Close the modal when the "x" button is clicked
-            $span.on("click", function () {
+            $span.on("click", function() {
                 $modal.removeClass('active');
             });
 
             // Close the modal when clicking outside of the modal content
-            $(window).on("click", function (event) {
+            $(window).on("click", function(event) {
                 if ($(event.target).is($modal)) {
                     $modal.removeClass('active');
                 }
             });
 
             // Optional: Add keypress event to close modal with ESC key
-            $(window).on("keydown", function (event) {
+            $(window).on("keydown", function(event) {
                 if (event.key === "Escape") {
                     $modal.removeClass('active');
                 }
@@ -514,7 +522,7 @@ if (count($addressParts) === 1) {
             var $passwordError = $('#passwordError');
             var $passwordStrength = $('#passwordStrength');
 
-            $passwordForm.on('submit', function (e) {
+            $passwordForm.on('submit', function(e) {
                 e.preventDefault(); // Prevent the default form submission
 
                 var oldPassword = $('#oldPassword').val();
@@ -529,14 +537,14 @@ if (count($addressParts) === 1) {
                         newPassword: newPassword,
                         confirmPassword: confirmPassword
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $('.message-display').show();
                         var result = JSON.parse(response);
                         if (result.status == 'success') {
                             $('.message-display .message-content').text(result.message);
                             $('.message-display').css({
-                                'background-color':' #a9dc90', // Set background color
-                                'color': '#365b4c'                   // Set text color
+                                'background-color': ' #a9dc90', // Set background color
+                                'color': '#365b4c' // Set text color
                             });
 
                             setTimeout(() => {
@@ -549,7 +557,7 @@ if (count($addressParts) === 1) {
 
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -559,7 +567,7 @@ if (count($addressParts) === 1) {
                     }
                 });
             });
-            $addPasswordForm.on('submit', function (e) {
+            $addPasswordForm.on('submit', function(e) {
                 e.preventDefault();
 
                 var password = $('#password').val();
@@ -572,7 +580,7 @@ if (count($addressParts) === 1) {
                         password: password,
                         confirm_password: confirm_password
                     },
-                    success: function (response) {
+                    success: function(response) {
                         // Handle the response
                         var result = JSON.parse(response);
                         $('.message-display').show();
@@ -590,7 +598,7 @@ if (count($addressParts) === 1) {
 
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -601,7 +609,7 @@ if (count($addressParts) === 1) {
                 });
             });
 
-            $('#newPassword').on('input', function () {
+            $('#newPassword').on('input', function() {
                 var newPassword = $(this).val();
                 var strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
@@ -641,31 +649,31 @@ if (count($addressParts) === 1) {
             const $cityDropdown = $('#city');
 
             // Populate country dropdown
-            $.each(countries, function (_, country) {
+            $.each(countries, function(_, country) {
                 $countryDropdown.append(`<option value="${country}">${country}</option>`);
             });
 
             // Handle country change event
-            $countryDropdown.on('change', function () {
+            $countryDropdown.on('change', function() {
                 const selectedCountry = $(this).val();
 
                 if (selectedCountry === "Philippines") {
-                    $provinceDropdown.prop('disabled', false);
-                    $cityDropdown.prop('disabled', true);
+                    $provinceDropdown.prop('required', true);
+                    $cityDropdown.prop('required', true);
 
                     // Fetch provinces
                     $.ajax({
                         url: 'php/getProvinces.php',
                         method: 'GET',
                         dataType: 'json',
-                        success: function (provinces) {
+                        success: function(provinces) {
                             $('.input-group.province').css('display', 'block');
                             $provinceDropdown.html('<option value="" selected disabled>Select Province</option>');
-                            $.each(provinces, function (_, province) {
+                            $.each(provinces, function(_, province) {
                                 $provinceDropdown.append(`<option value="${province.name}" data-code="${province.code}">${province.name}</option>`);
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.error("Error fetching provinces:", error);
                         }
                     });
@@ -676,7 +684,7 @@ if (count($addressParts) === 1) {
             });
 
             // Handle province change event
-            $provinceDropdown.on('change', function () {
+            $provinceDropdown.on('change', function() {
                 const provinceId = $(this).find(':selected').data('code');
 
                 if (provinceId) {
@@ -686,16 +694,18 @@ if (count($addressParts) === 1) {
                     $.ajax({
                         url: 'php/getCities.php',
                         method: 'GET',
-                        data: { provinceId: provinceId },
+                        data: {
+                            provinceId: provinceId
+                        },
                         dataType: 'json',
-                        success: function (cities) {
+                        success: function(cities) {
                             $('.input-group.city').css('display', 'block');
                             $cityDropdown.html('<option value="" selected disabled>Select City/Municipality</option>');
-                            $.each(cities, function (_, city) {
+                            $.each(cities, function(_, city) {
                                 $cityDropdown.append(`<option value="${city.name}">${city.name}</option>`);
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             const errorMessage = xhr.responseText || error;
                             Toast.fire({
                                 icon: 'error',

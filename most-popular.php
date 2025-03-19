@@ -14,9 +14,10 @@ if (isset($_POST['filter'])) {
 $sql = "
 WITH booking_visitors AS (
     SELECT t.id, 
-           SUM(b.people) AS total_booking_visitors
+        SUM(b.people) AS total_booking_visitors,
+        COUNT(b.id) AS total_completed_bookings  -- Count completed bookings
     FROM tours t
-    LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
+    LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4  -- Only completed bookings (status = 4)
     WHERE b.start_date >= DATE_SUB(NOW(), INTERVAL $time_filter)
     GROUP BY t.id
 ),
@@ -30,11 +31,10 @@ visit_visitors AS (
 ),
 review_data AS (
     SELECT t.id, 
-           IFNULL(AVG(r.rating), 0) AS average_rating,  -- Average rating
-           IFNULL(COUNT(r.id), 0) AS review_count       -- Review count
+           IFNULL(AVG(r.rating), 0) AS average_rating  -- Average rating
     FROM tours t
     LEFT JOIN review_rating r ON t.id = r.tour_id
-    WHERE r.date_created >= DATE_SUB(NOW(), INTERVAL $time_filter)  -- Filter reviews within the time frame
+    WHERE r.date_created >= DATE_SUB(NOW(), INTERVAL $time_filter)
     GROUP BY t.id
 )
 
@@ -42,18 +42,18 @@ SELECT t.id,
        t.title,
        t.img,
        t.type,
-       COALESCE(bv.total_booking_visitors, 0) + COALESCE(vv.total_visit_visitors, 0) AS total_visitors,
-       COUNT(DISTINCT b.id) AS total_completed_bookings,
-       rd.average_rating,
-       rd.review_count
+       COALESCE(bv.total_booking_visitors, 0) + COALESCE(vv.total_visit_visitors, 0) AS total_visitors,  -- Combined visitors
+       COALESCE(bv.total_completed_bookings, 0) AS total_completed_bookings,  -- Count of completed bookings
+       COALESCE(vv.total_visit_visitors, 0) AS total_visit_visitors,  -- Distinct visit visitors
+       rd.average_rating
 FROM tours t
-LEFT JOIN booking b ON t.id = b.tour_id AND b.status = 4
 LEFT JOIN booking_visitors bv ON t.id = bv.id
 LEFT JOIN visit_visitors vv ON t.id = vv.id
 LEFT JOIN review_data rd ON t.id = rd.id
 WHERE t.status IN ('Active','Temporarily Closed')
-GROUP BY t.id, rd.average_rating, rd.review_count, bv.total_booking_visitors, vv.total_visit_visitors;
+GROUP BY t.id, bv.total_completed_bookings, vv.total_visit_visitors, rd.average_rating;
 ";
+
 
 try {
     $stmt = $conn->prepare($sql);
@@ -62,37 +62,45 @@ try {
 
     $max_visitors = max(array_column($tours, 'total_visitors'));
     $max_bookings = max(array_column($tours, 'total_completed_bookings'));
-    $max_rating = 5;
+    $max_rating = 5; // Rating is always out of 5
 
+    // If there are no visitors or bookings, set the max to 1 to avoid division by zero
     $max_visitors = ($max_visitors > 0) ? $max_visitors : 1;
     $max_bookings = ($max_bookings > 0) ? $max_bookings : 1;
 
-    $weighted_tours = [];
+    // Set weights for each factor
     $total_visitors_weight = 0.2;
-    $completed_bookings_weight = 0.2;
-    $rating_weight = 0.5;
+    $completed_bookings_weight = 0.4;
+    $rating_weight = 0.4;
 
+    // Initialize an array to store the weighted tours
+    $weighted_tours = [];
+
+    // Loop through each tour and calculate the weighted score
     foreach ($tours as $tour) {
+        // Normalize each factor
         $normalized_visitors = $tour['total_visitors'] / $max_visitors;
         $normalized_bookings = $tour['total_completed_bookings'] / $max_bookings;
         $normalized_rating = $tour['average_rating'] / $max_rating;
 
+        // Calculate the weighted score
         $weighted_score = ($normalized_visitors * $total_visitors_weight) +
             ($normalized_bookings * $completed_bookings_weight) +
             ($normalized_rating * $rating_weight);
 
+        // Add the weighted score to the tour data
         $tour['weighted_score'] = $weighted_score;
+
+        // Append to the weighted tours array
         $weighted_tours[] = $tour;
     }
+
+    // Sort the tours by weighted score in descending order
     usort($weighted_tours, function ($a, $b) {
-        if ($b['average_rating'] == 5 && $a['average_rating'] < 5) {
-            return 1;
-        } elseif ($a['average_rating'] == 5 && $b['average_rating'] < 5) {
-            return -1;
-        }
         return $b['weighted_score'] <=> $a['weighted_score'];
     });
 
+    // Take the top 15 tours
     $top_tours = array_slice($weighted_tours, 0, 15);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -125,33 +133,51 @@ try {
 
             <div id="tour-list-container">
                 <?php
+                // Assuming the weighted_tours array is already calculated
+                
+                // Display the top 15 tours with complete booking visitors and their rank
                 $counter = 1;
                 foreach ($top_tours as $tour) {
-                    $averageRating = isset($tour['average_rating']) && $tour['average_rating'] !== null ? round($tour['average_rating']) : 0;
-                    $fullStars = str_repeat("★", $averageRating);
-                    $emptyStars = str_repeat("☆", 5 - $averageRating);
-                    $totalStars = $fullStars . $emptyStars;
+                    // Get the average rating as a float value
+                    $averageRating = isset($tour['average_rating']) && $tour['average_rating'] !== null ? $tour['average_rating'] : 0;
+
+                    // Display the rating as a float number followed by the word "stars"
+                    $ratingDisplay = number_format($averageRating, 1) . ' stars';
+
+                    // Calculate full stars, half star, and empty stars
+                    $fullStars = floor($averageRating); // Full stars
+                    $halfStar = ($averageRating - $fullStars) >= 0.5 ? "<i class='bx bxs-star-half'></i>" : ''; // Half star
+                    $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0); // Empty stars
+                
+                    // Create the visual star representation
+                    $stars = str_repeat("<i class='bx bxs-star'></i>", $fullStars) . $halfStar . str_repeat("<i class='bx bx-star' ></i>", $emptyStars);
+
+                    // Tour images and background
                     $tour_images = explode(',', $tour['img']);
                     $main_image = $tour_images[0];
-
                     $backgroundImage = "upload/Tour Images/" . $main_image;
+
+                    // Display the tour with rank, name, rating, and completed bookings
                     echo "<a href='tour?id=" . base64_encode($tour['id'] . $salt) . "'>
-                <div class='tourList' data-bg='$backgroundImage'>
-                    <img src='upload/Tour Images/" . $main_image . "' alt=''>
-                    <div class='tourDetails'>
-                        <h1>#" . $counter++ . "</h1>
-                        <h3>" . htmlspecialchars($tour['title']) . "</h3>
-                        <div class='smallDetails'>
-                            <span>" . htmlspecialchars($tour['type']) . "</span>
-                            <span class='rating'>" . $totalStars . " (" . ($tour['review_count']) . " reviews)</span>
-                            <span class='rating'>" . htmlspecialchars($tour['total_visitors']) . " Visitors</span>
-                        </div>
+            <div class='tourList' data-bg='$backgroundImage'>
+                <img src='upload/Tour Images/" . $main_image . "' alt=''>
+                <div class='tourDetails'>
+                    <h1>#" . $counter++ . "</h1>
+                    <h3>" . htmlspecialchars($tour['title']) . "</h3>
+                    <div class='smallDetails'>
+                        <span>" . htmlspecialchars($tour['type']) . "</span>
+                        <span class='rating'>" . $stars . "</span>
+                        <span class='rating'>" . htmlspecialchars($tour['total_visitors']) . " Visitors</span>
+                        <span class='rating'>" . htmlspecialchars($tour['total_completed_bookings']) . " Bookings</span>  <!-- Completed Bookings -->
                     </div>
                 </div>
-              </a>";
+            </div>
+        </a>";
                 }
                 ?>
             </div>
+
+
         </div>
     </div>
     <?php require "include/login-registration.php"; ?>
@@ -162,7 +188,7 @@ try {
         function applyBackgroundImages() {
             $('style[data-index]').remove();
 
-            $('.tourList').each(function(index) {
+            $('.tourList').each(function (index) {
                 const bgImage = $(this).data('bg');
                 if (bgImage) {
                     const uniqueClass = `tourList-bg-${index}`;
@@ -180,10 +206,10 @@ try {
             });
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             applyBackgroundImages();
 
-            $('.option').on('click', function() {
+            $('.option').on('click', function () {
                 $('.option').removeClass('active');
                 $(this).addClass('active');
 
@@ -195,11 +221,11 @@ try {
                     data: {
                         filter: timeFilter
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#tour-list-container').html($(response).find('#tour-list-container').html());
                         applyBackgroundImages();
                     },
-                    error: function() {
+                    error: function () {
                         alert('Error loading tours');
                     }
                 });

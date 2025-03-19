@@ -91,14 +91,6 @@
   margin-top: -10px;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 520px;
-  align-items: center;
-  color: #fff;
-}
 
 .modal-content h2 {
   margin-bottom: 20px;
@@ -106,78 +98,8 @@
   color: black;
 }
 
-.form-container input {
-  margin: 8px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.8);
-  color: #333;
-  width: 100%;
-  min-width: 350px;
-}
-
-.form-container #forgot-password {
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
-  color: blue;
-}
-
-.form-container #forgot-password:hover {
-  color: lightblue;
-}
-
-.form-container p {
-  margin-top: 10px;
-  font-size: 14px;
-  text-align: center;
-  color: white;
-}
-
-.form-container a {
-  text-decoration: none;
-  color: skyblue;
-}
-
-.form-container a:hover {
-  color: whitesmoke;
-  text-decoration: underline;
-}
-
-.form-container button {
-  padding: 10px;
-  background-color: #007BFF;
-  margin-top: 10px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.form-container button:hover {
-  background-color: #0056b3;
-}
-
 .hidden {
   display: none;
-}
-
-.form-container.slide-in {
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-      opacity: 0;
-      transform: translateX(50%);
-  }
-
-  to {
-      opacity: 1;
-      transform: translateX(0);
-  }
 }
 
 .checkbox {

@@ -10,7 +10,8 @@ $user_id = $_SESSION['user_id'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
+    <link rel="icon" type="image/x-icon"
+        href="../assets/icons/<?php echo htmlspecialchars($webIcon, ENT_QUOTES, 'UTF-8'); ?>">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="assets/css/admin.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -165,7 +166,8 @@ $user_id = $_SESSION['user_id'];
                             <div class="qr-code-info">
                                 <h4><?php echo $qr['title'] ?></h4>
                                 <button class="btn" id="btn-delete" data-id="<?php echo $qr['id']; ?>">Delete</button>
-                                <button class="btn" id="btn-print" data-image="<?php echo $qr['qr_code_path']; ?>" data-title="<?php echo $qr['title']; ?>">Print</button>
+                                <button class="btn" id="btn-print" data-image="<?php echo $qr['qr_code_path']; ?>"
+                                    data-title="<?php echo $qr['title']; ?>">Print</button>
                             </div>
                         </div>
 
@@ -190,11 +192,12 @@ $user_id = $_SESSION['user_id'];
                         <option value="none" selected disabled hidden>Select an Option</option>
                         <?php $tours = getTouristSpots($conn, $user_id);
                         foreach ($tours as $tour) {
-                        ?>
-                            <option value="<?php echo $tour['title'] ?>|<?php echo $tour['id'] ?>"><?php echo $tour['title'] ?></option>
+                            ?>
+                            <option value="<?php echo $tour['title'] ?>|<?php echo $tour['id'] ?>">
+                                <?php echo $tour['title'] ?></option>
                         <?php } ?>
                     </select>
-                    <button type="submit" class="btn-form">Generate</button>
+                    <button type="submit" class="btn-form" id="generate">Generate</button>
                 </div>
             </form>
         </div>
@@ -204,7 +207,7 @@ $user_id = $_SESSION['user_id'];
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -212,7 +215,7 @@ $user_id = $_SESSION['user_id'];
                 timer: 3000,
                 timerProgressBar: true
             });
-            $(document).on('click', '#btn-delete', function(event) {
+            $(document).on('click', '#btn-delete', function (event) {
                 event.preventDefault();
                 const QRid = $(this).data('id');
                 deleteQR(QRid);
@@ -235,7 +238,7 @@ $user_id = $_SESSION['user_id'];
                             type: 'POST',
                             data: $(this).serialize(),
                             dataType: 'json',
-                            success: function(response) {
+                            success: function (response) {
                                 if (response.success) {
                                     Toast.fire({
                                         icon: 'success',
@@ -253,27 +256,30 @@ $user_id = $_SESSION['user_id'];
                     }
                 });
             }
-            $(document).on('click', '#add-table', function() {
+            $(document).on('click', '#add-table', function () {
                 $('#addModal').show();
             });
-            $('.close').click(function() {
+            $('.close').click(function () {
                 $(this).closest('.modal').hide();
             });
-            $(window).click(function(event) {
+            $(window).click(function (event) {
                 if ($(event.target).hasClass('modal')) {
                     $(event.target).hide();
                 }
             });
 
-            $('#addQR').submit(function(event) {
-
+            $('#addQR').submit(function (event) {
                 event.preventDefault();
+
+                // Disable the button and change the text to "Generating..."
+                $('#generate').prop('disabled', true).text('Generating...');
+
                 $.ajax({
                     url: '../php/generateQR.php',
                     type: 'POST',
                     data: $(this).serialize(),
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         console.log(response);
                         if (response.success) {
                             $('#addModal').hide();
@@ -288,17 +294,24 @@ $user_id = $_SESSION['user_id'];
                                 title: response.message
                             });
                         }
+
+                        // Revert the button text and enable it again after the request is complete
+                        $('#generate').prop('disabled', false).text('Generate');
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR.responseText)
                         Toast.fire({
                             icon: 'error',
                             title: 'There was an error processing the request.'
                         });
+
+                        // Revert the button text and enable it again if an error occurs
+                        $('#generate').prop('disabled', false).text('Generate');
                     }
                 });
             });
-            $(document).on('click', '#btn-print', function() {
+
+            $(document).on('click', '#btn-print', function () {
                 const qrImage = $(this).data('image');
                 const qrTitle = $(this).data('title');
 

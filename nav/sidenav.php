@@ -39,7 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         </div>
         <div class="nav-lower-options">
             <div class="below">
-                <a href="term-of-service"><span>Terms of Service</span></a> - <a href="home"><span>Contact</span></a>
+                <a href="term-of-service"><span>Terms of Service</span></a>
             </div>
         </div>
     </nav>

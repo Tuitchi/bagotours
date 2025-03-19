@@ -263,16 +263,16 @@ function tourAlreadyExists($conn, $title)
 
     <script src="../assets/js/script.js"></script>
     <script>
-        $(document).ready(function () {
-            $('form').on('submit', function (e) {
+        $(document).ready(function() {
+            $('form').on('submit', function(e) {
                 // Check if there are selected permits with associated images
                 var permits = [];
                 var permitImages = [];
-                $('.permit-item').each(function () {
+                $('.permit-item').each(function() {
                     var permit = $(this).find('.permit-text').text();
-                    permits.push(permit);  // Add permit title
+                    permits.push(permit); // Add permit title
 
-                    var permitImage = $(this).find('.permit-image')[0].files[0];  // Get the file from the permit input
+                    var permitImage = $(this).find('.permit-image')[0].files[0]; // Get the file from the permit input
                     if (permitImage) {
                         permitImages.push(permitImage);
                     }
@@ -289,7 +289,7 @@ function tourAlreadyExists($conn, $title)
                 var permitImageInput = $('<input>').attr({
                     type: 'hidden',
                     name: 'permit_image[]',
-                    value: permitImages.join(',')  // You may want to handle file uploading separately
+                    value: permitImages.join(',') // You may want to handle file uploading separately
                 });
                 $(this).append(permitImageInput);
             });
@@ -304,17 +304,17 @@ function tourAlreadyExists($conn, $title)
             $('#permit').empty();
             $('#permit').append('<option value="none" selected disabled>Select a Proof of Permit</option>');
 
-            $.each(permits, function (index, permit) {
+            $.each(permits, function(index, permit) {
                 $('#permit').append('<option value="' + permit + '">' + permit + '</option>');
             });
 
             const closeIcon = "<i class='bx bx-x'></i>";
 
             // Add Permit Items when the Add button is clicked
-            $('#add-btn').click(function () {
+            $('#add-btn').click(function() {
                 var selectedPermits = $('#permit').val();
                 if (selectedPermits && selectedPermits.length > 0) {
-                    $.each(selectedPermits, function (index, selectedPermit) {
+                    $.each(selectedPermits, function(index, selectedPermit) {
                         if (!$('#selected-permits').find('.permit-item[data-permit="' + selectedPermit + '"]').length) {
                             var newItem = `
                         <div class="permit-item" data-permit="${selectedPermit}">
@@ -335,12 +335,12 @@ function tourAlreadyExists($conn, $title)
             });
 
             // Close Button functionality for permit items
-            $(document).on('click', '.close-btn', function () {
+            $(document).on('click', '.close-btn', function() {
                 $(this).closest('.permit-item').remove();
             });
 
             // Image Preview functionality for Permit Images
-            $(document).on('change', '.permit-image', function (e) {
+            $(document).on('change', '.permit-image', function(e) {
                 var fileInput = $(this);
                 var previewContainer = fileInput.closest('.permit-item').find('.permit-image-preview-container');
                 var previewImage = previewContainer.find('.permit-image-preview')[0];
@@ -348,7 +348,7 @@ function tourAlreadyExists($conn, $title)
                 var file = e.target.files[0];
                 if (file) {
                     var reader = new FileReader();
-                    reader.onload = function (event) {
+                    reader.onload = function(event) {
                         previewImage.src = event.target.result;
                         previewImage.style.display = 'block'; // Show the image preview
                     };
@@ -359,7 +359,7 @@ function tourAlreadyExists($conn, $title)
             });
 
             // Tour Image Preview Functionality (separate from Permit Image functionality)
-            $('#tour-images').on('change', function (event) {
+            $('#tour-images').on('change', function(event) {
                 const files = event.target.files;
                 const $imagesPreview = $('.tour-image-preview-container');
                 const $mainImagePreview = $('#main-image-preview');
@@ -370,15 +370,15 @@ function tourAlreadyExists($conn, $title)
                 $thumbnailContainer.empty();
                 $mainImagePreview.attr('src', '');
 
-                $.each(files, function (index, file) {
+                $.each(files, function(index, file) {
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         const $img = $('<img>', {
                             src: e.target.result,
                             alt: `Image ${index + 1}`,
                         });
 
-                        $img.on('click', function () {
+                        $img.on('click', function() {
                             $mainImagePreview.attr('src', e.target.result);
                             $('.thumbnail-images img').removeClass('selected');
                             $img.addClass('selected');
@@ -455,18 +455,31 @@ function tourAlreadyExists($conn, $title)
                 });
             }
 
-            window.openMap = function () {
+            window.openMap = function() {
                 document.getElementById('mapModal').style.display = 'block';
                 if (!map) {
-                    initializeMap();
+                    fetch('../php/map_usage.php', {
+                            method: 'POST'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.allowMap) {
+                                initializeMap();
+                            } else {
+                                alert('Map access has been temporarily disabled due to usage limits.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error checking map usage:', error);
+                        });
                 }
             };
 
-            window.closeMap = function () {
+            window.closeMap = function() {
                 document.getElementById('mapModal').style.display = 'none';
             };
 
-            document.getElementById('confirm-location').addEventListener('click', function () {
+            document.getElementById('confirm-location').addEventListener('click', function() {
                 if (lngLat) {
                     reverseGeocode(lngLat.lng, lngLat.lat);
                     document.getElementById("longitude").value = lngLat.lng;

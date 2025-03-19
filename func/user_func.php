@@ -1,30 +1,41 @@
 <?php
-function getAllToursforAdmin($conn, $query = null, $page = 1, $limit = 10) {
+function getAllToursforAdmin($conn, $query = null, $page = 1, $limit = 100)
+{
     $offset = ($page - 1) * $limit;
     $queryCondition = "";
 
+    // Always filter tours by status (Active, Inactive, or Temporarily Closed)
+    $queryCondition = "WHERE status IN ('Active', 'Inactive', 'Temporarily Closed')";
+
+    // Add the search query condition if provided
     if ($query) {
         $query = "%" . $query . "%";
-        $queryCondition = "WHERE title LIKE :query OR address LIKE :query";
+        $queryCondition .= " AND (title LIKE :query OR address LIKE :query)";
     }
 
+    // SQL query with dynamic WHERE conditions
     $sql = "SELECT * FROM tours $queryCondition LIMIT :limit OFFSET :offset";
     $stmt = $conn->prepare($sql);
 
+    // Bind parameters
     if ($query) {
         $stmt->bindParam(':query', $query, PDO::PARAM_STR);
     }
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
     $stmt->execute();
 
+    // Fetch tours data
     $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Get total count of tours (with the applied filters)
     $totalQuery = $conn->query("SELECT FOUND_ROWS() as total");
     $total = $totalQuery->fetch(PDO::FETCH_ASSOC)['total'];
 
     return ['tours' => $tours, 'total' => $total];
 }
+
 
 function getAllToursforOwners($conn, $user_id, $query = null)
 {
@@ -155,14 +166,14 @@ function getAverageRating($conn, $tour_id)
 }
 
 
-
 function registerStatus($conn, $user_id)
 {
-    $stmt = $conn->prepare("SELECT status FROM tours WHERE user_id = :user_id LIMIT 1");
-    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT); // Use the named placeholder ':user_id'
+    $stmt = $conn->prepare("SELECT status, id, reason FROM tours WHERE user_id = :user_id LIMIT 1");
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    return $stmt->fetchColumn();
+    return $stmt->fetch(PDO::FETCH_ASSOC); // Fetch both 'status' and 'id' as an associative array
 }
+
 
 
 
@@ -264,14 +275,16 @@ function checkIfTrusted($conn, $user_id)
     return $stmt->fetchColumn() === 1;
 }
 
-function fetchProfilePicture($conn, $user_id) {
+function fetchProfilePicture($conn, $user_id)
+{
     $stmt = $conn->prepare("SELECT profile_picture FROM users WHERE id = :user_id");
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn();
 }
 
-function checkIfPasswordIsNull ($conn, $user_id) {
+function checkIfPasswordIsNull($conn, $user_id)
+{
     $stmt = $conn->prepare("SELECT password FROM users WHERE id = :user_id");
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->execute();

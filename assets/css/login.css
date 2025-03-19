@@ -77,6 +77,17 @@
   transition: background 0.3s ease;
 }
 
+#toggle-password {
+  color: #333;
+  /* Dark color for the eye icon */
+  transition: color 0.3s ease;
+}
+
+#toggle-password:hover {
+  color: #000;
+  /* Slightly darker color on hover */
+}
+
 .closeBtn:hover {
   background: #ff4d4f;
   color: #ffffff;
@@ -104,17 +115,26 @@
   color: #333;
 }
 
-/* Input Field Styles */
-.form-container input,
-.form-container select {
-  margin: 10px 0;
-  padding: 12px;
+.form-container input {
+  margin: 8px 0;
+  padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #f9f9f9;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.8);
   color: #333;
   width: 100%;
-  transition: border 0.3s ease;
+  min-width: 200px;
+}
+.form-container select {
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  width: 100%;
+  max-width: 200px;
+  min-width: 50px;
 }
 
 .form-container input:focus {
@@ -122,10 +142,18 @@
   outline: none;
 }
 
+#email {
+  width: 50%;
+}
+
 .name {
   width: 100%;
+  gap: 2px;
   display: flex;
-  gap: 5px;
+}
+
+#email {
+  flex-grow: 1;
 }
 
 /* Button Styles */
@@ -196,7 +224,6 @@
   text-decoration: underline;
 }
 
-/* Slide-in Animation */
 
 
 /* Checkbox Styles */
@@ -210,6 +237,7 @@
   margin-right: 8px;
 }
 
+/* Slide-in Animation */
 .form-container.slide-in {
   animation: slideIn 0.3s ease-out;
 }

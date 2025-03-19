@@ -451,6 +451,10 @@ function getStatusButton($row)
 							const createdDate = formatDate(book.date_created);
 							const actionButtons = (modalId === '#viewModal') ? getActionButtons('view', id, book.people) : getActionButtons('complete', id, book.people);
 							const trusted = book.is_trusted === 1 ? 'Trusted' : '';
+							const accommodationsContent = book.accommodations.map(accommodation => {
+								return `<p class="user-address"><i class='bx bxs-home'></i>${accommodation.accommodation_name} - ${accommodation.units_reserved}</p>`;
+							}).join(""); // Join the array of strings to create a single string of accommodation HTML
+
 							const content = `<div class="booking-card">
 								<h3 class="booking-title">${book.tour_title} <span class="booking-date">${startDate} - ${endDate}</span></h3>
 								<div class="booking-content">
@@ -462,6 +466,13 @@ function getStatusButton($row)
 												<p class="user-address"><i class='bx bxs-key'></i>${book.bookingId}</p>
 											</div>
 									</div>
+										<div class="user-info">
+											<div class="user-details">
+												<h4>Booking information</h4>
+												<p class="user-address"><i class='bx bxs-user'></i> ${book.people} persons</p>
+												${accommodationsContent} <!-- This will display all accommodations -->
+											</div>	
+										</div>
 									<div class="contact-info">
 										<h6>Contact Information</h6>
 										<p><i class='bx bxs-envelope'></i> ${book.email}</p>
@@ -475,7 +486,8 @@ function getStatusButton($row)
 										<div class="action-buttons">${actionButtons}</div>
 									</form>
 								</div>	
-							</div>`
+							</div>`;
+
 							modalContent.html(content);
 							$(modalId).modal('show');
 						} else {

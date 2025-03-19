@@ -96,3 +96,4 @@ function updatePagination() {
 
 // Initial setup
 displayCards(currentPage);
+

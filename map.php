@@ -105,7 +105,7 @@ if (isset($_SESSION['user_id'])) {
             /* Optional: limit height of instructions */
         }
 
-        
+
         /* Additional styles for the step instruction */
         .step-instruction {
             padding: 8px;
@@ -201,38 +201,51 @@ if (isset($_SESSION['user_id'])) {
             trackUserLocation: true,
             showUserHeading: true
         });
+        fetch('php/map_usage.php', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.allowMap) {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.watchPosition(
+                            position => {
+                                const userLocation = [position.coords.longitude, position.coords.latitude];
+                                const heading = position.coords.heading;
 
-        if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(
-                position => {
-                    const userLocation = [position.coords.longitude, position.coords.latitude];
-                    const heading = position.coords.heading;
+                                if (!map) {
+                                    setupMap(userLocation);
+                                } else {
+                                    animateMarker(userMarker, userLocation);
 
-                    if (!map) {
-                        setupMap(userLocation);
+                                    if (heading !== null) {
+                                        map.setBearing(heading);
+                                    }
+                                }
+                                if (spotDirection) {
+                                    const destination = [spotDirection.longitude, spotDirection.latitude];
+                                    updateDistanceAndRoute(userLocation, destination, spotDirection.title);
+                                }
+                            },
+                            () => setupMap([122.8313, 10.5338]), {
+                                enableHighAccuracy: true,
+                                timeout: 5000,
+                                maximumAge: 0
+                            }
+                        );
                     } else {
-                        animateMarker(userMarker, userLocation);
+                        console.log('Geolocation is not supported by your browser.');
+                        alert('Geolocation is not supported by your browser');
+                        window.location.href = 'home';
+                    }
+                } else {
+                    alert('Map access has been temporarily disabled due to usage limits.');
+                }
+            })
+            .catch(error => {
+                console.error('Error checking map usage:', error);
+            });
 
-                        if (heading !== null) {
-                            map.setBearing(heading);
-                        }
-                    }
-                    if (spotDirection) {
-                        const destination = [spotDirection.longitude, spotDirection.latitude];
-                        updateDistanceAndRoute(userLocation, destination, spotDirection.title);
-                    }
-                },
-                () => setupMap([122.8313, 10.5338]), {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            }
-            );
-        } else {
-            console.log('Geolocation is not supported by your browser.');
-            alert('Geolocation is not supported by your browser');
-            window.location.href = 'home';
-        }
 
         function setupMap(center) {
             if (!map) {
@@ -378,6 +391,7 @@ if (isset($_SESSION['user_id'])) {
                 instructionsList.appendChild(stepDiv);
             });
         }
+
         function displayRemainingTime(durationInSeconds) {
             const days = Math.floor(durationInSeconds / (24 * 3600)); // Calculate days
             const hours = Math.floor((durationInSeconds % (24 * 3600)) / 3600); // Calculate hours
@@ -451,10 +465,10 @@ if (isset($_SESSION['user_id'])) {
 
 
                 const popup = new mapboxgl.Popup({
-                    closeOnClick: false,
-                    offset: 25,
-                    closeButton: false
-                })
+                        closeOnClick: false,
+                        offset: 25,
+                        closeButton: false
+                    })
                     .setLngLat([longitude, latitude])
                     .setHTML(popupContent);
 

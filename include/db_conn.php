@@ -42,7 +42,7 @@ try {
 }
 try {
     $conn->beginTransaction();
-    $stmt = $conn->prepare("UPDATE booking SET status = 2  WHERE DATE(start_date) < CURDATE()");
+    $stmt = $conn->prepare("UPDATE booking SET status = 2 WHERE DATE(start_date) < CURDATE() AND status IN (0, 1, 3)");
     $stmt->execute();
 
     $stmt = $conn->prepare("
