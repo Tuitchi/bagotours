@@ -1,38 +1,36 @@
 <?php
 // Include your database connection file
-require_once '../include/db_conn.php'; // Update with your correct path
+require_once '../include/db_conn.php';
 
-header('Content-Type: application/json');
-
-// Initialize response array
-$response = ['success' => false, 'message' => '', 'errors' => []];
+// Initialize error array
+$errors = [];
 
 try {
     // Check if the request is POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Fetch the form data
         $id = trim($_POST['id'] ?? '');
+        $tour_id = trim($_POST['tour_id'] ?? '');
         $country = trim($_POST['country'] ?? '');
         $province = trim($_POST['province'] ?? '');
         $city = trim($_POST['city'] ?? '');
 
         // Simple validation
         if (empty($id)) {
-            $response['errors']['address'] = 'User ID is missing.';
+            $errors[] = 'User ID is missing.';
         }
         if (empty($country)) {
-            $response['errors']['address'] = 'Country is required.';
+            $errors[] = 'Country is required.';
         }
         if (empty($province) && $country == 'Philippines') {
-            $response['errors']['address'] = 'Province is required.';
-            if (empty($city)) {
-                $response['errors']['address'] = 'City/Municipality is required.';
-            }
+            $errors[] = 'Province is required.';
+        }
+        if (empty($city) && $country == 'Philippines') {
+            $errors[] = 'City/Municipality is required.';
         }
 
-
         // If there are no validation errors, proceed to update
-        if (empty($response['errors'])) {
+        if (empty($errors)) {
             // Format the address based on country selection
             if ($country == 'Philippines') {
                 $homeAddress = "$city, $province, $country";
@@ -53,25 +51,28 @@ try {
 
             // Execute the query
             if ($stmt->execute()) {
-                $response['success'] = true;
-                $response['message'] = 'Address updated successfully.';
-                $response['reload'] = true;
+                // Success - redirect back to the visit page
+                header("Location: ../visit.php?tour_id=$tour_id&success=1");
+                exit;
             } else {
-                $response['errors']['address'] = 'Failed to update address. Please try again.';
+                $errors[] = 'Failed to update address. Please try again.';
             }
         }
     } else {
-        $response['errors']['address'] = 'Invalid request method.';
+        $errors[] = 'Invalid request method.';
     }
 } catch (PDOException $e) {
     // Log the error
     error_log('Database Error: ' . $e->getMessage());
-    $response['errors']['address'] = 'An internal error occurred. Please try again later.';
+    $errors[] = 'An internal error occurred. Please try again later.';
 } catch (Exception $e) {
     // Log general errors
     error_log('General Error: ' . $e->getMessage());
-    $response['errors']['address'] = 'Something went wrong. Please try again.';
+    $errors[] = 'Something went wrong. Please try again.';
 }
 
-// Return the JSON response
-echo json_encode($response);
+// If we reached here, there were errors
+// Redirect back with error messages
+$error_string = urlencode(implode(", ", $errors));
+header("Location: ../visit.php?tour_id=$tour_id&error=$error_string");
+exit; 

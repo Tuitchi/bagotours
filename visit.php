@@ -36,7 +36,7 @@ if (isset($_GET['tour_id'])) {
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="user.css" />
-    <title>Visit - <?php echo $title ?></title>
+    <title>Visit - <?php echo htmlspecialchars($title) ?></title>
     <style>
         .modal-content {
             margin: auto;
@@ -130,10 +130,11 @@ if (isset($_GET['tour_id'])) {
             if (!empty($user['home_address'])) {
 
                 if (hasVisitedToday($conn, $id, $user['id'])) { ?>
-                    <h1>You've already been to <?php echo $title ?> today.</h1>
+                    <h1>You've already been to <?php echo htmlspecialchars($title) ?> today.</h1>
 
                 <?php } else {
-                    if (recordVisit($conn, $id, $user['id'])) {
+                    $result = recordVisit($conn, $id, $user['id']);
+                    if ($result['success']) {
                         try {
                             $stmt = $conn->prepare("SELECT CONCAT(firstname , ' ', lastname) as name FROM users WHERE id = ?");
                             $stmt->execute([$user['id']]);
@@ -143,13 +144,14 @@ if (isset($_GET['tour_id'])) {
                         }
                         createNotification($conn, $admin, $id, "$user visits $title", "dashboard", "visits");
                     } ?>
-                    <h1>Thank you for visiting <?php echo $title ?>.</h1>
+                    <h1>Thank you for visiting <?php echo htmlspecialchars($title) ?>.</h1>
                 <?php }
             } else { ?>
                 <div class="form-container">
                     <h2>Home Address</h2>
-                    <form id="address">
+                    <form id="address" action="php/update-address-direct.php" method="post">
                         <input type="hidden" value="<?php echo $user['id'] ?>" name="id">
+                        <input type="hidden" value="<?php echo htmlspecialchars($id) ?>" name="tour_id">
                         <div class="name">
                             <select name="country" id="country" required>
                                 <option value="" selected disabled>Select Country</option>
@@ -232,46 +234,6 @@ if (isset($_GET['tour_id'])) {
                         } else if (data.errors.email) {
                             $('#forgotEmail-error').text(data.errors.email);
                             $('#forgotEmail').css('border', '1px solid red');
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred. Please try again.');
-                    },
-                    complete: function() {
-                        $submitButton.prop('disabled', false).text('Sign in');
-                    },
-                });
-            });
-
-            // update 
-            $('#address').on('submit', function(event) {
-                event.preventDefault();
-                const $submitButton = $(this).find('button[type="submit"]');
-                $submitButton.prop('disabled', true).text('Updating...');
-
-                const formData = new FormData(this);
-
-                $.ajax({
-                    url: 'php/update-address.php',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        const data = JSON.parse(response);
-
-                        $('#address-error').text('').css('color', '').css('border', '');
-                        $('#address').css('border', '1px solid #ddd');
-
-                        if (data.success) {
-                            $('#address-error').css('color', 'green').text(data.message);
-                            $('#address').css('border', '1px solid green');
-                            setTimeout(function() {
-                                $modal.removeClass('active');
-                            }, 3000);
-                        } else if (data.errors.address) {
-                            $('#address-error').text(data.errors.address);
-                            $('#address').css('border', '1px solid red');
                         }
                     },
                     error: function() {
@@ -373,7 +335,7 @@ if (isset($_GET['tour_id'])) {
                         alert('An error occurred. Please try again.');
                     },
                     complete: function() {
-                        submitButton.prop('disabled', false).text('Sign up');
+                        $submitButton.prop('disabled', false).text('Sign up');
                     },
                 });
             });

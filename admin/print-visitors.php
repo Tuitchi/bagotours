@@ -88,30 +88,59 @@ $totals = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitor Count - Print</title>
     <style>
+        @page {
+            size: legal landscape;
+            margin: 0.5cm;
+        }
+        
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 10px;
+            font-size: 11pt;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
         th,
         td {
             border: 1px solid #000;
             text-align: center;
-            padding: 10px;
+            padding: 3px 2px;
+            font-size: 10pt;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         th {
             background-color: yellow;
+            font-weight: bold;
         }
 
-        h1,
-        h2 {
+        .date-col {
+            width: 5%;
+        }
+        
+        .weekday-col {
+            width: 7%;
+        }
+        
+        .data-col {
+            width: 4%;
+        }
+        
+        h1, h2 {
             text-align: center;
+            margin: 5px 0;
+        }
+        
+        @media print {
+            thead {
+                display: table-header-group;
+            }
         }
     </style>
 </head>
@@ -120,8 +149,11 @@ $totals = [
     <h2>
         <?php echo $tour_title ?> : 
         <?php
+        // Get month name
+        $monthName = date('F', mktime(0, 0, 0, $month, 1, $year));
+        
         if (!empty($month)) {
-            echo  $month . " - " . htmlspecialchars($year);
+            echo $monthName . " - " . htmlspecialchars($year);
         } elseif (!empty($year)) {
             echo htmlspecialchars($year);
         } else {
@@ -137,67 +169,93 @@ $totals = [
                 <th colspan="3" rowspan="3">*Grand Total Number of Visitors</th>
             </tr>
             <tr>
-                <th rowspan="3">Day</th>
-                <th rowspan="3">Week Day (Mon - Sun)</th>
+                <th rowspan="3" class="date-col">Day</th>
+                <th rowspan="3" class="weekday-col">Weekday</th>
                 <th colspan="9">Philippines</th>
-                <th colspan="3" rowspan="2">Foreign Country Residence</th>
+                <th colspan="3" rowspan="2">Foreign Country</th>
             </tr>
             <tr>
-                <th colspan="3">This City/ Municipality</th>
+                <th colspan="3">This City</th>
                 <th colspan="3">This Province</th>
                 <th colspan="3">Other Province</th>
             </tr>
             <tr>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Total</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Total</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Total</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Total</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Total</th>
+                <th class="data-col">M</th>
+                <th class="data-col">F</th>
+                <th class="data-col">Total</th>
+                <th class="data-col">M</th>
+                <th class="data-col">F</th>
+                <th class="data-col">Total</th>
+                <th class="data-col">M</th>
+                <th class="data-col">F</th>
+                <th class="data-col">Total</th>
+                <th class="data-col">M</th>
+                <th class="data-col">F</th>
+                <th class="data-col">Total</th>
+                <th class="data-col">M</th>
+                <th class="data-col">F</th>
+                <th class="data-col">Total</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($dates as $data): ?>
+            <?php 
+            // Reset totals before accumulating
+            foreach ($totals as $key => &$total) {
+                $total = 0;
+            }
+            
+            foreach ($dates as $date_key => $data): 
+                // Get day number from the date key (YYYY-MM-DD)
+                $date_parts = explode('-', $date_key);
+                $day_only = (int)$date_parts[2]; // Get day as integer
+                
+                // Get proper weekday
+                $weekday_short = date('D', strtotime($date_key));
+                
+                // Accumulate totals
+                foreach ($totals as $key => &$total) {
+                    $total += (int)$data[$key];
+                }
+            ?>
                 <tr>
-                    <td><?php echo $data['visit_date']; ?></td>
-                    <td><?php echo $data['weekday']; ?></td>
-                    <?php
-                    foreach ($totals as $key => &$total) {
-                        $total += (int)$data[$key]; // Accumulate totals
-                        echo "<td>{$data[$key]}</td>";
-                    }
-                    ?>
+                    <td><?php echo $day_only; ?></td>
+                    <td><?php echo $weekday_short; ?></td>
+                    <td><?php echo $data['bago_male']; ?></td>
+                    <td><?php echo $data['bago_female']; ?></td>
+                    <td><?php echo $data['bago_total']; ?></td>
+                    <td><?php echo $data['negros_male']; ?></td>
+                    <td><?php echo $data['negros_female']; ?></td>
+                    <td><?php echo $data['negros_total']; ?></td>
+                    <td><?php echo $data['other_male']; ?></td>
+                    <td><?php echo $data['other_female']; ?></td>
+                    <td><?php echo $data['other_total']; ?></td>
+                    <td><?php echo $data['foreign_male']; ?></td>
+                    <td><?php echo $data['foreign_female']; ?></td>
+                    <td><?php echo $data['foreign_total']; ?></td>
+                    <td><?php echo $data['total_male']; ?></td>
+                    <td><?php echo $data['total_female']; ?></td>
+                    <td><?php echo $data['grand_total']; ?></td>
                 </tr>
             <?php endforeach; ?>
 
             <tr style="font-weight: bold; background-color: #88E788;">
                 <td colspan="2">TOTAL</td>
-                <td><?php echo $totals['bago_female']; ?></td>
                 <td><?php echo $totals['bago_male']; ?></td>
+                <td><?php echo $totals['bago_female']; ?></td>
                 <td><?php echo $totals['bago_total']; ?></td>
-                <td><?php echo $totals['negros_female']; ?></td>
                 <td><?php echo $totals['negros_male']; ?></td>
+                <td><?php echo $totals['negros_female']; ?></td>
                 <td><?php echo $totals['negros_total']; ?></td>
-                <td><?php echo $totals['other_female']; ?></td>
                 <td><?php echo $totals['other_male']; ?></td>
+                <td><?php echo $totals['other_female']; ?></td>
                 <td><?php echo $totals['other_total']; ?></td>
-                <td><?php echo $totals['foreign_female']; ?></td>
                 <td><?php echo $totals['foreign_male']; ?></td>
+                <td><?php echo $totals['foreign_female']; ?></td>
                 <td><?php echo $totals['foreign_total']; ?></td>
                 <td><?php echo $totals['total_male']; ?></td>
                 <td><?php echo $totals['total_female']; ?></td>
                 <td><?php echo $totals['grand_total']; ?></td>
             </tr>
-
         </tbody>
     </table>
     <script>

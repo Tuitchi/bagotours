@@ -84,7 +84,7 @@ $totalPages = ceil($totalRecords / $results_per_page);
 // Prepare the main query for fetching visitor data
 $sql = "SELECT vr.id as id, vr.user_id as client, t.title as tour_name,CONCAT(u.firstname, ' ', u.lastname) as admin, 
                vr.visit_time as datetime, vr.city_residence as city, 
-               CONCAT(uc.firstname, '', uc.lastname) as client_name, uc.email as client_email
+               CONCAT(uc.firstname, ' ', uc.lastname) as client_name, uc.email as client_email
         FROM visit_records vr 
         JOIN tours t ON vr.tour_id = t.id 
         JOIN users u ON u.id = t.user_id 
@@ -163,10 +163,10 @@ $totalVisitors = $totalStmt->fetchColumn();
                     <?php include 'includes/breadcrumb.php'; ?>
                 </div>
                 <div class="right">
-                    <a class="btn-download" id="btn-download">
-                        <i class='bx bxs-download'></i> Download SV
+                    <a class="btn-download" id="download-sv">
+                        <i class='bx bxs-download'></i> Export to CSV
                     </a>
-                    <a class="btn-download" id="btn-download">
+                    <a class="btn-download" id="print-visitors">
                         <i class='bx bxs-printer'></i> Print Visitors
                     </a>
                 </div>
@@ -268,7 +268,24 @@ $totalVisitors = $totalStmt->fetchColumn();
                                     </div>
                                     <div class="input-group">
                                         <label for="year">Year:</label>
-                                        <input class="year" type="year" id="year" placeholder="YYYY" min="2024" max="2100"><br>
+                                        <select class="year" id="year">
+                                            <option value="">All Years</option>
+                                            <?php
+                                            // Get years that have visitor data
+                                            $yearQuery = "SELECT DISTINCT YEAR(visit_time) as year FROM visit_records vr 
+                                                        JOIN tours t ON vr.tour_id = t.id 
+                                                        WHERE t.user_id = :user_id 
+                                                        ORDER BY year DESC";
+                                            $yearStmt = $conn->prepare($yearQuery);
+                                            $yearStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                                            $yearStmt->execute();
+                                            $years = $yearStmt->fetchAll(PDO::FETCH_COLUMN);
+                                            
+                                            foreach ($years as $dataYear) {
+                                                echo "<option value=\"$dataYear\">$dataYear</option>";
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="button-group">
@@ -347,12 +364,12 @@ $totalVisitors = $totalStmt->fetchColumn();
             <div id="printModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Print Visitors</h2>
+                    <h2>Visitor Report</h2>
                     <form action="print-visitors.php" METHOD="GET" target="_blank">
                         <div class="form-group">
-                            <label for="tour">Tours</label>
-                            <select name="tour" id="tour" required>
-                                <option value="none" selected disabled hidden>Select an Option</option>
+                            <label for="tourSelect">Select Tour</label>
+                            <select name="tour" id="tourSelect" required>
+                                <option value="" selected disabled>Select a Tour</option>
                                 <?php $tours = getTouristSpots($conn, $user_id);
                                 foreach ($tours as $tour) {
                                 ?>
@@ -361,34 +378,108 @@ $totalVisitors = $totalStmt->fetchColumn();
                                     </option>
                                 <?php } ?>
                             </select>
-                            <label for="dateType">Date</label>
-                            <div>
+                        </div>
 
-                                <!-- Month Select -->
-                                <label for="monthSelect">Month</label >
-                                <select id="monthSelect" name="month" required>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
+                        <div class="form-group">
+                            <label for="yearSelect">Select Year</label>
+                            <select id="yearSelect" name="year" required>
+                                <option value="" selected disabled>Select Year</option>
+                                <?php
+                                // Get years that have visitor data
+                                $yearQuery = "SELECT DISTINCT YEAR(visit_time) as year FROM visit_records vr 
+                                             JOIN tours t ON vr.tour_id = t.id 
+                                             WHERE t.user_id = :user_id 
+                                             ORDER BY year DESC";
+                                $yearStmt = $conn->prepare($yearQuery);
+                                $yearStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                                $yearStmt->execute();
+                                $years = $yearStmt->fetchAll(PDO::FETCH_COLUMN);
+                                
+                                foreach ($years as $dataYear) {
+                                    echo "<option value=\"$dataYear\">$dataYear</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
 
-                                <!-- Year Select -->
-                                <label for="yearSelect">Year</label>
-                                <select id="yearSelect" name="year" required>
-                                    <option value="">Year</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="monthSelect">Select Month</label>
+                            <select id="monthSelect" name="month" required>
+                                <option value="" selected disabled>Select Month</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
 
-                            <button type="submit" class="btn-form">Print</button>
+                        <div class="form-group btn-group">
+                            <button type="submit" class="btn-form">Generate Report</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="csvModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Export Visitor Data</h2>
+                    <form action="export-visitors.php" METHOD="GET">
+                        <div class="form-group">
+                            <label for="csvTourSelect">Select Tour</label>
+                            <select name="tour" id="csvTourSelect" required>
+                                <option value="" selected disabled>Select a Tour</option>
+                                <?php $tours = getTouristSpots($conn, $user_id);
+                                foreach ($tours as $tour) {
+                                ?>
+                                    <option value="<?php echo $tour['title'] ?>">
+                                        <?php echo $tour['title'] ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="csvYearSelect">Select Year</label>
+                            <select id="csvYearSelect" name="year" required>
+                                <option value="" selected disabled>Select Year</option>
+                                <?php
+                                foreach ($years as $dataYear) {
+                                    echo "<option value=\"$dataYear\">$dataYear</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="csvMonthSelect">Select Month</label>
+                            <select id="csvMonthSelect" name="month" required>
+                                <option value="" selected disabled>Select Month</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group btn-group">
+                            <button type="submit" class="btn-form">Export CSV</button>
                         </div>
                     </form>
                 </div>
@@ -402,6 +493,27 @@ $totalVisitors = $totalStmt->fetchColumn();
     <script src="../assets/js/script.js"></script>
     <script>
         $(document).ready(function() {
+            // Modal handling for print
+            $('#print-visitors').on('click', function() {
+                $('#printModal').fadeIn(300);
+            });
+            
+            // Modal handling for CSV export
+            $('#download-sv').on('click', function() {
+                $('#csvModal').fadeIn(300);
+            });
+            
+            $('.close').on('click', function() {
+                $(this).closest('.modal').fadeOut(300);
+            });
+            
+            $(window).on('click', function(event) {
+                if ($(event.target).hasClass('modal')) {
+                    $('.modal').fadeOut(300);
+                }
+            });
+                
+            // Rest of your JavaScript
             const $dropdownButton = $('#openFilter');
             const $filterContainer = $('.filter');
             const $dropdownContent = $filterContainer.find('.dropdown-content');
@@ -432,38 +544,14 @@ $totalVisitors = $totalStmt->fetchColumn();
                 }
             }
 
-            // Populate the years dropdown with a range of years
-            function populateYears() {
-                var yearSelect = $('#yearSelect');
-                var currentYear = new Date().getFullYear();
-                var startYear = currentYear - 100; // 100 years ago
-                var endYear = currentYear + 10; // 10 years in the future
-
-                // Populate years
-                for (var year = startYear; year <= endYear; year++) {
-                    yearSelect.append('<option value="' + year + '">' + year + '</option>');
-                }
-            }
-
             // Add event listeners to update days dynamically
             $('#monthSelect, #yearSelect').on('change', populateDays);
 
-            // Initial setup
-            populateYears();
+            // Initial setup - load days if month/year are already selected
+            if ($('#monthSelect').val() && $('#yearSelect').val()) {
+                populateDays();
+            }
 
-
-            // Toggle the filter dropdown
-            $(document).on('click', '#btn-download', function() {
-                $('#printModal').show();
-            });
-            $('.close').click(function() {
-                $(this).closest('.modal').hide();
-            });
-            $(window).click(function(event) {
-                if ($(event.target).hasClass('modal')) {
-                    $(event.target).hide();
-                }
-            });
             // Function to fetch filtered data from the server
             function fetchFilteredData() {
                 const search = $searchInput.val().trim();

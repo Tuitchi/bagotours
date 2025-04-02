@@ -111,12 +111,12 @@ function recordVisit($conn, $tourId, $userId)
     $homeAddress = $userData['home_address'] ?? null;
     $gender = isset($userData['gender']) && strtolower($userData['gender']) === 'male' ? 1 : 0;
 
-    $sql = 'INSERT INTO visit_records (tour_id, user_id, visit_time, city_residence, gender) VALUES (:tour_id, :user_id, NOW(), :homeAddress, gender)';
+    $sql = 'INSERT INTO visit_records (tour_id, user_id, visit_time, city_residence, gender) VALUES (:tour_id, :user_id, NOW(), :homeAddress, :gender)';
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':tour_id', $tourId, PDO::PARAM_INT);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->bindParam(':homeAddress', $homeAddress, PDO::PARAM_STR);
-    $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
+    $stmt->bindParam(':gender', $gender, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
         return ['success' => true, 'message' => 'Visit recorded successfully.'];
